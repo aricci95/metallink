@@ -1,0 +1,100 @@
+.chatbox {
+	position: fixed;
+	position:expression("absolute");
+	width: 225px;
+	display:none;
+}
+
+.chatboxhead {
+	background-color: black;
+	font-weight:bold;
+	font-family:"Palatino Linotype","Book Antiqua",Palatino,FreeSerif,serif;
+	font-size:15px;
+	padding:7px;
+	color: #808080;
+	border:none;
+	background-image:url('../../../../images/structure/chathead.jpg');
+	background-position:left;
+}
+
+.chatboxblink {
+	background-image:url('../../../../images/structure/chatheadblink.jpg');
+	background-position:left;
+	
+}
+
+.chatboxcontent {
+	font-family: arial,sans-serif;
+	font-size: 13px;
+	color: #333333;
+	height:200px;
+	width:209px;
+	overflow-y:auto;
+	overflow-x:auto;
+	padding:7px;
+	border-left:1px solid black;
+	border-right:1px solid black;
+	border-bottom:1px solid black;
+	background-color: #ffffff;
+	background-image:url('../../../../images/structure/backgroundchat.jpg');
+	background-position:center;
+	line-height: 1.3em;
+	text-align:left;
+}
+
+.chatboxinput {
+	padding: 5px;
+	background-color: #ffffff;
+	border-left:1px solid black;
+	border-right:1px solid black;
+	border-bottom:1px solid black;
+	background-image:url('../../../../images/structure/backgroundchat.jpg');
+	background-position:center;
+}
+
+.chatboxtextarea {
+	width: 206px;
+	height:44px;
+	padding:3px 0pt 3px 3px;
+	border: 1px solid #4B4B4B;
+	margin: 1px;
+	overflow:hidden;
+}
+
+.chatboxtextareaselected {
+	border: 2px inset blue;
+	margin:0;
+}
+
+.chatboxmessage {
+	margin-left:1em;
+}
+
+.chatboxinfo {
+	text-align:right;
+	color:#666666;
+
+}
+
+.chatboxmessagefrom {
+	margin-left:-1em;
+	font-weight: bold;
+}
+
+.chatboxmessagecontent {
+}
+
+.chatboxoptions {
+	float: right;
+}
+
+.chatboxoptions a {
+	text-decoration: none;
+	color: white;
+	font-weight:bold;
+	font-family:Verdana,Arial,"Bitstream Vera Sans",sans-serif;
+}
+
+.chatboxtitle {
+	float: left;
+}

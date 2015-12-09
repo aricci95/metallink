@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>jqSajax: Documentation</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+@import "screen.css";
+</style>
+</head>
+<body>
+<div id="wrap">
+<div id="header">
+<div class="header">jqSajax</div>
+<h1>Call your PHP method/function from Javascript</h1>
+</div>
+<div id="menu">
+<ul>
+<li><a href="http://satoewarna.com">Satoewarna</a></li><li><a href="index.php">Home</a></li><li><a href="example_jquery.php">Call as JQUERY Plugin</a></li><li><a href="example_method.php">Call as jqSajax method</a></li><li><a href="example_function.php">Call as javascript function</a></li><li><a href="doc.html">Docs</a></li><li><a href="job.html">Give me a Job</a></li><li><a href="http://satoewarna.com/jqsajax/download.html">download</a></li><li><a href="https://sourceforge.net/project/admin/donations.php?group_id=235778">Donate</a></li>
+</ul>
+</div>
+<div id="content">
+<h2>Documentation</h2>
+<ul>
+<li>method: <span class="sourcecode">jqSajax($mode,$syncronous,$json)</span> define the call mode, syncronous/asyncronous call, and json/text mode.<br />
+$mode:<br />
+0=function<br />
+1=jquery plugin<br />
+2=jqSajax method<br />
+$syncronous: 1=true,0= false<br />
+$json: 1=json,0=text
+</li>
+<li>method: <span class="sourcecode">processClientReq()</span> perform client request.</li>
+<li>method: <span class="sourcecode">showJs()</span> print method/function as javascript representation.</li>
+<li>method: <span class="sourcecode">fhasil()</span> handle the result, see the syncronous/asyncronous property.</li>
+<li>method: <span class="sourcecode">fhasilc()</span> help the <span class="sourcecode">fhasil()</span> method.</li>
+<li>property: <span class="sourcecode">request_type</span> define POST or GET,the default is POST.</li>
+<li>property: <span class="sourcecode">friendly_url</span> If your system use friendly url that not use ? sign in the query string, define as 1.</li>
+<li>property: <span class="sourcecode">as_method</span> Export php method/function as method. see the jqSajax() method</li>
+<li>property: <span class="sourcecode">as_jquery_plugin</span> Export php method/function as jQuery plugin. see the jqSajax() method</li>
+<li>property: <span class="sourcecode">asyncronous</span> syncronous/asyncronous mode. if sincronous  You can get the result directly.if asincronous, the result can be modified with redeclare fhasil() method. see the jqSajax() method</li>
+<li>property: <span class="sourcecode">use_json</span>Use JSON mode if your PHP support JSON. see the jqSajax() method</li>
+</ul>
+</div>
+<div id="footer">
+<h5>By <a  href="http://satoewarna.com/jqsajax">Winoto</a> >> Design by <a href="http://www.kricit.co.uk/elgunvis">Ashley Johnson</a></h5>
+</div>
+</div>
+</body>
+</html>

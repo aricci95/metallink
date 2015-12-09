@@ -1,0 +1,16 @@
+Options +FollowSymlinks
+RewriteEngine On
+
+#liens index
+RewriteRule	^$	appli/index.php [L]
+
+#redirection generique
+RewriteRule ^([a-zA-Z]+)$                           	 appli/index.php?page=$1  [L]
+RewriteRule ^([a-zA-Z]+)/([0-9]+)$                  	 appli/index.php?page=$1&value=$2  [L]
+RewriteRule ^([a-zA-Z]+)/([a-zA-Z]+)$               	 appli/index.php?page=$1&action=$2  [L]
+RewriteRule ^([a-zA-Z]+)/([0-9]+)/([0-9]+)$              appli/index.php?page=$1&value=$2&option=$3  [L]
+RewriteRule ^([a-zA-Z]+)/msg/([0-9]+)$              	 appli/index.php?page=$1&msg=$2  [L]
+RewriteRule ^([a-zA-Z]+)/([a-zA-Z]+)/msg/([0-9]+)$  	 appli/index.php?page=$1&action=$2&msg=$3  [L]
+RewriteRule ^([a-zA-Z]+)/([0-9]+)/msg/([0-9]+)$  	     appli/index.php?page=$1&value=$2&msg=$3  [L]
+RewriteRule ^([a-zA-Z]+)/([a-zA-Z]+)/([0-9a-zA-Z]+)$     appli/index.php?page=$1&action=$2&value=$3  [L]
+RewriteRule ^([a-zA-Z]+)/([a-zA-Z]+)/([0-9]+)/([0-9]+)$  appli/index.php?page=$1&action=$2&value=$3&option=$4  [L]

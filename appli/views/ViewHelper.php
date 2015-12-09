@@ -1,0 +1,229 @@
+<?php
+
+class ViewHelper extends EngineObject {
+
+    public $now = 0;
+
+    public function __construct() {
+        $this->now = time();
+    }
+
+    public function render($view) {
+        include (ROOT_DIR.'/appli/views/'.$view.'.php');
+    }
+
+    public function status($timestamp) {
+        $delay = $this->now - $timestamp;
+        return ($delay < ONLINE_TIME_LIMIT) ? 'online.gif' : 'offline.png';
+    }
+
+    // Affiche une div Blanche cool
+    public function whiteBoxMainOpen() {
+        echo '<table class="whiteBox">';
+            echo '<tr>';
+                echo '<td class="whiteBoxleftUpCorner"></td>';
+                echo '<td class="whiteBoxup"></td>';
+                echo '<td class="whiteBoxrightUpCorner"></td>';
+            echo '</tr>';
+            echo '<tr>';
+                echo '<td class="whiteBoxleft"></td>';
+                echo '<td>';
+                echo '<div class="MainContent"style="width:772px;height:100%;">';
+    }
+
+    public function whiteBoxMainClose() {
+                echo '</div>';
+                echo '</td>';
+                echo '<td class="whiteBoxright"></td>';
+            echo '</tr>';
+            echo '<tr>';
+                echo '<td class="whiteBoxleftDownCorner"></td>';
+                echo '<td class="whiteBoxdown"></td>';
+                echo '<td class="whiteBoxrightDownCorner"></td>';
+            echo '</tr>';
+        echo '</table>';
+    }
+
+    // Affiche une div Blanche cool
+    public function whiteBox($width = null, $height = '100%', $margin = null) {
+        if($width == null) {
+            $width = 740;
+        }
+        echo '<table class="whiteBox"';
+        if($margin != null) {
+            echo ' style="margin-top:'.$margin.'">';
+        }
+        echo '<tr><td class="whiteBoxleftUpCorner"></td><td class="whiteBoxup" style=""></td><td class="whiteBoxrightUpCorner"></td></tr>';
+        echo '<tr><td class="whiteBoxleft"></td><td class="whiteBoxmiddle" style="width:'.$width.'px;height:'.$height.'px;"></td><td class="whiteBoxright"></td></tr>';
+        echo '<tr><td class="whiteBoxleftDownCorner"></td><td class="whiteBoxdown"></td><td class="whiteBoxrightDownCorner"></td></tr>';
+        echo '</table>';
+    }
+
+    public function formFooter($previousUrl, $submit = true) {
+        echo '<div align="center" style="clear:both;">';
+        if($submit) {
+            echo '<input type="image" src="MLink/images/boutons/valider.png" value="Valider" style="border:0px;" border="0" /><br/>';
+        }
+        echo '<a href="'.$previousUrl.'" /><img src="MLink/images/boutons/retour.png" /></a>';
+        echo '</div>';
+    }
+
+    public function printArticle($article) {
+        if(!empty($article['art_id'])) {
+            $imageUrl = ((!empty($article['art_photo_url']) && file_exists($_SERVER["DOCUMENT_ROOT"]."/MLink/photos/small/".$article['art_photo_url']))) ? $article['art_photo_url'] : 'unknowUser.jpg';
+            
+            echo '<div class="divElement">';
+            echo '<a href="article/'.$article['art_id'].'" >';
+                // Partie PHOTO
+                echo '<div class="divPhoto" style="background:url(\'';
+                echo '/MLink/photos/small/'.$imageUrl.'\');background-position: top center;">';
+                
+                echo '</div>';
+                // Partie INFO
+                echo '<div class="divInfo">';
+                    echo '<div style="float:left;font-size:13px;color:black;">';
+                        echo $this->_maxLength($article['art_libel'], 50);
+                    echo '</div>';
+                    echo '<br/>';
+                    if(!empty($article['user_city'])) echo '<br/>'.$article['user_city'];
+                    if(!empty($article['art_price'])) echo '<br/>'.$article['art_price'].' €';
+                    else echo '<br/>prix à négocier';
+                echo '</div>';
+                echo '</a>';
+            echo '</div>';
+        }
+        
+    }
+
+    public function printUserLogin($user) {
+        echo '<div class="userFont" style="font-size:12px;float:left;margin-right:100px;">';
+        echo '<a target="_blank" style="color:';
+        if($user['user_gender'] == 1) echo '#3333CC';
+        elseif($user['user_gender'] == 2) echo '#CC0000';
+        echo '" href="profile/'.$user['user_id'].'">';
+        echo $this->_maxLength($user['user_login'], 13);
+        echo '</a></div>';
+    }
+
+    public function printUser($user, $links=array()) {
+        if(!empty($user['user_id'])) {
+            $imageUrl = ((!empty($user['user_photo_url']) && file_exists($_SERVER["DOCUMENT_ROOT"]."/MLink/photos/small/".$user['user_photo_url']))) ? $user['user_photo_url'] : 'unknowUser.jpg';
+            echo '<div class="divElement">';
+            echo '<a href="profile/'.$user['user_id'].'" >';
+                // Partie PHOTO
+                echo '<div class="divPhoto" style="background:url(\'';
+                echo '/MLink/photos/small/'.$imageUrl.'\');background-position: top center;">';
+                echo '<img class="pictoStatus" src="MLink/images/icone/';
+                echo $this->status($user['user_last_connexion']);
+                echo '" />';
+                echo '</div>';
+                // Partie INFO
+                echo '<div class="divInfo">';
+                    // Affichage des infos
+                    echo '<div class="userFont" style="float:left;margin-right:100px;color:';
+                    if($user['user_gender'] == 1) echo '#3333CC';
+                    elseif($user['user_gender'] == 2) echo '#CC0000';
+                    echo '">';
+                    echo $this->_maxLength($user['user_login'], 13);
+                    echo '</div>';
+                    // Si l'âge est défini
+                    if(isset($user['age']) && $user['age'] < 2000) echo '<br/>'.$user['age'].' ans';
+                    if(!empty($user['user_city'])) echo '<br/>'.$user['user_city'];
+                    if(!empty($user['look_libel'])) echo '<br/>'.$user['look_libel'];
+                    // Partie Link
+                    echo '<div class="divLink" style="position:absolute;bottom:1;left:3;">';
+                    $this->user = $user;
+                    $this->link = $this->_searchLink($links, $user['user_id']);
+                    $this->render('link/wItem');
+                    echo '</div>';
+                echo '</div>';
+                echo '</a>';
+            echo '</div>';
+        }
+    }
+
+    // Affiche login, photo et état
+    public function printUserSmall($user) {
+        $imageUrl = ((!empty($user['user_photo_url']) && file_exists($_SERVER["DOCUMENT_ROOT"]."/MLink/photos/small/".$user['user_photo_url']))) ? $user['user_photo_url'] : 'unknowUser.jpg';
+        echo '<a href="profile/'.$user['user_id'].'" >';
+        echo '<div class="divElementSmall">';
+            // Partie PHOTO
+            echo '<div class="divPhoto" style="background:url(\'';
+            echo '/MLink/photos/small/'.$imageUrl.'\');background-position: top center;">';
+            echo '<img class="pictoStatus" src="MLink/images/icone/';
+            echo $this->status($user['user_last_connexion']);
+            echo '" />&nbsp;';
+            echo '</div>';
+            // Partie INFO
+            echo '<span class="userFont" style="color:';
+            if($user['user_gender'] == 1) echo '#3333CC';
+            elseif($user['user_gender'] == 2) echo '#CC0000';
+            echo '">';
+            echo $this->_maxLength($user['user_login'], 14);
+            echo '</span>';
+        echo '</div>';
+        echo '</a>';
+    }
+
+    private function _searchLink($links, $userId) {
+        foreach($links as $key => $link) {
+            if($userId == $link['destinataire_id'] || $userId == $link['expediteur_id']) {
+                return $link;
+                break;
+            }
+        }
+    }
+
+    private function _maxLength($string, $length) {
+        if(strlen($string) > $length) {
+            return substr($string, 0, $length).'...';
+        } else {
+            return $string;
+        }
+    }
+
+    // Affiche une div Noire cool
+    public function blackBoxOpen($cssParams = 'maxWidth') {
+        
+        echo '<table class="blackBox">';
+        echo '<tr><td class="blackBoxleftUpCorner"></td><td class="blackBoxup"></td><td class="blackBoxrightUpCorner"></td></tr>';
+        echo '<tr><td class="blackBoxleft"></td><td class="blackBoxmiddle ';
+        if($cssParams == 'maxWidth') echo 'maxWidth';
+        echo '" ';
+        if($cssParams != 'maxWidth' && count($cssParams) > 0) {
+            $this->_addStyle($cssParams);
+        }
+        echo '>';
+    }
+
+    public function blackBoxClose() {
+        echo '</td><td class="blackBoxright"></td></tr>';
+        echo '<tr><td class="blackBoxleftDownCorner"></td><td class="blackBoxdown"></td><td class="blackBoxrightDownCorner"></td></tr>';
+        echo '</table>';
+    }
+
+    private function _addStyle($cssParams = array()) {
+        echo 'style="';
+            foreach($cssParams as $key => $value) {
+                echo $key.':'.$value.';';
+            }
+        echo '"';
+    }
+
+
+    // Affiche le gif Offline ou Online
+    public function showStatut($userLastConnexion, $full = false) {
+
+        if($this->status($userLastConnexion) == 'online.gif') {
+            if($full) echo '<span style="color:green;font-size:12px;">online ';
+            echo  '<img src="MLink/images/icone/online.gif" />';
+        } 
+        else {
+            if($full) echo '<span style="color:#B40404;font-size:12px;">offline ';
+            echo '<img src="MLink/images/icone/offline.png" />';
+        }
+        if($full) echo '</span>';
+    }
+}
+    
+
