@@ -12,7 +12,7 @@ class LostpwdController extends AppController
             $this->_view->setTitle('Modification du mot de passe');
             $this->_view->pwd_valid = $this->params['value'];
         } else {
-            $this->_view->setViewName('lostPwd/wLostpwd');
+            $this->_view->setViewName('lostPwd/wLostPwd');
             $this->_view->setTitle('Récupération des identifiants');
         }
 

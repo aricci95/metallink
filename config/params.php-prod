@@ -1,15 +1,15 @@
 ﻿<?php
 // NE PAS MODIFIER
-DEFINE("_HOST", "localhost");
-DEFINE("_USER", "root");
-DEFINE("_PASS", "root");
-DEFINE("_BASE_DE_DONNEES", "metallinbmlink");
+DEFINE("_HOST", "");
+DEFINE("_USER", "");
+DEFINE("_PASS", "");
+DEFINE("_BASE_DE_DONNEES", "");
 
 DEFINE('ADMIN_MAIL', 'aricci95@gmail.com');
-DEFINE('MAIL_SERVER', 0);
-DEFINE('DEBUG', 1);
+DEFINE('MAIL_SERVER', 1);
+DEFINE('DEBUG', 0);
 DEFINE('PROFILER', 0);
-DEFINE('LOG', 1);
+DEFINE('LOG', 0);
 DEFINE('LOG_FILE', 'mlink_logs.txt');
 
 // *************** CONFIG LIBRE*******************
@@ -67,13 +67,11 @@ DEFINE('GROWLER_OK', 'ok');
 DEFINE('MSG_BLOCK_OK', 201);
 DEFINE('MESSAGE_201', "L\'utilisateur a été bloqué.");
 DEFINE('MSG_VALIDATION_SENT', 210);
-DEFINE('MESSAGE_210', "Un mail vous a été envoyé pour modifier votre mot de passe.");
+DEFINE('MESSAGE_210', "Un mail de validation a été envoyé pour vérifier votre e-mail.");
 DEFINE('MSG_VALIDATION_SUCCESS', 211);
 DEFINE('MESSAGE_211', "Votre compte a été validé, vous pouvez à présent vous connecter.");
 DEFINE('MSG_ACCOUNT_DELETED', 212);
 DEFINE('MESSAGE_212', "Votre compte a été supprimé.");
-DEFINE('MSG_VALIDATION_PWD', 213);
-DEFINE('MESSAGE_213', "Votre mot de passe a été modifié.");
 DEFINE('MSG_ARTICLE_DELETE_SUCCESS', 221);
 DEFINE('MESSAGE_221', "L'article a été supprimé.");
 DEFINE('MSG_PWD_SENT', 222);
