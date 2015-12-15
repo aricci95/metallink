@@ -32,7 +32,7 @@ abstract class AppModel extends EngineObject
     {
         return $this->_db->securize($val);
     }
-    
+
     public function insertId()
     {
         return $this->_db->insertId();

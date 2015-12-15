@@ -48,11 +48,9 @@ try {
     $controller = new $page();
     $controller->$action();
 } catch (Exception $e) {
-    require ROOT_DIR.'/appli/controllers/HomeController.php';
-    $controller = new HomeController();
+    include ROOT_DIR.'/appli/views/maintenance.htm';
     $controller->getModel()->load('mailer')->sendError($e);
-    $controller->getView()->growlerError();
-    $controller->render();
+    die;
 }
 
 ?>

@@ -1,15 +1,15 @@
 <?php
 
-/* 
+/*
  *  Classe d'accès aux données des utilisateurs
  */
 class News extends AppModel
 {
-    
+
     // Récupère la liste des news
     public function getNews()
     {
-        $sql = "SELECT 
+        $sql = "SELECT
                     news.news_id as news_id,
                     news_contenu,
                     news_date,
@@ -25,11 +25,11 @@ class News extends AppModel
                 LIMIT 0, 6";
         return $this->fetch($sql);
     }
-    
+
     // Récupère une news
     public function getNewsById($newsId)
     {
-        $sql = "SELECT 
+        $sql = "SELECT
                     news.news_id as news_id,
                     news_type_id,
                     news_contenu,
@@ -47,7 +47,7 @@ class News extends AppModel
         $resultat = $this->fetchOnly($sql);
         return $resultat;
     }
-    
+
     // Modifie une news
     public function updateNewsById($newContent)
     {
@@ -63,17 +63,17 @@ class News extends AppModel
             return false;
         }
     }
-    
+
     // Supprime une news
     public function deleteNewsById($newsId)
     {
         return $this->execute("DELETE FROM news WHERE news_id = '$newsId'");
     }
-    
+
     // Ajoute une news
     public function addNews($news)
     {
-        $sql = "INSERT INTO news (news_titre, news_contenu, news_date, news_type_id, user_id, news_media_url, news_photo_url) 
+        $sql = "INSERT INTO news (news_titre, news_contenu, news_date, news_type_id, user_id, news_media_url, news_photo_url)
                 VALUES ('"
                     .$news['news_titre']."', '"
                     .addslashes($news['news_contenu'])."', '"

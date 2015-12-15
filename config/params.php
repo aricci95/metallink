@@ -1,15 +1,15 @@
 ﻿<?php
 // NE PAS MODIFIER
-DEFINE("_HOST", "");
-DEFINE("_USER", "");
-DEFINE("_PASS", "");
-DEFINE("_BASE_DE_DONNEES", "");
+DEFINE("_HOST", "localhost");
+DEFINE("_USER", "root");
+DEFINE("_PASS", "root");
+DEFINE("_BASE_DE_DONNEES", "metallinbmlink");
 
 DEFINE('ADMIN_MAIL', 'aricci95@gmail.com');
-DEFINE('MAIL_SERVER', 1);
-DEFINE('DEBUG', 0);
+DEFINE('MAIL_SERVER', 0);
+DEFINE('DEBUG', 1);
 DEFINE('PROFILER', 0);
-DEFINE('LOG', 0);
+DEFINE('LOG', 1);
 DEFINE('LOG_FILE', 'mlink_logs.txt');
 
 // *************** CONFIG LIBRE*******************

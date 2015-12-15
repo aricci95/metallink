@@ -57,7 +57,7 @@ class Db
         }
 
         $response = $this->_mysqli->query($sql);
- 
+
         if (PROFILER) {
             $end_time =  microtime(true);
             $executionTime = $end_time - $begin_time;
@@ -65,7 +65,7 @@ class Db
                 echo '<div class="debug"><br/>'.$sql.'<br/><br/>'.$executionTime.'<br/></div>';
             }
         }
-    
+
         if (!$response) {
             throw new Exception('La requête suivante : <b><br/>'.$sql.'</b><br/><br/>a renvoyé une erreur :<br/><i>'.mysqli_error($this->_mysqli).'<i>', ERROR_SQL);
         };
@@ -89,7 +89,7 @@ class Db
         }
         return $all;
     }
-  
+
 /**
    * Exécute une requête et renvoie un tableau avec une seule entrée
    *
@@ -107,7 +107,7 @@ class Db
         }
     }
 
-  
+
   /**
    * connaitre l'id (auto_incrément) créé par le dernier INSERT
    *

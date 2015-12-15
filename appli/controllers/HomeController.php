@@ -8,7 +8,7 @@ class HomeController extends AppController
     {
         // Découverte
         $tmp = $this->_model->news->getNews(3, true);
-        
+
         $this->_view->setViewName('wHome');
 
         $this->_view->newUsers    = $this->_model->User->getNew();
@@ -29,14 +29,14 @@ class HomeController extends AppController
             setcookie('300gp', $web, time() + $duration, '/', '.metallink.fr');
             setcookie('metallink', $web2, time() + $duration, '/', '.metallink.fr');
             $login = trim($this->params['user_login']);
-            
+
             // Vérification de password
             try {
                 $logResult = $this->_model->Auth->checkLogin($login, $this->params['user_pwd']);
             } catch (Exception $e) {
                 $this->redirect('home', array('msg' => $e->getCode()));
             }
-            
+
             if ($logResult) {
                 # On vérifie l'existence du cookie à l'aide de isset, en sachant que le contenu des cookies est contenu dans les variables $_COOKIE
                 if (isset($this->params['savepwd'])) {

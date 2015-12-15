@@ -15,10 +15,12 @@ class Mailer extends AppModel
         $headers .='Content-Transfer-Encoding: 8bit';
 
         $previousContent = 'Hail Metalhead !<br><br>';
+
         if ($additionnalContent) {
             $content = $previousContent.$content;
             $content .= '<br><br>Bien cordialement, <br><br> L\'équipe <a href="http://metallink.fr">MetalLink</a>.';
         }
+
         if (MAIL_SERVER) {
             return mail($email, $title, $content, $headers);
         } else {
@@ -62,6 +64,7 @@ class Mailer extends AppModel
                         '<br/><br/>Stack :<br/>'.
                         $exception->getTraceAsString());
         $this->log->php(str_replace(array('<br/>', '<b>', '</b>', '<br />'), array("\n", '', '', ''), $message));
+
         return $this->send(ADMIN_MAIL, 'Erreur sur MetalLink !', $message, false);
     }
 }
