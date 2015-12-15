@@ -69,6 +69,7 @@ class Db
         if (!$response) {
             throw new Exception('La requête suivante : <b><br/>'.$sql.'</b><br/><br/>a renvoyé une erreur :<br/><i>'.mysqli_error($this->_mysqli).'<i>', ERROR_SQL);
         };
+
         return $response;
     }
 
