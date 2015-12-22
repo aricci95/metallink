@@ -21,7 +21,7 @@ class Link extends AppModel
             }
         }
         if (!empty($destinataire['user_mail'])) {
-            $message = 'Vous avez reçu une nouvelle demande de la part de '.$destinataire['user_login'].' !';
+            $message = 'Vous avez reçu une nouvelle demande de la part de '. $this->getContextUser('login') .' !';
             $this->load('mailer')->send($destinataire['user_mail'], 'Nouvelle demande sur MetalLink !', $message);
         }
         return true;
@@ -40,7 +40,7 @@ class Link extends AppModel
 
     public function unlink($destinataireId)
     {
-        $sql = "DELETE FROM link WHERE (expediteur_id = ".$this->getContextUser('id')." AND destinataire_id = '".$destinataireId."') 
+        $sql = "DELETE FROM link WHERE (expediteur_id = ".$this->getContextUser('id')." AND destinataire_id = '".$destinataireId."')
                                  OR (destinataire_id = ".$this->getContextUser('id')." AND expediteur_id = '".$destinataireId."');";
         if ($this->execute($sql)) {
             unset($_SESSION['links'][$destinataireId]);
@@ -59,12 +59,12 @@ class Link extends AppModel
         $status = $this->getLinkStatus($destinataireId);
         return ($status == LINK_STATUS_ACCEPTED);
     }
-        
+
     public function getLink($userId2)
     {
-        $sql = "SELECT 
-                    expediteur_id, 
-                    destinataire_id, 
+        $sql = "SELECT
+                    expediteur_id,
+                    destinataire_id,
                     status,
                     modification_date
                 FROM link
@@ -77,9 +77,9 @@ class Link extends AppModel
 
     public function updateLink($destinataireId, $status)
     {
-        $sql = "UPDATE link SET status = $status, 
-                                destinataire_id = ".$destinataireId.", 
-                                expediteur_id = ".$this->getContextUser('id')." 
+        $sql = "UPDATE link SET status = $status,
+                                destinataire_id = ".$destinataireId.",
+                                expediteur_id = ".$this->getContextUser('id')."
                 WHERE (destinataire_id = '".$this->getContextUser('id')."' OR destinataire_id = '".$destinataireId."')
                 AND   (expediteur_id = '".$this->securize($destinataireId)."' OR expediteur_id = '".$this->getContextUser('id')."');";
         if ($this->execute($sql)) {
@@ -89,7 +89,7 @@ class Link extends AppModel
             return false;
         }
     }
-    
+
     public function getLinksByUser($status = null)
     {
         $userId = $this->getContextUser('id');
@@ -106,7 +106,7 @@ class Link extends AppModel
     {
         $userId = (!empty($userId)) ? $userId : $this->getContextUser('id');
         $sql = "SELECT * FROM link
-                WHERE (destinataire_id = '".$this->securize($userId)."' OR link.expediteur_id = '".$this->securize($userId)."')  
+                WHERE (destinataire_id = '".$this->securize($userId)."' OR link.expediteur_id = '".$this->securize($userId)."')
                 ORDER BY status;";
         $links = $this->fetch($sql);
         // initialisation des valeurs
@@ -146,26 +146,26 @@ class Link extends AppModel
                 break;
             case LINK_STATUS_SENT:
                 $param = " FROM link JOIN user ON (link.destinataire_id = user.user_id )
-                           WHERE link.expediteur_id = '".$this->securize($this->getContextUser('id'))."' 
+                           WHERE link.expediteur_id = '".$this->securize($this->getContextUser('id'))."'
                            AND status = ".LINK_STATUS_SENT;
                 break;
             case LINK_STATUS_ACCEPTED:
                 $param = " FROM link, user
                            WHERE (link.destinataire_id = '".$this->getContextUser('id')."' OR link.expediteur_id = '".$this->getContextUser('id')."')
-                           AND (link.destinataire_id = user.user_id OR link.expediteur_id = user.user_id) 
+                           AND (link.destinataire_id = user.user_id OR link.expediteur_id = user.user_id)
                            AND status = ".LINK_STATUS_ACCEPTED;
                 break;
             case LINK_STATUS_BLACKLIST:
                 $param = " FROM link JOIN user ON (link.destinataire_id = user.user_id )
-                           WHERE link.expediteur_id = '".$this->getContextUser('id')."' 
+                           WHERE link.expediteur_id = '".$this->getContextUser('id')."'
                            AND status = ".LINK_STATUS_BLACKLIST;
                 break;
             default:
                 return false;
         }
         $sql = 'SELECT
-                    expediteur_id, 
-                    destinataire_id, 
+                    expediteur_id,
+                    destinataire_id,
                     modification_date,
                     user_gender,
                     UNIX_TIMESTAMP(user_last_connexion) as user_last_connexion,
