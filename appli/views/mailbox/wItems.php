@@ -1,5 +1,5 @@
 <?php foreach($this->userMails as $key => $mail) : ?>
-    <tr <?php if ($mail['mail_state_id'] == MAIL_STATUS_SENT && $mail['mail_expediteur'] != $this->getContextUser('id')) : ?> class="trNewMail" <?php else : ?> class="trReadMail" <?php endif; ?>>
+    <tr <?php if ($mail['mail_state_id'] == MAIL_STATUS_SENT && $mail['mail_expediteur'] != User::getContextUser('id')) : ?> class="trNewMail" <?php else : ?> class="trReadMail" <?php endif; ?>>
         <td align="center" width="100">
             <?php echo $this->_helper->printUserSmall($mail); ?>
         </td>

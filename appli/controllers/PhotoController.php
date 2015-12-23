@@ -10,7 +10,7 @@ class PhotoController extends AppController
     private $_keyId;
     private $_objectName;
     private $_objectPhotoUrl;
-    
+
     public function __construct()
     {
         parent::__construct();
@@ -23,7 +23,7 @@ class PhotoController extends AppController
         if (!empty($this->params['key_id'])) {
             $this->_keyId = $this->params['key_id'];
         } elseif ($this->_typeId == PHOTO_TYPE_USER) {
-            $this->_keyId = $this->getContextUser('id');
+            $this->_keyId = User::getContextUser('id');
         } elseif (!empty($this->params['option'])) {
             $this->_keyId = $this->params['option'];
         }
@@ -53,7 +53,7 @@ class PhotoController extends AppController
         $this->_view->keyId  = $this->_keyId;
         $this->_view->photos = $photos;
         if ($this->_typeId == PHOTO_TYPE_USER) {
-            $this->_view->mainPhotoUrl = $this->getContextUser('photo_url');
+            $this->_view->mainPhotoUrl = User::getContextUser('photo_url');
         } else {
             $object = $this->_model->{$this->_objectName}->getById($this->_keyId);
             if (!empty($object)) {
@@ -73,7 +73,7 @@ class PhotoController extends AppController
         $this->_setProfilePhoto($photo);
         $this->_view->photos = $this->_model->Photo->getPhotosByKey($photo['key_id'], $photo['type_id']);
         if ($this->_typeId == PHOTO_TYPE_USER) {
-            $this->_view->mainPhotoUrl = $this->getContextUser('photo_url');
+            $this->_view->mainPhotoUrl = User::getContextUser('photo_url');
         } else {
             $object = $this->_model->{$this->_objectName}->getById($this->_keyId);
             if (!empty($object)) {

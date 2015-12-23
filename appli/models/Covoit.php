@@ -1,11 +1,11 @@
 <?php
 
-/* 
+/*
  *  Classe d'accès aux données des covoiturages
  */
 class Covoit extends AppModel
 {
-      
+
     public function getSearch($criterias, $offset = 0)
     {
         $sql = 'SELECT
@@ -24,7 +24,7 @@ class Covoit extends AppModel
                     user_photo_url
                 FROM covoit JOIN concert ON (concert.concert_id = covoit.concert_id)
                             JOIN user ON (covoit.user_id = user.user_id)
-                            JOIN ville ON (ville.ville_id = covoit.ville_id) 
+                            JOIN ville ON (ville.ville_id = covoit.ville_id)
                 WHERE ';
         if (!empty($criterias['search_concert'])) {
             $sql .= "concert.concert_id LIKE '".$criterias['search_concert']."%' AND ";
@@ -63,7 +63,7 @@ class Covoit extends AppModel
     {
         $sql = "SELECT covoit_id,
                     concert_id,
-                    date_depart, 
+                    date_depart,
                     date_retour,
                     user_id,
                     UNIX_TIMESTAMP(user_last_connexion) as user_last_connexion,
@@ -76,13 +76,13 @@ class Covoit extends AppModel
                 WHERE covoit_id = '$id';";
         return $this->fetchOnly($sql);
     }
-    
+
     public function deleteById($id)
     {
 
         return $this->execute("DELETE FROM covoit WHERE covoit_id = ".$this->securize($id));
     }
-    
+
     public function update($datas)
     {
         if (!empty($datas['covoit_id'])) {
@@ -96,7 +96,7 @@ class Covoit extends AppModel
         }
         return $this->execute($sql);
     }
-    
+
     public function create($items)
     {
         $sql = 'INSERT INTO covoit (concert_id,
@@ -104,9 +104,9 @@ class Covoit extends AppModel
                                     ville_id,
                                     date_depart,
                                     date_retour,
-                                    price) 
+                                    price)
                 VALUES ('.$items['concert_id'].',
-                         '.$this->getContextUser('id').',
+                         '.User::getContextUser('id').',
                          '.$items['ville_id'].',
                          "'.$items['date_depart'].'",
                          "'.$items['date_retour'].'",

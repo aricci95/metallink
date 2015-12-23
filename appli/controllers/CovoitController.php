@@ -12,12 +12,12 @@ class CovoitController extends SearchController
     {
         parent::render();
         $this->_view->setTitle('Covoiturages');
-        $this->_view->user = array('user_id' => $this->getContextUser('id'),
-                                  'user_login' => $this->getContextUser('login'),
-                                  'user_gender' => $this->getContextUser('gender'),
-                                  'user_photo_url' => $this->getContextUser('photo_url'),
+        $this->_view->user = array('user_id' => User::getContextUser('id'),
+                                  'user_login' => User::getContextUser('login'),
+                                  'user_gender' => User::getContextUser('gender'),
+                                  'user_photo_url' => User::getContextUser('photo_url'),
                                   'user_last_connexion' => time(),
-                                  'user_statut' => $this->getContextUser('status')
+                                  'user_statut' => User::getContextUser('status')
                                   );
         $this->_view->render();
     }

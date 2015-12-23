@@ -62,7 +62,7 @@ class SubscribeController extends AppController
 
     public function renderSave()
     {
-        $contextUserId = $this->getContextUser('id');
+        $contextUserId = User::getContextUser('id');
         if ($_SERVER['REQUEST_METHOD'] == 'POST' && empty($contextUserId)) {
             if ($this->_isValid()) {
                 $newUser['user_login']  = $this->params['user_login'];

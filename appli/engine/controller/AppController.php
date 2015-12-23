@@ -19,7 +19,7 @@ abstract class AppController extends Controller
     private function _getNotifications()
     {
         // vues
-        $_SESSION['views'] = $this->_model->Auth->countViews($this->getContextUser('id'));
+        $_SESSION['views'] = $this->_model->Auth->countViews(User::getContextUser('id'));
 
         // Récupération & comptage des links
         $olLinks  = (!empty($_SESSION['links'])) ? $_SESSION['links'] : null;
@@ -30,7 +30,7 @@ abstract class AppController extends Controller
 
         // Vérification des nouveaux mails
         $oldMailsCount  = (!empty($_SESSION['new_mails'])) ? $_SESSION['new_mails'] : 0;
-        $_SESSION['new_mails'] = $this->_model->Auth->countNewMails($this->getContextUser('id'));
+        $_SESSION['new_mails'] = $this->_model->Auth->countNewMails(User::getContextUser('id'));
         if ($oldMailsCount < $_SESSION['new_mails']) {
             $this->_view->growler('Nouveau message !', GROWLER_INFO);
         }
@@ -45,10 +45,10 @@ abstract class AppController extends Controller
                 $left     = $_SESSION['user_last_connexion'];
                 $timeLeft = $now - $left;
                 if ($timeLeft == 0 || $timeLeft > (ONLINE_TIME_LIMIT - 300)) {
-                    $this->_model->User->updateLastConnexion($this->getContextUser('id'));
+                    $this->_model->User->updateLastConnexion(User::getContextUser('id'));
                 }
             } else {
-                $this->_model->User->updateLastConnexion($this->getContextUser('id'));
+                $this->_model->User->updateLastConnexion(User::getContextUser('id'));
             }
         }
     }

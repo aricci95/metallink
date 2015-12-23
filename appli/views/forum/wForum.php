@@ -16,7 +16,7 @@
             <td>
                 <textarea class="message" style="width:79%;float:left;margin:10px;" cols="100" rows="2"></textarea>
                 <input class="send" type="image" src="MLink/images/boutons/valider.png" value="Valider" style="border:0px;float:left;margin-top:12px;" border="0" />
-                <input type="hidden" class="tmp"  data-id="<?php echo $this->lastId; ?>" data-login="<?php echo $this->getContextUser('login'); ?>" />
+                <input type="hidden" class="tmp"  data-id="<?php echo $this->lastId; ?>" data-login="<?php echo User::getContextUser('login'); ?>" />
             </td>
         </tr>
     </table>

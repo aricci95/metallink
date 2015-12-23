@@ -37,7 +37,7 @@
             <script type="text/javascript" src="http://www.google.com/jsapi"></script>
             <script type="text/javascript" src="MLink/appli/inc/growler/js/gritter.js"></script>
             <script>
-            $.extend($.gritter.options, { 
+            $.extend($.gritter.options, {
                 position: 'bottom-right'
             });
             </script>
@@ -72,7 +72,7 @@
         <div><a href="home"><img src="<?php echo $this->headerImg ?>" /></a></div>
         <div class="intitule" align="center">Communauté métal en tout genres <span style="color:#B40404;margin-left:225px;"><?php echo 'v'.APP_VERSION ?></span></div>
         <div class="divCorps" align="left">
-<?php if($this->getContextUser('id')) : ?>
+<?php if(User::getContextUser('id')) : ?>
     <div class="divBarre">
     <table class="tableMenu">
         <tr align="center">
@@ -81,9 +81,9 @@
             <td><a class="aMenu" <?php echo ($this->page == 'forum') ? 'style="color:white;"' : ''; ?> href="forum">Forum</a></td>
             <td><a class="aMenu" <?php echo ($this->page == 'sales') ? 'style="color:white;"' : ''; ?> href="sales">Ventes</a></td>
             <td><a class="aMenu" <?php echo ($this->page == 'covoit') ? 'style="color:white;"' : ''; ?> href="covoit">Covoit'</a></td>
-            <?php if($this->getContextUser('role_id') >= AUTH_LEVEL_ADMIN) : ?>
+            <?php if(User::getContextUser('role_id') >= AUTH_LEVEL_ADMIN) : ?>
                 <td><a class="aMenu" <?php echo ($this->page == 'adminnews') ? 'style="color:white;"' : ''; ?> href="adminNews">News</a></td>
-                <?php if($this->getContextUser('role_id') == AUTH_LEVEL_SUPERADMIN) : ?>
+                <?php if(User::getContextUser('role_id') == AUTH_LEVEL_SUPERADMIN) : ?>
                     <td><a class="aMenu" <?php echo ($this->page == 'admin') ? 'style="color:white;"' : ''; ?> href="admin">Admin</a></td>
                 <?php endif; ?>
             <?php endif; ?>
@@ -109,7 +109,7 @@
                 <td></td><td>Retenir mot de passe <input name="savepwd" type="checkbox" /></td>
                 <td></td><td><a href="lostpwd">Mot de passe oublié</a></td>
                 <td><a href="subscribe" >S'inscrire !</a></td>
-            </tr>   
+            </tr>
         </table>
     </form>
     </div>

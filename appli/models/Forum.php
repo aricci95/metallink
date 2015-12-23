@@ -1,6 +1,6 @@
 <?php
 
-/* 
+/*
  *  Classe d'accés aux donnés du forum
  */
 class Forum extends AppModel
@@ -8,12 +8,12 @@ class Forum extends AppModel
 
     public function getLastMessages($messageId = null)
     {
-        $sql = 'SELECT  id, content, user_login, DATE_FORMAT(date,\'%H:%i\') as date  
+        $sql = 'SELECT  id, content, user_login, DATE_FORMAT(date,\'%H:%i\') as date
                 FROM forum
-                WHERE user_id NOT 
-                    IN (SELECT expediteur_id FROM 
-                        link WHERE status = '.LINK_STATUS_BLACKLIST.' 
-                        AND user_id = '.$this->getContextUser('id').') ';
+                WHERE user_id NOT
+                    IN (SELECT expediteur_id FROM
+                        link WHERE status = '.LINK_STATUS_BLACKLIST.'
+                        AND user_id = '.User::getContextUser('id').') ';
         if (!empty($messageId)) {
             $sql .= 'AND id > '.$messageId;
         }
@@ -28,10 +28,10 @@ class Forum extends AppModel
                         user_login,
                         user_gender
                 FROM user
-                WHERE user.user_id NOT 
-                    IN (SELECT expediteur_id FROM 
-                        link WHERE status = '.LINK_STATUS_BLACKLIST.' 
-                        AND destinataire_id = '.$this->getContextUser('id').')
+                WHERE user.user_id NOT
+                    IN (SELECT expediteur_id FROM
+                        link WHERE status = '.LINK_STATUS_BLACKLIST.'
+                        AND destinataire_id = '.User::getContextUser('id').')
                 AND (UNIX_TIMESTAMP( NOW() ) - UNIX_TIMESTAMP( user_last_connexion )) < '.ONLINE_TIME_LIMIT.'
                 ORDER BY user_login ASC
                 LIMIT 0, 100;';
@@ -40,7 +40,7 @@ class Forum extends AppModel
 
     public function saveMessage($message)
     {
-        $this->execute("INSERT INTO forum (content, user_id, user_login, date) VALUES ('".htmlentities($message, ENT_QUOTES, 'utf-8')."', ".$this->getContextUser('id').", '".$this->getContextUser('login')."', NOW())");
+        $this->execute("INSERT INTO forum (content, user_id, user_login, date) VALUES ('".htmlentities($message, ENT_QUOTES, 'utf-8')."', ".User::getContextUser('id').", '".User::getContextUser('login')."', NOW())");
         return $this->insertId();
     }
 }

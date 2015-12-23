@@ -68,7 +68,7 @@ abstract class AppModel extends EngineObject
     {
         $model = ucfirst($model);
         if (!isset($this->$model)) {
-            require ROOT_DIR.'/appli/models/'.$model.'.php';
+            require_once ROOT_DIR.'/appli/models/'.$model.'.php';
             $this->$model = new $model();
         }
 

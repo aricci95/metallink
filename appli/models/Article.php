@@ -127,7 +127,7 @@ class Article extends AppModel
                          '.ARTICLE_STATE_ON_SALE.',
                          '.$items['art_price'].',
                          NOW(),
-                         '.$this->getContextUser('id').',
+                         '.User::getContextUser('id').',
                          '.$items['livre_poste'].',
                          '.$items['livre_surplace'].');';
         if ($this->execute($sql)) {

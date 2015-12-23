@@ -9,7 +9,7 @@ class MailController extends AppController
             return $this->_model->User->getUserByIdDetails($userId);
         }
         // Si rajout de mail de soit même
-        if ($parentMails[0]['mail_expediteur'] == $this->getContextUser('id')) {
+        if ($parentMails[0]['mail_expediteur'] == User::getContextUser('id')) {
             return $this->_model->User->getUserByIdDetails($parentMails[0]['mail_destinataire']);
         } // Si réponse
         else {
@@ -26,7 +26,7 @@ class MailController extends AppController
 
     private function _checkMails($parentMails, $destinataireId)
     {
-        $contextUserId = $this->getContextUser('id');
+        $contextUserId = User::getContextUser('id');
 
         // Si nouvelle conversation
         if (empty($parentMails)) {
@@ -99,7 +99,7 @@ class MailController extends AppController
         }
 
         $items['mail_id'] = '';
-        $items['mail_expediteur']   = $this->getContextUser('id');
+        $items['mail_expediteur']   = User::getContextUser('id');
         $items['mail_destinataire'] = $this->params['mail_destinataire'];
         $content = htmlentities($this->params['mail_content'], ENT_QUOTES, 'utf-8');
 
@@ -116,7 +116,7 @@ class MailController extends AppController
 
         if ($this->_model->Mail->sendMail($items) != false) {
             $destinataire = $this->_model->User->getMailByUser($this->params['mail_destinataire']);
-            $message = $this->getContextUser('login').' vous a envoyé un nouveau message ! <a href="http://metallink.fr/mail/' . $this->getContextUser('id') . '">Cliquez ici</a> pour le lire.';
+            $message = User::getContextUser('login').' vous a envoyé un nouveau message ! <a href="http://metallink.fr/mail/' . User::getContextUser('id') . '">Cliquez ici</a> pour le lire.';
 
             if ($this->_model->mailer->send($destinataire['user_mail'], 'Nouveau message sur MetalLink !', $message)) {
                 $this->params['value'] = $items['mail_destinataire'];

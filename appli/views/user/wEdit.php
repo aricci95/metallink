@@ -40,11 +40,11 @@
         <td>
             <select name="style_id">
                 <option value="">selectionnez</option>
-                <?php foreach($this->styles as $key => $value) 
+                <?php foreach($this->styles as $key => $value)
                 {
                      echo '<option value="'.$value['style_id'].'"';
                     if($value['style_id'] == $this->user['style_id']) echo ' selected="selected" ';
-                    echo '>'.$value['style_libel'].'</option>'; 
+                    echo '>'.$value['style_libel'].'</option>';
                 }
                 ?>
             </select>
@@ -76,7 +76,7 @@
         <td><textarea name="user_description" cols="105" rows="10"><?php echo $this->user['user_description']; ?></textarea></td>
     </tr>
     </table>
-    
+
     <h2>Physique</h2>
     <table class="tableWhiteBox">
     <tr>
@@ -84,11 +84,11 @@
         <td>
             <select name="hair_id">
                 <option value="">selectionnez</option>
-                <?php foreach($this->hairs as $key => $value) 
+                <?php foreach($this->hairs as $key => $value)
                 {
                      echo '<option value="'.$value['hair_id'].'"';
                     if($value['hair_id'] == $this->user['hair_id']) echo ' selected="selected" ';
-                    echo '>'.$value['hair_libel'].'</option>'; 
+                    echo '>'.$value['hair_libel'].'</option>';
                 }
                 ?>
             </select>
@@ -99,11 +99,11 @@
         <td>
             <select name="eyes_id">
                 <option value="">selectionnez</option>
-                <?php foreach($this->eyes as $key => $value) 
+                <?php foreach($this->eyes as $key => $value)
                 {
                      echo '<option value="'.$value['eyes_id'].'"';
                     if($value['eyes_id'] == $this->user['eyes_id']) echo ' selected="selected" ';
-                    echo '>'.$value['eyes_libel'].'</option>'; 
+                    echo '>'.$value['eyes_libel'].'</option>';
                 }
                 ?>
             </select>
@@ -113,7 +113,7 @@
         <th>Poids :</th>
         <td>
             <select name="user_poids">
-                <?php for($i=8; $i<=20;$i++) : ?> 
+                <?php for($i=8; $i<=20;$i++) : ?>
                     <option <?php if((integer) $this->user['user_poids'] == ($i*5)) : ?>selected="selected"<?php endif; ?> value="<?php echo ($i*5); ?>"><?php echo ($i*5); ?></option>
                 <?php endfor; ?>
             </select> kg
@@ -123,7 +123,7 @@
         <th>Taille :</th>
         <td>
             <select name="user_taille">
-                <?php for($i=25; $i<=42;$i++) : ?> 
+                <?php for($i=25; $i<=42;$i++) : ?>
                     <option <?php if((integer) $this->user['user_taille'] == ($i*5)) : ?>selected="selected"<?php endif; ?> value="<?php echo ($i*5); ?>"><?php echo ($i*5); ?></option>
                 <?php endfor; ?>
             </select> cm
@@ -154,11 +154,11 @@
         <td>
             <select name="look_id">
                 <option value="">selectionnez</option>
-                <?php foreach($this->looks as $key => $value) 
+                <?php foreach($this->looks as $key => $value)
                 {
                      echo '<option value="'.$value['look_id'].'"';
                     if($value['look_id'] == $this->user['look_id']) echo ' selected="selected" ';
-                    echo '>'.$value['look_libel'].'</option>'; 
+                    echo '>'.$value['look_libel'].'</option>';
                 }
                 ?>
             </select>
@@ -169,11 +169,11 @@
         <td>
             <select name="origin_id">
                 <option value="">selectionnez</option>
-                <?php foreach($this->origins as $key => $value) 
+                <?php foreach($this->origins as $key => $value)
                 {
                      echo '<option value="'.$value['origin_id'].'"';
                     if($value['origin_id'] == $this->user['origin_id']) echo ' selected="selected" ';
-                    echo '>'.$value['origin_libel'].'</option>'; 
+                    echo '>'.$value['origin_libel'].'</option>';
                 }
                 ?>
             </select>
@@ -187,11 +187,11 @@
         <td style="text-align:left;width:578px;">
             <select name="user_smoke">
                 <option value="">selectionnez</option>
-                <?php foreach($this->quantities as $key => $value) 
+                <?php foreach($this->quantities as $key => $value)
                 {
                      echo '<option value="'.$value['quantity_id'].'"';
                     if($value['quantity_id'] == $this->user['user_smoke']) echo ' selected="selected" ';
-                    echo '>'.$value['quantity_libel'].'</option>'; 
+                    echo '>'.$value['quantity_libel'].'</option>';
                 }
                 ?>
             </select>
@@ -202,11 +202,11 @@
         <td>
             <select name="user_alcohol">
                 <option value="">selectionnez</option>
-                <?php foreach($this->quantities as $key => $value) 
+                <?php foreach($this->quantities as $key => $value)
                 {
                      echo '<option value="'.$value['quantity_id'].'"';
                     if($value['quantity_id'] == $this->user['user_alcohol']) echo ' selected="selected" ';
-                    echo '>'.$value['quantity_libel'].'</option>'; 
+                    echo '>'.$value['quantity_libel'].'</option>';
                 }
                 ?>
             </select>
@@ -217,11 +217,11 @@
         <th>
             <select name="user_drugs">
                 <option value="">selectionnez</option>
-                <?php foreach($this->quantities as $key => $value) 
+                <?php foreach($this->quantities as $key => $value)
                 {
                      echo '<option value="'.$value['quantity_id'].'"';
                     if($value['quantity_id'] == $this->user['user_drugs']) echo ' selected="selected" ';
-                    echo '>'.$value['quantity_libel'].'</option>'; 
+                    echo '>'.$value['quantity_libel'].'</option>';
                 }
                 ?>
             </select>
@@ -229,5 +229,5 @@
     </tr>
     </table>
     <br/>
-    <?php $this->_helper->formFooter('profile/'.$this->getContextUser('id')); ?>
+    <?php $this->_helper->formFooter('profile/'.User::getContextUser('id')); ?>
 </form>

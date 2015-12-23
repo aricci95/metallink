@@ -1,7 +1,7 @@
 <form id="formPhoto" action="photo/<?php echo $this->typeId;?><?php if($this->typeId == PHOTO_TYPE_ARTICLE) echo '/'.$this->keyId;?>" method="post" enctype="multipart/form-data">
-	<?php 
-	$errorMessage = (count($this->photos) >= 5) ? '' : 'style="display:none"'; 
-	$newPhoto     = (count($this->photos) >= 5) ? 'style="display:none"' : ''; 
+	<?php
+	$errorMessage = (count($this->photos) >= 5) ? '' : 'style="display:none"';
+	$newPhoto     = (count($this->photos) >= 5) ? 'style="display:none"' : '';
 	?>
 	<div class="errorMessage" <?php echo $errorMessage; ?> >Vous ne pouvez télécharger que 5 photos maximum.</div>
 	<div style="margin-left:31%;">
@@ -15,5 +15,5 @@
 			<?php $this->render('photo/wItems'); ?>
 		</div>
 	</div>
-	<?php $this->_helper->formFooter('profile/'.$this->getContextUser('id'), false); ?>
+	<?php $this->_helper->formFooter('profile/'.User::getContextUser('id'), false); ?>
 </form>

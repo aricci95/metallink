@@ -20,11 +20,11 @@ class Auth extends AppModel
     			FROM
     				mail
     			WHERE
-    				mail_destinataire = '".$this->getContextUser('id')."'
+    				mail_destinataire = '".User::getContextUser('id')."'
     			AND mail_state_id = 1
                 AND mail_expediteur NOT IN (
                     SELECT destinataire_id FROM link WHERE status = ".LINK_STATUS_BLACKLIST."
-                     AND expediteur_id = '".$this->getContextUser('id')."'
+                     AND expediteur_id = '".User::getContextUser('id')."'
                 );";
         $resultat = $this->fetchOnly($sql);
         $return   = $resultat['nbr'];
@@ -59,7 +59,7 @@ class Auth extends AppModel
     			FROM
     				link
     			WHERE
-    				destinataire_id = '".$this->getContextUser('id')."'
+    				destinataire_id = '".User::getContextUser('id')."'
     				AND status = ".LINK_STATUS_SENT.";";
 
         $resultat = $this->fetchOnly($sql);
@@ -73,8 +73,8 @@ class Auth extends AppModel
     			FROM
     				link
     			WHERE status = ".LINK_STATUS_ACCEPTED."
-    			AND destinataire_id = '".$this->getContextUser('id')."'
-    			OR	expediteur_id = '".$this->getContextUser('id')."'
+    			AND destinataire_id = '".User::getContextUser('id')."'
+    			OR	expediteur_id = '".User::getContextUser('id')."'
     			AND status = ".LINK_STATUS_ACCEPTED.";";
         $resultat = $this->fetchOnly($sql);
         return $resultat['nbr'];
@@ -85,12 +85,12 @@ class Auth extends AppModel
         $sql = "SELECT count(*) as nbr
     			FROM
     				user_views
-    			WHERE viewed_id = '".$this->getContextUser('id')."'
+    			WHERE viewed_id = '".User::getContextUser('id')."'
                 AND viewer_id NOT IN (
                     SELECT destinataire_id FROM link
                     WHERE status = ".LINK_STATUS_BLACKLIST."
-                    AND expediteur_id = '".$this->getContextUser('id')."')
-                AND viewer_id != ".$this->getContextUser('id');
+                    AND expediteur_id = '".User::getContextUser('id')."')
+                AND viewer_id != ".User::getContextUser('id');
         $resultat = $this->fetchOnly($sql);
         return $resultat['nbr'];
     }
@@ -102,7 +102,7 @@ class Auth extends AppModel
                 FROM
                     link
                 WHERE
-                    expediteur_id = '".$this->getContextUser('id')."'
+                    expediteur_id = '".User::getContextUser('id')."'
                     AND status = ".LINK_STATUS_BLACKLIST.";";
         $resultat = $this->fetchOnly($sql);
         return $resultat['nbr'];

@@ -37,7 +37,7 @@ class AdminController extends AppController
                     $_SESSION['user_valid']     = $user['user_valid'];
                     $_SESSION['user_mail']      = $user['user_mail'];
                     $_SESSION['user_gender']    = $user['user_gender'];
-                   
+
                     $this->redirect('home', array('msg' => MSG_ADM_SWITCH));
                 }
             }
@@ -77,7 +77,7 @@ class AdminController extends AppController
     public function renderMailSubmit()
     {
         if (!empty($this->params['mail_content'])) {
-            $mail['mail_expediteur'] = $mail['mail_destinataire'] = $this->getContextUser('id');
+            $mail['mail_expediteur'] = $mail['mail_destinataire'] = User::getContextUser('id');
             $mail['mail_content']    = htmlentities($this->params['mail_content'], ENT_QUOTES, 'utf-8');
             $step1 = $this->_model->load('mail')->sendMail($mail, MAIL_STATUS_ADMIN);
             if ($step1) {

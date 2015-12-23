@@ -30,6 +30,28 @@ class User extends AppModel
                                 'user_alcohol',
                                 'user_drugs');
 
+    public static function getContextUser($attribute = null)
+    {
+        if (!empty($attribute) && array_key_exists('user_'.$attribute, $_SESSION) && !empty($_SESSION['user_'.$attribute])) {
+            return $_SESSION['user_'.$attribute];
+        } elseif ($attribute == 'role_id' && !empty($_SESSION['role_id'])) {
+            return $_SESSION['role_id'];
+        } else {
+            if (!empty($_SESSION['user_id'])) {
+                return array('id' => $_SESSION['user_id'],
+                            'login' => $_SESSION['user_login'],
+                            'last_connexion' => $_SESSION['user_last_connexion'],
+                            'role_id' => $_SESSION['role_id'],
+                            'photo_url' => empty($_SESSION['user_photo_url']) ? 'unknowUser.jpg' : $_SESSION['user_photo_url'],
+                            'age' => $_SESSION['age'],
+                            'gender' => $_SESSION['user_gender'],
+                            'city'   => $_SESSION['user_city'],
+                            'zipcode'   => $_SESSION['user_zipcode']);
+            }
+        }
+        return null;
+    }
+
     public function getUsers()
     {
         return $this->fetch("SELECT * FROM user ORDER BY user_login");
@@ -39,15 +61,15 @@ class User extends AppModel
     public function updateLastConnexion()
     {
         $_SESSION['user_last_connexion'] = time();
-        $this->execute('INSERT INTO user_statuses (user_id, status) VALUES ('.$this->getContextUser('id').', 1) ON DUPLICATE KEY UPDATE status = 1');
-        $sql = 'UPDATE user SET user_last_connexion = NOW() WHERE user_id ='.$this->getContextUser('id');
+        $this->execute('INSERT INTO user_statuses (user_id, status) VALUES ('.User::getContextUser('id').', 1) ON DUPLICATE KEY UPDATE status = 1');
+        $sql = 'UPDATE user SET user_last_connexion = NOW() WHERE user_id ='.User::getContextUser('id');
         return $this->execute($sql);
     }
 
     // Récupéres les utilisateurs par critéres
     public function getSearch($criterias, $offset = 0)
     {
-        $contextUserId = $this->getContextUser('id');
+        $contextUserId = User::getContextUser('id');
         if (empty($contextUserId)) {
             throw new Exception('Context user manquant ', ERROR_BEHAVIOR);
         }
@@ -80,8 +102,8 @@ class User extends AppModel
             $sql .= "AND FLOOR((DATEDIFF( CURDATE(), (user_birth))/365)) >= ".$criterias['search_age']." ";
         }
         if (!empty($criterias['search_distance'])) {
-            $longitude = $this->getContextUser('longitude');
-            $lattitude = $this->getContextUser('lattitude');
+            $longitude = User::getContextUser('longitude');
+            $lattitude = User::getContextUser('lattitude');
             if (!is_array($longitude) && !is_array($lattitude)) {
                 if ($longitude > 0 && $lattitude > 0) {
                     // On récupère les codes postaux associés
@@ -165,7 +187,7 @@ class User extends AppModel
     // Récupére la liste des utilisateurs
     public function getNew()
     {
-        $userId = $this->getContextUser('id');
+        $userId = User::getContextUser('id');
 
         $sql = '
             SELECT
@@ -320,7 +342,7 @@ class User extends AppModel
                     $sql .= " ".$attribute." = '".$datas[$attribute]."',";
                 }
             }
-            $sql .= ' WHERE user_id = '.$this->securize($this->getContextUser('id'));
+            $sql .= ' WHERE user_id = '.$this->securize(User::getContextUser('id'));
             $sql = str_replace(', WHERE', ' WHERE', $sql);
         }
         return $this->execute($sql);
