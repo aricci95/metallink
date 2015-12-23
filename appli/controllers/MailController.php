@@ -29,7 +29,7 @@ class MailController extends AppController
         $contextUserId = User::getContextUser('id');
 
         // Si nouvelle conversation
-        if (empty($parentMails)) {
+        if (empty($parentMails) || $parentMails[0]['mail_state_id'] == MAIL_STATUS_ADMIN) {
             return true;
         }
 
