@@ -27,7 +27,7 @@ $(function(){
         </div>
     <?php else : ?>
         <div style="text-align:right;">
-            <?php if($this->getLinkStatus($this->user['user_id']) == LINK_STATUS_BLACKLIST) : ?>
+            <?php if(Link::getStatus($this->user['user_id']) == LINK_STATUS_BLACKLIST) : ?>
                 <a href="profile/unblock/<?php echo $this->user['user_id']; ?>">Débloquer cette personne</a>
             <?php else : ?>
                 <a href="profile/block/<?php echo $this->user['user_id']; ?>">Bloquer cette personne</a>

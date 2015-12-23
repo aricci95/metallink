@@ -36,9 +36,13 @@ require ROOT_DIR . '/appli/engine/model/Model.php';
 require ROOT_DIR . '/appli/engine/model/AppModel.php';
 require ROOT_DIR . '/appli/engine/controller/Controller.php';
 require ROOT_DIR . '/appli/engine/controller/AppController.php';
+
+// Classes propres au site
 require ROOT_DIR . '/appli/models/Tools.php';
 require ROOT_DIR . '/appli/models/User.php';
+require ROOT_DIR . '/appli/models/Link.php';
 require ROOT_DIR . '/appli/views/ViewHelper.php';
+
 // gestionnaire d'erreurs
 include ROOT_DIR.'/appli/engine/ErrorHandler.php';
 set_error_handler("ErrorHandler");

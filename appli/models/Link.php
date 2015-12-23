@@ -80,9 +80,12 @@ class Link extends AppModel
             return true;
         }
 
-        $status = $this->getLinkStatus($destinataireId);
+        return (Link::getStatus($destinataireId) == LINK_STATUS_ACCEPTED);
+    }
 
-        return ($status == LINK_STATUS_ACCEPTED);
+    public static function getStatus($userId)
+    {
+        return (!empty($_SESSION['links'][$userId])) ? $_SESSION['links'][$userId] : LINK_STATUS_NONE;
     }
 
     public function getLink($userId2)

@@ -140,7 +140,7 @@ class ProfileController extends AppController
     {
         if (!empty($this->params['value'])) {
             if ($block) {
-                $status = $this->getLinkStatus($this->params['value']);
+                $status = Link::getStatus($this->params['value']);
                 if ($status == LINK_STATUS_NONE) {
                     if ($this->_model->Link->block($this->params['value'])) {
                         $this->_view->growler('Utilisateur bloqué.', GROWLER_OK);
