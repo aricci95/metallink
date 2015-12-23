@@ -111,29 +111,43 @@ class Auth extends AppModel
     public function checkLogin($login, $pwd)
     {
         if (!empty($login) && !empty($pwd)) {
-            $sql = "SELECT
-                            user_id,
-                            user_login,
-                            role_id,
-                            user_photo_url,
-                            FLOOR((DATEDIFF( CURDATE(), (user_birth))/365)) AS age,
-                            user_gender,
-                            user_valid,
-                            user_city,
-                            user_zipcode,
-                            user_mail,
-                            longitude,
-                            lattitude
-                    FROM user LEFT JOIN ville ON (user.user_zipcode = ville.code_postal)
-                    WHERE LOWER(user_login) = LOWER('".$this->securize($login, false)."')
-                    AND user_pwd = '".$this->securize(md5($pwd), false)."'";
+            $sql = '
+                SELECT
+                    user_id,
+                    user_login,
+                    role_id,
+                    user_photo_url,
+                    FLOOR((DATEDIFF( CURDATE(), (user_birth))/365)) AS age,
+                    user_gender,
+                    user_valid,
+                    user_city,
+                    user_zipcode,
+                    user_mail,
+                    longitude,
+                    lattitude
+                FROM user LEFT JOIN ville ON (user.user_zipcode = ville.code_postal)
+                WHERE LOWER(user_login) = LOWER(:user_login)
+                AND user_pwd = :pwd
+            ;';
 
-            $user = $this->fetchOnly($sql);
+            $stmt = Db::getInstance()->prepare($sql);
+            $stmt->bindValue('user_login', $login);
+            $stmt->bindValue('pwd', md5($pwd));
+            $stmt->execute();
+            $user = $stmt->fetch();
 
             if (!empty($user['user_login']) && !empty($user['user_id']) && strtolower($user['user_login']) == strtolower($login) && $login != '') {
-                $sql = "UPDATE user SET user_last_connexion = '" . date("Y-m-d H:m:s") . "'
-                        WHERE LOWER(user_login) = LOWER('" . $this->securize($login, false) . "')";
-                $this->execute($sql);
+                $sql = '
+                    UPDATE
+                        user
+                    SET
+                        user_last_connexion = NOW()
+                    WHERE
+                        LOWER(user_login) = LOWER(:login)
+                ;';
+
+                $this->execute($sql, array('login' => $login));
+
                 if ($user['user_valid'] != 1) {
                     throw new Exception("Email non validé", ERR_MAIL_NOT_VALIDATED);
                 } elseif ($user['role_id'] > 0) {

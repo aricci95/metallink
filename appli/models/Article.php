@@ -1,17 +1,17 @@
 <?php
- 
-/* 
+
+/*
  *  Classe d'accès aux données des articles
  */
 class Article extends AppModel
 {
-      
+
     public function getSearch($criterias, $offset = 0)
     {
         $sql = 'SELECT
                     art_id,
                     art_libel,
-                    art_date, 
+                    art_date,
                     ref_state_id,
                     categorie_id,
                     art_price,
@@ -34,26 +34,28 @@ class Article extends AppModel
 
     public function getNew()
     {
-        $sql = 'SELECT 
-                    art_id,
-                    art_libel,
-                    art_date, 
-                    ref_state_id,
-                    categorie_id,
-                    art_price,
-                    art_photo_url
-                FROM article
-                ORDER BY art_date DESC
-                LIMIT 0, 3;';
-        $resultat = $this->fetch($sql);
-        return $resultat;
+        $sql = '
+            SELECT
+                art_id,
+                art_libel,
+                art_date,
+                ref_state_id,
+                categorie_id,
+                art_price,
+                art_photo_url
+            FROM article
+            ORDER BY art_date DESC
+            LIMIT 0, 3
+        ;';
+
+        return $this->fetch($sql);
     }
         // Récupère un article
     public function getById($artId)
     {
         $sql = "SELECT art_id,
                         art_libel,
-                        UNIX_TIMESTAMP(art_date) as art_date, 
+                        UNIX_TIMESTAMP(art_date) as art_date,
                         ref_state_id,
                         art_description,
                         article.categorie_id,
@@ -76,23 +78,23 @@ class Article extends AppModel
                 WHERE art_id = '$artId';";
         return $this->fetchOnly($sql);
     }
-    
+
     // Récupère les categories
     public function getCategories()
     {
-        $sql = "SELECT main_categorie_id as id, 
+        $sql = "SELECT main_categorie_id as id,
                        main_categorie_libel as libel
                 FROM ref_main_categorie
                 ORDER BY main_categorie_libel;";
         return $this->fetch($sql);
     }
-    
+
     public function deleteArticleById($id)
     {
         $this->load('Photo')->deletePhotosById($id, PHOTO_TYPE_ARTICLE);
         return $this->execute("DELETE FROM article WHERE art_id = ".$this->securize($id));
     }
-    
+
     public function updateArticle($datas)
     {
         if (!empty($datas['art_id'])) {
@@ -107,7 +109,7 @@ class Article extends AppModel
         }
         return $this->execute($sql);
     }
-    
+
     public function createArticle($items)
     {
         $sql = 'INSERT INTO article (art_libel,
@@ -118,7 +120,7 @@ class Article extends AppModel
                                     art_date,
                                     user_id,
                                     livre_poste,
-                                    livre_surplace) 
+                                    livre_surplace)
                 VALUES ("'.$items['art_libel'].'",
                          '.$items['categorie_id'].',
                          "'.$items['art_description'].'",

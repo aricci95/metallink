@@ -5,9 +5,31 @@ class Link extends AppModel
 
     public function linkTo($destinataire)
     {
-        $sql  = "INSERT INTO link (expediteur_id, destinataire_id, status, modification_date) VALUES ('".$this->getContextUser('id')."', '".$this->securize($destinataire['user_id'])."', ".LINK_STATUS_SENT.", NOW());";
+        $sql  = '
+            INSERT INTO
+                link (
+                    expediteur_id,
+                    destinataire_id,
+                    status,
+                    modification_date
+                )
+            VALUES (
+                :context_user_id,
+                :user_id,
+                :link_status_sent,
+                NOW()
+            )
+        ;';
+
         try {
-            $this->execute($sql);
+            $params = array(
+                'context_user_id' => $this->getContextUser('id'),
+                'user_id' => $destinataire['user_id'],
+                'link_status_sent' => LINK_STATUS_SENT,
+            );
+
+            $this->execute($sql, $params);
+
             $_SESSION['links'][$this->insertId()] = LINK_STATUS_SENT;
         } catch (Exception $e) {
             if ($this->unlink($destinataire['user_id'])) {
@@ -53,10 +75,13 @@ class Link extends AppModel
     public function isLinked($destinataireId)
     {
         $contextId = $this->getContextUser('id');
+
         if ($destinataireId == 1 || $contextId == 1) {
             return true;
         }
+
         $status = $this->getLinkStatus($destinataireId);
+
         return ($status == LINK_STATUS_ACCEPTED);
     }
 

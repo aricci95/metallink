@@ -3,15 +3,6 @@
 class Model extends EngineObject
 {
 
-    protected $_db;
-
-    public function __construct()
-    {
-        parent::__construct();
-
-        $this->_db = new Db();
-    }
-
     public function __get($value)
     {
         return $this->load($value);
@@ -19,12 +10,12 @@ class Model extends EngineObject
 
     public function fetch($sql)
     {
-        return $this->_db->fetch($sql);
+        return Db::getInstance()->fetch($sql);
     }
 
     public function execute($sql)
     {
-        return $this->_db->execute($sql);
+        return Db::getInstance()->execute($sql);
     }
 
     public function load($model)
@@ -37,7 +28,7 @@ class Model extends EngineObject
                 throw new Exception('Model "'.$model.'" introuvable.', ERROR_NOT_FOUND);
             }
             require_once $filePath;
-            $this->$model = new $model($this->_db);
+            $this->$model = new $model(Db::getInstance());
         }
         return $this->$model;
     }
@@ -52,7 +43,7 @@ class Model extends EngineObject
             $libel = $order;
         }
         $sql = "SELECT * FROM $table ORDER BY $libel";
-        $datas = $this->_db->fetch($sql);
+        $datas = Db::getInstance()->fetch($sql);
         return $datas;
     }
 

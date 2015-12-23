@@ -166,26 +166,40 @@ class User extends AppModel
     public function getNew()
     {
         $userId = $this->getContextUser('id');
-        $sql = 'SELECT
-                        user_id,
-                        user_login,
-                        user_city,
-                        ville_id,
-                        look_libel,
-                        user_gender,
-                        UNIX_TIMESTAMP(user_last_connexion) as user_last_connexion,
-                        user_mail,
-                        user_photo_url,
-                        FLOOR((DATEDIFF( CURDATE(), (user_birth))/365)) AS age
-                FROM user
-                LEFT JOIN ref_look ON user.look_id = ref_look.look_id';
+
+        $sql = '
+            SELECT
+                user_id,
+                user_login,
+                user_city,
+                ville_id,
+                look_libel,
+                user_gender,
+                UNIX_TIMESTAMP(user_last_connexion) as user_last_connexion,
+                user_mail,
+                user_photo_url,
+                FLOOR((DATEDIFF( CURDATE(), (user_birth))/365)) AS age
+            FROM user
+            LEFT JOIN ref_look ON user.look_id = ref_look.look_id
+        ';
+
         if (!empty($userId)) {
-            $sql .= ' WHERE user_id NOT IN (SELECT destinataire_id FROM link WHERE status = '.LINK_STATUS_BLACKLIST.' AND expediteur_id = '.$this->getContextUser('id').') ';
+            $sql .= ' WHERE user_id NOT IN (SELECT destinataire_id FROM link WHERE status = :linkStatusBlacklist AND expediteur_id = :contextUserId) ';
         }
-        $sql .= ' ORDER BY user_subscribe_date DESC
-                LIMIT 0, 3;';
-        $resultat = $this->fetch($sql);
-        return $resultat;
+
+        $sql .= 'ORDER BY user_subscribe_date DESC
+                 LIMIT 0, 3;';
+
+        $stmt = Db::getInstance()->prepare($sql);
+        $stmt->bindValue('linkStatusBlacklist', LINK_STATUS_BLACKLIST);
+
+        if (!empty($userId)) {
+            $stmt->bindValue('contextUserId', $userId);
+        }
+
+        $stmt->execute();
+
+        return $stmt->fetchAll();
     }
 
     // Récupére un utilisateur

@@ -35,13 +35,13 @@ class Mailer extends AppModel
     {
         $errorName = 'Erreur inconnue';
         $errorType = array(
-                           E_ERROR => 'Fatal error',
-                           E_WARNING => 'Warning',
-                           E_PARSE => 'Parse error',
-                           E_NOTICE => 'Notice',
-                           ERROR_SQL => 'SQL',
-                           ERROR_BEHAVIOR => 'Behavior'
-                           );
+           E_ERROR => 'Fatal error',
+           E_WARNING => 'Warning',
+           E_PARSE => 'Parse error',
+           E_NOTICE => 'Notice',
+           ERROR_SQL => 'SQL',
+           ERROR_BEHAVIOR => 'Behavior',
+        );
 
         if (!empty($errorType[$exception->getCode()])) {
             $errorName = $errorType[$exception->getCode()];

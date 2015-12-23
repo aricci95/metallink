@@ -1,7 +1,7 @@
 <!-- Nouveaux utilisateurs -->
 <?php $this->_helper->blackBoxOpen(); ?>
     <h2>Nouveaux utilisateurs</h2>
-    <div  class="fb-like" data-href="https://www.facebook.com/pages/MetalLinkfr-Site-de-rencontre-pour-Metalheads/212049302188164?fref=ts" data-width="740" data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>
+    <div class="fb-like" data-href="https://www.facebook.com/pages/MetalLinkfr-Site-de-rencontre-pour-Metalheads/212049302188164?fref=ts" data-width="740" data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>
     <br/>
     <br/>
     <?php foreach ($this->newUsers as $key => $value) {
@@ -9,6 +9,7 @@
         else $this->_helper->printUser($value);
     } ?>
 <?php $this->_helper->blackBoxClose(); ?>
+
 <!-- News Etendue -->
 <?php $this->_helper->blackBoxOpen('maxWidth'); ?>
     <h2><?php echo stripslashes($this->decouverte['news_titre']); ?></h2>
@@ -21,16 +22,19 @@
         <?php echo nl2br($this->decouverte['news_contenu']); ?>
     <?php endif; ?>
 <?php $this->_helper->blackBoxClose(); ?>
+
 <!-- COVOITURAGE -->
 <?php $this->_helper->blackBoxOpen(); ?>
     <h2>Nouveau covoiturage</h2>
     <?php $this->render('covoit/wItems', array('elements' => $this->newCovoits)); ?>
 <?php $this->_helper->blackBoxClose(); ?>
+
 <!-- ARTICLES -->
 <?php $this->_helper->blackBoxOpen(); ?>
     <h2>Nouveaux articles</h2>
     <?php foreach ($this->newArticles as $key => $value) $this->_helper->printArticle($value); ?>
 <?php $this->_helper->blackBoxClose(); ?>
+
 <!-- News list -->
 <?php $this->_helper->blackBoxOpen(); ?>
     <h2>News</h2>
@@ -43,6 +47,7 @@
     <?php endforeach; ?>
     </ul>
 <?php $this->_helper->blackBoxClose(); ?>
+
 <!-- Facebook discussion -->
 <?php $this->_helper->blackBoxOpen(); ?>
     <h2>Discussion générale</h2>

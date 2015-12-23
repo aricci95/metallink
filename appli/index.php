@@ -9,7 +9,7 @@ $path =  str_replace("/appli", '', $path);
 define('ROOT_DIR', $path);
 
 // inculusion de la conf et des constantes
-require_once ROOT_DIR.'/config/params.php';
+require ROOT_DIR . '/config/params.php';
 
 // APPLICATION BOOTSTRAP
 // CONTROLLER
@@ -28,23 +28,23 @@ if (!empty($_GET['action']) && ucfirst($_GET['action']) != 'Home') {
 }
 
 // Loading application files
-require_once ROOT_DIR.'/appli/engine/EngineObject.php';
-require_once ROOT_DIR.'/appli/engine/Log.php';
-require_once ROOT_DIR.'/appli/engine/view/AppView.php';
-require_once ROOT_DIR.'/appli/engine/model/Db.php';
-require_once ROOT_DIR.'/appli/engine/model/Model.php';
-require_once ROOT_DIR.'/appli/engine/model/AppModel.php';
-require_once ROOT_DIR.'/appli/engine/controller/Controller.php';
-require_once ROOT_DIR.'/appli/engine/controller/AppController.php';
-require_once ROOT_DIR.'/appli/models/Tools.php';
-require_once ROOT_DIR.'/appli/views/ViewHelper.php';
+require ROOT_DIR . '/appli/engine/EngineObject.php';
+require ROOT_DIR . '/appli/engine/Log.php';
+require ROOT_DIR . '/appli/engine/view/AppView.php';
+require ROOT_DIR . '/appli/engine/model/Db.php';
+require ROOT_DIR . '/appli/engine/model/Model.php';
+require ROOT_DIR . '/appli/engine/model/AppModel.php';
+require ROOT_DIR . '/appli/engine/controller/Controller.php';
+require ROOT_DIR . '/appli/engine/controller/AppController.php';
+require ROOT_DIR . '/appli/models/Tools.php';
+require ROOT_DIR . '/appli/views/ViewHelper.php';
 // gestionnaire d'erreurs
-include_once ROOT_DIR.'/appli/engine/ErrorHandler.php';
+include ROOT_DIR.'/appli/engine/ErrorHandler.php';
 set_error_handler("ErrorHandler");
 
 
 try {
-    require_once ROOT_DIR.'/appli/controllers/'.$page.'.php';
+    require_once ROOT_DIR . '/appli/controllers/'.$page.'.php';
     $controller = new $page();
     $controller->$action();
 } catch (Exception $e) {
