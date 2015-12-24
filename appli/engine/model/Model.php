@@ -1,6 +1,6 @@
 <?php
 
-class Model extends EngineObject
+class Model extends AppModel
 {
 
     public function __get($value)
@@ -8,27 +8,18 @@ class Model extends EngineObject
         return $this->load($value);
     }
 
-    public function fetch($sql)
-    {
-        return Db::getInstance()->fetch($sql);
-    }
-
-    public function execute($sql)
-    {
-        return Db::getInstance()->execute($sql);
-    }
-
     public function load($model)
     {
         $model     = ucfirst($model);
         $lowerName = strtolower($model);
         $filePath  = ROOT_DIR.'/appli/models/'.$model.'.php';
+
         if (!isset($this->$model) && !isset($this->$lowerName)) {
             if (!file_exists($filePath)) {
-                throw new Exception('Model "'.$model.'" introuvable.', ERROR_NOT_FOUND);
+                throw new Exception('Model "'. $model .'" introuvable.', ERROR_NOT_FOUND);
             }
             require_once $filePath;
-            $this->$model = new $model(Db::getInstance());
+            $this->$model = new $model();
         }
         return $this->$model;
     }
@@ -37,13 +28,15 @@ class Model extends EngineObject
     public function getItemsFromTable($table, $order = false)
     {
         $type = str_replace("ref_", "", $table);
+
         if ($order == false) {
             $libel = $type.'_libel';
         } else {
             $libel = $order;
         }
+
         $sql = "SELECT * FROM $table ORDER BY $libel";
-        $datas = Db::getInstance()->fetch($sql);
+        $datas = $this->fetch($sql);
         return $datas;
     }
 

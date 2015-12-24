@@ -7,28 +7,28 @@ class AdminNewsController extends AppController
 
     public function render()
     {
-        $this->_view->setTitle('Administration');
-        $this->_view->setViewName('admin/wAdminNews');
-        $this->_view->render();
+        $this->view->setTitle('Administration');
+        $this->view->setViewName('admin/wAdminNews');
+        $this->view->render();
     }
 
     public function renderNews()
     {
-        $this->_view->news = $this->_model->load('news')->getNews();
-        $this->_view->setTitle('News');
-        $this->_view->setViewName('admin/wNews');
-        $this->_view->render();
+        $this->view->news = $this->model->load('news')->getNews();
+        $this->view->setTitle('News');
+        $this->view->setViewName('admin/wNews');
+        $this->view->render();
     }
 
     public function renderEdit()
     {
         if (!empty($this->params['value'])) {
-            $this->_view->currentNews = $this->_model->load('news')->getNewsById($this->params['value']);
-            $this->_view->setTitle('Edition news');
+            $this->view->currentNews = $this->model->load('news')->getNewsById($this->params['value']);
+            $this->view->setTitle('Edition news');
         }
-        $this->_view->setTitle('Ajouter une news');
-        $this->_view->setViewName('admin/wNewsEdit');
-        $this->_view->render();
+        $this->view->setTitle('Ajouter une news');
+        $this->view->setViewName('admin/wNewsEdit');
+        $this->view->render();
     }
 
     public function renderSave()
@@ -39,17 +39,17 @@ class AdminNewsController extends AppController
             $this->params['news_photo_url'] = (!empty($this->params['news_photo_url'])) ? $this->params['news_photo_url'] : '';
             $this->params['news_media_url'] = (!empty($this->params['news_media_url'])) ? $this->params['news_media_url'] : '';
             if (!empty($this->params['news_id'])) {
-                if ($this->_model->load('news')->updateNewsById($this->params)) {
-                    $this->_view->growler('Modifications enregistrées', GROWLER_OK);
+                if ($this->model->load('news')->updateNewsById($this->params)) {
+                    $this->view->growler('Modifications enregistrées', GROWLER_OK);
                 } else {
-                    $this->_view->growlerError();
+                    $this->view->growlerError();
                     $this->renderEdit();
                 }
             } else {
-                if ($this->_model->load('news')->addNews($this->params)) {
-                    $this->_view->growler('News créée', GROWLER_OK);
+                if ($this->model->load('news')->addNews($this->params)) {
+                    $this->view->growler('News créée', GROWLER_OK);
                 } else {
-                    $this->_view->growlerError();
+                    $this->view->growlerError();
                     $this->renderEdit();
                 }
             }
@@ -60,10 +60,10 @@ class AdminNewsController extends AppController
     public function renderDelete()
     {
         if (!empty($this->params['value'])) {
-            $this->_model->load('News')->deleteNewsById($this->params['value']);
-            $this->_view->growler('News supprimée', GROWLER_OK);
+            $this->model->load('News')->deleteNewsById($this->params['value']);
+            $this->view->growler('News supprimée', GROWLER_OK);
         } else {
-            $this->_view->growlerError();
+            $this->view->growlerError();
         }
         $this->renderNews();
     }

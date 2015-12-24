@@ -7,34 +7,34 @@ class ForumController extends AppController
 
     public function render()
     {
-        $this->_view->messages       = $this->_model->Forum->getLastMessages();
-        $this->_view->users          = $this->_model->Forum->getConnectedUsers();
-        $reversedArray               = array_reverse($this->_view->messages);
-        $this->_view->lastId         = !empty($reversedArray) ? $reversedArray[0]['id'] : 0;
-        $this->_view->setViewName('forum/wForum');
-        $this->_view->render();
+        $this->view->messages       = $this->model->Forum->getLastMessages();
+        $this->view->users          = $this->model->Forum->getConnectedUsers();
+        $reversedArray               = array_reverse($this->view->messages);
+        $this->view->lastId         = !empty($reversedArray) ? $reversedArray[0]['id'] : 0;
+        $this->view->setViewName('forum/wForum');
+        $this->view->render();
     }
 
     public function renderFeed()
     {
-        $this->_view->messages = $this->_model->Forum->getLastMessages();
-        $this->_view->setViewName('forum/wFeed');
-        $this->_view->render('frameView');
+        $this->view->messages = $this->model->Forum->getLastMessages();
+        $this->view->setViewName('forum/wFeed');
+        $this->view->render('frameView');
     }
 
     public function renderUsers()
     {
-        $this->_view->users = $this->_model->Forum->getConnectedUsers();
-        $this->_view->setViewName('forum/wConnectedUsers');
-        $this->_view->render('frameView');
+        $this->view->users = $this->model->Forum->getConnectedUsers();
+        $this->view->setViewName('forum/wConnectedUsers');
+        $this->view->render('frameView');
     }
 
     public function renderRefreshFeed()
     {
-        $messages = $this->_model->Forum->getLastMessages($this->params['id']);
+        $messages = $this->model->Forum->getLastMessages($this->params['id']);
         if (!empty($messages)) {
-            $this->_view->messages = $messages;
-            $this->_view->getJSONResponse('forum/wMessages');
+            $this->view->messages = $messages;
+            $this->view->getJSONResponse('forum/wMessages');
         } else {
             return null;
         }
@@ -42,14 +42,14 @@ class ForumController extends AppController
 
     public function renderRefreshUsers()
     {
-        $this->_view->users = $this->_model->Forum->getConnectedUsers();
-        $this->_view->getJSONResponse('forum/wUsers');
+        $this->view->users = $this->model->Forum->getConnectedUsers();
+        $this->view->getJSONResponse('forum/wUsers');
     }
 
     public function renderSave()
     {
         if (!empty($this->params['content'])) {
-            echo $this->_model->Forum->saveMessage($this->params['content']);
+            echo $this->model->Forum->saveMessage($this->params['content']);
         } else {
             return null;
         }

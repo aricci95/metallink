@@ -7,18 +7,18 @@ class ViewsController extends AppController
 
     public function render()
     {
-        $this->_view->elements = $this->_model->Views->getUserViews();
-        $this->_view->type = 'user';
-        $this->_view->setViewName('wViews');
-        $this->_view->render();
+        $this->view->elements = $this->model->Views->getUserViews();
+        $this->view->type = 'user';
+        $this->view->setViewName('wViews');
+        $this->view->render();
     }
 
     public function renderMore()
     {
         $offset = $this->params['value'];
-        $this->_view->elements = $this->_model->Views->getUserViews($offset);
-        $this->_view->type = 'user';
-        $this->_view->offset = $offset++;
-        $this->_view->getJSONResponse('user/wItems');
+        $this->view->elements = $this->model->Views->getUserViews($offset);
+        $this->view->type = 'user';
+        $this->view->offset = $offset++;
+        $this->view->getJSONResponse('user/wItems');
     }
 }

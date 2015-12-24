@@ -7,6 +7,7 @@ abstract class AppController extends Controller
     public function __construct()
     {
         parent::__construct();
+
         $this->_checkSession();
         if (!$this->isAjax()) {
             if (!empty($_SESSION['role_id']) && $_SESSION['role_id'] >= AUTH_LEVEL_USER) {
@@ -19,20 +20,20 @@ abstract class AppController extends Controller
     private function _getNotifications()
     {
         // vues
-        $_SESSION['views'] = $this->_model->Auth->countViews(User::getContextUser('id'));
+        $_SESSION['views'] = $this->model->Auth->countViews(User::getContextUser('id'));
 
         // Récupération & comptage des links
         $olLinks  = (!empty($_SESSION['links'])) ? $_SESSION['links'] : null;
-        $newLinks = $this->_model->Link->setContextUserLinks();
+        $newLinks = $this->model->Link->setContextUserLinks();
         if (!empty($olLinks) && $olLinks['count'][LINK_STATUS_RECIEVED] < $newLinks['count'][LINK_STATUS_RECIEVED]) {
-            $this->_view->growler('Nouvelle demande !', GROWLER_INFO);
+            $this->view->growler('Nouvelle demande !', GROWLER_INFO);
         }
 
         // Vérification des nouveaux mails
         $oldMailsCount  = (!empty($_SESSION['new_mails'])) ? $_SESSION['new_mails'] : 0;
-        $_SESSION['new_mails'] = $this->_model->Auth->countNewMails(User::getContextUser('id'));
+        $_SESSION['new_mails'] = $this->model->Auth->countNewMails(User::getContextUser('id'));
         if ($oldMailsCount < $_SESSION['new_mails']) {
-            $this->_view->growler('Nouveau message !', GROWLER_INFO);
+            $this->view->growler('Nouveau message !', GROWLER_INFO);
         }
     }
 
@@ -45,10 +46,10 @@ abstract class AppController extends Controller
                 $left     = $_SESSION['user_last_connexion'];
                 $timeLeft = $now - $left;
                 if ($timeLeft == 0 || $timeLeft > (ONLINE_TIME_LIMIT - 300)) {
-                    $this->_model->User->updateLastConnexion(User::getContextUser('id'));
+                    $this->model->User->updateLastConnexion(User::getContextUser('id'));
                 }
             } else {
-                $this->_model->User->updateLastConnexion(User::getContextUser('id'));
+                $this->model->User->updateLastConnexion(User::getContextUser('id'));
             }
         }
     }
@@ -74,7 +75,7 @@ abstract class AppController extends Controller
         } // Cas pas d'user en session, vérification des cookies
         elseif (!empty($_COOKIE['MlinkLogin']) && !empty($_COOKIE['MlinkPwd'])) {
             try {
-                $logResult = $this->_model->Auth->checkLogin($_COOKIE['MlinkLogin'], $_COOKIE['MlinkPwd']);
+                $logResult = $this->model->Auth->checkLogin($_COOKIE['MlinkLogin'], $_COOKIE['MlinkPwd']);
             } catch (Exception $e) {
                 $this->redirect('home', array('msg' => $e->getCode()));
             }

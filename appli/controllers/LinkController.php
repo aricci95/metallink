@@ -8,19 +8,19 @@ class LinkController extends AppController
     public function render()
     {
         if (empty($this->params['value'])) {
-            $this->_view->growlerError();
+            $this->view->growlerError();
             $this->redirect('home');
         }
         $status = $this->params['value'];
         if ($status == LINK_STATUS_SENT) {
-            $this->_view->users['recieved'] = $this->_model->Link->getLinksUserByStatus(LINK_STATUS_RECIEVED);
-            $this->_view->users['sent']     = $this->_model->Link->getLinksUserByStatus(LINK_STATUS_SENT);
+            $this->view->users['recieved'] = $this->model->Link->getLinksUserByStatus(LINK_STATUS_RECIEVED);
+            $this->view->users['sent']     = $this->model->Link->getLinksUserByStatus(LINK_STATUS_SENT);
         } else {
-            $this->_view->users = $this->_model->Link->getLinksUserByStatus($status);
+            $this->view->users = $this->model->Link->getLinksUserByStatus($status);
         }
-        $this->_view->status = $status;
-        $this->_view->setViewName('link/wList');
-        $this->_view->render();
+        $this->view->status = $status;
+        $this->view->setViewName('link/wList');
+        $this->view->render();
     }
 
     public function renderMore()
@@ -29,14 +29,14 @@ class LinkController extends AppController
         $status = $this->params['option'];
         // Récupèration des links & demandes
         if ($status == LINK_STATUS_SENT) {
-            $this->_view->elements['recieved'] = $this->_model->Link->getLinksUserByStatus(LINK_STATUS_RECIEVED, $offset);
-            $this->_view->elements['sent'] = $this->_model->Link->getLinksUserByStatus(LINK_STATUS_SENT, $offset);
+            $this->view->elements['recieved'] = $this->model->Link->getLinksUserByStatus(LINK_STATUS_RECIEVED, $offset);
+            $this->view->elements['sent'] = $this->model->Link->getLinksUserByStatus(LINK_STATUS_SENT, $offset);
         } else {
-            $this->_view->elements = $this->_model->Link->getLinksUserByStatus($status, $offset);
+            $this->view->elements = $this->model->Link->getLinksUserByStatus($status, $offset);
         }
-        $this->_view->type     = 'user';
-        $this->_view->offset   = $offset++;
-        $this->_view->getJSONResponse('user/wItems');
+        $this->view->type     = 'user';
+        $this->view->offset   = $offset++;
+        $this->view->getJSONResponse('user/wItems');
     }
 
     public function renderLink()
@@ -46,12 +46,12 @@ class LinkController extends AppController
                                 'user_photo_url' => $this->params['destinataire_photo_url'],
                                 'user_mail'      => $this->params['destinataire_mail'],
                                 'user_login'     => $this->params['destinataire_login']);
-        $this->_view->user = $destinataire;
+        $this->view->user = $destinataire;
         $status = Link::getStatus($destinataireId);
-        $result = ($status == LINK_STATUS_NONE) ? $this->_model->Link->linkTo($destinataire) : $this->_model->Link->updateLink($destinataireId, $this->params['status']);
+        $result = ($status == LINK_STATUS_NONE) ? $this->model->Link->linkTo($destinataire) : $this->model->Link->updateLink($destinataireId, $this->params['status']);
         if ($result) {
-            $this->_view->newStatus = $this->params['status'];
-            $this->_view->getJSONResponse('link/wItem');
+            $this->view->newStatus = $this->params['status'];
+            $this->view->getJSONResponse('link/wItem');
         } else {
             echo 500;
         }

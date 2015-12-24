@@ -63,7 +63,7 @@ class Mailer extends AppModel
                         '<br/><br/>'.$sessionDatas.
                         '<br/><br/>Stack :<br/>'.
                         $exception->getTraceAsString());
-        $this->log->php(str_replace(array('<br/>', '<b>', '</b>', '<br />'), array("\n", '', '', ''), $message));
+        Log::php(str_replace(array('<br/>', '<b>', '</b>', '<br />'), array("\n", '', '', ''), $message));
 
         return $this->send(ADMIN_MAIL, 'Erreur sur MetalLink !', $message, false);
     }

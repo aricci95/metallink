@@ -12,14 +12,14 @@ class SalesController extends SearchController
     public function render()
     {
         parent::render();
-        $this->_view->setTitle('Ventes');
-        $this->_view->categories = $this->_model->Article->getCategories();
-        $this->_view->render();
+        $this->view->setTitle('Ventes');
+        $this->view->categories = $this->model->Article->getCategories();
+        $this->view->render();
     }
 
     public function renderMore()
     {
         parent::renderMore();
-        $this->_view->getJSONResponse('article/wItems');
+        $this->view->getJSONResponse('article/wItems');
     }
 }

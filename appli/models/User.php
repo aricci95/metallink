@@ -325,7 +325,7 @@ class User extends AppModel
         $this->load('photo')->deletePhotosById($id, PHOTO_TYPE_USER);
 
         $this->execute("DELETE FROM user WHERE user_id = ".$this->securize($id));
-        $this->execute("DELETE FROM user_views WHERE viewer_id = ".$this->securize($id)." OR viewed_id = ".$this->securize($id));
+        $this->execute("DELETE FROM userviews WHERE viewer_id = ".$this->securize($id)." OR viewed_id = ".$this->securize($id));
         $this->execute("DELETE FROM mail WHERE mail_destinataire = ".$this->securize($id)." OR mail_expediteur = ".$this->securize($id));
         $this->execute("DELETE FROM chat WHERE `from` = '" . $_SESSION['user_login'] . "' OR `to` = '" . $_SESSION['user_login'] . "';");
 

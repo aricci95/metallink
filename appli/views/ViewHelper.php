@@ -1,6 +1,6 @@
 <?php
 
-class ViewHelper extends EngineObject {
+class ViewHelper {
 
     public $now = 0;
 
@@ -71,13 +71,13 @@ class ViewHelper extends EngineObject {
     public function printArticle($article) {
         if(!empty($article['art_id'])) {
             $imageUrl = ((!empty($article['art_photo_url']) && file_exists($_SERVER["DOCUMENT_ROOT"]."/MLink/photos/small/".$article['art_photo_url']))) ? $article['art_photo_url'] : 'unknowUser.jpg';
-            
+
             echo '<div class="divElement">';
             echo '<a href="article/'.$article['art_id'].'" >';
                 // Partie PHOTO
                 echo '<div class="divPhoto" style="background:url(\'';
                 echo '/MLink/photos/small/'.$imageUrl.'\');background-position: top center;">';
-                
+
                 echo '</div>';
                 // Partie INFO
                 echo '<div class="divInfo">';
@@ -92,7 +92,7 @@ class ViewHelper extends EngineObject {
                 echo '</a>';
             echo '</div>';
         }
-        
+
     }
 
     public function printUserLogin($user) {
@@ -184,7 +184,7 @@ class ViewHelper extends EngineObject {
 
     // Affiche une div Noire cool
     public function blackBoxOpen($cssParams = 'maxWidth') {
-        
+
         echo '<table class="blackBox">';
         echo '<tr><td class="blackBoxleftUpCorner"></td><td class="blackBoxup"></td><td class="blackBoxrightUpCorner"></td></tr>';
         echo '<tr><td class="blackBoxleft"></td><td class="blackBoxmiddle ';
@@ -217,7 +217,7 @@ class ViewHelper extends EngineObject {
         if($this->status($userLastConnexion) == 'online.gif') {
             if($full) echo '<span style="color:green;font-size:12px;">online ';
             echo  '<img src="MLink/images/icone/online.gif" />';
-        } 
+        }
         else {
             if($full) echo '<span style="color:#B40404;font-size:12px;">offline ';
             echo '<img src="MLink/images/icone/offline.png" />';
@@ -225,5 +225,5 @@ class ViewHelper extends EngineObject {
         if($full) echo '</span>';
     }
 }
-    
+
 

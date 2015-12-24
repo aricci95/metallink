@@ -1,6 +1,6 @@
 <?php
 
-class AppView extends EngineObject
+class AppView
 {
 
     private $_name;
@@ -12,8 +12,6 @@ class AppView extends EngineObject
 
     public function __construct()
     {
-        parent::__construct();
-
         $this->_helper = new ViewHelper();
         $this->headerImg = $this->_getHeaderImage();
     }

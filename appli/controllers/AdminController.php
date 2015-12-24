@@ -7,27 +7,27 @@ class AdminController extends AppController
 
     public function render()
     {
-        $this->_view->setTitle('Administration');
-        $this->_view->setViewName('admin/wAdmin');
-        $this->_view->render();
+        $this->view->setTitle('Administration');
+        $this->view->setViewName('admin/wAdmin');
+        $this->view->render();
     }
 
     public function renderSwitch()
     {
-        $this->_view->users  = $this->_model->User->getUsers();
-        $this->_view->action = 'setSwitch';
-        $this->_view->setTitle('User switch');
-        $this->_view->setViewName('admin/wUsers');
-        $this->_view->render();
+        $this->view->users  = $this->model->User->getUsers();
+        $this->view->action = 'setSwitch';
+        $this->view->setTitle('User switch');
+        $this->view->setViewName('admin/wUsers');
+        $this->view->render();
     }
 
     public function renderSetSwitch()
     {
         if (!empty($this->params['user_id'])) {
-            $user = $this->_model->User->getById($this->params['user_id']);
+            $user = $this->model->User->getById($this->params['user_id']);
             if (!empty($user)) {
                 if ($user['user_valid'] != 1) {
-                    $this->_view->growler('Utilistateur non validé.', GROWLER_ERR);
+                    $this->view->growler('Utilistateur non validé.', GROWLER_ERR);
                 } else {
                     $_SESSION['user_id']        = $user['user_id'];
                     $_SESSION['user_login']     = $user['user_login'];
@@ -42,36 +42,36 @@ class AdminController extends AppController
                 }
             }
         } else {
-            $this->_view->growlerError();
+            $this->view->growlerError();
         }
         $this->render();
     }
 
     public function renderDeleteUser()
     {
-        $this->_view->users  = $this->_model->User->getUsers();
-        $this->_view->action = 'removeUser';
-        $this->_view->setTitle('Supprimer un utilisateur');
-        $this->_view->setViewName('admin/wUsers');
-        $this->_view->render();
+        $this->view->users  = $this->model->User->getUsers();
+        $this->view->action = 'removeUser';
+        $this->view->setTitle('Supprimer un utilisateur');
+        $this->view->setViewName('admin/wUsers');
+        $this->view->render();
     }
 
     public function renderRemoveUser()
     {
         if (!empty($this->params['user_id'])) {
-            $this->_model->User->deleteUserById($this->params['user_id']);
-            $this->_view->growler('Utilisateur supprimé.', GROWLER_OK);
+            $this->model->User->deleteUserById($this->params['user_id']);
+            $this->view->growler('Utilisateur supprimé.', GROWLER_OK);
         } else {
-            $this->_view->growlerError();
+            $this->view->growlerError();
         }
         $this->render();
     }
 
     public function renderMail()
     {
-        $this->_view->setTitle('Message à tous les users');
-        $this->_view->setViewName('admin/wMail');
-        $this->_view->render();
+        $this->view->setTitle('Message à tous les users');
+        $this->view->setViewName('admin/wMail');
+        $this->view->render();
     }
 
     public function renderMailSubmit()
@@ -79,23 +79,23 @@ class AdminController extends AppController
         if (!empty($this->params['mail_content'])) {
             $mail['mail_expediteur'] = $mail['mail_destinataire'] = User::getContextUser('id');
             $mail['mail_content']    = htmlentities($this->params['mail_content'], ENT_QUOTES, 'utf-8');
-            $step1 = $this->_model->load('mail')->sendMail($mail, MAIL_STATUS_ADMIN);
+            $step1 = $this->model->load('mail')->sendMail($mail, MAIL_STATUS_ADMIN);
             if ($step1) {
                 $sentMails = 0;
-                $users     = $this->_model->User->getUsers();
+                $users     = $this->model->User->getUsers();
                 foreach ($users as $user) {
-                    if ($this->_model->load('mailer')->send($user['user_mail'], 'Nouveau message sur MetalLink !', 'Vous avez reçu un nouveau message !')) {
+                    if ($this->model->load('mailer')->send($user['user_mail'], 'Nouveau message sur MetalLink !', 'Vous avez reçu un nouveau message !')) {
                         $sentMails++;
                     }
                 }
             }
             if ($step1 && $sentMails > 0) {
-                $this->_view->growler($sentMails.' Emails envoyé.', GROWLER_OK);
+                $this->view->growler($sentMails.' Emails envoyé.', GROWLER_OK);
             } else {
-                $this->_view->growlerError();
+                $this->view->growlerError();
             }
         } else {
-            $this->_view->growlerError('Le message vide.');
+            $this->view->growlerError('Le message vide.');
         }
         $this->render();
     }

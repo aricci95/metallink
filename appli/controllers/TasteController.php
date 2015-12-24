@@ -7,7 +7,7 @@ class TasteController extends AppController
 
     public function render()
     {
-        $types = $this->_model->Taste->getTasteTypes();
+        $types = $this->model->Taste->getTasteTypes();
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             foreach ($types as $type) {
                 if (!empty($this->params[$type])) {
@@ -23,14 +23,14 @@ class TasteController extends AppController
                 }
             }
             if (!empty($tastes)) {
-                $this->_model->Taste->save($tastes);
-                $this->_view->growler('Modifications enregistrées', GROWLER_OK);
+                $this->model->Taste->save($tastes);
+                $this->view->growler('Modifications enregistrées', GROWLER_OK);
             }
         }
-        $this->_view->tastes = $this->_model->Taste->getTastes();
-        $this->_view->tasteTypes = $types;
-        $this->_view->setTitle('Edition des goûts');
-        $this->_view->setViewName('taste/wList');
-        $this->_view->render();
+        $this->view->tastes = $this->model->Taste->getTastes();
+        $this->view->tasteTypes = $types;
+        $this->view->setTitle('Edition des goûts');
+        $this->view->setViewName('taste/wList');
+        $this->view->render();
     }
 }

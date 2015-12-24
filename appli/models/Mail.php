@@ -18,7 +18,7 @@ class Mail extends AppModel
     // Récupère l'ensemble de la conversation
     public function getAdminConversation()
     {
-        $this->log->err('getAdminConversation');
+        Log::err('getAdminConversation');
         $sql = "SELECT
                     mail_id,
                     user.user_id as user_id,

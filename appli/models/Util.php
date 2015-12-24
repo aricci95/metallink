@@ -2,11 +2,11 @@
 
 class Util extends AppModel
 {
-    
+
     // Liste une table
     function getItemsFromTable($table, $order = false)
     {
-    
+
         $type = str_replace("ref_", "", $table);
         if ($order == false) {
             $libel = $type.'_libel';
@@ -16,7 +16,7 @@ class Util extends AppModel
         $sql = "SELECT * FROM $table ORDER BY $libel";
         return $this->fetch($sql);
     }
-    
+
     // Affiche la mini liste pour l'édition du profil
     function printList($list, $libel)
     {
@@ -28,11 +28,11 @@ class Util extends AppModel
         echo '<input name["'.$libel.'"_libel] /> <a href="">ajouter</a>';
         echo '</div>';
     }
-    
+
     // Récupère une liste
     function getList($libel)
     {
-        $sql = 'SELECT 
+        $sql = 'SELECT
 					'.$libel.'_libel,
 					ref_'.$libel.'.'.$libel.'_id as '.$libel.'_id
 				FROM ref_'.$libel.',
@@ -43,7 +43,7 @@ class Util extends AppModel
 
         return $this->fetch($sql);
     }
-    
+
     // Affiche la liste de goûts
     function tastePannel($userId, $type, $datas, $libel)
     {
@@ -77,7 +77,7 @@ class Util extends AppModel
 			</form>
 			<?php
     }
-    
+
     // Affiche login, photo et état
     function printUser($user, $controlPanel = false, $links = null, $requests = null)
     {
@@ -104,7 +104,7 @@ class Util extends AppModel
             echo '</td>';
             echo '</tr>';
             echo '<tr>';
-            
+
             // On parcours tous les linkRequests de l'utilisateur pour changer l'affichage
         if ($requests != null) {
             foreach ($requests as $key => $value) {
@@ -128,7 +128,7 @@ class Util extends AppModel
                 }
             }
         }
-            
+
             // Affichage des infos
             echo '<tr>';
             echo '<td align="center"><font class="userFont" color="';
@@ -184,7 +184,7 @@ class Util extends AppModel
         //}
         echo '</div>';
     }
-    
+
     // Rajoute une entrée dans la liste
     function addToList($type, $listId, $libel)
     {
@@ -217,29 +217,29 @@ class Util extends AppModel
             }
         }
     }
-    
+
     function getListIdByUser($userId)
     {
         $sql = "SELECT list_id FROM user WHERE user_id = '".$this->securize($userId)."';";
         return $this->fetchOnly($sql);
     }
-    
+
     function deleteTaste($listId, $type, $itemId)
     {
-        $sql = "DELETE FROM list_".$type." 
+        $sql = "DELETE FROM list_".$type."
 				WHERE list_id = '".$this->securize($listId)."'
 				AND ".$type."_id = '".$this->securize($itemId)."';";
         $this->execute($sql);
     }
-        
+
     public function deleteTempDatas()
     {
        // Chat
         $this->execute("DELETE FROM chat WHERE sent < NOW( ) - INTERVAL 2 DAY ;");
        // Vues
-        $this->execute("DELETE FROM user_views WHERE view_date < NOW( ) - INTERVAL 2 DAY ;");
+        $this->execute("DELETE FROM userviews WHERE view_date < NOW( ) - INTERVAL 2 DAY ;");
        // Mails
-        $mailSQL = "DELETE FROM mail 
+        $mailSQL = "DELETE FROM mail
                        WHERE mail_state_id != 7
                        AND mail_date < NOW( ) - INTERVAL 6 MONTH ;";
         $this->execute($mailSQL);

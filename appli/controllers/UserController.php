@@ -13,13 +13,13 @@ class UserController extends SearchController
     public function render()
     {
         parent::render();
-        $this->_view->setTitle('Recherche');
-        $this->_view->render();
+        $this->view->setTitle('Recherche');
+        $this->view->render();
     }
 
     public function renderMore()
     {
         parent::renderMore();
-        $this->_view->getJSONResponse('user/wItems');
+        $this->view->getJSONResponse('user/wItems');
     }
 }

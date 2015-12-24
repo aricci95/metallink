@@ -5,16 +5,16 @@ class MailboxController extends AppController
 
     public function render()
     {
-        $this->_view->addJS(JS_SCROLL_REFRESH);
+        $this->view->addJS(JS_SCROLL_REFRESH);
         $libel = 'De';
         //on récupère les mails de l'utilisateur
-        $this->_view->userMails = $this->_model->Mailbox->getInboxMail();
-        foreach ($this->_view->userMails as $key => $value) {
-            $this->_view->userMails[$key]['mail_content'] = Tools::toSmiles($value['mail_content']);
+        $this->view->userMails = $this->model->Mailbox->getInboxMail();
+        foreach ($this->view->userMails as $key => $value) {
+            $this->view->userMails[$key]['mail_content'] = Tools::toSmiles($value['mail_content']);
         }
-        $this->_view->setViewName('mailbox/wList');
-        $this->_view->setTitle('Messages reçus');
-        $this->_view->render();
+        $this->view->setViewName('mailbox/wList');
+        $this->view->setTitle('Messages reçus');
+        $this->view->render();
     }
 
     public function renderMore($offset = 0)
@@ -23,14 +23,14 @@ class MailboxController extends AppController
         $libel = 'De';
 
         //on récupère les mails de l'utilisateur
-        $this->_view->userMails = $this->_model->Mailbox->getInboxMail($offset);
-        if (count($this->_view->userMails) > 0) {
-            foreach ($this->_view->userMails as $key => $value) {
-                $this->_view->userMails[$key]['mail_content'] = Tools::toSmiles($value['mail_content']);
+        $this->view->userMails = $this->model->Mailbox->getInboxMail($offset);
+        if (count($this->view->userMails) > 0) {
+            foreach ($this->view->userMails as $key => $value) {
+                $this->view->userMails[$key]['mail_content'] = Tools::toSmiles($value['mail_content']);
             }
 
-            $this->_view->offset = $offset++;
-            $this->_view->getJSONResponse('mailbox/wItems');
+            $this->view->offset = $offset++;
+            $this->view->getJSONResponse('mailbox/wItems');
         } else {
             return;
         }
@@ -39,8 +39,8 @@ class MailboxController extends AppController
     public function renderDelete()
     {
         if (!empty($this->params['value'])) {
-            $this->_model->mailbox->deleteConversation($this->params['value']);
-            $this->_view->growler('Conversation supprimée.', GROWLER_OK);
+            $this->model->mailbox->deleteConversation($this->params['value']);
+            $this->view->growler('Conversation supprimée.', GROWLER_OK);
         }
         $this->render();
     }

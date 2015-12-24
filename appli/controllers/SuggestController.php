@@ -18,13 +18,13 @@ class SuggestController extends AppController
         $string = $this->params['value'];
         $datas  = array();
         if (!empty($string)) {
-            $datas = $this->_model->load($type)->suggest($string);
+            $datas = $this->model->load($type)->suggest($string);
         }
         echo json_encode($datas);
     }
 
     public function renderAdd()
     {
-        echo $this->_model->load($this->params['type'])->add($this->params['string']);
+        echo $this->model->load($this->params['type'])->add($this->params['string']);
     }
 }

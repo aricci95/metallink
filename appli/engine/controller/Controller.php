@@ -1,27 +1,27 @@
 <?php
-abstract class Controller extends EngineObject
+abstract class Controller
 {
 
-    public $log;
     public $params = array();
+    public $view;
+    public $model;
 
     protected $_JS = array();
-    protected $_view;
-    protected $_model;
 
     public function __construct()
     {
-        parent::__construct();
+        $this->model = new Model();
+        $this->view = new AppView();
 
-        $this->_model = new Model();
-        $this->_view = new AppView();
+        $this->view->page   = (!empty($_GET['page'])) ? strtolower($_GET['page']) : 'home';
+        $this->view->action = (!empty($_GET['action'])) ? strtolower($_GET['page']) : 'index';
 
-        $this->_view->page   = (!empty($_GET['page'])) ? strtolower($_GET['page']) : 'home';
-        $this->_view->action = (!empty($_GET['action'])) ? strtolower($_GET['page']) : 'index';
         if (!empty($this->_JS)) {
             $this->addJSLibraries();
         }
+
         $this->_buildParams();
+
         if (!empty($_GET['msg'])) {
             $this->showMessage();
         }
@@ -34,12 +34,12 @@ abstract class Controller extends EngineObject
 
     public function getModel()
     {
-        return $this->_model;
+        return $this->model;
     }
 
     public function getView()
     {
-        return $this->_view;
+        return $this->view;
     }
 
     private function _buildParams()
@@ -73,7 +73,7 @@ abstract class Controller extends EngineObject
     public function addJSLibraries()
     {
         foreach ($this->_JS as $library) {
-            $this->_view->addJS($library);
+            $this->view->addJS($library);
         }
     }
 
@@ -88,7 +88,7 @@ abstract class Controller extends EngineObject
             } else {
                 $type = GROWLER_INFO;
             }
-            $this->_view->growler($msg, $type);
+            $this->view->growler($msg, $type);
         }
     }
 

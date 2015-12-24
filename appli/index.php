@@ -28,12 +28,15 @@ if (!empty($_GET['action']) && ucfirst($_GET['action']) != 'Home') {
 }
 
 // Loading application files
-require ROOT_DIR . '/appli/engine/EngineObject.php';
 require ROOT_DIR . '/appli/engine/Log.php';
 require ROOT_DIR . '/appli/engine/view/AppView.php';
+
+// Models
 require ROOT_DIR . '/appli/engine/model/Db.php';
-require ROOT_DIR . '/appli/engine/model/Model.php';
 require ROOT_DIR . '/appli/engine/model/AppModel.php';
+require ROOT_DIR . '/appli/engine/model/Model.php';
+
+// Controllers
 require ROOT_DIR . '/appli/engine/controller/Controller.php';
 require ROOT_DIR . '/appli/engine/controller/AppController.php';
 

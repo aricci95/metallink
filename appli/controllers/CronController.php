@@ -7,7 +7,7 @@ class CronController extends AppController
 
     public function renderUserStatuses()
     {
-        if ($this->_model->User->refreshUserStatuses()) {
+        if ($this->model->User->refreshUserStatuses()) {
             $executionStatus = 'OK';
         } else {
             $executionStatus = 'ERROR';

@@ -1,6 +1,6 @@
 <?php
 
-abstract class AppModel extends EngineObject
+abstract class AppModel
 {
 
     public function fetch($sql)

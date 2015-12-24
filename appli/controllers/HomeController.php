@@ -7,16 +7,16 @@ class HomeController extends AppController
     public function render()
     {
         // Découverte
-        $tmp = $this->_model->news->getNews(3, true);
+        $tmp = $this->model->news->getNews(3, true);
 
-        $this->_view->setViewName('wHome');
+        $this->view->setViewName('wHome');
 
-        $this->_view->newUsers    = $this->_model->User->getNew();
-        $this->_view->newArticles = $this->_model->article->getNew();
-        $this->_view->newCovoits  = $this->_model->covoit->getNew();
-        $this->_view->lesNews     = $this->_model->news->getNews(1);
-        $this->_view->decouverte  = (isset($tmp[0])) ? $tmp[0] : null;
-        $this->_view->render();
+        $this->view->newUsers    = $this->model->User->getNew();
+        $this->view->newArticles = $this->model->article->getNew();
+        $this->view->newCovoits  = $this->model->covoit->getNew();
+        $this->view->lesNews     = $this->model->news->getNews(1);
+        $this->view->decouverte  = (isset($tmp[0])) ? $tmp[0] : null;
+        $this->view->render();
     }
 
     public function renderLogin()
@@ -32,7 +32,7 @@ class HomeController extends AppController
 
             // Vérification de password
             try {
-                $logResult = $this->_model->Auth->checkLogin($login, $this->params['user_pwd']);
+                $logResult = $this->model->Auth->checkLogin($login, $this->params['user_pwd']);
             } catch (Exception $e) {
                 $this->redirect('home', array('msg' => $e->getCode()));
             }
