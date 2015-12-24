@@ -84,7 +84,7 @@ class Auth extends AppModel
     {
         $sql = "SELECT count(*) as nbr
     			FROM
-    				userviews
+    				user_views
     			WHERE viewed_id = '".User::getContextUser('id')."'
                 AND viewer_id NOT IN (
                     SELECT destinataire_id FROM link

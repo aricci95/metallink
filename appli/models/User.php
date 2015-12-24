@@ -325,7 +325,7 @@ class User extends AppModel
         $this->load('photo')->deletePhotosById($id, PHOTO_TYPE_USER);
 
         $this->execute("DELETE FROM user WHERE user_id = ".$this->securize($id));
-        $this->execute("DELETE FROM userviews WHERE viewer_id = ".$this->securize($id)." OR viewed_id = ".$this->securize($id));
+        $this->execute("DELETE FROM user_views WHERE viewer_id = ".$this->securize($id)." OR viewed_id = ".$this->securize($id));
         $this->execute("DELETE FROM mail WHERE mail_destinataire = ".$this->securize($id)." OR mail_expediteur = ".$this->securize($id));
         $this->execute("DELETE FROM chat WHERE `from` = '" . $_SESSION['user_login'] . "' OR `to` = '" . $_SESSION['user_login'] . "';");
 
@@ -375,21 +375,59 @@ class User extends AppModel
     public function createUser($items)
     {
         $userValidationId = uniqid();
-        $sql = "INSERT INTO user (user_login,
-                                  user_pwd,
-                                  user_mail,
-                                  user_gender,
-                                  user_subscribe_date,
-                                  role_id,
-                                  user_valid)
-                                  VALUES ('".$items['user_login']."',
-                                          '".$items['user_pwd']."',
-                                          '".$items['user_mail']."',
-                                          '".$items['user_gender']."',
-                                          '".date("Y-m-d m:i:s")."',
-                                          '".AUTH_LEVEL_USER."',
-                                          '".$userValidationId."')";
-        $this->execute($sql);
+        $sql = '
+            INSERT INTO user (
+                user_login,
+                user_pwd,
+                user_mail,
+                user_gender,
+                user_subscribe_date,
+                role_id,
+                user_valid
+              ) VALUES (
+                :user_login,
+                :user_pwd,
+                :user_mail,
+                :user_gender,
+                NOW(),
+                :role_id,
+                :user_valid
+            );
+        ';
+
+        $stmt = Db::getInstance()->prepare($sql);
+
+        $stmt->bindValue('user_login', $items['user_login']);
+        $stmt->bindValue('user_pwd', $items['user_pwd']);
+        $stmt->bindValue('user_mail', $items['user_mail']);
+        $stmt->bindValue('user_gender', $items['user_gender']);
+        $stmt->bindValue('role_id', AUTH_LEVEL_USER);
+        $stmt->bindValue('user_valid', $userValidationId);
+
+        if ($stmt->execute()) {
+            $sql = '
+                REPLACE INTO link (
+                    expediteur_id,
+                    destinataire_id,
+                    status,
+                    modification_date
+                ) VALUES (
+                    :expediteur_id,
+                    :destinataire_id,
+                    :status,
+                    NOW()
+                );
+            ';
+
+            $stmt = Db::getInstance()->prepare($sql);
+
+            $stmt->bindValue('expediteur_id', 1);
+            $stmt->bindValue('destinataire_id', $this->insertId());
+            $stmt->bindValue('status', LINK_STATUS_ACCEPTED);
+
+            $stmt->execute();
+        }
+
         return $userValidationId;
     }
 

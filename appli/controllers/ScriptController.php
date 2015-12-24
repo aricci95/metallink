@@ -20,9 +20,60 @@ class ScriptController extends AppController
         $this->view->render();
     }
 
-    public function renderLinkAllTritt()
+    public function renderScriptLinkAllTritt()
     {
+        $bunchNumber = 20;
+        $userCount = Model::count('user', array('!user_login' => 'Tritt'));
+        $max = round($userCount/$bunchNumber, 0);
 
+        $sql = '
+            DELETE FROM
+                link
+            WHERE
+                expediteur_id = :user_id
+            OR
+                destinataire_id = :user_id;
+        ';
+
+        $stmt = Db::getInstance()->prepare($sql);
+        $stmt->bindValue('user_id', User::getContextUser('id'));
+        $stmt->execute();
+
+        for ($i=1; $i<$max; $i++) {
+            $bunchOffset = (($i - 1) * $bunchNumber).','.($i * $bunchNumber);
+            $userBunch = Model::find(
+                'user',
+                array('user_id'),
+                array('!user_login' => 'Tritt'),
+                array(),
+                $bunchOffset
+            );
+
+            $sql = '';
+            foreach ($userBunch as $row) {
+                $sql .= '
+                    REPLACE INTO
+                        link
+                    (
+                        expediteur_id,
+                        destinataire_id,
+                        status,
+                        modification_date
+                    )
+                    VALUES (
+                        ' . User::getContextUser('id') . ',
+                        ' . $row['user_id'] . ',
+                        ' . LINK_STATUS_ACCEPTED . ',
+                        NOW()
+                    )
+                ;';
+            }
+
+            $this->model->execute($sql);
+        }
+
+        $this->view->growler('Opération effectuée', GROWLER_OK);
+        $this->render();
     }
 
     public function renderScriptPwdToMd5()

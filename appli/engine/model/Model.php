@@ -24,6 +24,75 @@ class Model extends AppModel
         return $this->$model;
     }
 
+    public static function count($table, array $where = array(), array $orderBy = array(), $limit = null)
+    {
+        $attributes_string = 'count(*) AS counter';
+
+        $data = self::_queryBuilder($table, $attributes_string, $where, $orderBy, $limit);
+
+        return (int) $data[0]['counter'];
+    }
+
+    public static function find($table, array $attributes = array(), array $where = array(), array $orderBy = array(), $limit = null)
+    {
+        $attributes_string = empty($attributes) ? '*' : implode(',', $attributes);
+
+        return self::_queryBuilder($table, $attributes_string, $where, $orderBy, $limit);
+    }
+
+    /**
+     * [find description]
+     * @param  string $table
+     * @param  array  $attributes
+     * @param  array  $where
+     * @param  array $orderBy
+     * @param  string $limit
+     * @return array
+     */
+    private static function _queryBuilder($table, $attributes_string = null, array $where = array(), array $orderBy = array(), $limit = null)
+    {
+        $sql = '
+            SELECT
+                ' . $attributes_string . '
+            FROM
+                ' . $table . '
+            ';
+
+        if (!empty($where)) {
+            $sql .= ' WHERE TRUE ';
+
+            foreach ($where as $key => $value) {
+                if (strpos($key, '!') === 0) {
+                    $key = str_replace('!', '', $key);
+                    $sql .= " AND $key != :$key ";
+                } else {
+                    $sql .= " AND $key = :$key ";
+                }
+            }
+        }
+
+        if (!empty($orderBy)) {
+            $sql .= ' ORDER BY ' . implode(',', $orderBy);
+        }
+
+        if (!empty($limit)) {
+            $sql .= ' LIMIT ' . $limit;
+        }
+
+        $stmt = Db::getInstance()->prepare($sql);
+
+        if (!empty($where)) {
+            foreach ($where as $key => $value) {
+                $stmt->bindValue(str_replace('!', '', $key), $value);
+            }
+        }
+
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+
+    }
+
    // Liste une table
     public function getItemsFromTable($table, $order = false)
     {

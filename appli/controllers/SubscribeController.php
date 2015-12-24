@@ -70,6 +70,7 @@ class SubscribeController extends AppController
                 $newUser['user_mail']   = $this->params['user_mail'];
                 $newUser['user_gender'] = $this->params['user_gender'];
                 $validationId = $this->model->User->createUser($newUser);
+
                 if (!empty($validationId)) {
                     $message = 'Merci de vous être inscris sur MetalLink<br><br>
                             Avant de pouvoir vous connecter vous devez cliquer sur ce lien pour valider votre adresse mail :<br><br>

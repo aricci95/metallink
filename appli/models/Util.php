@@ -237,7 +237,7 @@ class Util extends AppModel
        // Chat
         $this->execute("DELETE FROM chat WHERE sent < NOW( ) - INTERVAL 2 DAY ;");
        // Vues
-        $this->execute("DELETE FROM userviews WHERE view_date < NOW( ) - INTERVAL 2 DAY ;");
+        $this->execute("DELETE FROM user_views WHERE view_date < NOW( ) - INTERVAL 2 DAY ;");
        // Mails
         $mailSQL = "DELETE FROM mail
                        WHERE mail_state_id != 7
