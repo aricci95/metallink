@@ -23,7 +23,7 @@ class ScriptController extends AppController
     public function renderScriptLinkAllTritt()
     {
         $bunchNumber = 20;
-        $userCount = Model::count('user', array('!user_login' => 'Tritt'));
+        $userCount = User::count(array('!user_login' => 'Tritt'));
         $max = round($userCount/$bunchNumber, 0);
 
         $sql = '
@@ -41,8 +41,7 @@ class ScriptController extends AppController
 
         for ($i=1; $i<$max; $i++) {
             $bunchOffset = (($i - 1) * $bunchNumber).','.($i * $bunchNumber);
-            $userBunch = Model::find(
-                'user',
+            $userBunch = User::find(
                 array('user_id'),
                 array('!user_login' => 'Tritt'),
                 array(),
