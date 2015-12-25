@@ -70,7 +70,7 @@
         <!-- FIN PARTIE FACEBOOK -->
     <div class="site" >
         <div><a href="home"><img src="<?php echo $this->headerImg ?>" /></a></div>
-        <div class="intitule" align="center">Communauté métal en tout genres <span style="color:#B40404;margin-left:225px;"><?php echo 'v'.APP_VERSION ?></span></div>
+        <div class="intitule" align="center">Communauté métal en tous genres <span style="color:#B40404;margin-left:225px;"><?php echo 'v'.APP_VERSION ?></span></div>
         <div class="divCorps" align="left">
 <?php if(User::getContextUser('id')) : ?>
     <div class="divBarre">

@@ -1,11 +1,11 @@
 <?php
- 
+
 /*
  *  Classe d'administration
  */
 class Admin extends AppModel
 {
-    
+
     function deleteUnusedAccounts()
     {
         // récupération des comptes inutilisés

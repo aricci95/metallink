@@ -1,22 +1,22 @@
 <?php
 
-/* 
+/*
  *  Classe d'accès aux données des utilisateurs
  */
 class Photo extends AppModel
 {
-    
+
     // Récupère une photo par cle
     public function getPhotosByKey($photoKey, $photoType)
     {
         $sql = "SELECT *
                 FROM photo
-                WHERE key_id = $photoKey 
+                WHERE key_id = $photoKey
                 AND type_id = $photoType
                 ORDER BY photo_id DESC;";
         return $this->fetch($sql);
     }
-    
+
     // Ajoute une photo
     public function addPhoto($photo)
     {
@@ -63,39 +63,39 @@ class Photo extends AppModel
         }
         return true;
     }
-        
+
     // Supprime les photos inutilisées
     public function deleteUnusedPhotos()
     {
             $count = 0;
             // Recherche des photos secondaires d'utilisateur supprimés
-            $selectSql = "SELECT photo_id, photo_url 
+            $selectSql = "SELECT photo_id, photo_url
                            FROM photo
                            WHERE key_id NOT IN (SELECT user_id FROM user)";
             $photos = $this->fetch($selectSql);
-            
+
         foreach ($photos as $key => $photo) {
             echo 'suprresion de '.$photo['photo_url'].'<br>';
             self::deletePhotoById($photo['photo_id'], $photo['photo_url']);
             $count++;
         }
-            
+
             // on récupère toutes les références de photos
             $selectSql = "(SELECT photo_url, photo_id FROM photo)
                             UNION
                             (SELECT user_photo_url as photo_url, 'none' as photo_id FROM user)";
             $photosBdd = $this->fetch($selectSql);
-            
+
         foreach ($photosBdd as $key => $value) {
             $photoBdd[$value['photo_url']] = $value['photo_id'];
         }
-            
+
             // Recherche des photos qui ne sont pas en BDD
             $profileDirname = ROOT_DIR.'/photos/profile/';
             $smallDirname = ROOT_DIR.'/photos/small/';
             $profileDir = opendir($profileDirname);
             $smallDir = opendir($smallDirname);
-            
+
             $photosDelete = array();
         while ($file = readdir($profileDir)) {
             if ($file != '.' && $file != '..' && !is_dir($profileDirname.$file)) {
@@ -117,7 +117,7 @@ class Photo extends AppModel
                         $count++;
                     }
                 }
-                     
+
             }
         }
             echo "<b>$count photos supprimées</b>.";
@@ -133,7 +133,7 @@ class Photo extends AppModel
         if (! $i) {
             return "";
         }
-        
+
         $l = strlen($str) - $i;
         $ext = substr($str, $i + 1, $l);
         return $ext;
@@ -145,7 +145,7 @@ class Photo extends AppModel
         $errors = 0;
         $image        = $photoFiles["name"];
         $uploadedfile = $photoFiles['tmp_name'];
-        
+
         if ($image) {
             $filename = stripslashes($photoFiles['name']);
             $extension = $this->_getExtension($filename);
@@ -157,7 +157,7 @@ class Photo extends AppModel
                 return false;
             } else {
                 $size = filesize($photoFiles['tmp_name']);
-                
+
                 if ($size > MAX_SIZE * 1024) {
                     $view->growler('Votre image est trop lourde', GROWLER_ERR);
                     return false;
@@ -182,7 +182,7 @@ class Photo extends AppModel
                 $profileheight = $height;
                 $profileTmp = imagecreatetruecolor($profilewidth, $profileheight);
                 imagecopyresampled($profileTmp, $src, 0, 0, 0, 0, $profilewidth, $profileheight, $width, $height);
-                
+
                 // ICONE (qualibrage de la hauteur)
                 $smallTmp = null;
                 $smallheight = 150;
@@ -196,12 +196,12 @@ class Photo extends AppModel
                 $photo['photo_id']  = $this->addPhoto($photo);
                 $filename  = ROOT_DIR.'/photos/profile/'.$photo['photo_url'];
                 $filename1 = ROOT_DIR.'/photos/small/'.$photo['photo_url'];
-                
-                    
+
+
                 // Creation
                 imagejpeg($profileTmp, $filename, 100);
                 imagejpeg($smallTmp, $filename1, 100);
-                
+
                 // DESTRUCTION
                 imagedestroy($src);
                 imagedestroy($smallTmp);

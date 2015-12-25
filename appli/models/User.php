@@ -5,7 +5,6 @@
  */
 class User extends AppModel
 {
-
     private $_attributes = array('user_login',
                                 'user_pwd',
                                 'user_mail',

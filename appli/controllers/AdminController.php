@@ -14,7 +14,7 @@ class AdminController extends AppController
 
     public function renderSwitch()
     {
-        $this->view->users  = $this->model->User->getUsers();
+        $this->view->users  = User::find();
         $this->view->action = 'setSwitch';
         $this->view->setTitle('User switch');
         $this->view->setViewName('admin/wUsers');
@@ -24,7 +24,11 @@ class AdminController extends AppController
     public function renderSetSwitch()
     {
         if (!empty($this->params['user_id'])) {
-            $user = $this->model->User->getById($this->params['user_id']);
+            $user = User::find(
+                array(),
+                array('user_id' => $this->params['user_id'])
+            );
+
             if (!empty($user)) {
                 if ($user['user_valid'] != 1) {
                     $this->view->growler('Utilistateur non validé.', GROWLER_ERR);

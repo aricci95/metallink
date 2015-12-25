@@ -21,6 +21,7 @@ if(!empty($_GET['page']) && ucfirst($_GET['page']) != 'Home') {
 } else {
     $page = 'HomeController';
 }
+
 // ACTION
 $action = 'render';
 if (!empty($_GET['action']) && ucfirst($_GET['action']) != 'Home') {
@@ -33,8 +34,9 @@ require ROOT_DIR . '/appli/engine/view/AppView.php';
 
 // Models
 require ROOT_DIR . '/appli/engine/model/Db.php';
-require ROOT_DIR . '/appli/engine/model/AppModel.php';
 require ROOT_DIR . '/appli/engine/model/Model.php';
+require ROOT_DIR . '/appli/engine/model/AppModel.php';
+require ROOT_DIR . '/appli/engine/model/Manager.php';
 
 // Controllers
 require ROOT_DIR . '/appli/engine/controller/Controller.php';
@@ -47,9 +49,8 @@ require ROOT_DIR . '/appli/models/Link.php';
 require ROOT_DIR . '/appli/views/ViewHelper.php';
 
 // gestionnaire d'erreurs
-include ROOT_DIR.'/appli/engine/ErrorHandler.php';
+include ROOT_DIR . '/appli/engine/ErrorHandler.php';
 set_error_handler("ErrorHandler");
-
 
 try {
     require_once ROOT_DIR . '/appli/controllers/'.$page.'.php';

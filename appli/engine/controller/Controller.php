@@ -10,7 +10,7 @@ abstract class Controller
 
     public function __construct()
     {
-        $this->model = new Model();
+        $this->model = new Model_Manager();
         $this->view = new AppView();
 
         $this->view->page   = (!empty($_GET['page'])) ? strtolower($_GET['page']) : 'home';

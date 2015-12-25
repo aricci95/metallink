@@ -1,77 +1,31 @@
 <?php
 
-abstract class AppModel
+abstract class AppModel extends Model
 {
 
-    public function fetch($sql)
+    private static $_table;
+
+    public static function count(array $where = array(), array $orderBy = array(), $limit = null)
     {
-        $stmt = Db::getInstance()->prepare($sql);
-        $stmt->execute();
-
-        return $stmt->fetchAll();
-    }
-
-    public function fetchOnly($sql)
-    {
-        $stmt = Db::getInstance()->prepare($sql);
-        $stmt->execute();
-
-        return $stmt->fetch();
-    }
-
-    public function execute($sql, array $params = array())
-    {
-        $stmt = Db::getInstance()->prepare($sql);
-
-        foreach ($params as $key => $value) {
-            $stmt->bindValue($key, $value);
+        if (empty(self::$_table)) {
+            self::$_table = strtolower(get_called_class());
         }
 
-        if (PROFILER) {
-            $begin_time = microtime(true);
-        }
+        $attributes_string = 'count(*) AS counter';
 
-        $response = $stmt->execute();
+        $data = self::_queryBuilder(self::$_table, $attributes_string, $where, $orderBy, $limit);
 
-        if (PROFILER) {
-            $end_time =  microtime(true);
-            $executionTime = $end_time - $begin_time;
-
-            if ($executionTime >= 0.0025) {
-                echo '<div class="debug"><br/>' . $sql . '<br/><br/>' . $executionTime . '<br/></div>';
-            }
-        }
-
-        if (!$response) {
-            $error_message = $stmt->errorInfo();
-            throw new Exception('La requête suivante : <b><br/>' . $sql . '</b><br/><br/>a renvoyé une erreur :<br/><i>' . $error_message[2] . '<i>', ERROR_SQL);
-        };
-
-        return $response;
+        return (int) $data[0]['counter'];
     }
 
-    public function insertId()
+    public static function find(array $attributes = array(), array $where = array(), array $orderBy = array(), $limit = null)
     {
-        return Db::getInstance()->lastInsertId();
-    }
-
-    public function securize($data)
-    {
-        if (is_numeric($data)) {
-            return $data;
-        } else {
-            return Db::getInstance()->real_escape_string(htmlentities($data, ENT_QUOTES));
-        }
-    }
-
-    public function load($model)
-    {
-        $model = ucfirst($model);
-        if (!isset($this->$model)) {
-            require_once ROOT_DIR.'/appli/models/'.$model.'.php';
-            $this->$model = new $model();
+        if (empty(self::$_table)) {
+            self::$_table = strtolower(get_called_class());
         }
 
-        return $this->$model;
+        $attributes_string = empty($attributes) ? '*' : implode(',', $attributes);
+
+        return self::_queryBuilder(self::$_table, $attributes_string, $where, $orderBy, $limit);
     }
 }
