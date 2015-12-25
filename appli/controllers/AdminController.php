@@ -24,10 +24,7 @@ class AdminController extends AppController
     public function renderSetSwitch()
     {
         if (!empty($this->params['user_id'])) {
-            $user = User::find(
-                array(),
-                array('user_id' => $this->params['user_id'])
-            );
+            $user = User::findById($this->params['user_id']);
 
             if (!empty($user)) {
                 if ($user['user_valid'] != 1) {
@@ -37,7 +34,6 @@ class AdminController extends AppController
                     $_SESSION['user_login']     = $user['user_login'];
                     $_SESSION['role_id']        = $user['role_id'];
                     $_SESSION['user_photo_url'] = $user['user_photo_url'];
-                    $_SESSION['age']            = $user['age'];
                     $_SESSION['user_valid']     = $user['user_valid'];
                     $_SESSION['user_mail']      = $user['user_mail'];
                     $_SESSION['user_gender']    = $user['user_gender'];
