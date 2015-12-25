@@ -30,6 +30,7 @@ if (!empty($_GET['action']) && ucfirst($_GET['action']) != 'Home') {
 
 // Loading application files
 require ROOT_DIR . '/appli/engine/Log.php';
+require ROOT_DIR . '/appli/engine/Mailer.php';
 require ROOT_DIR . '/appli/engine/view/AppView.php';
 
 // Models
@@ -58,7 +59,7 @@ try {
     $controller->$action();
 } catch (Exception $e) {
     include ROOT_DIR.'/appli/views/maintenance.htm';
-    $controller->getModel()->load('mailer')->sendError($e);
+    Mailer::sendError($e);
     die;
 }
 

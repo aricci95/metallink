@@ -69,6 +69,7 @@ class MailController extends AppController
 
         // On récupère les information du mail
         $parentMails = $this->model->Mail->getConversation($userId);
+
         if ($this->_checkMails($parentMails, $userId)) {
             $this->view->parentMails  = $parentMails;
             $this->view->destinataire = $this->_getDestinataire($parentMails, $userId);
@@ -98,9 +99,8 @@ class MailController extends AppController
             $this->redirect('mailbox', array('msg' => ERR_DEFAULT));
         }
 
-        $items['mail_id'] = '';
-        $items['mail_expediteur']   = User::getContextUser('id');
-        $items['mail_destinataire'] = $this->params['mail_destinataire'];
+        $from    = User::getContextUser('id');
+        $to      = $this->params['mail_destinataire'];
         $content = htmlentities($this->params['mail_content'], ENT_QUOTES, 'utf-8');
 
         if (empty($content)) {
@@ -109,27 +109,17 @@ class MailController extends AppController
             return;
         }
 
-        $items['mail_content']  = nl2br($content);
-        $items['mail_date']     = date("Y-m-d H:i:s");
-        $items['mail_state_id'] = MAIL_STATUS_SENT;
-        $items['mailbox_id']    = MAIL_STATUS_SENT;
+        $content = nl2br($content);
 
-        if ($this->model->Mail->sendMail($items) != false) {
-            $destinataire = $this->model->User->getMailByUser($this->params['mail_destinataire']);
+        if ($this->model->Mail->sendMail($from, $to, $content)) {
             $message = User::getContextUser('login').' vous a envoyé un nouveau message ! <a href="http://metallink.fr/mail/' . User::getContextUser('id') . '">Cliquez ici</a> pour le lire.';
-
-            if ($this->model->mailer->send($destinataire['user_mail'], 'Nouveau message sur MetalLink !', $message)) {
-                $this->params['value'] = $items['mail_destinataire'];
-                $this->redirect('mail', array($this->params['value'], 'msg' => MSG_SENT_OK));
-                return;
-            } else {
-                Log::err('impossible d\'envoyer la notification mail du message.');
-                $this->redirect('mailbox', array('msg' => ERR_MAIL));
-            }
+            $this->redirect('mail', array($this->params['value'], 'msg' => MSG_SENT_OK));
         } else {
             Log::err('impossible d\'enregistrer le mail.');
             $this->redirect('mailbox', array('msg' => ERR_MAIL));
         }
+
+        return;
     }
 
     public function renderMore()

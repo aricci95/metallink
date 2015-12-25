@@ -14,7 +14,7 @@ class AdminController extends AppController
 
     public function renderSwitch()
     {
-        $this->view->users  = User::find();
+        $this->view->users  = User::find(array(), array('!user_id' => User::getContextUser('id')));
         $this->view->action = 'setSwitch';
         $this->view->setTitle('User switch');
         $this->view->setViewName('admin/wUsers');
@@ -77,26 +77,26 @@ class AdminController extends AppController
     public function renderMailSubmit()
     {
         if (!empty($this->params['mail_content'])) {
-            $mail['mail_expediteur'] = $mail['mail_destinataire'] = User::getContextUser('id');
-            $mail['mail_content']    = htmlentities($this->params['mail_content'], ENT_QUOTES, 'utf-8');
-            $step1 = $this->model->load('mail')->sendMail($mail, MAIL_STATUS_ADMIN);
-            if ($step1) {
-                $sentMails = 0;
-                $users     = $this->model->User->getUsers();
-                foreach ($users as $user) {
-                    if ($this->model->load('mailer')->send($user['user_mail'], 'Nouveau message sur MetalLink !', 'Vous avez reçu un nouveau message !')) {
-                        $sentMails++;
-                    }
+            $from    = User::getContextUser('id');
+            $content = htmlentities($this->params['mail_content'], ENT_QUOTES, 'utf-8');
+            $users   = User::find(array('user_id'), array('!user_id' => User::getContextUser('id')));
+
+            $sentMails = 0;
+            foreach ($users as $user) {
+                if ($this->model->mail->sendMail($from, $user['user_id'], $content)) {
+                    $sentMails++;
                 }
             }
-            if ($step1 && $sentMails > 0) {
-                $this->view->growler($sentMails.' Emails envoyé.', GROWLER_OK);
+
+            if ($sentMails > 0) {
+                $this->view->growler($sentMails.' Emails envoyés.', GROWLER_OK);
             } else {
                 $this->view->growlerError();
             }
         } else {
             $this->view->growlerError('Le message vide.');
         }
+
         $this->render();
     }
 }

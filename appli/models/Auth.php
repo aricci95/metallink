@@ -209,7 +209,7 @@ class Auth extends AppModel
 
             $message = 'Pour modifier ton mot de passe clique sur le lien suivant : <a href="http://www.metallink.fr/lostpwd/new/' . $pwd_valid . '">modifier mon mot de passe</a>';
 
-            return $this->load('mailer')->send($result['user_mail'], 'Modifcation du mot de passe MetalLink', $message);
+            return Mailer::send($result['user_mail'], 'Modifcation du mot de passe MetalLink', $message);
         } else {
             return false;
         }

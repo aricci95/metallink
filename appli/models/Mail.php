@@ -16,41 +16,13 @@ class Mail extends AppModel
     }
 
     // Récupère l'ensemble de la conversation
-    public function getAdminConversation()
-    {
-        Log::err('getAdminConversation');
-        $sql = "SELECT
-                    mail_id,
-                    user.user_id as user_id,
-                    mail_expediteur,
-                    mail_destinataire,
-                    user_login,
-                    user_gender,
-                    mail_content,
-                    mail_date,
-                    UNIX_TIMESTAMP(user_last_connexion) as user_last_connexion,
-                    UNIX_TIMESTAMP( mail_date ) AS mail_delais,
-                    user_photo_url,
-                    mail_state_libel,
-                    mail.mail_state_id as mail_state_id
-                FROM
-                    mail,
-                    ref_mail_state,
-                    user
-                WHERE user.user_id = mail.mail_expediteur
-                AND user.user_id = 1
-                AND ref_mail_state.mail_state_id = mail.mail_state_id
-                AND mail.mail_state_id = ".MAIL_STATUS_ADMIN."
-                ORDER BY mail_date DESC
-                LIMIT 0, 10;";
-
-        return $this->fetch($sql);
-    }
-
-    // Récupère l'ensemble de la conversation
     public function getConversation($userId, $offset = 0)
     {
-        $sql = "SELECT
+        $start = ($offset * NB_MAIL_RESULTS);
+        $stop  = NB_MAIL_RESULTS;
+
+        $sql = '
+            SELECT
                 mail_id,
                 user.user_id as user_id,
                 mail_expediteur,
@@ -68,12 +40,24 @@ class Mail extends AppModel
                 mail
             JOIN user ON (user.user_id = mail.mail_expediteur)
             JOIN ref_mail_state ON (ref_mail_state.mail_state_id = mail.mail_state_id)
-            WHERE mail_expediteur IN (".User::getContextUser('id').", ".$userId.")
-            AND mail_destinataire IN (".User::getContextUser('id').", ".$userId.")
-            AND mail.mail_state_id IN (".MAIL_STATUS_SENT.", ".MAIL_STATUS_READ.", ".MAIL_STATUS_ADMIN.")
+            WHERE mail_expediteur IN (:context_user_id, :user_id)
+            AND mail_destinataire IN (:context_user_id, :user_id)
+            AND mail.mail_state_id IN (:status_sent, :status_read)
             ORDER BY mail_date DESC
-            LIMIT ".($offset * NB_MAIL_RESULTS).", ".NB_MAIL_RESULTS.";";
-        return $this->fetch($sql);
+            LIMIT ' . $start . ', ' . $stop . '
+            ;
+        ';
+
+        $stmt = Db::getInstance()->prepare($sql);
+
+        $stmt->bindValue('context_user_id', User::getContextUser('id'));
+        $stmt->bindValue('user_id', $userId);
+        $stmt->bindValue('status_sent', MAIL_STATUS_SENT);
+        $stmt->bindValue('status_read', MAIL_STATUS_READ);
+
+        $stmt->execute();
+
+        return $stmt->fetchAll();
     }
 
     // Supprime un mail
@@ -98,23 +82,44 @@ class Mail extends AppModel
     }
 
     // Envoyer un mail
-    public function sendMail($items, $status = MAIL_STATUS_SENT)
+    public function sendMail($from, $to, $content)
     {
-        if (empty($items['mail_destinataire']) || empty($items['mail_expediteur'])) {
+        if (empty($from) || empty($to)) {
             $message = "<br/><br/>Valeurs en paramètres : <br/>";
-            foreach ($items as $key => $value) {
-                if (!empty($value)) {
-                    $message .= $key.' => '.$value.'<br/>';
-                }
-            }
             throw new Exception('Erreur lors de la sauvegarde du mail, destinataire / expediteur manquant'.$message, ERROR_BEHAVIOR);
-        } else {
-            $sql = "INSERT INTO mail (mail_content, mail_expediteur, mail_destinataire, mail_date, mail_state_id, mailbox_id)
-                    VALUES ('".$items['mail_content']."', "
-                              .$items['mail_expediteur'].", "
-                              .$items['mail_destinataire'].", NOW(), "
-                              .$status.", 1);";
-            return $this->execute($sql);
+        }
+
+        $sql = '
+            INSERT INTO mail (
+                mail_content,
+                mail_expediteur,
+                mail_destinataire,
+                mail_date,
+                mail_state_id,
+                mailbox_id
+            ) VALUES (
+                :mail_content,
+                :mail_expediteur,
+                :mail_destinataire,
+                NOW(),
+                :mail_state_id,
+                :mailbox_id
+            );
+        ';
+
+        $stmt = Db::getInstance()->prepare($sql);
+
+        $stmt->bindValue('mail_content', $content);
+        $stmt->bindValue('mail_expediteur', $from);
+        $stmt->bindValue('mail_destinataire', $to);
+        $stmt->bindValue('mail_state_id', MAIL_STATUS_SENT);
+        $stmt->bindValue('mailbox_id', 1);
+
+        if ($stmt->execute()) {
+            $destinataire = User::findById($to, array('user_mail'));
+            $message      = User::getContextUser('login').' vous a envoyé un nouveau message ! <a href="http://metallink.fr/mail/' . User::getContextUser('id') . '">Cliquez ici</a> pour le lire.';
+
+            return Mailer::send($destinataire['user_mail'], 'Nouveau message sur MetalLink !', $message);
         }
     }
 }

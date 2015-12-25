@@ -44,7 +44,7 @@ class Link extends AppModel
         }
         if (!empty($destinataire['user_mail'])) {
             $message = 'Vous avez reçu une nouvelle demande de la part de '. User::getContextUser('login') .' !';
-            $this->load('mailer')->send($destinataire['user_mail'], 'Nouvelle demande sur MetalLink !', $message);
+            Mailer::send($destinataire['user_mail'], 'Nouvelle demande sur MetalLink !', $message);
         }
         return true;
     }
