@@ -91,7 +91,11 @@ class Article extends AppModel
 
     public function deleteArticleById($id)
     {
-        $this->load('Photo')->deletePhotosById($id, PHOTO_TYPE_ARTICLE);
+        require ROOT_DIR . '/appli/models/Photo.php';
+
+        $photo_manager = new Photo();
+        $photo_manager->deletePhotosById($id, PHOTO_TYPE_ARTICLE);
+
         return $this->execute("DELETE FROM article WHERE art_id = ".$this->securize($id));
     }
 

@@ -321,7 +321,10 @@ class User extends AppModel
 
     public function deleteUserById($id)
     {
-        $this->load('photo')->deletePhotosById($id, PHOTO_TYPE_USER);
+        require ROOT_DIR . '/appli/models/Photo.php';
+
+        $photo_manager = new Photo();
+        $photo_manager->deletePhotosById($id, PHOTO_TYPE_USER);
 
         $this->execute("DELETE FROM user WHERE user_id = ".$this->securize($id));
         $this->execute("DELETE FROM user_views WHERE viewer_id = ".$this->securize($id)." OR viewed_id = ".$this->securize($id));

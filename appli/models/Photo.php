@@ -9,12 +9,21 @@ class Photo extends AppModel
     // Récupère une photo par cle
     public function getPhotosByKey($photoKey, $photoType)
     {
-        $sql = "SELECT *
-                FROM photo
-                WHERE key_id = $photoKey
-                AND type_id = $photoType
-                ORDER BY photo_id DESC;";
-        return $this->fetch($sql);
+        $sql = '
+            SELECT *
+            FROM photo
+            WHERE key_id = :photo_key
+            AND type_id = :type_id
+            ORDER BY photo_id DESC
+        ;';
+
+        $stmt = Db::getInstance()->prepare($sql);
+
+        $stmt->bindValue(':photo_key', $photoKey);
+        $stmt->bindValue(':type_id', $photoType);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
     }
 
     // Ajoute une photo
@@ -52,6 +61,7 @@ class Photo extends AppModel
     public function deletePhotosById($keyId, $typeId)
     {
         $photos = $this->getPhotosByKey($keyId, $typeId);
+
         foreach ($photos as $photo) {
             if (file_exists(ROOT_DIR.'/photos/small/'.$photo['photo_url'])) {
                 unlink(ROOT_DIR.'/photos/small/'.$photo['photo_url']);
@@ -59,8 +69,15 @@ class Photo extends AppModel
             if (file_exists(ROOT_DIR.'/photos/profile/'.$photo['photo_url'])) {
                 unlink(ROOT_DIR.'/photos/profile/'.$photo['photo_url']);
             }
-            $this->execute("DELETE FROM photo WHERE photo_id = '" . $photo['photo_id'] . "'");
+
+            $sql = 'DELETE FROM photo WHERE photo_id = :photo_id';
+
+            $stmt = Db::getInstance()->prepare($sql);
+            $stmt->bindValue('photo_id', $photo['photo_id']);
+
+            $stmt->execute();
         }
+
         return true;
     }
 
@@ -76,7 +93,7 @@ class Photo extends AppModel
 
         foreach ($photos as $key => $photo) {
             echo 'suprresion de '.$photo['photo_url'].'<br>';
-            self::deletePhotoById($photo['photo_id'], $photo['photo_url']);
+            $this->deletePhotoById($photo['photo_id'], $photo['photo_url']);
             $count++;
         }
 
