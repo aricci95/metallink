@@ -101,7 +101,10 @@ class MailController extends AppController
 
         $from    = User::getContextUser('id');
         $to      = $this->params['mail_destinataire'];
+        Log::err($_POST);
+        Log::err($this->params['mail_content']);
         $content = htmlentities($this->params['mail_content'], ENT_QUOTES, 'utf-8');
+        Log::err($content);
 
         if (empty($content)) {
             $this->view->growler('Message vide.', GROWLER_INFO);
