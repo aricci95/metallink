@@ -39,6 +39,9 @@ require ROOT_DIR . '/appli/engine/model/Model.php';
 require ROOT_DIR . '/appli/engine/model/AppModel.php';
 require ROOT_DIR . '/appli/engine/model/Manager.php';
 
+// Services
+require ROOT_DIR . '/appli/engine/service/Container.php';
+
 // Controllers
 require ROOT_DIR . '/appli/engine/controller/Controller.php';
 require ROOT_DIR . '/appli/engine/controller/AppController.php';

@@ -50,4 +50,9 @@ abstract class AppModel extends Model
 
         return $results[0];
     }
+
+    public static function create(array $params = array())
+    {
+
+    }
 }

@@ -5,13 +5,15 @@ abstract class Controller
     public $params = array();
     public $view;
     public $model;
+    public $container;
 
     protected $_JS = array();
 
     public function __construct()
     {
-        $this->model = new Model_Manager();
-        $this->view = new AppView();
+        $this->model     = new Model_Manager();
+        $this->view      = new AppView();
+        $this->container = new Container();
 
         $this->view->page   = (!empty($_GET['page'])) ? strtolower($_GET['page']) : 'home';
         $this->view->action = (!empty($_GET['action'])) ? strtolower($_GET['page']) : 'index';
@@ -25,6 +27,11 @@ abstract class Controller
         if (!empty($_GET['msg'])) {
             $this->showMessage();
         }
+    }
+
+    public function get($service)
+    {
+        return $this->container->getService($service);
     }
 
     public function isAjax()
