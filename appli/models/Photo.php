@@ -45,19 +45,6 @@ class Photo extends AppModel
     }
 
     // Supprime une photo
-    public function deletePhoto($photo)
-    {
-        if (file_exists(ROOT_DIR.'/photos/small/'.$photo['photo_url'])) {
-            unlink(ROOT_DIR.'/photos/small/'.$photo['photo_url']);
-        }
-        if (file_exists(ROOT_DIR.'/photos/profile/'.$photo['photo_url'])) {
-            unlink(ROOT_DIR.'/photos/profile/'.$photo['photo_url']);
-        }
-        $sql = "DELETE FROM photo WHERE photo_id = '" . $photo['photo_id'] . "'";
-        return $this->execute($sql);
-    }
-
-    // Supprime une photo
     public function deletePhotosById($keyId, $typeId)
     {
         $photos = $this->getPhotosByKey($keyId, $typeId);

@@ -51,8 +51,17 @@ abstract class AppModel extends Model
         return $results[0];
     }
 
-    public static function create(array $params = array())
+    public static function deleteById($id)
     {
+        $sql = 'DELETE FROM :table WHERE :primary = :id';
 
+        $stmt = Db::getInstance()->prepare($sql);
+
+        $stmt->bindValue('table', self::$_table);
+        $stmt->bindValue('primary', self::$_primary);
+        $stmt->bindValue('id', (int) $id);
+
+        return $stmt->execute();
     }
+
 }
