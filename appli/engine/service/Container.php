@@ -28,7 +28,7 @@ class Container
 
             $this->_services[$service] = new $serviceClassName();
         } catch (Exception $e) {
-            throw new Exception("Impossible d'instancier $serviceClassName", 1);
+            throw new Exception("Impossible d'instancier $serviceClassName");
         }
 
         return $this->_services[$service];

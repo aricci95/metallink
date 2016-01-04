@@ -38,11 +38,8 @@ class PhotoController extends AppController
     public function render()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_FILES['new_photo'])) {
-            $photo['type_id'] = $this->_typeId;
-            $photo['key_id']  = $this->_keyId;
-
             try {
-                $this->get('photo')->uploadImage(array_merge($_FILES['new_photo'], $photo));
+                $this->get('photo')->uploadImage($_FILES['new_photo']['name'], $_FILES['new_photo']['tmp_name'], $this->_typeId, $this->_keyId);
             } catch (Exception $e) {
                 $this->view->growler($e->getMessage(), GROWLER_ERR);
             }
@@ -92,7 +89,9 @@ class PhotoController extends AppController
                 $this->view->mainPhotoUrl = $object[$this->_objectPhotoUrl];
             }
         }
+
         $this->view->getJSONResponse('photo/wItems');
+
         return JSON_OK;
     }
 
