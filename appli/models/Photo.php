@@ -6,7 +6,6 @@
 class Photo extends AppModel
 {
 
-    // Récupère une photo par cle
     public function getPhotosByKey($photoKey, $photoType)
     {
         $sql = '

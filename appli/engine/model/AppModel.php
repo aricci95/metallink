@@ -88,7 +88,8 @@ abstract class AppModel extends Model
         if(!$stmt->execute()) {
             throw new Exception('Impossible d\'insérer dans ' . self::getTable(). ' avec les valeurs données.');
         }
-
+        Log::debug($stmt->queryString);
+        Log::debug($values);
         return Db::getInstance()->lastInsertId();
     }
 

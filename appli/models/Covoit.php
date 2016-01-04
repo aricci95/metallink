@@ -76,13 +76,13 @@ class Covoit extends AppModel
                 WHERE covoit_id = '$id';";
         return $this->fetchOnly($sql);
     }
-
+/*
     public function deleteById($id)
     {
 
         return $this->execute("DELETE FROM covoit WHERE covoit_id = ".$this->securize($id));
     }
-
+*/
     public function update($datas)
     {
         if (!empty($datas['covoit_id'])) {
