@@ -2,6 +2,11 @@
 class Log
 {
 
+    public static function debug($data)
+    {
+        self::write('debug', $data);
+    }
+
     public static function info($data)
     {
         self::write('info', $data);

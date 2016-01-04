@@ -41,10 +41,13 @@ class PhotoController extends AppController
             $photo['type_id'] = $this->_typeId;
             $photo['key_id']  = $this->_keyId;
 
-            $photo = $this->get('photo')->uploadImage(array_merge($_FILES['new_photo'], $photo));
-            if (!empty($photo)) {
-                $this->view->growler('Photo ajoutée', GROWLER_OK);
+            try {
+                $this->get('photo')->uploadImage(array_merge($_FILES['new_photo'], $photo));
+            } catch (Exception $e) {
+                $this->view->growler($e->getMessage(), GROWLER_ERR);
             }
+
+            $this->view->growler('Photo ajoutée', GROWLER_OK);
         }
 
         $photos = $this->model->photo->getPhotosByKey($this->_keyId, $this->_typeId);
@@ -80,6 +83,7 @@ class PhotoController extends AppController
 
         $this->_setProfilePhoto($photo);
         $this->view->photos = $this->model->Photo->getPhotosByKey($photo['key_id'], $photo['type_id']);
+
         if ($this->_typeId == PHOTO_TYPE_USER) {
             $this->view->mainPhotoUrl = User::getContextUser('photo_url');
         } else {
@@ -97,15 +101,21 @@ class PhotoController extends AppController
         if ($this->_typeId == PHOTO_TYPE_USER) {
             $_SESSION['user_photo_url'] = $photo['photo_url'];
         }
+
         $this->model->photo->setProfilePhoto($photo);
+
         return JSON_OK;
     }
 
     public function renderRemovePhoto()
     {
-        $photo['photo_id']  = $_POST['photo_id'];
-        $photo['photo_url'] = $_POST['photo_url'];
-        $this->model->photo->deletePhoto($photo);
-        return JSON_OK;
+        $id   = $this->params['photo_id'];
+        $path = $this->params['photo_url'];
+
+        if ($this->get('photo')->delete($id, $path)) {
+            return JSON_OK;
+        } else {
+            return JSON_ERR;
+        }
     }
 }
