@@ -35,10 +35,10 @@ $(document).ready(function() {
         }
 
         $.post("link/link", { destinataire_id : destinataireId,
-                                                    destinataire_photo_url : destinatairePhoto,
-                                                    destinataire_login : destinataireLogin,
-                                                    destinataire_mail : destinataireMessage,
-                                                    status : status },
+                            destinataire_photo_url : destinatairePhoto,
+                            destinataire_login : destinataireLogin,
+                            destinataire_mail : destinataireMessage,
+                            status : status },
         function(data) {
             if(data == 500) {
                 $.gritter.add({

@@ -30,6 +30,7 @@ abstract class AppController extends Controller
         // Récupération & comptage des links
         $olLinks  = (!empty($_SESSION['links'])) ? $_SESSION['links'] : null;
         $newLinks = $this->model->Link->setContextUserLinks();
+
         if (!empty($olLinks) && $olLinks['count'][LINK_STATUS_RECIEVED] < $newLinks['count'][LINK_STATUS_RECIEVED]) {
             $this->view->growler('Nouvelle demande !', GROWLER_INFO);
         }
@@ -37,9 +38,31 @@ abstract class AppController extends Controller
         // Vérification des nouveaux messages
         $oldMessagesCount  = (!empty($_SESSION['new_messages'])) ? $_SESSION['new_messages'] : 0;
         $_SESSION['new_messages'] = $this->model->Auth->countNewMessages(User::getContextUser('id'));
+
         if ($oldMessagesCount < $_SESSION['new_messages']) {
             $this->view->growler('Nouveau message !', GROWLER_INFO);
         }
+
+        // Vérification dernier message forum
+        $lastMessage = Forum::getLastMessage();
+
+        if (!empty($lastMessage)) {
+            if (empty($_SESSION['last_forum_message'])) {
+                $this->_forumGrowler($lastMessage);
+            } else {
+                if ($lastMessage['id'] != $_SESSION['last_forum_message']['id'] && $lastMessage['date'] != $_SESSION['last_forum_message']['date']) {
+                    $this->_forumGrowler($lastMessage);
+                }
+            }
+        }
+    }
+
+    private function _forumGrowler($lastMessage) {
+        $title = $lastMessage['user_login'] . ' (forum)';
+        $this->view->growler($lastMessage['content'] , GROWLER_INFO, $title);
+
+        unset($lastMessage['content']);
+        $_SESSION['last_forum_message'] = $lastMessage;
     }
 
     protected function _refreshLastConnexion()

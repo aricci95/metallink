@@ -108,19 +108,29 @@ class AppView
         echo $this->runView($view);
     }
 
-    public function growler($message = MESSAGE_400, $type = GROWLER_ERR)
+    public function growler($message = MESSAGE_400, $type = GROWLER_ERR, $title = null)
     {
         if (!$this->isJSActivated(JS_GROWLER)) {
             $this->addJS(JS_GROWLER);
         }
-        $this->_growlerMessages[] = "<script>
+
+        $script_message = "<script>
             $(function(){
                 $.gritter.add({
+            ";
+
+        if (!empty($title)) {
+            $script_message .= "title: '$title',";
+        }
+
+        $script_message .= "
                     text:  '$message',
                     class_name : 'gritter-".$type."'
                 });
             });
             </script>";
+
+        $this->_growlerMessages[] = $script_message;
     }
 
     public function growlerError()
@@ -128,6 +138,7 @@ class AppView
         if (!$this->isJSActivated(JS_GROWLER)) {
             $this->addJS(JS_GROWLER);
         }
+
         $this->_growlerMessages[] = "<script>
             $(function(){
                 $.gritter.add({

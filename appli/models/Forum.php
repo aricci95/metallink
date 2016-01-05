@@ -1,10 +1,24 @@
 <?php
 
-/*
- *  Classe d'accés aux donnés du forum
- */
 class Forum extends AppModel
 {
+
+    public static function getLastMessage()
+    {
+        $sql = 'SELECT id, content, user_login, DATE_FORMAT(date,\'%H:%i\') as date FROM forum
+                WHERE user_id != :context_user_id
+                AND (UNIX_TIMESTAMP( NOW() ) - UNIX_TIMESTAMP( date )) < :time_limit
+                ORDER BY date DESC
+                LIMIT 0, 1
+            ;';
+
+        $stmt = Db::getInstance()->prepare($sql);
+
+        $stmt->bindValue('context_user_id', User::getContextUser('id'));
+        $stmt->bindValue('time_limit', 1000);
+
+        return Db::executeStmt($stmt)->fetch();
+    }
 
     public function getLastMessages($messageId = null)
     {
