@@ -18,7 +18,7 @@ abstract class AppModel extends Model
     public static function getPrimary()
     {
         if (empty(self::$_primary)) {
-            self::$_primary = self::$_table . '_id';
+            self::$_primary = self::getTable() . '_id';
         }
 
         return self::$_primary;
@@ -50,7 +50,7 @@ abstract class AppModel extends Model
 
         $results = self::_queryBuilder(self::getTable(), $attributes_string, $where, $orderBy, $limit);
 
-        return $results[0];
+        return empty($results[0]) ? array() : $results[0];
     }
 
     public static function deleteById($id)
@@ -88,8 +88,7 @@ abstract class AppModel extends Model
         if(!$stmt->execute()) {
             throw new Exception('Impossible d\'insérer dans ' . self::getTable(). ' avec les valeurs données.');
         }
-        Log::debug($stmt->queryString);
-        Log::debug($values);
+
         return Db::getInstance()->lastInsertId();
     }
 

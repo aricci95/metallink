@@ -2,35 +2,53 @@
 
 class Container
 {
-    protected $_services = array();
+    private $_services = array();
 
-    public function getService($service)
+    public function getService($serviceName)
     {
-        if (!empty($this->_service[$service])) {
-           return $this->_service[$service];
+        if (!empty($this->_services[$serviceName])) {
+           return $this->_services[$serviceName];
         }
 
-        $serviceClassName = ucfirst($service) . 'Service';
+        $methodName = '_get' . ucfirst($serviceName) . 'Service';
+
+        $this->_services[$serviceName] = method_exists($this, $methodName) ? $this->$methodName() : $this->_getService($serviceName);
+
+        return $this->_services[$serviceName];
+    }
+
+    private function _getService($serviceName)
+    {
+        if (!empty($this->_services[$serviceName])) {
+           return $this->_services[$serviceName];
+        }
+
+        $serviceClassName = ucfirst($serviceName) . 'Service';
 
         $serviceFilePath = ROOT_DIR . '/appli/services/' . $serviceClassName . '.php';
-        $modelFilePath   = ROOT_DIR . '/appli/models/' . ucfirst($service) . '.php';
 
         if (!file_exists($serviceFilePath)) {
-            throw new Exception('Service "'. $service .'" introuvable.', ERROR_NOT_FOUND);
+            throw new Exception('Service "'. $serviceName .'" introuvable.', ERROR_NOT_FOUND);
         }
 
         try {
             require $serviceFilePath;
 
-            if (file_exists($modelFilePath)) {
-                require_once $modelFilePath;
-            }
-
-            $this->_services[$service] = new $serviceClassName();
+            $service = new $serviceClassName();
         } catch (Exception $e) {
             throw new Exception("Impossible d'instancier $serviceClassName");
         }
 
-        return $this->_services[$service];
+        return $service;
     }
+
+    private function _getUserService()
+    {
+        $userService  = $this->_getService('user');
+
+        $photoService = $this->getService('photo');
+
+        return $userService->requires($photoService);
+    }
+
 }

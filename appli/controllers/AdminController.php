@@ -49,7 +49,7 @@ class AdminController extends AppController
 
     public function renderDeleteUser()
     {
-        $this->view->users  = $this->model->User->getUsers();
+        $this->view->users  = User::find(array('user_id', 'user_login'), array('!user_id' => User::getContextUser('id')));
         $this->view->action = 'removeUser';
         $this->view->setTitle('Supprimer un utilisateur');
         $this->view->setViewName('admin/wUsers');
@@ -58,12 +58,12 @@ class AdminController extends AppController
 
     public function renderRemoveUser()
     {
-        if (!empty($this->params['user_id'])) {
-            $this->model->User->deleteUserById($this->params['user_id']);
+        if (!empty($this->params['user_id']) && $this->get('user')->delete($this->params['user_id'])) {
             $this->view->growler('Utilisateur supprimé.', GROWLER_OK);
         } else {
             $this->view->growlerError();
         }
+
         $this->render();
     }
 

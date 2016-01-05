@@ -319,19 +319,20 @@ class User extends AppModel
         return $resultat;
     }
 
-    public function deleteUserById($id)
+    public static function deleteById($id)
     {
-        require ROOT_DIR . '/appli/models/Photo.php';
+        $sql = "DELETE FROM user WHERE user_id = :id;
+                DELETE FROM user_views WHERE viewer_id = :id OR viewed_id = :id;
+                DELETE FROM mail WHERE mail_destinataire = :id OR mail_expediteur = :id;
+                DELETE FROM chat WHERE `from` = :user_login OR `to` = :user_login;
+                ";
 
-        $photo_manager = new Photo();
-        $photo_manager->deletePhotosById($id, PHOTO_TYPE_USER);
+        $stmt = Db::getInstance()->prepare($sql);
 
-        $this->execute("DELETE FROM user WHERE user_id = ".$this->securize($id));
-        $this->execute("DELETE FROM user_views WHERE viewer_id = ".$this->securize($id)." OR viewed_id = ".$this->securize($id));
-        $this->execute("DELETE FROM mail WHERE mail_destinataire = ".$this->securize($id)." OR mail_expediteur = ".$this->securize($id));
-        $this->execute("DELETE FROM chat WHERE `from` = '" . $_SESSION['user_login'] . "' OR `to` = '" . $_SESSION['user_login'] . "';");
+        $stmt->bindValue('id', $id, PDO::PARAM_INT);
+        $stmt->bindValue('user_login', $id, PDO::PARAM_STR);
 
-        return true;
+        return $stmt->execute();
     }
 
     // Modifie un utilisateur
@@ -347,6 +348,7 @@ class User extends AppModel
             $sql .= ' WHERE user_id = '.$this->securize(User::getContextUser('id'));
             $sql = str_replace(', WHERE', ' WHERE', $sql);
         }
+
         return $this->execute($sql);
     }
 

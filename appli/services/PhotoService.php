@@ -1,7 +1,27 @@
 <?php
 
-class PhotoService
+class PhotoService extends Service
 {
+
+    public function deleteFromUser($userId)
+    {
+        $photo_ids = Photo::find(
+            array(
+                'photo_id',
+                'photo_url',
+            ),
+            array(
+                'key_id' => $userId,
+                'type_id' => PHOTO_TYPE_USER,
+            )
+        );
+
+        foreach ($photo_ids as $photo) {
+            $this->delete($photo['photo_id'], $photo['photo_url']);
+        }
+
+        return User::deleteById($userId);
+    }
 
     public function delete($id, $path)
     {
@@ -13,9 +33,7 @@ class PhotoService
             unlink(ROOT_DIR . '/photos/profile/' . $path);
         }
 
-        Photo::deleteById($id);
-
-        return true;
+        return Photo::deleteById($id);
     }
 
     // Récupère l'extension

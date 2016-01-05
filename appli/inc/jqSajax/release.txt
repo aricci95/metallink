@@ -1,6 +1,0 @@
-jqSajax 1.0.1 Relase date 26 August 2008
--add debug message to method fhasil(), to view the error message in PHP function/method.
--fix minor thing in json support
-
--jqSajax 1.0 Relase date 11 August 2008
--This file is use with jQuery library.

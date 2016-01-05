@@ -30,7 +30,7 @@ class ProfileController extends AppController
     public function render()
     {
         $this->view->tasteTypes = $this->model->Taste->getTasteTypes();
-        $tastes                  = $this->model->Taste->getTastes($this->params['value']);
+        $tastes                 = $this->model->Taste->getTastes($this->params['value']);
         if (!empty($tastes)) {
             foreach ($tastes['data'] as $type => $tasteData) {
                 if ($type == "groupes") {
@@ -168,12 +168,18 @@ class ProfileController extends AppController
     public function renderDelete()
     {
         // Suppression de l'utilisateur
-        $this->model->User->deleteUserById(User::getContextUser('id'));
-        //Destruction du Cookie
-        setcookie("MlinkPwd", 0);
-        setcookie("MlinkLogin", 0);
-        session_destroy();
-        // redirection
-        $this->redirect('home', array('msg' => MSG_ACCOUNT_DELETED));
+        if ($this->get('user')->delete(User::getContextUser('id'))) {
+
+            //Destruction du Cookie
+            setcookie("MlinkPwd", 0);
+            setcookie("MlinkLogin", 0);
+            session_destroy();
+
+            // redirection
+            $this->redirect('home', array('msg' => MSG_ACCOUNT_DELETED));
+        } else {
+            $this->_view->growlerError();
+            $this->render();
+        }
     }
 }

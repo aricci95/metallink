@@ -1,4 +1,5 @@
 <?php
+
 require_once ROOT_DIR.'/appli/controllers/SearchController.php';
 
 class CovoitController extends SearchController
@@ -7,13 +8,6 @@ class CovoitController extends SearchController
     protected $_JS   = array(JS_COVOIT, JS_AUTOCOMPLETE, JS_DATEPICKER);
     protected $_type = 'Covoit';
     protected $_searchParams = array('search_concert', 'search_ville');
-
-    public function __construct()
-    {
-        parent::__construct();
-
-        $this->model->load('covoit');
-    }
 
     public function render()
     {
