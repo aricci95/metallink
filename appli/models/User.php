@@ -323,7 +323,7 @@ class User extends AppModel
     {
         $sql = "DELETE FROM user WHERE user_id = :id;
                 DELETE FROM user_views WHERE viewer_id = :id OR viewed_id = :id;
-                DELETE FROM mail WHERE mail_destinataire = :id OR mail_expediteur = :id;
+                DELETE FROM mail WHERE destinataire = :id OR expediteur = :id;
                 DELETE FROM chat WHERE `from` = :user_login OR `to` = :user_login;
                 ";
 
@@ -367,11 +367,11 @@ class User extends AppModel
         return !empty($result);
     }
 
-    public function isUsedMail($mail)
+    public function isUsedMessage($message)
     {
         $sql = "SELECT user_id
                 FROM   user
-                WHERE  user_mail = '".$mail."'";
+                WHERE  user_mail = '".$message."'";
         $result = $this->fetchOnly($sql);
         return !empty($result);
     }
@@ -436,7 +436,7 @@ class User extends AppModel
     }
 
     // Récupére le mail d'un user
-    public function getMailByUser($userId)
+    public function getMessageByUser($userId)
     {
         $sql = "SELECT user_mail, user_login FROM user WHERE user_id = '".$this->securize($userId)."'";
         $resultat = $this->fetchOnly($sql);

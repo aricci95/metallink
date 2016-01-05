@@ -37,13 +37,13 @@ class SubscribeController extends AppController
             $this->view->growler('Pseudo déjà utilisé.');
             return false;
         }
-        // Mail
+        // Message
         $Syntaxe='#^[\w.-]+@[\w.-]+\.[a-zA-Z]{2,6}$#';
         if (!preg_match($Syntaxe, $this->params['user_mail'])) {
             $this->view->growler('Adresse e-mail invalide.');
             return false;
         }
-        if ($this->model->User->isUsedMail($this->params['user_mail'])) {
+        if ($this->model->User->isUsedMessage($this->params['user_mail'])) {
             $this->view->growler('Adresse e-mail déjà utilisée.');
             return false;
         }

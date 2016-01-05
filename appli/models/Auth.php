@@ -14,15 +14,15 @@ class Auth extends AppModel
     }
 
     // Compter le nombre de nouveaux messages reçus
-    public function countNewMails()
+    public function countNewMessages()
     {
         $sql      = "SELECT count(*) as nbr
     			FROM
     				mail
     			WHERE
-    				mail_destinataire = '".User::getContextUser('id')."'
-    			AND mail_state_id = 1
-                AND mail_expediteur NOT IN (
+    				destinataire = '".User::getContextUser('id')."'
+    			AND state_id = 1
+                AND expediteur NOT IN (
                     SELECT destinataire_id FROM link WHERE status = ".LINK_STATUS_BLACKLIST."
                      AND expediteur_id = '".User::getContextUser('id')."'
                 );";
@@ -32,23 +32,23 @@ class Auth extends AppModel
         return $return;
     }
 
-    public function getLastMail()
+    public function getLastMessage()
     {
-        $sql = "mail_id,
+        $sql = "message_id,
                     user.user_id as user_id,
-                    mail_expediteur,
-                    mail_destinataire,
+                    expediteur,
+                    destinataire,
                     user_login,
                     user_gender,
-                    mail_content,
-                    mail_date,
-                    UNIX_TIMESTAMP( mail_date ) AS mail_delais,
+                    content,
+                    date,
+                    UNIX_TIMESTAMP( date ) AS delais,
                     user_photo_url,
                 FROM
                     mail,
                     user
-                WHERE user_id = mail_expediteur
-                AND user.user_id = mail.mail_destinataire;";
+                WHERE user_id = expediteur
+                AND user.user_id = mail.destinataire;";
         return $this->fetchOnly($sql);
     }
 
@@ -149,7 +149,7 @@ class Auth extends AppModel
                 $this->execute($sql, array('login' => $login));
 
                 if ($user['user_valid'] != 1) {
-                    throw new Exception("Email non validé", ERR_MAIL_NOT_VALIDATED);
+                    throw new Exception("Email non validé", ERR_NOT_VALIDATED);
                 } elseif ($user['role_id'] > 0) {
                     $_SESSION['user_id']             = $user['user_id'];
                     $_SESSION['user_login']          = $user['user_login'];
@@ -177,14 +177,14 @@ class Auth extends AppModel
     }
 
     // Renvoi le mdp
-    public function sendPwd($login = null, $mail = null)
+    public function sendPwd($login = null, $message = null)
     {
-        if (empty($login) && empty($mail)) {
+        if (empty($login) && empty($message)) {
             return false;
         }
 
         $param = (empty($login)) ? 'user_mail' : 'user_login';
-        $value = (empty($login)) ? $mail : $login;
+        $value = (empty($login)) ? $message : $login;
 
         $result = $this->fetchOnly("SELECT user_id, user_login, user_mail FROM user WHERE ".$param." = '".$value."'");
 

@@ -67,29 +67,29 @@ class AdminController extends AppController
         $this->render();
     }
 
-    public function renderMail()
+    public function renderMessage()
     {
         $this->view->setTitle('Message à tous les users');
-        $this->view->setViewName('admin/wMail');
+        $this->view->setViewName('admin/wMessage');
         $this->view->render();
     }
 
-    public function renderMailSubmit()
+    public function renderMessageSubmit()
     {
-        if (!empty($this->params['mail_content'])) {
+        if (!empty($this->params['content'])) {
             $from    = User::getContextUser('id');
-            $content = htmlentities($this->params['mail_content'], ENT_QUOTES, 'utf-8');
+            $content = htmlentities($this->params['content'], ENT_QUOTES, 'utf-8');
             $users   = User::find(array('user_id'), array('!user_id' => User::getContextUser('id')));
 
-            $sentMails = 0;
+            $sentMessages = 0;
             foreach ($users as $user) {
-                if ($this->model->mail->sendMail($from, $user['user_id'], $content)) {
-                    $sentMails++;
+                if ($this->get('message')->send($from, $user['user_id'], $content)) {
+                    $sentMessages++;
                 }
             }
 
-            if ($sentMails > 0) {
-                $this->view->growler($sentMails.' Emails envoyés.', GROWLER_OK);
+            if ($sentMessages > 0) {
+                $this->view->growler($sentMessages.' Emails envoyés.', GROWLER_OK);
             } else {
                 $this->view->growlerError();
             }

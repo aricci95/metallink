@@ -12,7 +12,7 @@ $(document).ready(function() {
             destinatairePhoto = '/MLink/photos/small/'+destinataire.attr('data-destinataire-photo');
         }
         var destinataireLogin = destinataire.attr('data-destinataire-login');
-        var destinataireMail  = destinataire.attr('data-destinataire-mail');
+        var destinataireMessage  = destinataire.attr('data-destinataire-mail');
         var status      = parseInt(link.attr('data-status'));
         var gritterType = 'info';
         var gritterMsg  = 'Demande envoyée';
@@ -37,7 +37,7 @@ $(document).ready(function() {
         $.post("link/link", { destinataire_id : destinataireId,
                                                     destinataire_photo_url : destinatairePhoto,
                                                     destinataire_login : destinataireLogin,
-                                                    destinataire_mail : destinataireMail,
+                                                    destinataire_mail : destinataireMessage,
                                                     status : status },
         function(data) {
             if(data == 500) {

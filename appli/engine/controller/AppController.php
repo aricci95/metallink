@@ -30,9 +30,9 @@ abstract class AppController extends Controller
         }
 
         // Vérification des nouveaux mails
-        $oldMailsCount  = (!empty($_SESSION['new_mails'])) ? $_SESSION['new_mails'] : 0;
-        $_SESSION['new_mails'] = $this->model->Auth->countNewMails(User::getContextUser('id'));
-        if ($oldMailsCount < $_SESSION['new_mails']) {
+        $oldMessagesCount  = (!empty($_SESSION['new_mails'])) ? $_SESSION['new_mails'] : 0;
+        $_SESSION['new_mails'] = $this->model->Auth->countNewMessages(User::getContextUser('id'));
+        if ($oldMessagesCount < $_SESSION['new_mails']) {
             $this->view->growler('Nouveau message !', GROWLER_INFO);
         }
     }
@@ -68,9 +68,9 @@ abstract class AppController extends Controller
                     $this->redirect('home', array('msg' => ERR_AUTH));
                 }
             } else {
-                // Mail non validé
+                // Message non validé
                 session_destroy();
-                $this->redirect('home', array('msg' => ERR_MAIL_NOT_VALIDATED));
+                $this->redirect('home', array('msg' => ERR_NOT_VALIDATED));
             }
         } // Cas pas d'user en session, vérification des cookies
         elseif (!empty($_COOKIE['MlinkLogin']) && !empty($_COOKIE['MlinkPwd'])) {

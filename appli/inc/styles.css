@@ -41,7 +41,7 @@ body {
 .aMenu:hover {color: white;text-decoration: none ;font-size:15px;font-weight:bold;} /*couleur quand la souris passe sur le lien*/
 .aMenu:visited {color: #808080;text-decoration: none ;font-size:15px;font-weight:bold;} /*lien visité*/
 .aMenu:visited:hover {color: white;text-decoration: none ;font-size:15px;font-weight:bold;} /*lien visité quand la souris passe dessus*/
-.aMenu:active {color: #808080;text-decoration: none ;font-size:15px;font-weight:bold;} /*couleur quand on clique dessus*/ 
+.aMenu:active {color: #808080;text-decoration: none ;font-size:15px;font-weight:bold;} /*couleur quand on clique dessus*/
 
 a:visited {color: #808080;text-decoration: none ;}
 a:hover {color: blue;text-decoration: none ;}
@@ -59,13 +59,13 @@ textarea {
 }
 
 /*-- TABLE --*/
-.thMailBoxMenu {
+.thMessageBoxMenu {
     font-size:20px;
     font-weight:bold;
     text-align:center;
 }
 
-.trNewMail {
+.trNewMessage {
     font-size:12px;
     font-weight:bold;
     text-align:center;
@@ -73,20 +73,20 @@ textarea {
     color:#808080;
 }
 
-.trNewMail td {
+.trNewMessage td {
     border:none;
 }
 
-.trReadMail {
+.trReadMessage {
     font-size:12px;
     text-align:center;
 }
 
-.trReadMail td {
+.trReadMessage td {
     border:none;
 }
 
-.tableMail{
+.tableMessage{
     font-size:12px;
     border:none;
 }
@@ -217,8 +217,8 @@ h4 {
     width:805px;
     text-align:center;
     margin-top:-6px;
-    margin-left: auto; 
-    margin-right: auto; 
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .divFooter {
@@ -451,15 +451,15 @@ img {
     font-weight:bold;
 }
 
-.newPhoto:hover { 
-    -moz-box-shadow: 0 0 10px #ccc; 
-    -webkit-box-shadow: 0 0 10px #ccc; 
-    box-shadow: 0 0 10px #ccc; 
+.newPhoto:hover {
+    -moz-box-shadow: 0 0 10px #ccc;
+    -webkit-box-shadow: 0 0 10px #ccc;
+    box-shadow: 0 0 10px #ccc;
 }
 
-.editPhoto:hover { 
-    -moz-box-shadow: 0 0 10px #ccc; 
-    -webkit-box-shadow: 0 0 10px #ccc; 
+.editPhoto:hover {
+    -moz-box-shadow: 0 0 10px #ccc;
+    -webkit-box-shadow: 0 0 10px #ccc;
     box-shadow: 0 0 10px #ccc;
 }
 
@@ -541,27 +541,27 @@ img {
 }
 
 .editPhoto .definePhoto {
-    position:relative; 
-    top:0px; 
-    width:294px; 
-    height:294px; 
+    position:relative;
+    top:0px;
+    width:294px;
+    height:294px;
     background:url('/MLink/images/div/defineprofile.png') no-repeat;
     opacity:0;
 }
 .editPhoto .removePhoto {
-    position:relative; 
-    top:0px; 
-    width:50px; 
-    height:50px; 
+    position:relative;
+    top:0px;
+    width:50px;
+    height:50px;
     background:url('/MLink/images/boutons/remove.png') no-repeat;
     opacity:0;
 }
 
 .profilePhoto {
-    position:relative; 
-    top:0px; 
-    width:294px; 
-    height:294px; 
+    position:relative;
+    top:0px;
+    width:294px;
+    height:294px;
     background:url('/MLink/images/div/profilephoto.png') no-repeat;
 }
 

@@ -86,7 +86,8 @@ abstract class AppModel extends Model
         }
 
         if(!$stmt->execute()) {
-            throw new Exception('Impossible d\'insérer dans ' . self::getTable(). ' avec les valeurs données.');
+            $error_message = $stmt->errorInfo();
+            throw new Exception('La requête suivante : <b><br/>' . $sql . '</b><br/><br/>a renvoyé une erreur :<br/><i>' . $error_message[2] . '<i>', ERROR_SQL);
         }
 
         return Db::getInstance()->lastInsertId();

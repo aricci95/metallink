@@ -1,19 +1,19 @@
 <?php
 
-class MailController extends AppController
+class MessageController extends AppController
 {
 
-    private function _getDestinataire($parentMails, $userId)
+    private function _getDestinataire($parentMessages, $userId)
     {
-        if (empty($parentMails) && $userId > 0) {
+        if (empty($parentMessages) && $userId > 0) {
             return $this->model->User->getUserByIdDetails($userId);
         }
         // Si rajout de mail de soit même
-        if ($parentMails[0]['mail_expediteur'] == User::getContextUser('id')) {
-            return $this->model->User->getUserByIdDetails($parentMails[0]['mail_destinataire']);
+        if ($parentMessages[0]['expediteur'] == User::getContextUser('id')) {
+            return $this->model->User->getUserByIdDetails($parentMessages[0]['destinataire']);
         } // Si réponse
         else {
-            return $this->model->User->getUserByIdDetails($parentMails[0]['mail_expediteur']);
+            return $this->model->User->getUserByIdDetails($parentMessages[0]['expediteur']);
         }
 
         // Si nouveau message, on récupère les infos du destinataire
@@ -24,25 +24,25 @@ class MailController extends AppController
         }
     }
 
-    private function _checkMails($parentMails, $destinataireId)
+    private function _checkMessages($parentMessages, $destinataireId)
     {
         $contextUserId = User::getContextUser('id');
 
         // Si nouvelle conversation
-        if (empty($parentMails) || $parentMails[0]['mail_state_id'] == MAIL_STATUS_ADMIN) {
+        if (empty($parentMessages) || $parentMessages[0]['state_id'] == STATUS_ADMIN) {
             return true;
         }
 
-        if ($parentMails[0]['mail_destinataire'] != $contextUserId && $parentMails[0]['mail_expediteur'] != $contextUserId) {
+        if ($parentMessages[0]['destinataire'] != $contextUserId && $parentMessages[0]['expediteur'] != $contextUserId) {
             Log::hack('tentative d\'accès a une conversation étrangère.');
             return false;
         }
 
-        foreach ($parentMails as $key => $value) {
-            $parentMails[$key]['mail_content'] = Tools::toSmiles($value['mail_content']);
+        foreach ($parentMessages as $key => $value) {
+            $parentMessages[$key]['content'] = Tools::toSmiles($value['content']);
             // Si nouveau mail, alors on le mets en état lu
-            if ($value['mail_state_id'] == MAIL_STATUS_SENT && $value['mail_expediteur'] != $contextUserId) {
-                $this->model->Mail->updateMailState($value['mail_id'], MAIL_STATUS_READ);
+            if ($value['state_id'] == STATUS_SENT && $value['expediteur'] != $contextUserId) {
+                $this->model->message->updateMessageState($value['message_id'], STATUS_READ);
                 if ($_SESSION['new_mails'] > 0) {
                     $_SESSION['new_mails']--;
                 }
@@ -68,11 +68,11 @@ class MailController extends AppController
         }
 
         // On récupère les information du mail
-        $parentMails = $this->model->Mail->getConversation($userId);
+        $parentMessages = $this->model->message->getConversation($userId);
 
-        if ($this->_checkMails($parentMails, $userId)) {
-            $this->view->parentMails  = $parentMails;
-            $this->view->destinataire = $this->_getDestinataire($parentMails, $userId);
+        if ($this->_checkMessages($parentMessages, $userId)) {
+            $this->view->parentMessages  = $parentMessages;
+            $this->view->destinataire = $this->_getDestinataire($parentMessages, $userId);
             $this->view->setViewName('mail/wMain');
             $this->view->render();
         } else {
@@ -82,17 +82,17 @@ class MailController extends AppController
 
     public function renderSubmit()
     {
-        if (!empty($this->params['last_content']) && !empty($this->params['mail_content']) && $this->params['last_content'] === $this->params['mail_content']) {
+        if (!empty($this->params['last_content']) && !empty($this->params['content']) && $this->params['last_content'] === $this->params['content']) {
             $this->render();
             return;
         }
 
-        if (empty($this->params['mail_destinataire'])) {
+        if (empty($this->params['destinataire'])) {
             Log::err('destinataire vide');
             $this->redirect('mailbox', array('msg' => ERR_DEFAULT));
         }
 
-        $isLinked = $this->model->Link->isLinked($this->params['mail_destinataire']);
+        $isLinked = $this->model->Link->isLinked($this->params['destinataire']);
 
         if (!$isLinked) {
             Log::err('destinataire sans link');
@@ -100,9 +100,9 @@ class MailController extends AppController
         }
 
         $from    = User::getContextUser('id');
-        $to      = $this->params['mail_destinataire'];
+        $to      = $this->params['destinataire'];
 
-        $content = str_replace('\\', '', htmlentities($this->params['mail_content'], ENT_QUOTES, 'utf-8'));
+        $content = str_replace('\\', '', htmlentities($this->params['content'], ENT_QUOTES, 'utf-8'));
 
         if (empty($content)) {
             $this->view->growler('Message vide.', GROWLER_INFO);
@@ -112,8 +112,8 @@ class MailController extends AppController
 
         $content = nl2br($content);
 
-        if ($this->model->Mail->sendMail($from, $to, $content)) {
-            $message = User::getContextUser('login').' vous a envoyé un nouveau message ! <a href="http://metallink.fr/mail/' . User::getContextUser('id') . '">Cliquez ici</a> pour le lire.';
+        if ($this->get('message')->send($from, $to, $content)) {
+            $message = User::getContextUser('login') . ' vous a envoyé un nouveau message ! <a href="http://metallink.fr/mail/' . User::getContextUser('id') . '">Cliquez ici</a> pour le lire.';
             $this->redirect('mail', array($this->params['value'], 'msg' => MSG_SENT_OK));
         } else {
             Log::err('impossible d\'enregistrer le mail.');
@@ -129,11 +129,11 @@ class MailController extends AppController
         $userId = $this->params['option'];
 
         // On récupère les information du mail
-        $parentMails = $this->model->Mail->getConversation($userId, $offset);
-        if (count($parentMails) > 0) {
-            $this->_checkMails($parentMails, $userId);
-            $this->view->parentMails  = $parentMails;
-            $this->view->destinataire = $this->_getDestinataire($parentMails, $userId);
+        $parentMessages = $this->model->message->getConversation($userId, $offset);
+        if (count($parentMessages) > 0) {
+            $this->_checkMessages($parentMessages, $userId);
+            $this->view->parentMessages  = $parentMessages;
+            $this->view->destinataire = $this->_getDestinataire($parentMessages, $userId);
             $this->view->offset = $offset++;
             $this->view->getJSONResponse('mail/wItems');
         } else {

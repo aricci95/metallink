@@ -8,9 +8,9 @@ class MailboxController extends AppController
         $this->view->addJS(JS_SCROLL_REFRESH);
         $libel = 'De';
         //on récupère les mails de l'utilisateur
-        $this->view->userMails = $this->model->Mailbox->getInboxMail();
-        foreach ($this->view->userMails as $key => $value) {
-            $this->view->userMails[$key]['mail_content'] = Tools::toSmiles($value['mail_content']);
+        $this->view->userMessages = $this->model->Mailbox->getInboxMessage();
+        foreach ($this->view->userMessages as $key => $value) {
+            $this->view->userMessages[$key]['content'] = Tools::toSmiles($value['content']);
         }
         $this->view->setViewName('mailbox/wList');
         $this->view->setTitle('Messages reçus');
@@ -23,10 +23,10 @@ class MailboxController extends AppController
         $libel = 'De';
 
         //on récupère les mails de l'utilisateur
-        $this->view->userMails = $this->model->Mailbox->getInboxMail($offset);
-        if (count($this->view->userMails) > 0) {
-            foreach ($this->view->userMails as $key => $value) {
-                $this->view->userMails[$key]['mail_content'] = Tools::toSmiles($value['mail_content']);
+        $this->view->userMessages = $this->model->Mailbox->getInboxMessage($offset);
+        if (count($this->view->userMessages) > 0) {
+            foreach ($this->view->userMessages as $key => $value) {
+                $this->view->userMessages[$key]['content'] = Tools::toSmiles($value['content']);
             }
 
             $this->view->offset = $offset++;

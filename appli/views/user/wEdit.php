@@ -16,7 +16,7 @@
         <td><input name="verif_pwd" type="password" value="" /></td>
     </tr>
     <tr>
-        <th>Mail :</th>
+        <th>Message :</th>
         <td><input name="user_mail" value="<?php echo $this->user['user_mail']; ?>" /></td>
     </tr>
     <tr>

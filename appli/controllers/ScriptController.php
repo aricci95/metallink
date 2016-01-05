@@ -169,11 +169,11 @@ class ScriptController extends AppController
     {
         $error = 0;
         $i     = 0;
-         $mails = $this->model->fetch('SELECT * FROM tmp_mail WHERE mail_state_id IN (6, 7, 8)');
-        foreach ($mails as $mail) {
+         $messages = $this->model->fetch('SELECT * FROM tmp_mail WHERE state_id IN (6, 7, 8)');
+        foreach ($messages as $message) {
             try {
                 $this->model->execute("REPLACE INTO link (expediteur_id, destinataire_id, status)
-                                            VALUES ('".$mail['mail_expediteur']."', '".$mail['mail_destinataire']."', '".$mail['mail_state_id']."');");
+                                            VALUES ('".$message['expediteur']."', '".$message['destinataire']."', '".$message['state_id']."');");
                 $i++;
             } catch (Exception $e) {
                 $error++;

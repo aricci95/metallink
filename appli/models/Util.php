@@ -110,9 +110,9 @@ class Util extends AppModel
             foreach ($requests as $key => $value) {
                 // SI demande Link
                 if ($request == false) {
-                    if ($value['mail_expediteur'] == $user['user_id']) {
-                        $request = $value['mail_id'];
-                    } elseif ($value['mail_destinataire'] == $user['user_id']) $sended = $value['mail_id'];
+                    if ($value['expediteur'] == $user['user_id']) {
+                        $request = $value['message_id'];
+                    } elseif ($value['destinataire'] == $user['user_id']) $sended = $value['message_id'];
                 }
             }
         }
@@ -121,9 +121,9 @@ class Util extends AppModel
             foreach ($links as $key => $value) {
                 // SI déjà Linked
                 if ($linked == false) {
-                    if ($value['mail_destinataire'] == $user['user_id']
-                    || $value['mail_expediteur'] == $user['user_id'] ) {
-                        $linked = $value['mail_id'];
+                    if ($value['destinataire'] == $user['user_id']
+                    || $value['expediteur'] == $user['user_id'] ) {
+                        $linked = $value['message_id'];
                     }
                 }
             }
@@ -238,11 +238,11 @@ class Util extends AppModel
         $this->execute("DELETE FROM chat WHERE sent < NOW( ) - INTERVAL 2 DAY ;");
        // Vues
         $this->execute("DELETE FROM user_views WHERE view_date < NOW( ) - INTERVAL 2 DAY ;");
-       // Mails
-        $mailSQL = "DELETE FROM mail
-                       WHERE mail_state_id != 7
-                       AND mail_date < NOW( ) - INTERVAL 6 MONTH ;";
-        $this->execute($mailSQL);
+       // Messages
+        $messageSQL = "DELETE FROM mail
+                       WHERE state_id != 7
+                       AND date < NOW( ) - INTERVAL 6 MONTH ;";
+        $this->execute($messageSQL);
         echo 'nettoyage effectué';
         echo "<meta http-equiv='REFRESH' content='3;URL=admin.php'>";
     }

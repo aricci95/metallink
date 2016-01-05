@@ -1,5 +1,5 @@
 <?php $this->render('mail/wNew'); ?>
-<?php if(!empty($this->parentMails)) : ?>
+<?php if(!empty($this->parentMessages)) : ?>
     <?php $this->_helper->blackBoxOpen(); ?>
         <table class="results">
             <?php $this->render('mail/wItems'); ?>

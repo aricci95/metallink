@@ -6,7 +6,7 @@
 			<th>Objet</th>
 			<th width="100">Date</th>
 		</tr>
-		<?php if (empty($this->userMails)) : ?>
+		<?php if (empty($this->userMessages)) : ?>
 			<tr>
 			 	<td style='text-align:center;padding-top:20px;' colspan='4'>Aucun message.</td>
 			</tr>

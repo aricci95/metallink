@@ -16,40 +16,40 @@ class Mailbox extends AppModel
         return $resultat;
     }
 
-    public function getInboxMail($offset = 0)
+    public function getInboxMessage($offset = 0)
     {
         $sql = "SELECT
                     user.user_id as user_id,
-                    mail.mail_id as mail_id,
+                    message.message_id as message_id,
                     user_login,
                     user_gender,
-                    mail_expediteur,
-                    mail_state_libel,
+                    expediteur,
+                    state_libel,
                     UNIX_TIMESTAMP(user_last_connexion) as user_last_connexion,
-                    mail.mail_state_id as mail_state_id,
-                    LEFT(mail_content, 300) as mail_content,
-                    UNIX_TIMESTAMP( mail_date ) AS mail_delais,
+                    mail.state_id as state_id,
+                    LEFT(content, 300) as content,
+                    UNIX_TIMESTAMP( date ) AS delais,
                     user_photo_url
                 FROM
-                    mail JOIN user ON (mail.mail_expediteur = user.user_id)
-                         JOIN ref_mail_state ON (ref_mail_state.mail_state_id = mail.mail_state_id)
+                    mail JOIN user ON (mail.expediteur = user.user_id)
+                         JOIN ref_state ON (ref_state.state_id = mail.state_id)
                 WHERE
-                     mail_destinataire = '".User::getContextUser('id')."'
+                     destinataire = '".User::getContextUser('id')."'
                      AND user_id NOT IN (
                             SELECT destinataire_id FROM link
                             WHERE expediteur_id = '".User::getContextUser('id')."'
                             AND status = ".LINK_STATUS_BLACKLIST."
                         )
                 OR
-                    mail.mail_state_id = ".MAIL_STATUS_ADMIN."
-                ORDER BY mail_date DESC
+                    mail.state_id = ".STATUS_ADMIN."
+                ORDER BY date DESC
                 LIMIT ".($offset * NB_MAILBOX_RESULTS).", ".NB_MAILBOX_RESULTS.";";
        // echo $sql;die();
         $rawResults = $this->fetch($sql);
         if (count($rawResults) > 0) {
-            foreach ($rawResults as $key => $mail) {
-                if (!isset($results[$mail['user_id']])) {
-                    $results[$mail['user_id']] = $mail;
+            foreach ($rawResults as $key => $message) {
+                if (!isset($results[$message['user_id']])) {
+                    $results[$message['user_id']] = $message;
                 }
             }
             return $results;
@@ -59,37 +59,37 @@ class Mailbox extends AppModel
     }
 
     // Recupere la liste des mails recus
-    public function getSentMail($userId, $offset = 0)
+    public function getSentMessage($userId, $offset = 0)
     {
         $userId = $this->securize($userId);
         $sql = "SELECT
-					mail.mail_id as mail_id,
-					mail_state_libel,
-					mail.mail_state_id as mail_state_id,
-					mail_expediteur,
+					message.message_id as message_id,
+					state_libel,
+					mail.state_id as state_id,
+					expediteur,
 					user_gender,
 					user.user_id as user_id,
-					mail_date,
-					UNIX_TIMESTAMP( mail_date ) AS mail_delais,
-					mail_destinataire,
-					LEFT(mail_content, 50) as mail_content,
-					mail.mail_state_id as mail_state_id,
+					date,
+					UNIX_TIMESTAMP( date ) AS delais,
+					destinataire,
+					LEFT(content, 50) as content,
+					mail.state_id as state_id,
 					user_login,
                     UNIX_TIMESTAMP(user_last_connexion) as user_last_connexion,
 					user_photo_url
 					FROM
 						mail,
 						mailbox,
-						ref_mail_state,
+						ref_state,
 						user
 					WHERE mail.mailbox_id = mailbox.mailbox_id
-					AND mail.mail_state_id = ref_mail_state.mail_state_id
-					AND mail.mail_expediteur = user.user_id
-        			AND mail_destinataire = '$userId'
-        			AND mail.mail_state_id NOT IN ('".MAIL_STATUS_DELETED."') ";
+					AND mail.state_id = ref_state.state_id
+					AND mail.expediteur = user.user_id
+        			AND destinataire = '$userId'
+        			AND mail.state_id NOT IN ('".STATUS_DELETED."') ";
 
-        $sql .= " GROUP BY mail_expediteur ";
-        $sql .= " ORDER BY mail_date ASC";
+        $sql .= " GROUP BY expediteur ";
+        $sql .= " ORDER BY date ASC";
         $sql .= ' LIMIT '.($offset * NB_MAILBOX_RESULTS).', '.NB_MAILBOX_RESULTS.';';
         return $this->fetch($sql);
     }
@@ -97,9 +97,9 @@ class Mailbox extends AppModel
     public function deleteConversation($userId)
     {
         $sql = "DELETE FROM mail
-				WHERE (mail_expediteur = '".$this->securize($userId)."' OR mail_destinataire = '".$this->securize($userId)."')
-				AND (mail_expediteur = '".User::getContextUser('id')."' OR mail_destinataire = '".User::getContextUser('id')."')
-                AND mail_state_id != ".MAIL_STATUS_ADMIN;
+				WHERE (expediteur = '".$this->securize($userId)."' OR destinataire = '".$this->securize($userId)."')
+				AND (expediteur = '".User::getContextUser('id')."' OR destinataire = '".User::getContextUser('id')."')
+                AND state_id != ".STATUS_ADMIN;
         $this->execute($sql);
     }
 }

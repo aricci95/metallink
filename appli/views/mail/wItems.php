@@ -1,12 +1,12 @@
-<?php foreach($this->parentMails as $mail) : ?>
+<?php foreach($this->parentMessages as $message) : ?>
 	<tr>
 		<td style="border-top:1px grey dotted;overflow:hidden;">
 			<div class="maxWidth">
-				<?php $this->_helper->printUserSmall($mail);?>
-				<?php Tools::timeConvert($mail['mail_delais']); ?>
-				<span style="float:right;"><?php echo $mail['mail_state_libel']; ?></span>
+				<?php $this->_helper->printUserSmall($message);?>
+				<?php Tools::timeConvert($message['delais']); ?>
+				<span style="float:right;"><?php echo $message['state_libel']; ?></span>
 				<hr>
-				<?php echo nl2br(Tools::toSmiles($mail['mail_content'])); ?>
+				<?php echo nl2br(Tools::toSmiles($message['content'])); ?>
 			</div>
 		</td>
 	</tr>
