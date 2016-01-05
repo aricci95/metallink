@@ -7,7 +7,7 @@
         A :
         <?php if(!empty($this->destinataire)) : ?>
             <a href="profile/<?php echo $this->destinataire['user_id']; ?>"><b><?php echo $this->destinataire['user_login']; ?></b></a> <?php echo $this->_helper->showStatut($this->destinataire['user_last_connexion']);?>
-            <input type="hidden" value="<?php echo $this->destinataire['user_id']; ?>" name="destinataire" />
+            <input type="hidden" value="<?php echo $this->destinataire['user_id']; ?>" name="destinataire_id" />
         <?php endif; ?>
         <br/>
         <textarea name="content" cols="100" rows="8"></textarea>

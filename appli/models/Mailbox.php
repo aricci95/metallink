@@ -60,6 +60,7 @@ class Mailbox extends AppModel
     public function getSentMessage($userId, $offset = 0)
     {
         $userId = $this->securize($userId);
+
         $sql = "SELECT
 					message.message_id as message_id,
 					state_libel,
@@ -96,8 +97,7 @@ class Mailbox extends AppModel
     {
         $sql = "DELETE FROM message
 				WHERE (expediteur = '".$this->securize($userId)."' OR destinataire_id = '".$this->securize($userId)."')
-				AND (expediteur = '".User::getContextUser('id')."' OR destinataire_id = '".User::getContextUser('id')."')
-                AND state_id != ".STATUS_ADMIN;
+				AND (expediteur = '".User::getContextUser('id')."' OR destinataire_id = '".User::getContextUser('id')."');";
         $this->execute($sql);
     }
 }

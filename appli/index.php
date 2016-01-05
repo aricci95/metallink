@@ -70,7 +70,12 @@ try {
     $controller = new $page();
     $controller->$action();
 } catch (Exception $e) {
-    include ROOT_DIR.'/appli/views/maintenance.htm';
+    require ROOT_DIR.'/appli/controllers/HomeController.php';
+    $controller = new HomeController();
+
+    $controller->view->growlerError();
+    $controller->render();
+
     Mailer::sendError($e);
     die;
 }

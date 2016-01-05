@@ -3,25 +3,14 @@
 abstract class AppModel extends Model
 {
 
-    private static $_table;
-    private static $_primary;
-
     public static function getTable()
     {
-        if (empty(self::$_table)) {
-            self::$_table = strtolower(get_called_class());
-        }
-
-        return self::$_table;
+        return strtolower(get_called_class());
     }
 
     public static function getPrimary()
     {
-        if (empty(self::$_primary)) {
-            self::$_primary = self::getTable() . '_id';
-        }
-
-        return self::$_primary;
+        return self::getTable() . '_id';
     }
 
     public static function count(array $where = array(), array $orderBy = array(), $limit = null)
@@ -73,7 +62,7 @@ abstract class AppModel extends Model
             $valuesToBind[] = ':' . $key;
         }
 
-        $sql .=  implode(', ', $valuesToBind) .' );';
+        $sql .= implode(', ', $valuesToBind) .' );';
 
         $stmt = Db::getInstance()->prepare($sql);
 

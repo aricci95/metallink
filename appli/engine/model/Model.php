@@ -49,7 +49,7 @@ abstract class Model
                 $stmt->bindValue(str_replace('!', '', $key), $value);
             }
         }
-
+        Log::debug($sql);
         if (!$stmt->execute()) {
             $error_message = $stmt->errorInfo();
             throw new Exception('La requête suivante : <b><br/>' . $sql . '</b><br/><br/>a renvoyé une erreur :<br/><i>' . $error_message[2] . '<i>', ERROR_SQL);

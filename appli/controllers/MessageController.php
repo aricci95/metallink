@@ -9,11 +9,11 @@ class MessageController extends AppController
             return $this->model->User->getUserByIdDetails($userId);
         }
         // Si rajout de message de soit même
-        if ($parentMessages[0]['expediteur'] == User::getContextUser('id')) {
-            return $this->model->User->getUserByIdDetails($parentMessages[0]['destinataire']);
+        if ($parentMessages[0]['expediteur_id'] == User::getContextUser('id')) {
+            return $this->model->User->getUserByIdDetails($parentMessages[0]['destinataire_id']);
         } // Si réponse
         else {
-            return $this->model->User->getUserByIdDetails($parentMessages[0]['expediteur']);
+            return $this->model->User->getUserByIdDetails($parentMessages[0]['expediteur_id']);
         }
 
         // Si nouveau message, on récupère les infos du destinataire
@@ -29,19 +29,20 @@ class MessageController extends AppController
         $contextUserId = User::getContextUser('id');
 
         // Si nouvelle conversation
-        if (empty($parentMessages) || $parentMessages[0]['state_id'] == STATUS_ADMIN) {
+        if (empty($parentMessages)) {
             return true;
         }
 
-        if ($parentMessages[0]['destinataire'] != $contextUserId && $parentMessages[0]['expediteur'] != $contextUserId) {
+        if ($parentMessages[0]['destinataire_id'] != $contextUserId && $parentMessages[0]['expediteur_id'] != $contextUserId) {
             Log::hack('tentative d\'accès a une conversation étrangère.');
             return false;
         }
 
         foreach ($parentMessages as $key => $value) {
             $parentMessages[$key]['content'] = Tools::toSmiles($value['content']);
+
             // Si nouveau message, alors on le mets en état lu
-            if ($value['state_id'] == MESSAGE_STATUS_SENT && $value['expediteur'] != $contextUserId) {
+            if ($value['state_id'] == MESSAGE_STATUS_SENT && $value['expediteur_id'] != $contextUserId) {
                 $this->model->message->updateMessageState($value['message_id'], MESSAGE_STATUS_READ);
                 if ($_SESSION['new_messages'] > 0) {
                     $_SESSION['new_messages']--;
@@ -55,21 +56,23 @@ class MessageController extends AppController
     public function render()
     {
         $this->view->addJS(JS_SCROLL_REFRESH);
+
         if (empty($this->params['value'])) {
             $this->view->growler('Message introuvable', GROWLER_ERR);
             $this->redirect('mailbox', array('msg' => ERR_CONTENT));
         } else {
             $isLinked = $this->model->Link->isLinked($this->params['value']);
+
             if (!$isLinked) {
                 Log::err('destinataire sans link');
                 $this->redirect('mailbox', array('msg' => ERR_DEFAULT));
             }
+
             $userId = $this->params['value'];
         }
 
         // On récupère les information du message
-        $parentMessages = $this->model->message->getConversation($userId);
-        var_dump($parentMessages);
+        $parentMessages = Message::getConversation($userId);
 
         if ($this->_checkMessages($parentMessages, $userId)) {
             $this->view->parentMessages  = $parentMessages;
@@ -88,32 +91,29 @@ class MessageController extends AppController
             return;
         }
 
-        if (empty($this->params['destinataire'])) {
+        if (empty($this->params['destinataire_id'])) {
             Log::err('destinataire vide');
             $this->redirect('mailbox', array('msg' => ERR_DEFAULT));
         }
 
-        $isLinked = $this->model->Link->isLinked($this->params['destinataire']);
+        $isLinked = $this->model->Link->isLinked($this->params['destinataire_id']);
 
         if (!$isLinked) {
             Log::err('destinataire sans link');
             $this->redirect('mailbox', array('msg' => ERR_DEFAULT));
         }
 
-        $from    = User::getContextUser('id');
-        $to      = $this->params['destinataire'];
+        $from = User::getContextUser('id');
+        $to   = $this->params['destinataire_id'];
 
-        $content = str_replace('\\', '', htmlentities($this->params['content'], ENT_QUOTES, 'utf-8'));
-
-        if (empty($content)) {
+        if (empty($this->params['content'])) {
             $this->view->growler('Message vide.', GROWLER_INFO);
             $this->render();
             return;
         }
 
-        $content = nl2br($content);
 
-        if ($this->get('message')->send($from, $to, $content)) {
+        if ($this->get('message')->send($from, $to, $this->params['content'])) {
             $message = User::getContextUser('login') . ' vous a envoyé un nouveau message ! <a href="http://metallink.fr/message/' . User::getContextUser('id') . '">Cliquez ici</a> pour le lire.';
             $this->redirect('message', array($this->params['value'], 'msg' => MSG_SENT_OK));
         } else {
@@ -130,7 +130,7 @@ class MessageController extends AppController
         $userId = $this->params['option'];
 
         // On récupère les information du message
-        $parentMessages = $this->model->message->getConversation($userId, $offset);
+        $parentMessages = Message::getConversation($userId, $offset);
 
         if (count($parentMessages) > 0) {
             $this->_checkMessages($parentMessages, $userId);

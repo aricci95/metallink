@@ -16,7 +16,7 @@ class Message extends AppModel
     }
 
     // Récupère l'ensemble de la conversation
-    public function getConversation($userId, $offset = 0)
+    public static function getConversation($userId, $offset = 0)
     {
         $start = ($offset * NB_MESSAGE_RESULTS);
         $stop  = NB_MESSAGE_RESULTS;
@@ -44,16 +44,18 @@ class Message extends AppModel
             AND destinataire_id IN (:context_user_id, :user_id)
             AND message.state_id IN (:status_sent, :status_read)
             ORDER BY date DESC
-            LIMIT ' . $start . ', ' . $stop . '
+            LIMIT :limit_start, :limit_stop
             ;
         ';
 
         $stmt = Db::getInstance()->prepare($sql);
 
-        $stmt->bindValue('context_user_id', User::getContextUser('id'));
-        $stmt->bindValue('user_id', $userId);
-        $stmt->bindValue('status_sent', MESSAGE_STATUS_SENT);
-        $stmt->bindValue('status_read', MESSAGE_STATUS_READ);
+        $stmt->bindValue('context_user_id', User::getContextUser('id'), PDO::PARAM_INT);
+        $stmt->bindValue('user_id', $userId, PDO::PARAM_INT);
+        $stmt->bindValue('status_sent', MESSAGE_STATUS_SENT, PDO::PARAM_INT);
+        $stmt->bindValue('status_read', MESSAGE_STATUS_READ, PDO::PARAM_INT);
+        $stmt->bindValue('limit_start', $start, PDO::PARAM_INT);
+        $stmt->bindValue('limit_stop', $stop, PDO::PARAM_INT);
 
         if (!$stmt->execute()) {
             $error_message = $stmt->errorInfo();

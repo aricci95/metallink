@@ -11,10 +11,13 @@ Class MessageService
             throw new Exception('Erreur lors de la sauvegarde du message, destinataire / expediteur manquant' . $message, ERROR_BEHAVIOR);
         }
 
+        $content = nl2br(str_replace('\\', '', htmlentities($content, ENT_QUOTES, 'utf-8')));
+
         $message_data = array(
             'content' => $content,
-            'expediteur' => $expediteur_id,
-            'destinataire' => $destinataire_id,
+            'expediteur_id' => $expediteur_id,
+            'destinataire_id' => $destinataire_id,
+            'date' => date('Y-m-d H:i:s'),
             'state_id' => MESSAGE_STATUS_SENT,
             'mailbox_id' => 1,
         );
@@ -25,10 +28,5 @@ Class MessageService
 
             return Mailer::send($destinataire['user_mail'], 'Nouveau message sur MetalLink !', $message);
         }
-    }
-
-    public function getMessages($expediteur_id = null, $destinataire_id = null)
-    {
-
     }
 }

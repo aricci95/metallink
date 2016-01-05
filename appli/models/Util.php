@@ -110,9 +110,9 @@ class Util extends AppModel
             foreach ($requests as $key => $value) {
                 // SI demande Link
                 if ($request == false) {
-                    if ($value['expediteur'] == $user['user_id']) {
+                    if ($value['expediteur_id'] == $user['user_id']) {
                         $request = $value['message_id'];
-                    } elseif ($value['destinataire'] == $user['user_id']) $sended = $value['message_id'];
+                    } elseif ($value['destinataire_id'] == $user['user_id']) $sended = $value['message_id'];
                 }
             }
         }
@@ -121,8 +121,8 @@ class Util extends AppModel
             foreach ($links as $key => $value) {
                 // SI déjà Linked
                 if ($linked == false) {
-                    if ($value['destinataire'] == $user['user_id']
-                    || $value['expediteur'] == $user['user_id'] ) {
+                    if ($value['destinataire_id'] == $user['user_id']
+                    || $value['expediteur_id'] == $user['user_id'] ) {
                         $linked = $value['message_id'];
                     }
                 }

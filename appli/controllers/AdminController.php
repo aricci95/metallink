@@ -14,7 +14,7 @@ class AdminController extends AppController
 
     public function renderSwitch()
     {
-        $this->view->users  = User::find(array(), array('!user_id' => User::getContextUser('id')));
+        $this->view->users  = User::find(array(), array('!user_id' => User::getContextUser('id'), 'user_valid' => 1),  array('user_login'));
         $this->view->action = 'setSwitch';
         $this->view->setTitle('User switch');
         $this->view->setViewName('admin/wUsers');
@@ -78,12 +78,11 @@ class AdminController extends AppController
     {
         if (!empty($this->params['content'])) {
             $from    = User::getContextUser('id');
-            $content = htmlentities($this->params['content'], ENT_QUOTES, 'utf-8');
             $users   = User::find(array('user_id'), array('!user_id' => User::getContextUser('id')));
 
             $sentMessages = 0;
             foreach ($users as $user) {
-                if ($this->get('message')->send($from, $user['user_id'], $content)) {
+                if ($this->get('message')->send($from, $user['user_id'], $this->params['content'])) {
                     $sentMessages++;
                 }
             }

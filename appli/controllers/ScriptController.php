@@ -173,7 +173,7 @@ class ScriptController extends AppController
         foreach ($messages as $message) {
             try {
                 $this->model->execute("REPLACE INTO link (expediteur_id, destinataire_id, status)
-                                            VALUES ('".$message['expediteur']."', '".$message['destinataire']."', '".$message['state_id']."');");
+                                            VALUES ('".$message['expediteur_id']."', '".$message['destinataire_id']."', '".$message['state_id']."');");
                 $i++;
             } catch (Exception $e) {
                 $error++;
