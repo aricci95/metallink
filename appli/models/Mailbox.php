@@ -23,7 +23,7 @@ class Mailbox extends AppModel
                     message.message_id as message_id,
                     user_login,
                     user_gender,
-                    expediteur,
+                    expediteur_id,
                     state_libel,
                     UNIX_TIMESTAMP(user_last_connexion) as user_last_connexion,
                     message.state_id as state_id,
@@ -31,10 +31,10 @@ class Mailbox extends AppModel
                     UNIX_TIMESTAMP( date ) AS delais,
                     user_photo_url
                 FROM
-                    message JOIN user ON (message.expediteur = user.user_id)
+                    message JOIN user ON (message.expediteur_id = user.user_id)
                          JOIN ref_state ON (ref_state.state_id = message.state_id)
                 WHERE
-                     destinataire = '".User::getContextUser('id')."'
+                     destinataire_id = '". User::getContextUser('id') ."'
                      AND user_id NOT IN (
                             SELECT destinataire_id FROM link
                             WHERE expediteur_id = '".User::getContextUser('id')."'
@@ -42,7 +42,7 @@ class Mailbox extends AppModel
                         )
                 ORDER BY date DESC
                 LIMIT ".($offset * NB_MAILBOX_RESULTS).", ".NB_MAILBOX_RESULTS.";";
-       // echo $sql;die();
+
         $rawResults = $this->fetch($sql);
         if (count($rawResults) > 0) {
             foreach ($rawResults as $key => $message) {
@@ -64,12 +64,12 @@ class Mailbox extends AppModel
 					message.message_id as message_id,
 					state_libel,
 					message.state_id as state_id,
-					expediteur,
+					expediteur_id,
 					user_gender,
 					user.user_id as user_id,
 					date,
 					UNIX_TIMESTAMP( date ) AS delais,
-					destinataire,
+					destinataire_id,
 					LEFT(content, 50) as content,
 					message.state_id as state_id,
 					user_login,
@@ -82,8 +82,8 @@ class Mailbox extends AppModel
 						user
 					WHERE message.mailbox_id = mailbox.mailbox_id
 					AND message.state_id = ref_state.state_id
-					AND message.expediteur = user.user_id
-        			AND destinataire = '$userId'
+					AND message.expediteur_id = user.user_id
+        			AND destinataire_id = '$userId'
         			AND message.state_id NOT IN ('".STATUS_DELETED."') ";
 
         $sql .= " GROUP BY expediteur ";
@@ -95,8 +95,8 @@ class Mailbox extends AppModel
     public function deleteConversation($userId)
     {
         $sql = "DELETE FROM message
-				WHERE (expediteur = '".$this->securize($userId)."' OR destinataire = '".$this->securize($userId)."')
-				AND (expediteur = '".User::getContextUser('id')."' OR destinataire = '".User::getContextUser('id')."')
+				WHERE (expediteur = '".$this->securize($userId)."' OR destinataire_id = '".$this->securize($userId)."')
+				AND (expediteur = '".User::getContextUser('id')."' OR destinataire_id = '".User::getContextUser('id')."')
                 AND state_id != ".STATUS_ADMIN;
         $this->execute($sql);
     }

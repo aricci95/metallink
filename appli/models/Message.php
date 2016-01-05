@@ -18,15 +18,15 @@ class Message extends AppModel
     // Récupère l'ensemble de la conversation
     public function getConversation($userId, $offset = 0)
     {
-        $start = ($offset * NB_RESULTS);
-        $stop  = NB_RESULTS;
+        $start = ($offset * NB_MESSAGE_RESULTS);
+        $stop  = NB_MESSAGE_RESULTS;
 
         $sql = '
             SELECT
                 message_id,
                 user.user_id as user_id,
-                expediteur,
-                destinataire,
+                expediteur_id,
+                destinataire_id,
                 user_login,
                 user_gender,
                 content,
@@ -38,10 +38,10 @@ class Message extends AppModel
                 message.state_id as state_id
             FROM
                 message
-            JOIN user ON (user.user_id = message.expediteur)
-            JOIN ref_state ON (ref_state.state_id = message.state_id)
-            WHERE expediteur IN (:context_user_id, :user_id)
-            AND destinataire IN (:context_user_id, :user_id)
+            JOIN user ON (user.user_id = message.expediteur_id)
+            JOIN ref_message_state ON (ref_message_state.state_id = message.state_id)
+            WHERE expediteur_id IN (:context_user_id, :user_id)
+            AND destinataire_id IN (:context_user_id, :user_id)
             AND message.state_id IN (:status_sent, :status_read)
             ORDER BY date DESC
             LIMIT ' . $start . ', ' . $stop . '
@@ -52,10 +52,13 @@ class Message extends AppModel
 
         $stmt->bindValue('context_user_id', User::getContextUser('id'));
         $stmt->bindValue('user_id', $userId);
-        $stmt->bindValue('status_sent', STATUS_SENT);
-        $stmt->bindValue('status_read', STATUS_READ);
+        $stmt->bindValue('status_sent', MESSAGE_STATUS_SENT);
+        $stmt->bindValue('status_read', MESSAGE_STATUS_READ);
 
-        $stmt->execute();
+        if (!$stmt->execute()) {
+            $error_message = $stmt->errorInfo();
+            throw new Exception('La requête suivante : <b><br/>' . $sql . '</b><br/><br/>a renvoyé une erreur :<br/><i>' . $error_message[2] . '<i>', ERROR_SQL);
+        }
 
         return $stmt->fetchAll();
     }
@@ -75,9 +78,65 @@ class Message extends AppModel
         $catch = $this->fetchOnly($catchSql);
 
         $sql = "DELETE FROM message
-                WHERE destinataire IN ('".$catch['destinataire']."', '".$catch['expediteur']."')
-                AND expediteur IN ('".$catch['destinataire']."', '".$catch['expediteur']."')
-                AND state_id != ".STATUS_ADMIN;
+                WHERE destinataire_id IN ('".$catch['destinataire_id']."', '".$catch['expediteur_id']."')
+                AND expediteur_id IN ('".$catch['destinataire_id']."', '".$catch['expediteur_id']."')";
+
         return $this->execute($sql);
+    }
+
+    public static function getMessageList($offset = 0)
+    {
+        $sql = "SELECT
+                    user.user_id as user_id,
+                    message.message_id as message_id,
+                    user_login,
+                    user_gender,
+                    expediteur_id,
+                    state_libel,
+                    UNIX_TIMESTAMP(user_last_connexion) as user_last_connexion,
+                    message.state_id as state_id,
+                    LEFT(content, 300) as content,
+                    UNIX_TIMESTAMP( date ) AS delais,
+                    user_photo_url
+                FROM
+                    message JOIN user ON (message.expediteur_id = user.user_id)
+                            JOIN ref_message_state ON (ref_message_state.state_id = message.state_id)
+                WHERE
+                     destinataire_id = :context_user_id
+                     AND user_id NOT IN (
+                            SELECT destinataire_id FROM link
+                            WHERE expediteur_id = :context_user_id
+                            AND status = :link_status_blacklist
+                        )
+                ORDER BY date DESC
+                LIMIT :limit_begin, :limit_stop
+            ;";
+
+        $stmt = Db::getInstance()->prepare($sql);
+
+        $stmt->bindValue('context_user_id', User::getContextUser('id'), PDO::PARAM_INT);
+        $stmt->bindValue('link_status_blacklist', LINK_STATUS_BLACKLIST, PDO::PARAM_INT);
+        $stmt->bindValue('limit_begin', ($offset * NB_MAILBOX_RESULTS), PDO::PARAM_INT);
+        $stmt->bindValue('limit_stop', NB_MAILBOX_RESULTS, PDO::PARAM_INT);
+
+        if ($stmt->execute()) {
+            $rawResults = $stmt->fetchAll();
+
+            if (count($rawResults) > 0) {
+
+                foreach ($rawResults as $key => $message) {
+                    if (!isset($results[$message['user_id']])) {
+                        $results[$message['user_id']] = $message;
+                    }
+                }
+
+                return $results;
+            }
+        } else {
+            $error_message = $stmt->errorInfo();
+            throw new Exception('La requête suivante : <b><br/>' . $sql . '</b><br/><br/>a renvoyé une erreur :<br/><i>' . $error_message[2] . '<i>', ERROR_SQL);
+        }
+
+       return array();
     }
 }

@@ -41,8 +41,8 @@ class MessageController extends AppController
         foreach ($parentMessages as $key => $value) {
             $parentMessages[$key]['content'] = Tools::toSmiles($value['content']);
             // Si nouveau message, alors on le mets en état lu
-            if ($value['state_id'] == STATUS_SENT && $value['expediteur'] != $contextUserId) {
-                $this->model->message->updateMessageState($value['message_id'], STATUS_READ);
+            if ($value['state_id'] == MESSAGE_STATUS_SENT && $value['expediteur'] != $contextUserId) {
+                $this->model->message->updateMessageState($value['message_id'], MESSAGE_STATUS_READ);
                 if ($_SESSION['new_messages'] > 0) {
                     $_SESSION['new_messages']--;
                 }
@@ -69,6 +69,7 @@ class MessageController extends AppController
 
         // On récupère les information du message
         $parentMessages = $this->model->message->getConversation($userId);
+        var_dump($parentMessages);
 
         if ($this->_checkMessages($parentMessages, $userId)) {
             $this->view->parentMessages  = $parentMessages;
@@ -130,6 +131,7 @@ class MessageController extends AppController
 
         // On récupère les information du message
         $parentMessages = $this->model->message->getConversation($userId, $offset);
+
         if (count($parentMessages) > 0) {
             $this->_checkMessages($parentMessages, $userId);
             $this->view->parentMessages  = $parentMessages;

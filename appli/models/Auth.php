@@ -20,7 +20,7 @@ class Auth extends AppModel
     			FROM
     				message
     			WHERE
-    				destinataire = '".User::getContextUser('id')."'
+    				destinataire_id = '".User::getContextUser('id')."'
     			AND state_id = 1
                 AND expediteur NOT IN (
                     SELECT destinataire_id FROM link WHERE status = ".LINK_STATUS_BLACKLIST."
@@ -36,8 +36,8 @@ class Auth extends AppModel
     {
         $sql = "message_id,
                     user.user_id as user_id,
-                    expediteur,
-                    destinataire,
+                    expediteur_id,
+                    destinataire_id,
                     user_login,
                     user_gender,
                     content,
@@ -48,7 +48,7 @@ class Auth extends AppModel
                     message,
                     user
                 WHERE user_id = expediteur
-                AND user.user_id = message.destinataire;";
+                AND user.user_id = message.destinataire_id;";
         return $this->fetchOnly($sql);
     }
 

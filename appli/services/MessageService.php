@@ -15,7 +15,7 @@ Class MessageService
             'content' => $content,
             'expediteur' => $expediteur_id,
             'destinataire' => $destinataire_id,
-            'state_id' => STATUS_SENT,
+            'state_id' => MESSAGE_STATUS_SENT,
             'mailbox_id' => 1,
         );
 
