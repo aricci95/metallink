@@ -27,4 +27,29 @@ class Db
         self::getInstance()->close();
     }
 
+    public static function executeStmt(PDOStatement $stmt)
+    {
+        if (PROFILER) {
+            $begin_time = microtime(true);
+        }
+
+        $response = $stmt->execute();
+
+        if (PROFILER) {
+            $end_time =  microtime(true);
+            $executionTime = $end_time - $begin_time;
+
+            if ($executionTime >= 0.0025) {
+                echo '<div class="debug"><br/>' . $sql . '<br/><br/>' . $executionTime . '<br/></div>';
+            }
+        }
+
+        if (!$response) {
+            $error_message = $stmt->errorInfo();
+            throw new Exception('La requete suivante :<b><br/>' . $stmt->queryString . '</b><br/>a renvoye une erreur:<br/><i>' . $error_message[2] . '</i>', ERROR_SQL);
+        };
+
+        return $stmt;
+    }
+
 }

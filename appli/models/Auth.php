@@ -16,20 +16,26 @@ class Auth extends AppModel
     // Compter le nombre de nouveaux messages reçus
     public function countNewMessages()
     {
-        $sql      = "SELECT count(*) as nbr
+        $sql = "SELECT count(*) as nbr
     			FROM
     				message
     			WHERE
-    				destinataire_id = '".User::getContextUser('id')."'
-    			AND state_id = 1
-                AND expediteur NOT IN (
-                    SELECT destinataire_id FROM link WHERE status = ".LINK_STATUS_BLACKLIST."
-                     AND expediteur_id = '".User::getContextUser('id')."'
-                );";
-        $resultat = $this->fetchOnly($sql);
-        $return   = $resultat['nbr'];
+    				destinataire_id = :context_user_id
+    			AND state_id = :message_status_sent
+                AND expediteur_id NOT IN (
+                    SELECT destinataire_id FROM link WHERE status = :link_status_blacklist
+                    AND expediteur_id = :context_user_id
+                )
+            ;";
 
-        return $return;
+        $stmt = Db::getInstance()->prepare($sql);
+        $stmt->bindValue('context_user_id', User::getContextUser('id'), PDO::PARAM_INT);
+        $stmt->bindValue('message_status_sent', MESSAGE_STATUS_SENT, PDO::PARAM_INT);
+        $stmt->bindValue('link_status_blacklist', LINK_STATUS_BLACKLIST, PDO::PARAM_INT);
+
+        $resultat = Db::executeStmt($stmt)->fetch();
+
+        return $resultat['nbr'];
     }
 
     public function getLastMessage()
@@ -47,7 +53,7 @@ class Auth extends AppModel
                 FROM
                     message,
                     user
-                WHERE user_id = expediteur
+                WHERE user_id = expediteur_id
                 AND user.user_id = message.destinataire_id;";
         return $this->fetchOnly($sql);
     }

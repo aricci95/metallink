@@ -22,7 +22,7 @@
                 <td><input name="verif_pwd" type="password" <?php if(!empty($_POST['verif_pwd'])) : ?> value="<?php echo $_POST['verif_pwd']; ?>"<?php endif; ?> /></td>
             </tr>
             <tr>
-                <td>Adresse message :</td>
+                <td>Adresse email :</td>
                 <td><input name="user_mail" type="text" <?php if(!empty($_POST['user_mail'])) : ?> value="<?php echo $_POST['user_mail']; ?>"<?php endif; ?> /></td>
             </tr>
         </table>

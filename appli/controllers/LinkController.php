@@ -44,11 +44,13 @@ class LinkController extends AppController
         $destinataireId = $this->params['destinataire_id'];
         $destinataire   = array('user_id'        => $destinataireId,
                                 'user_photo_url' => $this->params['destinataire_photo_url'],
-                                'user_mail'      => $this->params['destinataire_message'],
+                                'user_mail'      => $this->params['destinataire_mail'],
                                 'user_login'     => $this->params['destinataire_login']);
+
         $this->view->user = $destinataire;
         $status = Link::getStatus($destinataireId);
         $result = ($status == LINK_STATUS_NONE) ? $this->model->Link->linkTo($destinataire) : $this->model->Link->updateLink($destinataireId, $this->params['status']);
+
         if ($result) {
             $this->view->newStatus = $this->params['status'];
             $this->view->getJSONResponse('link/wItem');

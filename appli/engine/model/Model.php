@@ -49,13 +49,8 @@ abstract class Model
                 $stmt->bindValue(str_replace('!', '', $key), $value);
             }
         }
-        Log::debug($sql);
-        if (!$stmt->execute()) {
-            $error_message = $stmt->errorInfo();
-            throw new Exception('La requête suivante : <b><br/>' . $sql . '</b><br/><br/>a renvoyé une erreur :<br/><i>' . $error_message[2] . '<i>', ERROR_SQL);
-        }
 
-        return $stmt->fetchAll();
+        return Db::executeStmt($stmt)->fetchAll();
     }
 
     public function fetch($sql)
@@ -63,7 +58,7 @@ abstract class Model
         $stmt = Db::getInstance()->prepare($sql);
         $stmt->execute();
 
-        return $stmt->fetchAll();
+        return Db::executeStmt($stmt)->fetchAll();
     }
 
     public function fetchOnly($sql)
@@ -71,7 +66,7 @@ abstract class Model
         $stmt = Db::getInstance()->prepare($sql);
         $stmt->execute();
 
-        return $stmt->fetch();
+        return Db::executeStmt($stmt)->fetch();
     }
 
     public function execute($sql, array $params = array())
@@ -82,27 +77,7 @@ abstract class Model
             $stmt->bindValue($key, $value);
         }
 
-        if (PROFILER) {
-            $begin_time = microtime(true);
-        }
-
-        $response = $stmt->execute();
-
-        if (PROFILER) {
-            $end_time =  microtime(true);
-            $executionTime = $end_time - $begin_time;
-
-            if ($executionTime >= 0.0025) {
-                echo '<div class="debug"><br/>' . $sql . '<br/><br/>' . $executionTime . '<br/></div>';
-            }
-        }
-
-        if (!$response) {
-            $error_message = $stmt->errorInfo();
-            throw new Exception('La requête suivante : <b><br/>' . $sql . '</b><br/><br/>a renvoyé une erreur :<br/><i>' . $error_message[2] . '<i>', ERROR_SQL);
-        };
-
-        return $response;
+        return Db::executeStmt($stmt);
     }
 
     public function insertId()

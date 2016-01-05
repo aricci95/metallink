@@ -50,7 +50,7 @@ abstract class AppModel extends Model
 
         $stmt->bindValue('id', (int) $id, PDO::PARAM_INT);
 
-        return $stmt->execute();
+        return Db::executeStmt($stmt);
     }
 
     public static function insert(array $values)
@@ -74,10 +74,7 @@ abstract class AppModel extends Model
             }
         }
 
-        if(!$stmt->execute()) {
-            $error_message = $stmt->errorInfo();
-            throw new Exception('La requête suivante : <b><br/>' . $sql . '</b><br/><br/>a renvoyé une erreur :<br/><i>' . $error_message[2] . '<i>', ERROR_SQL);
-        }
+        Db::executeStmt($stmt);
 
         return Db::getInstance()->lastInsertId();
     }

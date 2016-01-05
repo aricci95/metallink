@@ -11,8 +11,13 @@ abstract class AppController extends Controller
         $this->_checkSession();
         if (!$this->isAjax()) {
             if (!empty($_SESSION['role_id']) && $_SESSION['role_id'] >= AUTH_LEVEL_USER) {
-                $this->_getNotifications();
-                $this->_refreshLastConnexion();
+                try {
+                    $this->_getNotifications();
+                    $this->_refreshLastConnexion();
+                } catch (Exception $e) {
+                    $this->view->growlerError();
+                    Mailer::sendError($e);
+                }
             }
         }
     }
