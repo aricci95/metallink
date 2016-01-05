@@ -89,7 +89,7 @@
             <?php endif; ?>
             <td><a class="aMenu" href="home/disconnect">Déconnecter</a></td>
             <td align="right">
-                <a class="aMenu" href="mailbox"><img src="MLink/images/icone/mail.png" /> <b><?php echo (!empty($_SESSION['new_mails'])) ? $_SESSION['new_mails'] : 0; ?></b></a>
+                <a class="aMenu" href="mailbox"><img src="MLink/images/icone/message.png" /> <b><?php echo (!empty($_SESSION['new_messages'])) ? $_SESSION['new_messages'] : 0; ?></b></a>
                 <a class="aMenu" href="link/<?php echo LINK_STATUS_SENT; ?>"><img src="MLink/images/icone/link.png" /> <b><?php echo (!empty($_SESSION['links']['count'][LINK_STATUS_RECIEVED])) ? $_SESSION['links']['count'][LINK_STATUS_RECIEVED] : 0; ?></b></a>
                 <a class="aMenu" href="link/<?php echo LINK_STATUS_ACCEPTED; ?>"><img src="MLink/images/icone/link_accepted.png" /> <b><?php echo (!empty($_SESSION['links']['count'][LINK_STATUS_ACCEPTED])) ? $_SESSION['links']['count'][LINK_STATUS_ACCEPTED] : 0; ?></b></a>
                 <a class="aMenu" href="views"><img src="MLink/images/icone/views.gif" /> <b><?php echo (!empty($_SESSION['views'])) ? $_SESSION['views'] : 0; ?></b></a>

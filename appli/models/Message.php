@@ -1,15 +1,15 @@
 <?php
 
 /*
- *  Classe d'accès aux données des mails
+ *  Classe d'accès aux données des messages
  */
 class Message extends AppModel
 {
 
-    // Change l'état d'un mail
+    // Change l'état d'un message
     public function updateMessageState($messageId, $messageStateId)
     {
-        $sql = "UPDATE mail SET state_id = '".$this->securize($messageStateId)."'
+        $sql = "UPDATE message SET state_id = '".$this->securize($messageStateId)."'
                 WHERE message_id = '".$this->securize($messageId)."'";
 
         return $this->execute($sql);
@@ -35,14 +35,14 @@ class Message extends AppModel
                 UNIX_TIMESTAMP( date ) AS delais,
                 user_photo_url,
                 state_libel,
-                mail.state_id as state_id
+                message.state_id as state_id
             FROM
-                mail
-            JOIN user ON (user.user_id = mail.expediteur)
-            JOIN ref_state ON (ref_state.state_id = mail.state_id)
+                message
+            JOIN user ON (user.user_id = message.expediteur)
+            JOIN ref_state ON (ref_state.state_id = message.state_id)
             WHERE expediteur IN (:context_user_id, :user_id)
             AND destinataire IN (:context_user_id, :user_id)
-            AND mail.state_id IN (:status_sent, :status_read)
+            AND message.state_id IN (:status_sent, :status_read)
             ORDER BY date DESC
             LIMIT ' . $start . ', ' . $stop . '
             ;
@@ -60,10 +60,10 @@ class Message extends AppModel
         return $stmt->fetchAll();
     }
 
-    // Supprime un mail
+    // Supprime un message
     public function deleteMessageById($messageId)
     {
-        $sql = "DELETE FROM mail WHERE message_id = '".$this->securize($messageId)."';";
+        $sql = "DELETE FROM message WHERE message_id = '".$this->securize($messageId)."';";
         $resultat = $this->execute($sql, false);
         return $resultat;
     }
@@ -71,10 +71,10 @@ class Message extends AppModel
     // Supprime toute une conversation
     public function deleteConversation($linkId)
     {
-        $catchSql = "SELECT * FROM mail WHERE message_id = '".$this->securize($linkId)."';";
+        $catchSql = "SELECT * FROM message WHERE message_id = '".$this->securize($linkId)."';";
         $catch = $this->fetchOnly($catchSql);
 
-        $sql = "DELETE FROM mail
+        $sql = "DELETE FROM message
                 WHERE destinataire IN ('".$catch['destinataire']."', '".$catch['expediteur']."')
                 AND expediteur IN ('".$catch['destinataire']."', '".$catch['expediteur']."')
                 AND state_id != ".STATUS_ADMIN;

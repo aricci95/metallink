@@ -156,7 +156,7 @@ class Util extends AppModel
                 // SI Linked
                 if ($linked != false) {
                     echo '<td title="Blacklist" class="userFont" align="center"><a href="blacklist.php?action=add&id='.$user['user_id'].'" ><img src="../images/disc_close.png" /></a>';
-                    echo '<a title="Envoyer un message" href="mail.php?user_id='.$user['user_id'].'" ><img src="../images/mail.png" /></a>';
+                    echo '<a title="Envoyer un message" href="message.php?user_id='.$user['user_id'].'" ><img src="../images/message.png" /></a>';
                     if (array_key_exists($userId, $this->userStatuses)) {
                         echo '<a title="Chatter" href="javascript:void(0)" onclick="javascript:chatWith(\''.$user['user_login'].'\')"><img src="../images/chat.png" /></a>';
                     }
@@ -239,7 +239,7 @@ class Util extends AppModel
        // Vues
         $this->execute("DELETE FROM user_views WHERE view_date < NOW( ) - INTERVAL 2 DAY ;");
        // Messages
-        $messageSQL = "DELETE FROM mail
+        $messageSQL = "DELETE FROM message
                        WHERE state_id != 7
                        AND date < NOW( ) - INTERVAL 6 MONTH ;";
         $this->execute($messageSQL);

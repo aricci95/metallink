@@ -323,7 +323,7 @@ class User extends AppModel
     {
         $sql = "DELETE FROM user WHERE user_id = :id;
                 DELETE FROM user_views WHERE viewer_id = :id OR viewed_id = :id;
-                DELETE FROM mail WHERE destinataire = :id OR expediteur = :id;
+                DELETE FROM message WHERE destinataire = :id OR expediteur = :id;
                 DELETE FROM chat WHERE `from` = :user_login OR `to` = :user_login;
                 ";
 
@@ -435,7 +435,7 @@ class User extends AppModel
         return $userValidationId;
     }
 
-    // Récupére le mail d'un user
+    // Récupére le message d'un user
     public function getMessageByUser($userId)
     {
         $sql = "SELECT user_mail, user_login FROM user WHERE user_id = '".$this->securize($userId)."'";

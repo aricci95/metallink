@@ -29,10 +29,10 @@ abstract class AppController extends Controller
             $this->view->growler('Nouvelle demande !', GROWLER_INFO);
         }
 
-        // Vérification des nouveaux mails
-        $oldMessagesCount  = (!empty($_SESSION['new_mails'])) ? $_SESSION['new_mails'] : 0;
-        $_SESSION['new_mails'] = $this->model->Auth->countNewMessages(User::getContextUser('id'));
-        if ($oldMessagesCount < $_SESSION['new_mails']) {
+        // Vérification des nouveaux messages
+        $oldMessagesCount  = (!empty($_SESSION['new_messages'])) ? $_SESSION['new_messages'] : 0;
+        $_SESSION['new_messages'] = $this->model->Auth->countNewMessages(User::getContextUser('id'));
+        if ($oldMessagesCount < $_SESSION['new_messages']) {
             $this->view->growler('Nouveau message !', GROWLER_INFO);
         }
     }
@@ -54,7 +54,7 @@ abstract class AppController extends Controller
         }
     }
 
-    // Vérifie la conformité de la session et les mails
+    // Vérifie la conformité de la session et les messages
     protected function _checkSession()
     {
         $roleLimit = $this->_authLevel;

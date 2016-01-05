@@ -8,7 +8,7 @@ Class MessageService
         if (empty($expediteur_id) || empty($destinataire_id)) {
             $message = "<br/><br/>Valeurs en paramètres : <br/>";
 
-            throw new Exception('Erreur lors de la sauvegarde du mail, destinataire / expediteur manquant' . $message, ERROR_BEHAVIOR);
+            throw new Exception('Erreur lors de la sauvegarde du message, destinataire / expediteur manquant' . $message, ERROR_BEHAVIOR);
         }
 
         $message_data = array(
@@ -21,9 +21,14 @@ Class MessageService
 
         if (Message::insert($message_data)) {
             $destinataire = User::findById($destinataire_id, array('user_mail'));
-            $message      = User::getContextUser('login').' vous a envoyé un nouveau message ! <a href="http://metallink.fr/mail/' . User::getContextUser('id') . '">Cliquez ici</a> pour le lire.';
+            $message      = User::getContextUser('login').' vous a envoyé un nouveau message ! <a href="http://metallink.fr/message/' . User::getContextUser('id') . '">Cliquez ici</a> pour le lire.';
 
             return Mailer::send($destinataire['user_mail'], 'Nouveau message sur MetalLink !', $message);
         }
+    }
+
+    public function getMessages($expediteur_id = null, $destinataire_id = null)
+    {
+
     }
 }

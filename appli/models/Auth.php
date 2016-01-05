@@ -18,7 +18,7 @@ class Auth extends AppModel
     {
         $sql      = "SELECT count(*) as nbr
     			FROM
-    				mail
+    				message
     			WHERE
     				destinataire = '".User::getContextUser('id')."'
     			AND state_id = 1
@@ -45,10 +45,10 @@ class Auth extends AppModel
                     UNIX_TIMESTAMP( date ) AS delais,
                     user_photo_url,
                 FROM
-                    mail,
+                    message,
                     user
                 WHERE user_id = expediteur
-                AND user.user_id = mail.destinataire;";
+                AND user.user_id = message.destinataire;";
         return $this->fetchOnly($sql);
     }
 

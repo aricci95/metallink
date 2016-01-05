@@ -44,7 +44,7 @@ class LinkController extends AppController
         $destinataireId = $this->params['destinataire_id'];
         $destinataire   = array('user_id'        => $destinataireId,
                                 'user_photo_url' => $this->params['destinataire_photo_url'],
-                                'user_mail'      => $this->params['destinataire_mail'],
+                                'user_mail'      => $this->params['destinataire_message'],
                                 'user_login'     => $this->params['destinataire_login']);
         $this->view->user = $destinataire;
         $status = Link::getStatus($destinataireId);

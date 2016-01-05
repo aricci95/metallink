@@ -8,7 +8,7 @@ class MessageController extends AppController
         if (empty($parentMessages) && $userId > 0) {
             return $this->model->User->getUserByIdDetails($userId);
         }
-        // Si rajout de mail de soit même
+        // Si rajout de message de soit même
         if ($parentMessages[0]['expediteur'] == User::getContextUser('id')) {
             return $this->model->User->getUserByIdDetails($parentMessages[0]['destinataire']);
         } // Si réponse
@@ -40,11 +40,11 @@ class MessageController extends AppController
 
         foreach ($parentMessages as $key => $value) {
             $parentMessages[$key]['content'] = Tools::toSmiles($value['content']);
-            // Si nouveau mail, alors on le mets en état lu
+            // Si nouveau message, alors on le mets en état lu
             if ($value['state_id'] == STATUS_SENT && $value['expediteur'] != $contextUserId) {
                 $this->model->message->updateMessageState($value['message_id'], STATUS_READ);
-                if ($_SESSION['new_mails'] > 0) {
-                    $_SESSION['new_mails']--;
+                if ($_SESSION['new_messages'] > 0) {
+                    $_SESSION['new_messages']--;
                 }
             }
         }
@@ -67,13 +67,13 @@ class MessageController extends AppController
             $userId = $this->params['value'];
         }
 
-        // On récupère les information du mail
+        // On récupère les information du message
         $parentMessages = $this->model->message->getConversation($userId);
 
         if ($this->_checkMessages($parentMessages, $userId)) {
             $this->view->parentMessages  = $parentMessages;
             $this->view->destinataire = $this->_getDestinataire($parentMessages, $userId);
-            $this->view->setViewName('mail/wMain');
+            $this->view->setViewName('message/wMain');
             $this->view->render();
         } else {
             $this->redirect('mailbox', array('msg' => ERR_CONTENT));
@@ -113,10 +113,10 @@ class MessageController extends AppController
         $content = nl2br($content);
 
         if ($this->get('message')->send($from, $to, $content)) {
-            $message = User::getContextUser('login') . ' vous a envoyé un nouveau message ! <a href="http://metallink.fr/mail/' . User::getContextUser('id') . '">Cliquez ici</a> pour le lire.';
-            $this->redirect('mail', array($this->params['value'], 'msg' => MSG_SENT_OK));
+            $message = User::getContextUser('login') . ' vous a envoyé un nouveau message ! <a href="http://metallink.fr/message/' . User::getContextUser('id') . '">Cliquez ici</a> pour le lire.';
+            $this->redirect('message', array($this->params['value'], 'msg' => MSG_SENT_OK));
         } else {
-            Log::err('impossible d\'enregistrer le mail.');
+            Log::err('impossible d\'enregistrer le message.');
             $this->redirect('mailbox', array('msg' => ERR_MAIL));
         }
 
@@ -128,14 +128,14 @@ class MessageController extends AppController
         $offset = $this->params['value'];
         $userId = $this->params['option'];
 
-        // On récupère les information du mail
+        // On récupère les information du message
         $parentMessages = $this->model->message->getConversation($userId, $offset);
         if (count($parentMessages) > 0) {
             $this->_checkMessages($parentMessages, $userId);
             $this->view->parentMessages  = $parentMessages;
             $this->view->destinataire = $this->_getDestinataire($parentMessages, $userId);
             $this->view->offset = $offset++;
-            $this->view->getJSONResponse('mail/wItems');
+            $this->view->getJSONResponse('message/wItems');
         } else {
             return;
         }

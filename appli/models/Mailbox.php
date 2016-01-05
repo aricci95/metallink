@@ -1,7 +1,7 @@
 <?php
 
 /*
- *  Classe d'acces aux donnees des mails
+ *  Classe d'acces aux donnees des messages
  */
 class Mailbox extends AppModel
 {
@@ -26,13 +26,13 @@ class Mailbox extends AppModel
                     expediteur,
                     state_libel,
                     UNIX_TIMESTAMP(user_last_connexion) as user_last_connexion,
-                    mail.state_id as state_id,
+                    message.state_id as state_id,
                     LEFT(content, 300) as content,
                     UNIX_TIMESTAMP( date ) AS delais,
                     user_photo_url
                 FROM
-                    mail JOIN user ON (mail.expediteur = user.user_id)
-                         JOIN ref_state ON (ref_state.state_id = mail.state_id)
+                    message JOIN user ON (message.expediteur = user.user_id)
+                         JOIN ref_state ON (ref_state.state_id = message.state_id)
                 WHERE
                      destinataire = '".User::getContextUser('id')."'
                      AND user_id NOT IN (
@@ -40,8 +40,6 @@ class Mailbox extends AppModel
                             WHERE expediteur_id = '".User::getContextUser('id')."'
                             AND status = ".LINK_STATUS_BLACKLIST."
                         )
-                OR
-                    mail.state_id = ".STATUS_ADMIN."
                 ORDER BY date DESC
                 LIMIT ".($offset * NB_MAILBOX_RESULTS).", ".NB_MAILBOX_RESULTS.";";
        // echo $sql;die();
@@ -58,14 +56,14 @@ class Mailbox extends AppModel
         }
     }
 
-    // Recupere la liste des mails recus
+    // Recupere la liste des messages recus
     public function getSentMessage($userId, $offset = 0)
     {
         $userId = $this->securize($userId);
         $sql = "SELECT
 					message.message_id as message_id,
 					state_libel,
-					mail.state_id as state_id,
+					message.state_id as state_id,
 					expediteur,
 					user_gender,
 					user.user_id as user_id,
@@ -73,20 +71,20 @@ class Mailbox extends AppModel
 					UNIX_TIMESTAMP( date ) AS delais,
 					destinataire,
 					LEFT(content, 50) as content,
-					mail.state_id as state_id,
+					message.state_id as state_id,
 					user_login,
                     UNIX_TIMESTAMP(user_last_connexion) as user_last_connexion,
 					user_photo_url
 					FROM
-						mail,
+						message,
 						mailbox,
 						ref_state,
 						user
-					WHERE mail.mailbox_id = mailbox.mailbox_id
-					AND mail.state_id = ref_state.state_id
-					AND mail.expediteur = user.user_id
+					WHERE message.mailbox_id = mailbox.mailbox_id
+					AND message.state_id = ref_state.state_id
+					AND message.expediteur = user.user_id
         			AND destinataire = '$userId'
-        			AND mail.state_id NOT IN ('".STATUS_DELETED."') ";
+        			AND message.state_id NOT IN ('".STATUS_DELETED."') ";
 
         $sql .= " GROUP BY expediteur ";
         $sql .= " ORDER BY date ASC";
@@ -96,7 +94,7 @@ class Mailbox extends AppModel
 
     public function deleteConversation($userId)
     {
-        $sql = "DELETE FROM mail
+        $sql = "DELETE FROM message
 				WHERE (expediteur = '".$this->securize($userId)."' OR destinataire = '".$this->securize($userId)."')
 				AND (expediteur = '".User::getContextUser('id')."' OR destinataire = '".User::getContextUser('id')."')
                 AND state_id != ".STATUS_ADMIN;

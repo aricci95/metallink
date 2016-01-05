@@ -3,7 +3,7 @@ Antoine Ricci - Administrateur de MetalLink.fr<br>
 Les informations recueillies font l’objet d’un traitement informatique et sont destinées à vous aider à communiquer et échanger avec les autres utilisateurs du site. <br>
 En application des articles 39 et suivants de la loi du 6 janvier 1978 modifiée, vous bénéficiez d’un droit d’accès et de rectification aux informations qui vous concernent.
 <br><br>
-Conformément à la loi « informatique et libertés » du 6 janvier 1978 modifiée en 2004, vous bénéficiez d’un droit d’accès et de rectification aux informations qui vous concernent, que vous pouvez exercer en vous adressant à notre équipe à l'adresse suivante : aricci95@gmail.com. 
+Conformément à la loi « informatique et libertés » du 6 janvier 1978 modifiée en 2004, vous bénéficiez d’un droit d’accès et de rectification aux informations qui vous concernent, que vous pouvez exercer en vous adressant à notre équipe à l'adresse suivante : aricci95@gmail.com.
 <br><br>
 Vous pouvez également, pour des motifs légitimes, vous opposer au traitement des données vous concernant.
 <br><br>
@@ -25,9 +25,9 @@ Pour Mozilla firefox :
 <br><br>
 Pour Microsoft Internet Explorer  :
 <br><br>
-   1. choisissez le menu "Outils" (ou "Tools"), puis "Options Internet" (ou "Internet Options"). 
-   2. cliquez sur l'onglet "Confidentialité" (ou "Confidentiality") 
-   3. sélectionnez le niveau souhaité à l'aide du curseur. 
+   1. choisissez le menu "Outils" (ou "Tools"), puis "Options Internet" (ou "Internet Options").
+   2. cliquez sur l'onglet "Confidentialité" (ou "Confidentiality")
+   3. sélectionnez le niveau souhaité à l'aide du curseur.
 <br><br>
 Pour Opéra :
 <br><br>
@@ -43,6 +43,8 @@ Ces informations sont les suivantes : description , détails physiques(cheveux, 
 <br>
 Compte tenu des caractéristiques du réseau Internet que sont la libre captation des informations diffusées et la difficulté, voire l’impossibilité de contrôler l’utilisation qui pourrait en être faite par des tiers, vous pouvez vous opposer à une telle diffusion.<br>
 <br>
-Pour que nous puissions prendre en compte votre refus, contactez-nous à cette adresse : aricci95@gmail.com.<br> 
+<b>ATTENTION : Tous les contenus publiés sur le site peuvent être soumis à l'équipe de modération.</b>
+<br>
+Pour que nous puissions prendre en compte votre refus, contactez-nous à cette adresse : aricci95@gmail.com.<br>
 <br>
 <a align="center" href="" OnClick="javascript:window.close();">Fermer cette fenêtre</a>

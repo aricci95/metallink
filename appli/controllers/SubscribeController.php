@@ -40,11 +40,11 @@ class SubscribeController extends AppController
         // Message
         $Syntaxe='#^[\w.-]+@[\w.-]+\.[a-zA-Z]{2,6}$#';
         if (!preg_match($Syntaxe, $this->params['user_mail'])) {
-            $this->view->growler('Adresse e-mail invalide.');
+            $this->view->growler('Adresse e-message invalide.');
             return false;
         }
         if ($this->model->User->isUsedMessage($this->params['user_mail'])) {
-            $this->view->growler('Adresse e-mail déjà utilisée.');
+            $this->view->growler('Adresse e-message déjà utilisée.');
             return false;
         }
         // Password
@@ -73,12 +73,12 @@ class SubscribeController extends AppController
 
                 if (!empty($validationId)) {
                     $message = 'Merci de vous être inscris sur MetalLink<br><br>
-                            Avant de pouvoir vous connecter vous devez cliquer sur ce lien pour valider votre adresse mail :<br><br>
+                            Avant de pouvoir vous connecter vous devez cliquer sur ce lien pour valider votre adresse message :<br><br>
                             <a href="http://metallink.fr/MLink/subscribe/validate/'.$validationId.'">Cliquez ici pour valider votre compte ! </a><br><br>
                             Voici vos identifiants :<br><br>
                             <u>Login :</u> '.$newUser['user_login'].'<br><br>
                             <u>Mot de passe :</u> '.$this->params['user_pwd'].'<br><br>
-                            Si vous rencontrez des problèmes, n\'hésitez pas à nous envoyer un mail en répondant directement à celui-ci, nous vous répondrons dans les plus bref délais.';
+                            Si vous rencontrez des problèmes, n\'hésitez pas à nous envoyer un message en répondant directement à celui-ci, nous vous répondrons dans les plus bref délais.';
                     if (Mailer::send($newUser['user_mail'], 'Bienvenue sur MetalLink '.$newUser['user_login'].' !', $message)) {
                         $this->redirect('home', array('msg' => MSG_VALIDATION_SENT));
                     } else {

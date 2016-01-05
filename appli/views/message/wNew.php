@@ -1,4 +1,4 @@
-<form action="mail/submit<?php if(!empty($_GET['value'])) : ?>/<?php echo $_GET['value']; ?><?php endif;?>" method="post">
+<form action="message/submit<?php if(!empty($_GET['value'])) : ?>/<?php echo $_GET['value']; ?><?php endif;?>" method="post">
     <?php if(!empty($this->parentMessages)) : ?>
         <input type="hidden" name="last_content" value="<?php echo $this->parentMessages[0]['content']; ?>" />
     <?php endif; ?>

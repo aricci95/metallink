@@ -7,7 +7,7 @@ class MailboxController extends AppController
     {
         $this->view->addJS(JS_SCROLL_REFRESH);
         $libel = 'De';
-        //on récupère les mails de l'utilisateur
+        //on récupère les messages de l'utilisateur
         $this->view->userMessages = $this->model->Mailbox->getInboxMessage();
         foreach ($this->view->userMessages as $key => $value) {
             $this->view->userMessages[$key]['content'] = Tools::toSmiles($value['content']);
@@ -22,7 +22,7 @@ class MailboxController extends AppController
         $offset = $this->params['value'];
         $libel = 'De';
 
-        //on récupère les mails de l'utilisateur
+        //on récupère les messages de l'utilisateur
         $this->view->userMessages = $this->model->Mailbox->getInboxMessage($offset);
         if (count($this->view->userMessages) > 0) {
             foreach ($this->view->userMessages as $key => $value) {
