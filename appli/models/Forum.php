@@ -19,6 +19,7 @@ class Forum extends AppModel
         }
         $sql .= ' ORDER BY id DESC
                   LIMIT 0,50';
+
         return array_reverse($this->fetch($sql));
     }
 
@@ -35,12 +36,7 @@ class Forum extends AppModel
                 AND (UNIX_TIMESTAMP( NOW() ) - UNIX_TIMESTAMP( user_last_connexion )) < '.ONLINE_TIME_LIMIT.'
                 ORDER BY user_login ASC
                 LIMIT 0, 100;';
-         return $this->fetch($sql);
-    }
 
-    public function saveMessage($message)
-    {
-        $this->execute("INSERT INTO forum (content, user_id, user_login, date) VALUES ('".htmlentities($message, ENT_QUOTES, 'utf-8')."', ".User::getContextUser('id').", '".User::getContextUser('login')."', NOW())");
-        return $this->insertId();
+         return $this->fetch($sql);
     }
 }

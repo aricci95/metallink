@@ -32,7 +32,11 @@ class User extends AppModel
     public static function getContextUser($attribute = null)
     {
         if (!empty($attribute) && array_key_exists('user_'.$attribute, $_SESSION) && !empty($_SESSION['user_'.$attribute])) {
-            return $_SESSION['user_'.$attribute];
+            if ($attribute == 'id') {
+                return (int) $_SESSION['user_id'];
+            } else {
+                return $_SESSION['user_'.$attribute];
+            }
         } elseif ($attribute == 'role_id' && !empty($_SESSION['role_id'])) {
             return $_SESSION['role_id'];
         } else {
@@ -48,6 +52,7 @@ class User extends AppModel
                             'zipcode'   => $_SESSION['user_zipcode']);
             }
         }
+
         return null;
     }
 

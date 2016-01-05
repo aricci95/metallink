@@ -81,12 +81,12 @@ $(document).ready(function() {
         );
     }
 
-    
+
 
     $( window ).resize(function() {
         resize();
     });
-    
+
     $("#forum").on('click', '.send', function(e) {
         e.preventDefault();
         e.stopPropagation();

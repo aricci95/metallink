@@ -9,7 +9,7 @@ class ForumController extends AppController
     {
         $this->view->messages       = $this->model->Forum->getLastMessages();
         $this->view->users          = $this->model->Forum->getConnectedUsers();
-        $reversedArray               = array_reverse($this->view->messages);
+        $reversedArray              = array_reverse($this->view->messages);
         $this->view->lastId         = !empty($reversedArray) ? $reversedArray[0]['id'] : 0;
         $this->view->setViewName('forum/wForum');
         $this->view->render();
@@ -49,10 +49,9 @@ class ForumController extends AppController
     public function renderSave()
     {
         if (!empty($this->params['content'])) {
-            echo $this->model->Forum->saveMessage($this->params['content']);
+            return $this->get('message')->post($this->params['content']);
         } else {
-            return null;
+            return false;
         }
-
     }
 }

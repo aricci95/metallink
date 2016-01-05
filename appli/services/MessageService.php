@@ -2,7 +2,14 @@
 
 Class MessageService
 {
-
+    /**
+     * Envoi un message via la messagerie
+     *
+     * @param  int $expediteur_id
+     * @param  int $destinataire_id
+     * @param  string $content
+     * @return bool
+     */
     public function send($expediteur_id, $destinataire_id, $content)
     {
         if (empty($expediteur_id) || empty($destinataire_id)) {
@@ -28,5 +35,30 @@ Class MessageService
 
             return Mailer::send($destinataire['user_mail'], 'Nouveau message sur MetalLink !', $message);
         }
+    }
+
+    /**
+     * Poste un message sur le forum global
+     *
+     * @param  string $message
+     * @param  int $authorId
+     * @return bool
+     */
+    public function post($message)
+    {
+        if (empty($message)) {
+            throw new Exception('message vide', ERROR_BEHAVIOR);
+        }
+
+        $message = nl2br(str_replace('\\', '', htmlentities($message, ENT_QUOTES, 'utf-8')));
+
+        $message_data = array(
+            'content' => $message,
+            'user_id' => User::getContextUser('id'),
+            'date' => date('Y-m-d H:i:s'),
+            'user_login' => User::getContextUser('login'),
+        );
+
+        return Forum::insert($message_data);
     }
 }
