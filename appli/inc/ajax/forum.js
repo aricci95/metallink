@@ -81,6 +81,20 @@ $(document).ready(function() {
         );
     }
 
+    $("#forum").on('click', '#notification', function(e) {
+        var inputNotification = $('#notification');
+
+        if (inputNotification.prop('checked')) {
+            notification = 1;
+        } else {
+            notification = 0;
+        }
+
+        $.post('forum/setNotification', { notification : notification },
+            null,
+            'html'
+        );
+    });
 
 
     $( window ).resize(function() {

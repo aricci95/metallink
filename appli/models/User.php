@@ -44,15 +44,17 @@ class User extends AppModel
             return $_SESSION['role_id'];
         } else {
             if (!empty($_SESSION['user_id'])) {
-                return array('id' => $_SESSION['user_id'],
-                            'login' => $_SESSION['user_login'],
-                            'last_connexion' => $_SESSION['user_last_connexion'],
-                            'role_id' => $_SESSION['role_id'],
-                            'photo_url' => empty($_SESSION['user_photo_url']) ? 'unknowUser.jpg' : $_SESSION['user_photo_url'],
-                            'age' => $_SESSION['age'],
-                            'gender' => $_SESSION['user_gender'],
-                            'city'   => $_SESSION['user_city'],
-                            'zipcode'   => $_SESSION['user_zipcode']);
+                return array(
+                    'id' => $_SESSION['user_id'],
+                    'login' => $_SESSION['user_login'],
+                    'last_connexion' => $_SESSION['user_last_connexion'],
+                    'role_id' => $_SESSION['role_id'],
+                    'photo_url' => empty($_SESSION['user_photo_url']) ? 'unknowUser.jpg' : $_SESSION['user_photo_url'],
+                    'age' => $_SESSION['age'],
+                    'gender' => $_SESSION['user_gender'],
+                    'city'   => $_SESSION['user_city'],
+                    'zipcode'   => $_SESSION['user_zipcode']
+                );
             }
         }
 

@@ -130,7 +130,8 @@ class Auth extends AppModel
                     user_zipcode,
                     user_mail,
                     longitude,
-                    lattitude
+                    lattitude,
+                    forum_notification
                 FROM user LEFT JOIN ville ON (user.user_zipcode = ville.code_postal)
                 WHERE LOWER(user_login) = LOWER(:user_login)
                 AND user_pwd = :pwd
@@ -171,6 +172,8 @@ class Auth extends AppModel
                     $_SESSION['user_zipcode']   = $user['user_zipcode'];
                     $_SESSION['user_longitude'] = $user['longitude'];
                     $_SESSION['user_lattitude'] = $user['lattitude'];
+                    $_SESSION['forum_notification'] = $user['forum_notification'];
+
                     return true;
                 }
             } else {

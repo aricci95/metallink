@@ -7,10 +7,12 @@ class ForumController extends AppController
 
     public function render()
     {
-        $this->view->messages       = $this->model->Forum->getLastMessages();
-        $this->view->users          = $this->model->Forum->getConnectedUsers();
-        $reversedArray              = array_reverse($this->view->messages);
-        $this->view->lastId         = !empty($reversedArray) ? $reversedArray[0]['id'] : 0;
+        $this->view->messages      = $this->model->Forum->getLastMessages();
+        $this->view->users         = $this->model->Forum->getConnectedUsers();
+        $reversedArray             = array_reverse($this->view->messages);
+        $this->view->lastId        = !empty($reversedArray) ? $reversedArray[0]['id'] : 0;
+        $this->view->notification  = $_SESSION['forum_notification'];
+
         $this->view->setViewName('forum/wForum');
         $this->view->render();
     }
@@ -52,6 +54,16 @@ class ForumController extends AppController
             return $this->get('message')->post($this->params['content']);
         } else {
             return false;
+        }
+    }
+
+    public function renderSetNotification()
+    {
+        if (User::updateById(User::getContextUser('id'), 'forum_notification', $this->params['notification'])) {
+            $_SESSION['forum_notification'] = (int) $this->params['notification'];
+            return JSON_OK;
+        } else {
+            return JSON_ERR;
         }
     }
 }

@@ -42,6 +42,18 @@ abstract class AppModel extends Model
         return empty($results[0]) ? array() : $results[0];
     }
 
+    public static function updateById($id, $attribute, $newValue)
+    {
+        $sql = 'UPDATE ' . self::getTable() . ' SET ' . $attribute . ' = :new_value WHERE ' . self::getPrimary() . ' = :id;';
+
+        $stmt = Db::getInstance()->prepare($sql);
+
+        $stmt->bindValue(':new_value', $newValue);
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+
+        return Db::executeStmt($stmt);
+    }
+
     public static function deleteById($id)
     {
         $sql = 'DELETE FROM ' . self::getTable() . ' WHERE ' . self::getPrimary() . ' = :id';
