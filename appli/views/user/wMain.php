@@ -76,18 +76,6 @@ $(function(){
                     <td><?php echo $this->user['style_libel']; ?></td>
                 </tr>
             <?php endif; ?>
-            <?php if (!empty($this->user['hair_libel'])) : ?>
-                <tr>
-                    <th>Couleur de cheveux : </th>
-                    <td><?php echo $this->user['hair_libel']; ?></td>
-                </tr>
-            <?php endif; ?>
-            <?php if (!empty($this->user['eyes_libel'])) : ?>
-                <tr>
-                    <th>Couleur des yeux : </th>
-                    <td><?php echo $this->user['eyes_libel']; ?></td>
-                </tr>
-            <?php endif; ?>
             <tr>
                 <th>Taille / Poids : </th>
                 <td><?php if ($this->user['user_taille'] > 0)
@@ -101,12 +89,6 @@ $(function(){
                 <tr>
                     <th>Look : </th>
                     <td><?php echo $this->user['look_libel']; ?></td>
-                </tr>
-            <?php endif; ?>
-            <?php if (!empty($this->user['origin_libel'])) : ?>
-                <tr>
-                    <th>Origine : </th>
-                    <td><?php echo $this->user['origin_libel']; ?></td>
                 </tr>
             <?php endif; ?>
             <?php if (!empty($this->addictions['smoke'])) : ?>

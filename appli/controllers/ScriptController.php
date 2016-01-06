@@ -20,6 +20,63 @@ class ScriptController extends AppController
         $this->view->render();
     }
 
+    public function renderScriptMigrateUserData()
+    {
+        $serializedValues = array(
+            'user_profession',
+            'user_poids',
+            'user_taille',
+            'user_tattoo',
+            'user_piercing',
+            'look_id',
+            'user_smoke',
+            'user_alcohol',
+            'user_drugs',
+        );
+
+        $sql = 'SELECT user_id,
+                    user_profession,
+                    user_poids,
+                    user_taille,
+                    user_tattoo,
+                    user_piercing,
+                    look_id,
+                    user_smoke,
+                    user_alcohol,
+                    user_drugs
+                FROM user;
+        ;';
+
+        $users = Db::executeStmt(Db::getInstance()->prepare($sql))->fetchAll();
+
+        $rows = 0;
+        foreach ($users as $user) {
+            $sql = 'UPDATE user SET user_data = :user_data WHERE user_id = :user_id;';
+
+            $stmt = Db::getInstance()->prepare($sql);
+
+            $serializedData = array();
+            foreach ($serializedValues as $key) {
+                $serializedData[$key] = $user[$key];
+            }
+
+            $stmt->bindValue('user_id', $user['user_id']);
+            $stmt->bindValue('user_data', serialize($serializedData));
+
+            if (Db::executeStmt($stmt)) {
+                $rows++;
+            }
+        }
+
+        $sql = 'ALTER TABLE `user` DROP `eyes_id`, DROP `origin_id`, DROP `user_alcohol`, DROP `user_smoke`, DROP `user_tattoo`, DROP `user_drugs`, DROP `hair_id`, DROP `user_piercing`, DROP `user_profession`, DROP `user_music`, DROP `user_poids`, DROP `user_taille`, DROP `week_user`;';
+
+        if (Db::executeStmt(Db::getInstance()->prepare($sql))) {
+            $this->view->growler($rows . ' utilisateur migrés', GROWLER_OK);
+        }
+
+        $this->render();
+    }
+
     public function renderScriptLinkAllTritt()
     {
         $bunchNumber = 20;

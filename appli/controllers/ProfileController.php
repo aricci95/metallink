@@ -31,6 +31,7 @@ class ProfileController extends AppController
     {
         $this->view->tasteTypes = $this->model->Taste->getTasteTypes();
         $tastes                 = $this->model->Taste->getTastes($this->params['value']);
+
         if (!empty($tastes)) {
             foreach ($tastes['data'] as $type => $tasteData) {
                 if ($type == "groupes") {
@@ -40,37 +41,49 @@ class ProfileController extends AppController
                 }
             }
         }
+
         $this->view->tastes = $tastes;
 
         // Récupération des informations de l'utilisateur
-        $user = $this->model->User->getById($this->params['value']);
+        $user = $this->model->User->getUserByIdDetails($this->params['value']);
+
         // Ajout de la vue
         if (User::getContextUser('id') != $this->params['value']) {
             $this->model->views->addView($this->params['value']);
         }
+
         $this->view->details = $this->model->User->convertBinaries($user);
         $this->view->addictions = $this->model->User->convertQuantities($user);
 
         $user['user_description'] = Tools::toSmiles($user['user_description']);
         $user['user_light_description'] = Tools::toSmiles($user['user_light_description']);
+
         if (empty($user['user_photo_url'])) {
             $user['user_photo_url'] = 'unknowUser.jpg';
         }
+
         $this->view->user = $user;
+
         // Récupération des photos
         $photos = $this->model->Photo->getPhotosByKey($this->params['value'], PHOTO_TYPE_USER);
+
         if (empty($photos)) {
             $photos = array(array('photo_url' => $user['user_photo_url']));
         }
+
         $this->view->photos = $photos;
+
         // Vérificiation état link
         $this->view->link = $this->model->Link->getLink($user['user_id']);
+
         // Info de localisation
         $this->view->geoloc = array();
         $contextUserCity = User::getContextUser('city');
+
         if (!empty($user['user_city']) && !empty($contextUserCity)) {
             $this->view->geoloc = $this->_getDistance($contextUserCity, $user['user_city']);
         }
+
         $this->view->setViewName('user/wMain');
 
         $this->view->render();
@@ -83,11 +96,8 @@ class ProfileController extends AppController
         $this->view->user = $this->model->User->getUserByIdDetails(User::getContextUser('id'));
 
         // Récupération des listes déroulantes
-        $this->view->hairs      = $this->model->getItemsFromTable('ref_hair');
         $this->view->styles     = $this->model->getItemsFromTable('ref_style');
-        $this->view->eyes       = $this->model->getItemsFromTable('ref_eyes');
         $this->view->looks      = $this->model->getItemsFromTable('ref_look');
-        $this->view->origins    = $this->model->getItemsFromTable('ref_origin');
         $this->view->quantities = $this->model->getItemsFromTable('ref_quantity');
 
         $this->view->setTitle('Edition du profil');

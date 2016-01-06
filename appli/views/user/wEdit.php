@@ -80,36 +80,6 @@
     <h2>Physique</h2>
     <table class="tableWhiteBox">
     <tr>
-        <th>Couleur des cheveux :</th>
-        <td>
-            <select name="hair_id">
-                <option value="">selectionnez</option>
-                <?php foreach($this->hairs as $key => $value)
-                {
-                     echo '<option value="'.$value['hair_id'].'"';
-                    if($value['hair_id'] == $this->user['hair_id']) echo ' selected="selected" ';
-                    echo '>'.$value['hair_libel'].'</option>';
-                }
-                ?>
-            </select>
-        </td>
-    </tr>
-    <tr>
-        <th>Couleur des yeux :</th>
-        <td>
-            <select name="eyes_id">
-                <option value="">selectionnez</option>
-                <?php foreach($this->eyes as $key => $value)
-                {
-                     echo '<option value="'.$value['eyes_id'].'"';
-                    if($value['eyes_id'] == $this->user['eyes_id']) echo ' selected="selected" ';
-                    echo '>'.$value['eyes_libel'].'</option>';
-                }
-                ?>
-            </select>
-        </td>
-    </tr>
-    <tr>
         <th>Poids :</th>
         <td>
             <select name="user_poids">
@@ -159,21 +129,6 @@
                      echo '<option value="'.$value['look_id'].'"';
                     if($value['look_id'] == $this->user['look_id']) echo ' selected="selected" ';
                     echo '>'.$value['look_libel'].'</option>';
-                }
-                ?>
-            </select>
-        </td>
-    </tr>
-    <tr>
-        <th>Origine :</th>
-        <td>
-            <select name="origin_id">
-                <option value="">selectionnez</option>
-                <?php foreach($this->origins as $key => $value)
-                {
-                     echo '<option value="'.$value['origin_id'].'"';
-                    if($value['origin_id'] == $this->user['origin_id']) echo ' selected="selected" ';
-                    echo '>'.$value['origin_libel'].'</option>';
                 }
                 ?>
             </select>

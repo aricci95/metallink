@@ -1,33 +1,36 @@
 <?php
 
 /*
- *  Classe d'accÃ©s aux donnÃ©s des utilisateurs
+ *  Classe d'accés aux donnés des utilisateurs
  */
 class User extends AppModel
 {
-    private $_attributes = array('user_login',
-                                'user_pwd',
-                                'user_mail',
-                                'user_gender',
-                                'user_birth',
-                                'style_id',
-                                'user_city',
-                                'user_zipcode',
-                                'ville_id',
-                                'user_profession',
-                                'user_light_description',
-                                'user_description',
-                                'hair_id',
-                                'eyes_id',
-                                'user_poids',
-                                'user_taille',
-                                'user_tattoo',
-                                'user_piercing',
-                                'look_id',
-                                'origin_id',
-                                'user_smoke',
-                                'user_alcohol',
-                                'user_drugs');
+    private $_attributes = array(
+        'user_login',
+        'user_pwd',
+        'user_mail',
+        'user_gender',
+        'user_birth',
+        'style_id',
+        'user_city',
+        'user_zipcode',
+        'ville_id',
+        'user_light_description',
+        'user_description',
+        'user_data',
+    );
+
+    private $_serialized = array(
+        'user_profession',
+        'user_poids',
+        'user_taille',
+        'user_tattoo',
+        'user_piercing',
+        'look_id',
+        'user_smoke',
+        'user_alcohol',
+        'user_drugs',
+    );
 
     public static function getContextUser($attribute = null)
     {
@@ -61,7 +64,7 @@ class User extends AppModel
         return $this->fetch("SELECT * FROM user ORDER BY user_login");
     }
 
-    // Mets Ã© jour la date de connexion
+    // Mets é jour la date de connexion
     public function updateLastConnexion()
     {
         $_SESSION['user_last_connexion'] = time();
@@ -70,7 +73,7 @@ class User extends AppModel
         return $this->execute($sql);
     }
 
-    // RÃ©cupÃ©res les utilisateurs par critÃ©res
+    // Récupéres les utilisateurs par critéres
     public function getSearch($criterias, $offset = 0)
     {
         $contextUserId = User::getContextUser('id');
@@ -79,15 +82,15 @@ class User extends AppModel
         }
 
         $sql = 'SELECT
-                        user_id,
-                        user_login,
-                        user_city,
-                        user_mail,
-                        look_libel,
-                        user_gender,
-                        user_photo_url,
-                        UNIX_TIMESTAMP(user_last_connexion) as user_last_connexion,
-                        FLOOR((DATEDIFF( CURDATE(), (user_birth))/365)) AS age
+                    user_id,
+                    user_login,
+                    user_city,
+                    user_mail,
+                    look_libel,
+                    user_gender,
+                    user_photo_url,
+                    UNIX_TIMESTAMP(user_last_connexion) as user_last_connexion,
+                    FLOOR((DATEDIFF( CURDATE(), (user_birth))/365)) AS age
                 FROM user
                 LEFT JOIN ref_look ON user.look_id = ref_look.look_id
                 WHERE user_id NOT
@@ -110,7 +113,7 @@ class User extends AppModel
             $lattitude = User::getContextUser('lattitude');
             if (!is_array($longitude) && !is_array($lattitude)) {
                 if ($longitude > 0 && $lattitude > 0) {
-                    // On rÃ©cupÃ¨re les codes postaux associÃ©s
+                    // On récupère les codes postaux associés
                     $proxSql = "SELECT distinct LEFT(code_postal, 2) as code_postal FROM ville
                             WHERE (6366*acos(cos(radians(".$lattitude."))*cos(radians(`lattitude`))*cos(radians(`longitude`)
                             -radians(".$longitude."))+sin(radians(".$lattitude."))*sin(radians(`lattitude`)))) <= ".($criterias['search_distance'] / 10);
@@ -162,11 +165,11 @@ class User extends AppModel
         return $resultat;
     }
 
-    // Convertis les quantitÃ©s
+    // Convertis les quantités
     public function convertQuantities($user)
     {
         $liste = array('drugs', 'alcohol', 'smoke');
-        $quantities = array('', 'jamais', 'pas beaucoup', 'modÃ©rÃ©ment', 'souvent', 'trÃ©s souvent');
+        $quantities = array('', 'jamais', 'pas beaucoup', 'modérément', 'souvent', 'trés souvent');
         foreach ($liste as $key => $value) {
             if (isset($quantities[$user['user_'.$value]])) {
                 $resultat[$value] = $quantities[$user['user_'.$value]];
@@ -188,7 +191,7 @@ class User extends AppModel
         return $resultat;
     }
 
-    // RÃ©cupÃ©re la liste des utilisateurs
+    // Récupére la liste des utilisateurs
     public function getNew()
     {
         $userId = User::getContextUser('id');
@@ -228,11 +231,11 @@ class User extends AppModel
         return $stmt->fetchAll();
     }
 
-    // RÃ©cupÃ©re un utilisateur
+    // Récupére un utilisateur
     public function getUserByIdDetails($userId)
     {
         $sql = "SELECT
-                user.user_id as user_id,
+                    user.user_id as user_id,
                     user_login,
                     user_pwd,
                     user_mail,
@@ -242,86 +245,70 @@ class User extends AppModel
                     FLOOR((DATEDIFF( CURDATE(), (user_birth))/365)) AS age,
                     UNIX_TIMESTAMP(user_last_connexion) as user_last_connexion,
                     user_birth,
-                    user_poids,
-                    user_gender,
-                    user_taille,
                     user_photo_url,
                     user_gender,
-                    user_profession,
                     user_light_description,
                     user_description,
-                    user_alcohol,
-                    user_smoke,
-                    user_drugs,
-                    user_tattoo,
-                    user_piercing,
-                    user_photo_url,
-                    user.look_id as look_id,
-                    user.hair_id as hair_id,
-                    user.eyes_id as eyes_id,
-                    user.style_id as style_id,
-                    user.origin_id as origin_id
+                    style_id,
+                    user_data
                 FROM
                     user
-                    LEFT JOIN ref_look ON (user.look_id = ref_look.look_id)
-                    LEFT JOIN ref_origin ON (user.origin_id = ref_origin.origin_id)
-                    LEFT JOIN ref_hair ON (user.hair_id = ref_hair.hair_id)
-                    LEFT JOIN ref_eyes ON (user.eyes_id = ref_eyes.eyes_id)
-                    LEFT JOIN ref_style ON (user.style_id = ref_style.style_id)
-                    WHERE user_id = '".$this->securize($userId)."';";
-        return $this->fetchOnly($sql);
+                WHERE user_id = :user_id
+            ;";
+
+        $stmt = Db::getInstance()->prepare($sql);
+
+        $stmt->bindValue('user_id', (int) $userId);
+
+        $user = Db::executeStmt($stmt)->fetch();
+
+        return $this->_injectUserData($user);
     }
 
-    // RÃ©cupÃ©re un utilisateur
+    private function _injectUserData($user)
+    {
+        $data = unserialize($user['user_data']);
+
+        foreach ($this->_serialized as $key) {
+            $user[$key] = empty($data[$key]) ? 0 : $data[$key];
+        }
+
+        unset($user['user_data']);
+
+        return $user;
+    }
+
+    // Récupére un utilisateur
     public function getById($userId)
     {
         $sql = "SELECT
-                user.user_id as user_id,
+                    user.user_id as user_id,
                     user_login,
+                    user_gender,
+                    user_photo_url,
+                    user_profession,
+                    user_light_description,
+                    UNIX_TIMESTAMP(user_last_connexion) as user_last_connexion,
+                    user_description,
+                    role_id,
+                    user_valid,
                     user_pwd,
                     user_mail,
                     user_city,
                     ville_id,
                     user_zipcode,
                     FLOOR((DATEDIFF( CURDATE(), (user_birth))/365)) AS age,
-                    user_poids,
-                    user_gender,
-                    user_taille,
-                    user_photo_url,
-                    user_gender,
-                    user_valid,
-                    role_id,
-                    user_profession,
-                    user_light_description,
-                    user_description,
-                    user_alcohol,
-                    user_smoke,
-                    user_drugs,
-                    user_tattoo,
-                    user_piercing,
-                    user_photo_url,
-                    UNIX_TIMESTAMP(user_last_connexion) as user_last_connexion,
-                    user.look_id as look_id,
-                    user.hair_id as hair_id,
-                    user.eyes_id as eyes_id,
-                    user.style_id as style_id,
-                    user.origin_id as origin_id,
-                    hair_libel,
-                    eyes_libel,
-                    origin_libel,
-                    look_libel,
-                                style_libel
+                    style_id
                 FROM
                     user
-                    LEFT JOIN ref_look ON (user.look_id = ref_look.look_id)
-                    LEFT JOIN ref_origin ON (user.origin_id = ref_origin.origin_id)
-                    LEFT JOIN ref_hair ON (user.hair_id = ref_hair.hair_id)
-                    LEFT JOIN ref_eyes ON (user.eyes_id = ref_eyes.eyes_id)
-                    LEFT JOIN ref_style ON (user.style_id = ref_style.style_id)
-                    WHERE user_id = '".$this->securize($userId)."';";
-        $resultat = $this->fetchOnly($sql);
+                WHERE user_id = :user_id
+            ;";
 
-        return $resultat;
+        $stmt = Db::getInstance()->prepare($sql);
+
+        $stmt->bindValue('user_id', $userId, PDO::PARAM_INT);
+
+        return Db::executeStmt($stmt)->fetch();
     }
 
     public static function deleteById($id)
@@ -330,31 +317,43 @@ class User extends AppModel
                 DELETE FROM user_views WHERE viewer_id = :id OR viewed_id = :id;
                 DELETE FROM message WHERE destinataire_id = :id OR expediteur = :id;
                 DELETE FROM chat WHERE `from` = :user_login OR `to` = :user_login;
-                ";
+            ";
 
         $stmt = Db::getInstance()->prepare($sql);
 
         $stmt->bindValue('id', $id, PDO::PARAM_INT);
         $stmt->bindValue('user_login', $id, PDO::PARAM_STR);
 
-        return $stmt->execute();
+        return Db::executeStmt($stmt);
     }
 
     // Modifie un utilisateur
-    public function updateUserById($datas)
+    public function updateUserById(array $data = array())
     {
-        if (!empty($datas)) {
+        if (!empty($data)) {
+            // Update serialized data
+            $serialize = array();
+
+            foreach ($data as $attribute => $value) {
+                if (in_array($attribute, $this->_serialized) && $value > 0) {
+                    $serialize[$attribute] = $value;
+                }
+            }
+
+            $data['user_data'] = serialize($serialize);
+
             $sql = 'UPDATE user SET ';
             foreach ($this->_attributes as $attribute) {
-                if (!empty($datas[$attribute])) {
-                    $sql .= " ".$attribute." = '".$datas[$attribute]."',";
+                if (!empty($data[$attribute])) {
+                    $sql .= " ".$attribute." = '".$data[$attribute]."',";
                 }
             }
             $sql .= ' WHERE user_id = '.$this->securize(User::getContextUser('id'));
             $sql = str_replace(', WHERE', ' WHERE', $sql);
+
+            return $this->execute($sql);
         }
 
-        return $this->execute($sql);
     }
 
     public function setValid($code)
@@ -440,7 +439,7 @@ class User extends AppModel
         return $userValidationId;
     }
 
-    // RÃ©cupÃ©re le message d'un user
+    // Récupére le message d'un user
     public function getMessageByUser($userId)
     {
         $sql = "SELECT user_mail, user_login FROM user WHERE user_id = '".$this->securize($userId)."'";
