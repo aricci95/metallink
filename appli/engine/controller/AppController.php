@@ -43,15 +43,17 @@ abstract class AppController extends Controller
             $this->view->growler('Nouveau message !', GROWLER_INFO);
         }
 
-        // Vérification dernier message forum
-        $lastMessage = Forum::getLastMessage();
+        if (!isset($_SESSION['forum_notification']) || $_SESSION['forum_notification'] == 1) {
+            // Vérification dernier message forum
+            $lastMessage = Forum::getLastMessage();
 
-        if (!empty($lastMessage)) {
-            if (empty($_SESSION['last_forum_message'])) {
-                $this->_forumGrowler($lastMessage);
-            } else {
-                if ($lastMessage['id'] != $_SESSION['last_forum_message']['id'] && $lastMessage['date'] != $_SESSION['last_forum_message']['date']) {
+            if (!empty($lastMessage)) {
+                if (empty($_SESSION['last_forum_message'])) {
                     $this->_forumGrowler($lastMessage);
+                } else {
+                    if ($lastMessage['id'] != $_SESSION['last_forum_message']['id'] && $lastMessage['date'] != $_SESSION['last_forum_message']['date']) {
+                        $this->_forumGrowler($lastMessage);
+                    }
                 }
             }
         }

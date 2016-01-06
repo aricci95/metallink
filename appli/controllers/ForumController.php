@@ -11,7 +11,7 @@ class ForumController extends AppController
         $this->view->users         = $this->model->Forum->getConnectedUsers();
         $reversedArray             = array_reverse($this->view->messages);
         $this->view->lastId        = !empty($reversedArray) ? $reversedArray[0]['id'] : 0;
-        $this->view->notification  = $_SESSION['forum_notification'];
+        $this->view->notification  = !isset($_SESSION['forum_notification']) ? 1 : $_SESSION['forum_notification'];
 
         $this->view->setViewName('forum/wForum');
         $this->view->render();
