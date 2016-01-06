@@ -1,7 +1,7 @@
 <?php
 
 /*
- *  Classe d'accés aux donnés des utilisateurs
+ *  Classe d'accÃ©s aux donnÃ©s des utilisateurs
  */
 class User extends AppModel
 {
@@ -64,7 +64,7 @@ class User extends AppModel
         return $this->fetch("SELECT * FROM user ORDER BY user_login");
     }
 
-    // Mets é jour la date de connexion
+    // Mets Ã© jour la date de connexion
     public function updateLastConnexion()
     {
         $_SESSION['user_last_connexion'] = time();
@@ -73,7 +73,7 @@ class User extends AppModel
         return $this->execute($sql);
     }
 
-    // Récupéres les utilisateurs par critéres
+    // RÃ©cupÃ©res les utilisateurs par critÃ©res
     public function getSearch($criterias, $offset = 0)
     {
         $contextUserId = User::getContextUser('id');
@@ -113,7 +113,7 @@ class User extends AppModel
             $lattitude = User::getContextUser('lattitude');
             if (!is_array($longitude) && !is_array($lattitude)) {
                 if ($longitude > 0 && $lattitude > 0) {
-                    // On récupère les codes postaux associés
+                    // On rÃ©cupÃ¨re les codes postaux associÃ©s
                     $proxSql = "SELECT distinct LEFT(code_postal, 2) as code_postal FROM ville
                             WHERE (6366*acos(cos(radians(".$lattitude."))*cos(radians(`lattitude`))*cos(radians(`longitude`)
                             -radians(".$longitude."))+sin(radians(".$lattitude."))*sin(radians(`lattitude`)))) <= ".($criterias['search_distance'] / 10);
@@ -165,11 +165,11 @@ class User extends AppModel
         return $resultat;
     }
 
-    // Convertis les quantités
+    // Convertis les quantitÃ©s
     public function convertQuantities($user)
     {
         $liste = array('drugs', 'alcohol', 'smoke');
-        $quantities = array('', 'jamais', 'pas beaucoup', 'modérément', 'souvent', 'trés souvent');
+        $quantities = array('', 'jamais', 'pas beaucoup', 'modÃ©rÃ©ment', 'souvent', 'trÃ¨s souvent');
         foreach ($liste as $key => $value) {
             if (isset($quantities[$user['user_'.$value]])) {
                 $resultat[$value] = $quantities[$user['user_'.$value]];
@@ -191,7 +191,7 @@ class User extends AppModel
         return $resultat;
     }
 
-    // Récupére la liste des utilisateurs
+    // RÃ©cupÃ©re la liste des utilisateurs
     public function getNew()
     {
         $userId = User::getContextUser('id');
@@ -231,7 +231,7 @@ class User extends AppModel
         return $stmt->fetchAll();
     }
 
-    // Récupére un utilisateur
+    // RÃ©cupÃ©re un utilisateur
     public function getUserByIdDetails($userId)
     {
         $sql = "SELECT
@@ -278,7 +278,7 @@ class User extends AppModel
         return $user;
     }
 
-    // Récupére un utilisateur
+    // RÃ©cupÃ©re un utilisateur
     public function getById($userId)
     {
         $sql = "SELECT
@@ -439,7 +439,7 @@ class User extends AppModel
         return $userValidationId;
     }
 
-    // Récupére le message d'un user
+    // RÃ©cupÃ©re le message d'un user
     public function getMessageByUser($userId)
     {
         $sql = "SELECT user_mail, user_login FROM user WHERE user_id = '".$this->securize($userId)."'";

@@ -92,6 +92,7 @@ class ProfileController extends AppController
     public function renderEdit()
     {
         $this->view->addJS(JS_DATEPICKER);
+
         // Récupération des informations de l'utilisateur
         $this->view->user = $this->model->User->getUserByIdDetails(User::getContextUser('id'));
 
