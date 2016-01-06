@@ -6,7 +6,7 @@
 				<?php Tools::timeConvert($message['delais']); ?>
 				<span style="float:right;"><?php echo $message['state_libel']; ?></span>
 				<hr>
-				<?php echo nl2br(Tools::toSmiles($message['content'])); ?>
+				<?php echo Tools::toSmiles($message['content']); ?>
 			</div>
 		</td>
 	</tr>
