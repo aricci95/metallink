@@ -60,15 +60,15 @@ class MessageController extends AppController
         if (empty($this->params['value'])) {
             $this->view->growler('Message introuvable', GROWLER_ERR);
             $this->redirect('mailbox', array('msg' => ERR_CONTENT));
-        } else {
-            $isLinked = $this->model->Link->isLinked($this->params['value']);
+        }
 
-            if (!$isLinked) {
-                Log::err('destinataire sans link');
-                $this->redirect('mailbox', array('msg' => ERR_DEFAULT));
-            }
+        $userId = $this->params['value'];
 
-            $userId = $this->params['value'];
+        $isLinked = $this->model->Link->isLinked($userId);
+
+        if (!$isLinked) {
+            Log::err('destinataire sans link');
+            $this->redirect('mailbox', array('msg' => ERR_DEFAULT));
         }
 
         // On récupère les information du message
