@@ -50,7 +50,7 @@ Class MessageService
             throw new Exception('message vide', ERROR_BEHAVIOR);
         }
 
-        $message = nl2br(str_replace('\\', '', htmlentities($message, ENT_QUOTES, 'utf-8')));
+        $message = str_replace('\\', '', htmlentities($message, ENT_QUOTES, 'utf-8'));
 
         $message_data = array(
             'content' => $message,

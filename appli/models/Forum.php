@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 class Forum extends AppModel
 {
@@ -20,21 +20,39 @@ class Forum extends AppModel
         return Db::executeStmt($stmt)->fetch();
     }
 
-    public function getLastMessages($messageId = null)
+    public function getLastMessages($messageId = 0)
     {
-        $sql = 'SELECT  id, content, user_login, DATE_FORMAT(date,\'%H:%i\') as date
-                FROM forum
-                WHERE user_id NOT
-                    IN (SELECT expediteur_id FROM
-                        link WHERE status = '.LINK_STATUS_BLACKLIST.'
-                        AND user_id = '.User::getContextUser('id').') ';
-        if (!empty($messageId)) {
-            $sql .= 'AND id > '.$messageId;
-        }
-        $sql .= ' ORDER BY id DESC
-                  LIMIT 0,50';
+        $sql = 'SELECT
+                    id,
+                    content,
+                    user_login,
+                    DATE_FORMAT(date,\'%H:%i\') as date
+                FROM
+                    forum
+                WHERE
+                    id > :message_id
+                ORDER BY id DESC
+                LIMIT 0,50;
+        ';
 
-        return array_reverse($this->fetch($sql));
+        $stmt = Db::getInstance()->prepare($sql);
+
+        $stmt->bindValue('message_id', $messageId, PDO::PARAM_INT);
+
+        $messages = Db::executeStmt($stmt)->fetchAll();
+
+        // Ne pas afficher les message dupliqués
+        $previousMessage = array('content' => '');
+
+        foreach ($messages as $index => $message) {
+            if ($message['content'] == $previousMessage['content']) {
+                unset($messages[$index]);
+            } else {
+                $previousMessage = $message;
+            }
+        }
+
+        return array_reverse($messages);
     }
 
     public function getConnectedUsers()
