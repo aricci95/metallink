@@ -96,8 +96,8 @@ class Mailbox extends AppModel
     public function deleteConversation($userId)
     {
         $sql = "DELETE FROM message
-				WHERE (expediteur = '".$this->securize($userId)."' OR destinataire_id = '".$this->securize($userId)."')
-				AND (expediteur = '".User::getContextUser('id')."' OR destinataire_id = '".User::getContextUser('id')."');";
+				WHERE (expediteur_id = '".$this->securize($userId)."' OR destinataire_id = '".$this->securize($userId)."')
+				AND (expediteur_id = '".User::getContextUser('id')."' OR destinataire_id = '".User::getContextUser('id')."');";
         $this->execute($sql);
     }
 }
