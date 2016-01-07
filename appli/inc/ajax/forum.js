@@ -1,4 +1,4 @@
-$(document).ready(function() {
+﻿$(document).ready(function() {
     $.fn.scrollTo = function( target, options, callback ){
         if(typeof options == 'function' && arguments.length == 2){ callback = options; options = target; }
         var settings = $.extend({
@@ -31,13 +31,15 @@ $(document).ready(function() {
 
         $.post('forum/refreshFeed', {id : lastId},
             function(data) {
-                if(data !== '') {
+                if(data != 404) {
                    messages = $("ul.messages");
                    messages.append(data);
+
                    messages.find('li').each(function( index ) {
                      lastId = $( this ).attr('data-id');
                      scrollBottom = true;
                    });
+
                    $('.tmp').attr('data-id', lastId);
 
                    if(scrollBottom && $("#autoScroll").prop('checked')) {
@@ -52,8 +54,9 @@ $(document).ready(function() {
     function refreshUsers() {
         $.post('forum/refreshUsers', null,
             function(data) {
-                if(data !== '') {
+                if(data !== null) {
                    messages = $("ul.users");
+                   console.log(data);
                    messages.html(data);
                 }
             },

@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 class ForumController extends AppController
 {
@@ -38,7 +38,7 @@ class ForumController extends AppController
             $this->view->messages = $messages;
             $this->view->getJSONResponse('forum/wMessages');
         } else {
-            return null;
+            echo 404;
         }
     }
 

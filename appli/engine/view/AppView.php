@@ -89,7 +89,7 @@ class AppView
                 $this->$key = $data;
             }
         }
-        echo $this->runView($view);
+        echo trim($this->runView($view));
     }
 
     public function runView($view = null)
@@ -105,7 +105,7 @@ class AppView
 
     public function getJSONResponse($view)
     {
-        echo $this->runView($view);
+        echo trim($this->runView($view));
     }
 
     public function growler($message = MESSAGE_400, $type = GROWLER_ERR, $title = null)
