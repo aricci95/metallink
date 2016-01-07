@@ -37,7 +37,7 @@ class PhotoController extends AppController
 
     public function render()
     {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_FILES['new_photo'])) {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_FILES['new_photo'] && !empty($_FILES['new_photo']['tmp_name']))) {
             try {
                 $this->get('photo')->uploadImage($_FILES['new_photo']['name'], $_FILES['new_photo']['tmp_name'], $this->_typeId, $this->_keyId);
                 $this->view->growler('Photo ajoutée', GROWLER_OK);

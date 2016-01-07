@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 class PhotoService extends Service
 {
@@ -36,7 +36,6 @@ class PhotoService extends Service
         return Photo::deleteById($id);
     }
 
-    // R�cup�re l'extension
     private function _getExtension($str)
     {
         $str = stripslashes($str);
@@ -55,9 +54,13 @@ class PhotoService extends Service
     // Upload image
     public function uploadImage($name, $tmp_name, $type_id, $key_id)
     {
+        if (empty($name) || empty($tmp_name)) {
+            throw new Exception("Une erreur est survenue, merci de réessayer l'upload.");
+        }
+
         $extension = $this->_getExtension($name);
 
-        if (($extension != 'jpg') && ($extension != 'jpeg') && ($extension != 'png') && ($extension != 'gif')) {
+        if ($extension != 'jpg' && $extension != 'jpeg' && $extension != 'png' && $extension != 'gif') {
             throw new Exception('Type d\'image  inconnu');
         } else {
             $size = filesize($tmp_name);
@@ -74,10 +77,12 @@ class PhotoService extends Service
 
             if ($extension == 'jpg' || $extension == 'jpeg') {
                 $src = imagecreatefromjpeg($tmp_name);
-            } else if ($extension == "png") {
+            } else if ($extension == 'png') {
                 $src = imagecreatefrompng($tmp_name);
-            } else {
+            } else if ($extension == 'gif') {
                 $src = imagecreatefromgif($tmp_name);
+            } else {
+                throw new Exception('Extension de fichier non supporté.');
             }
 
             // PROFILE (qualibrage de la largeur)
@@ -99,7 +104,7 @@ class PhotoService extends Service
             $photo_data['key_id']    = (int) $key_id;
 
             if (!Photo::insert($photo_data)) {
-                return false;
+                throw new Exception('Impossible d\'enregistrer la photo, merci de réessayer.');
             }
 
             $filename  = ROOT_DIR . '/photos/profile/' . $photo_data['photo_url'];

@@ -126,6 +126,10 @@ class MessageController extends AppController
 
     public function renderMore()
     {
+        if (empty($this->params['value']) || empty($this->params['option'])) {
+            return;
+        }
+
         $offset = $this->params['value'];
         $userId = $this->params['option'];
 

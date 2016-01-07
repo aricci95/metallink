@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 /*
  *  Classe d'acces aux donnees des messages
@@ -32,7 +32,7 @@ class Mailbox extends AppModel
                     user_photo_url
                 FROM
                     message JOIN user ON (message.expediteur_id = user.user_id)
-                         JOIN ref_state ON (ref_state.state_id = message.state_id)
+                            JOIN ref_state ON (ref_state.state_id = message.state_id)
                 WHERE
                      destinataire_id = '". User::getContextUser('id') ."'
                      AND user_id NOT IN (

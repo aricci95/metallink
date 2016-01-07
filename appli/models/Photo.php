@@ -78,7 +78,7 @@ class Photo extends AppModel
             $photos = $this->fetch($selectSql);
 
         foreach ($photos as $key => $photo) {
-            echo 'suprresion de '.$photo['photo_url'].'<br>';
+            echo 'suppression de '.$photo['photo_url'].'<br>';
             $this->deletePhotoById($photo['photo_id'], $photo['photo_url']);
             $count++;
         }
