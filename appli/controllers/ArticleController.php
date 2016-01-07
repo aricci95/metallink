@@ -10,15 +10,18 @@ class ArticleController extends AppController
         if (empty($this->params['value'])) {
             $this->redirect('sales', array('msg' => ERR_CONTENT));
         }
+
         // Récupération des informations de l'utilisateur
         $article = $this->model->Article->getById($this->params['value']);
         if (empty($article['user_login'])) {
             $this->redirect('sales', array('msg' => ERR_SELLER));
         }
+
         $article['art_description'] = Tools::toSmiles(nl2br($article['art_description']));
         if (empty($article['art_photo_url'])) {
             $article['art_photo_url'] = 'unknowUser.jpg';
         }
+
         $this->view->article = $article;
         $this->view->link    = $this->model->Link->getLink($article['user_id']);
 
@@ -31,6 +34,7 @@ class ArticleController extends AppController
     public function renderEdit($isValid = true)
     {
         $this->view->categories = $this->model->Article->getCategories();
+
         if (!empty($this->params['value'])) {
             $article = $this->model->Article->getById($this->params['value']);
             $article['art_libel']       = htmlentities($article['art_libel'], ENT_QUOTES, 'utf-8');
@@ -44,6 +48,7 @@ class ArticleController extends AppController
         if (!$isValid) {
             $this->view->article = $this->params;
         }
+
         $this->view->setViewName('article/wEdit');
         $this->view->render();
     }

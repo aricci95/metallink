@@ -264,7 +264,11 @@ class User extends AppModel
 
         $user = Db::executeStmt($stmt)->fetch();
 
-        return $this->_injectUserData($user);
+        if (!empty($user)) {
+            return $this->_injectUserData($user);
+        } else {
+            return false;
+        }
     }
 
     private function _injectUserData($user)

@@ -90,7 +90,7 @@ abstract class Model
         if (is_numeric($data)) {
             return $data;
         } else {
-            return Db::getInstance()->real_escape_string(htmlentities($data, ENT_QUOTES));
+            return htmlentities($data, ENT_QUOTES);
         }
     }
 }

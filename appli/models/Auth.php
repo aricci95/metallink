@@ -156,7 +156,7 @@ class Auth extends AppModel
                 $this->execute($sql, array('login' => $login));
 
                 if ($user['user_valid'] != 1) {
-                    throw new Exception("Email non validé", ERR_NOT_VALIDATED);
+                    throw new Exception("Email non validé", ERR_MAIL_NOT_VALIDATED);
                 } elseif ($user['role_id'] > 0) {
                     $_SESSION['user_id']             = $user['user_id'];
                     $_SESSION['user_login']          = $user['user_login'];

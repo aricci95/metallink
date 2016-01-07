@@ -29,6 +29,17 @@ class ProfileController extends AppController
 
     public function render()
     {
+        if (empty($this->params['value'])) {
+            $this->redirect('home', array('msg' => ERR_BLACKLISTED));
+        }
+
+        // Récupération des informations de l'utilisateur
+        $user = $this->model->User->getUserByIdDetails($this->params['value']);
+
+        if (empty($user)) {
+            $this->redirect('home', array('msg' => ERR_BLACKLISTED));
+        }
+
         $this->view->tasteTypes = $this->model->Taste->getTasteTypes();
         $tastes                 = $this->model->Taste->getTastes($this->params['value']);
 
@@ -43,9 +54,6 @@ class ProfileController extends AppController
         }
 
         $this->view->tastes = $tastes;
-
-        // Récupération des informations de l'utilisateur
-        $user = $this->model->User->getUserByIdDetails($this->params['value']);
 
         // Ajout de la vue
         if (User::getContextUser('id') != $this->params['value']) {
