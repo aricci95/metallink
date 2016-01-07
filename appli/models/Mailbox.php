@@ -1,8 +1,5 @@
-﻿<?php
+<?php
 
-/*
- *  Classe d'acces aux donnees des messages
- */
 class Mailbox extends AppModel
 {
 

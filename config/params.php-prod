@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 // NE PAS MODIFIER
 DEFINE("_HOST", "");
 DEFINE("_USER", "");
