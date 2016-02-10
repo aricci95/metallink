@@ -9,15 +9,51 @@ class ScriptController extends AppController
     {
         $methods = get_class_methods($this);
         $scripts = array();
+
         foreach ($methods as $method) {
             if (strstr($method, 'renderScript') != false) {
                 $scripts[] = str_replace('render', '', $method);
             }
         }
+
         $this->view->scripts = $scripts;
         $this->view->setViewName('admin/wScript');
         $this->view->setTitle('Scripts');
         $this->view->render();
+    }
+
+    public function renderScriptRemoveUnsedLinks()
+    {
+        $rawUserIds = User::find(array('user_id'));
+
+        $userIds = array();
+        foreach ($rawUserIds as $userIdrow) {
+            $userIds[] = $userIdrow['user_id'];
+        }
+
+        $links = Link::find();
+        $linksToRemove = array();
+
+        $deleteSql = '';
+
+        foreach ($links as $link) {
+            if (!in_array($link['destinataire_id'], $userIds)) {
+                $deleteSql .= 'DELETE FROM link WHERE destinataire_id = ' . $link['destinataire_id'] . '; ';
+            }
+
+            if (!in_array($link['expediteur_id'], $userIds)) {
+                $deleteSql .= 'DELETE FROM link WHERE expediteur_id = ' . $link['expediteur_id'] . '; ';
+            }
+        }
+
+        if ($this->model->execute($deleteSql)) {
+            $this->view->growler('links inutiles supprimés.', GROWLER_OK);
+        } else {
+            $this->view->growlerError();
+        }
+
+        $this->render();
+
     }
 
     public function renderScriptMigrateUserData()

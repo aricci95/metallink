@@ -133,10 +133,17 @@ class Link extends AppModel
     public function setContextUserLinks($userId = null)
     {
         $userId = (!empty($userId)) ? $userId : User::getContextUser('id');
-        $sql = "SELECT * FROM link
-                WHERE (destinataire_id = '".$this->securize($userId)."' OR link.expediteur_id = '".$this->securize($userId)."')
-                ORDER BY status;";
-        $links = $this->fetch($sql);
+
+        $sql = 'SELECT * FROM link
+                WHERE (destinataire_id = :user_id OR link.expediteur_id = :user_id)
+                ORDER BY status;';
+
+        $stmt = Db::getInstance()->prepare($sql);
+        $stmt->bindValue('user_id', $userId);
+        $stmt->execute();
+
+        $links = $stmt->fetchAll();
+
         // initialisation des valeurs
         $return = array('count' => array(LINK_STATUS_NONE => 0,
                                          LINK_STATUS_SENT => 0,
@@ -144,8 +151,10 @@ class Link extends AppModel
                                          LINK_STATUS_ACCEPTED => 0,
                                          LINK_STATUS_BLACKLIST => 0,
                                          LINK_STATUS_BLACKLISTED => 0));
+
         foreach ($links as $key => $link) {
             $newKey = ($link['expediteur_id'] != $userId) ? $link['expediteur_id'] : $link['destinataire_id'];
+
             if ($link['status'] == LINK_STATUS_SENT) {
                 $status = ($link['expediteur_id'] != $userId) ? LINK_STATUS_RECIEVED : LINK_STATUS_SENT;
                 $return[(int) $newKey] = (int) $status;
@@ -159,8 +168,11 @@ class Link extends AppModel
                 $return['count'][$link['status']]++;
             }
         }
+
         ksort($return);
+
         $_SESSION['links'] = $return;
+
         return $_SESSION['links'];
     }
 

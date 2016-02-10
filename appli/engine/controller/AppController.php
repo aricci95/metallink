@@ -28,10 +28,10 @@ abstract class AppController extends Controller
         $_SESSION['views'] = $this->model->Auth->countViews(User::getContextUser('id'));
 
         // Récupération & comptage des links
-        $olLinks  = (!empty($_SESSION['links'])) ? $_SESSION['links'] : null;
+        $oldLinks = (!empty($_SESSION['links'])) ? $_SESSION['links'] : null;
         $newLinks = $this->model->Link->setContextUserLinks();
 
-        if (!empty($olLinks) && $olLinks['count'][LINK_STATUS_RECIEVED] < $newLinks['count'][LINK_STATUS_RECIEVED]) {
+        if (!empty($oldLinks) && $oldLinks['count'][LINK_STATUS_RECIEVED] < $newLinks['count'][LINK_STATUS_RECIEVED]) {
             $this->view->growler('Nouvelle demande !', GROWLER_INFO);
         }
 
@@ -88,6 +88,7 @@ abstract class AppController extends Controller
     protected function _checkSession()
     {
         $roleLimit = $this->_authLevel;
+
         // Cas user en session
         if (!empty($_SESSION['user_valid']) && !empty($_SESSION['user_id']) && !empty($_SESSION['user_login'])) {
             if ($_SESSION['user_valid'] == 1) {
@@ -109,11 +110,13 @@ abstract class AppController extends Controller
             } catch (Exception $e) {
                 $this->redirect('home', array('msg' => $e->getCode()));
             }
+
             return $logResult;
         } // Cas page accès sans autorisation
         elseif ($roleLimit != AUTH_LEVEL_NONE) {
             $this->redirect('home', array('msg' => ERR_AUTH));
         }
+
         return false;
     }
 }

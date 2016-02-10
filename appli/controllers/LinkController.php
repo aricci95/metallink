@@ -11,13 +11,16 @@ class LinkController extends AppController
             $this->view->growlerError();
             $this->redirect('home');
         }
+
         $status = $this->params['value'];
+
         if ($status == LINK_STATUS_SENT) {
             $this->view->users['recieved'] = $this->model->Link->getLinksUserByStatus(LINK_STATUS_RECIEVED);
             $this->view->users['sent']     = $this->model->Link->getLinksUserByStatus(LINK_STATUS_SENT);
         } else {
             $this->view->users = $this->model->Link->getLinksUserByStatus($status);
         }
+
         $this->view->status = $status;
         $this->view->setViewName('link/wList');
         $this->view->render();
@@ -27,6 +30,7 @@ class LinkController extends AppController
     {
         $offset = $this->params['value'];
         $status = $this->params['option'];
+
         // Récupèration des links & demandes
         if ($status == LINK_STATUS_SENT) {
             $this->view->elements['recieved'] = $this->model->Link->getLinksUserByStatus(LINK_STATUS_RECIEVED, $offset);
@@ -34,6 +38,7 @@ class LinkController extends AppController
         } else {
             $this->view->elements = $this->model->Link->getLinksUserByStatus($status, $offset);
         }
+
         $this->view->type     = 'user';
         $this->view->offset   = $offset++;
         $this->view->getJSONResponse('user/wItems');
