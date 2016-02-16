@@ -59,7 +59,7 @@ class ProfileController extends AppController
         $this->view->tastes = $tastes;
 
         // Ajout de la vue
-        if (User::getContextUser('id') != $this->params['value']) {
+        if ($this->context->get('user_id') != $this->params['value']) {
             $this->model->views->addView($this->params['value']);
         }
 
@@ -89,7 +89,7 @@ class ProfileController extends AppController
 
         // Info de localisation
         $this->view->geoloc = array();
-        $contextUserCity = User::getContextUser('city');
+        $contextUserCity = $this->context->get('city');
 
         if (!empty($user['user_city']) && !empty($contextUserCity)) {
             $this->view->geoloc = $this->_getDistance($contextUserCity, $user['user_city']);
@@ -105,7 +105,7 @@ class ProfileController extends AppController
         $this->view->addJS(JS_DATEPICKER);
 
         // Récupération des informations de l'utilisateur
-        $this->view->user = $this->model->User->getUserByIdDetails(User::getContextUser('id'));
+        $this->view->user = $this->model->User->getUserByIdDetails($this->context->get('user_id'));
 
         // Récupération des listes déroulantes
         $this->view->styles     = $this->model->getItemsFromTable('ref_style');
@@ -190,7 +190,7 @@ class ProfileController extends AppController
     public function renderDelete()
     {
         // Suppression de l'utilisateur
-        if ($this->get('user')->delete(User::getContextUser('id'))) {
+        if ($this->get('user')->delete($this->context->get('user_id'))) {
 
             //Destruction du Cookie
             setcookie("MlinkPwd", 0);

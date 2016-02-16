@@ -50,7 +50,7 @@ class Message extends AppModel
 
         $stmt = Db::getInstance()->prepare($sql);
 
-        $stmt->bindValue('context_user_id', User::getContextUser('id'), PDO::PARAM_INT);
+        $stmt->bindValue('context_user_id', $this->context->get('user_id'), PDO::PARAM_INT);
         $stmt->bindValue('user_id', $userId, PDO::PARAM_INT);
         $stmt->bindValue('status_sent', MESSAGE_STATUS_SENT, PDO::PARAM_INT);
         $stmt->bindValue('status_read', MESSAGE_STATUS_READ, PDO::PARAM_INT);
@@ -116,7 +116,7 @@ class Message extends AppModel
 
         $stmt = Db::getInstance()->prepare($sql);
 
-        $stmt->bindValue('context_user_id', User::getContextUser('id'), PDO::PARAM_INT);
+        $stmt->bindValue('context_user_id', $this->context->get('user_id'), PDO::PARAM_INT);
         $stmt->bindValue('link_status_blacklist', LINK_STATUS_BLACKLIST, PDO::PARAM_INT);
         $stmt->bindValue('limit_begin', ($offset * NB_MAILBOX_RESULTS), PDO::PARAM_INT);
         $stmt->bindValue('limit_stop', NB_MAILBOX_RESULTS, PDO::PARAM_INT);

@@ -11,7 +11,8 @@ function ErrorHandler($errno, $errstr, $errfile, $errline)
                "A la ligne : <b>$errline</b>";
     $exception = new Exception($message, $errno);
 
-    Mailer::sendError($exception);
+    $mailer = new Mailer();
+    $mailer->sendError($exception);
 
     /* Ne pas exécuter le gestionnaire interne de PHP */
     return true;

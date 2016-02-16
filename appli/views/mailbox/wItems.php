@@ -1,5 +1,5 @@
 <?php foreach($this->userMessages as $key => $message) : ?>
-    <tr <?php if ($message['state_id'] == MESSAGE_STATUS_SENT && $message['expediteur_id'] != User::getContextUser('id')) : ?> class="trNewMessage" <?php else : ?> class="trReadMessage" <?php endif; ?>>
+    <tr <?php if ($message['state_id'] == MESSAGE_STATUS_SENT && $message['expediteur_id'] != $this->context->get('user_id')) : ?> class="trNewMessage" <?php else : ?> class="trReadMessage" <?php endif; ?>>
         <td align="center" width="100">
             <?php echo $this->_helper->printUserSmall($message); ?>
         </td>

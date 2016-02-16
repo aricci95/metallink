@@ -5,7 +5,6 @@
  */
 class User extends AppModel
 {
-    const CACHE_KEY_PREFIX = 'user:';
 
     private $_attributes = array(
         'user_login',
@@ -34,35 +33,6 @@ class User extends AppModel
         'user_drugs',
     );
 
-    public static function getContextUser($attribute = null)
-    {
-        if (!empty($attribute) && array_key_exists('user_'.$attribute, $_SESSION) && !empty($_SESSION['user_'.$attribute])) {
-            if ($attribute == 'id') {
-                return (int) $_SESSION['user_id'];
-            } else {
-                return $_SESSION['user_'.$attribute];
-            }
-        } elseif ($attribute == 'role_id' && !empty($_SESSION['role_id'])) {
-            return $_SESSION['role_id'];
-        } else {
-            if (!empty($_SESSION['user_id'])) {
-                return array(
-                    'id' => $_SESSION['user_id'],
-                    'login' => $_SESSION['user_login'],
-                    'last_connexion' => $_SESSION['user_last_connexion'],
-                    'role_id' => $_SESSION['role_id'],
-                    'photo_url' => empty($_SESSION['user_photo_url']) ? 'unknowUser.jpg' : $_SESSION['user_photo_url'],
-                    'age' => $_SESSION['age'],
-                    'gender' => $_SESSION['user_gender'],
-                    'city'   => $_SESSION['user_city'],
-                    'zipcode'   => $_SESSION['user_zipcode']
-                );
-            }
-        }
-
-        return null;
-    }
-
     public function getUsers()
     {
         return $this->fetch("SELECT * FROM user ORDER BY user_login");
@@ -71,10 +41,10 @@ class User extends AppModel
     // Mets à jour la date de connexion
     public function updateLastConnexion()
     {
-        $_SESSION['user_last_connexion'] = time();
+        $this->context->set('user_last_connexion', time());
 
-        $this->execute('INSERT INTO user_statuses (user_id, status) VALUES ('.User::getContextUser('id').', 1) ON DUPLICATE KEY UPDATE status = 1');
-        $sql = 'UPDATE user SET user_last_connexion = NOW() WHERE user_id ='.User::getContextUser('id');
+        $this->execute('INSERT INTO user_statuses (user_id, status) VALUES ('.$this->context->get('user_id').', 1) ON DUPLICATE KEY UPDATE status = 1');
+        $sql = 'UPDATE user SET user_last_connexion = NOW() WHERE user_id ='.$this->context->get('user_id');
 
         return $this->execute($sql);
     }
@@ -82,7 +52,7 @@ class User extends AppModel
     // Récupéres les utilisateurs par critéres
     public function getSearch($criterias, $offset = 0)
     {
-        $contextUserId = User::getContextUser('id');
+        $contextUserId = $this->context->get('user_id');
 
         $sql = 'SELECT
                     user_id,
@@ -116,8 +86,8 @@ class User extends AppModel
         }
 
         if (!empty($criterias['search_distance'])) {
-            $longitude = User::getContextUser('longitude');
-            $lattitude = User::getContextUser('lattitude');
+            $longitude = $this->context->get('longitude');
+            $lattitude = $this->context->get('lattitude');
 
             if (!is_array($longitude) && !is_array($lattitude)) {
                 if ($longitude > 0 && $lattitude > 0) {
@@ -150,7 +120,7 @@ class User extends AppModel
 
         $stmt = Db::getInstance()->prepare($sql);
 
-        $stmt->bindValue('context_user_id', User::getContextUser('id'), PDO::PARAM_INT);
+        $stmt->bindValue('context_user_id', $this->context->get('user_id'), PDO::PARAM_INT);
         $stmt->bindValue('link_status_blacklist', LINK_STATUS_BLACKLIST, PDO::PARAM_INT);
 
         if (!empty($criterias['search_login'])) {
@@ -213,7 +183,7 @@ class User extends AppModel
     // Récupére la liste des utilisateurs
     public function getNew()
     {
-        $userId = User::getContextUser('id');
+        $userId = $this->context->get('user_id');
 
         $sql = '
             SELECT
@@ -301,48 +271,6 @@ class User extends AppModel
         return $user;
     }
 
-    // Récupére un utilisateur
-    public function getById($userId)
-    {
-        if (apc_exists(CACHE_KEY_PREFIX . $userId)) {
-            die('ok');
-            $user = apc_fetch(CACHE_KEY_PREFIX . $userId);
-        } else {
-            $sql = "SELECT
-                        user.user_id as user_id,
-                        user_login,
-                        user_gender,
-                        user_photo_url,
-                        user_profession,
-                        user_light_description,
-                        UNIX_TIMESTAMP(user_last_connexion) as user_last_connexion,
-                        user_description,
-                        role_id,
-                        user_valid,
-                        user_pwd,
-                        user_mail,
-                        user_city,
-                        ville_id,
-                        user_zipcode,
-                        FLOOR((DATEDIFF( CURDATE(), (user_birth))/365)) AS age,
-                        style_id
-                    FROM
-                        user
-                    WHERE user_id = :user_id
-                ;";
-
-            $stmt = Db::getInstance()->prepare($sql);
-
-            $stmt->bindValue('user_id', $userId, PDO::PARAM_INT);
-
-            $user = Db::executeStmt($stmt)->fetch();
-
-            apc_add(CACHE_KEY_PREFIX . $userId, $user);
-        }
-
-        return $user;
-    }
-
     public function deleteById($id)
     {
         $sql = "DELETE FROM user WHERE user_id = :id;
@@ -381,7 +309,7 @@ class User extends AppModel
                     $sql .= " ".$attribute." = '".$data[$attribute]."',";
                 }
             }
-            $sql .= ' WHERE user_id = '.$this->securize(User::getContextUser('id'));
+            $sql .= ' WHERE user_id = '.$this->securize($this->context->get('user_id'));
             $sql = str_replace(', WHERE', ' WHERE', $sql);
 
             return $this->execute($sql);

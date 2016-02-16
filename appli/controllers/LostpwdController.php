@@ -35,14 +35,14 @@ class LostpwdController extends AppController
     public function renderSubmit()
     {
         if (!empty($this->params['user_login'])) {
-            if ($this->model->Auth->sendPwd($this->params['user_login'])) {
+            if ($this->get('auth')->sendPwd($this->params['user_login'])) {
                 $this->redirect('home', array('msg' => MSG_PWD_SENT));
             } else {
                 $this->view->growler('Login / Email introuvable.', GROWLER_ERR);
                 $this->render();
             }
         } elseif (!empty($this->params['user_mail'])) {
-            if ($this->model->Auth->sendPwd(null, $this->params['user_mail'])) {
+            if ($this->get('auth')->sendPwd(null, $this->params['user_mail'])) {
                 $this->redirect('home', array('msg' => MSG_PWD_SENT));
             } else {
                 $this->view->growler('Login / Email introuvable.', GROWLER_ERR);
@@ -63,7 +63,7 @@ class LostpwdController extends AppController
             $this->view->growler('Les deux champs doivent être identiques.', GROWLER_ERR);
             $this->renderNew();
         } else {
-            if ($this->model->Auth->updatePwd($this->params['user_pwd'], $this->params['pwd_valid'])) {
+            if ($this->model->auth->updatePwd($this->params['user_pwd'], $this->params['pwd_valid'])) {
                 $this->redirect('home', array('msg' => MSG_VALIDATION_PWD));
             } else {
                 $this->view->growlerError();

@@ -78,7 +78,7 @@ class News extends AppModel
                     .$news['news_titre']."', '"
                     .addslashes($news['news_contenu'])."', '"
                     .date("Y-m-d H:i")."', '1', '"
-                    .$_SESSION['user_id']."', '"
+                    .$this->context->get('user_id')."', '"
                     .$news['news_media_url']."', '"
                     .$news['news_photo_url']."');";
         return  $this->execute($sql);

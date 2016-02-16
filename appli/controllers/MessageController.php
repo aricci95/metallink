@@ -9,7 +9,7 @@ class MessageController extends AppController
             return $this->model->User->getUserByIdDetails($userId);
         }
         // Si rajout de message de soit même
-        if ($parentMessages[0]['expediteur_id'] == User::getContextUser('id')) {
+        if ($parentMessages[0]['expediteur_id'] == $this->context->get('user_id')) {
             return $this->model->User->getUserByIdDetails($parentMessages[0]['destinataire_id']);
         } // Si réponse
         else {
@@ -26,7 +26,7 @@ class MessageController extends AppController
 
     private function _checkMessages($parentMessages, $destinataireId)
     {
-        $contextUserId = User::getContextUser('id');
+        $contextUserId = $this->context->get('user_id');
 
         // Si nouvelle conversation
         if (empty($parentMessages)) {
@@ -44,8 +44,9 @@ class MessageController extends AppController
             // Si nouveau message, alors on le mets en état lu
             if ($value['state_id'] == MESSAGE_STATUS_SENT && $value['expediteur_id'] != $contextUserId) {
                 $this->model->message->updateMessageState($value['message_id'], MESSAGE_STATUS_READ);
-                if ($_SESSION['new_messages'] > 0) {
-                    $_SESSION['new_messages']--;
+
+                if ($this->context->get('new_messages') > 0) {
+                    $this->context->set($this->context->get('new_messages') - 1);
                 }
             }
         }
@@ -103,7 +104,7 @@ class MessageController extends AppController
             $this->redirect('mailbox', array('msg' => ERR_DEFAULT));
         }
 
-        $from = User::getContextUser('id');
+        $from = $this->context->get('user_id');
         $to   = $this->params['destinataire_id'];
 
         if (empty($this->params['content'])) {
@@ -114,7 +115,7 @@ class MessageController extends AppController
 
 
         if ($this->get('message')->send($from, $to, $this->params['content'])) {
-            $message = User::getContextUser('login') . ' vous a envoyé un nouveau message ! <a href="http://metallink.fr/message/' . User::getContextUser('id') . '">Cliquez ici</a> pour le lire.';
+            $message = $this->context->get('user_login') . ' vous a envoyé un nouveau message ! <a href="http://metallink.fr/message/' . $this->context->get('user_id') . '">Cliquez ici</a> pour le lire.';
             $this->redirect('message', array($this->params['value'], 'msg' => MSG_SENT_OK));
         } else {
             Log::err('impossible d\'enregistrer le message.');

@@ -25,7 +25,7 @@ $(document).ready(function() {
             gritterType = 'ok';
             gritterMsg  = 'Demande validée';
             // Si page de gestion des links
-            if(divLink.closest('.recieved').length > 0)  {
+            if(divLink.closest('.received').length > 0)  {
                 link.closest('.divElement').fadeOut();
             }
         } else if(status === 8) {

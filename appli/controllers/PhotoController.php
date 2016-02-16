@@ -26,7 +26,7 @@ class PhotoController extends AppController
         if (!empty($this->params['key_id'])) {
             $this->_keyId = $this->params['key_id'];
         } elseif ($this->_typeId == PHOTO_TYPE_USER) {
-            $this->_keyId = User::getContextUser('id');
+            $this->_keyId = $this->context->get('user_id');
         } elseif (!empty($this->params['option'])) {
             $this->_keyId = $this->params['option'];
         }
@@ -60,7 +60,7 @@ class PhotoController extends AppController
         $this->view->photos = $photos;
 
         if ($this->_typeId == PHOTO_TYPE_USER) {
-            $this->view->mainPhotoUrl = User::getContextUser('photo_url');
+            $this->view->mainPhotoUrl = $this->context->get('user_photo_url');
         } else {
             $object = $this->model->{$this->_objectName}->getById($this->_keyId);
             if (!empty($object)) {
@@ -81,7 +81,7 @@ class PhotoController extends AppController
         $this->view->photos = $this->model->Photo->getPhotosByKey($photo['key_id'], $photo['type_id']);
 
         if ($this->_typeId == PHOTO_TYPE_USER) {
-            $this->view->mainPhotoUrl = User::getContextUser('photo_url');
+            $this->view->mainPhotoUrl = $this->context->get('user_photo_url');
         } else {
             $object = $this->model->{$this->_objectName}->getById($this->_keyId);
             if (!empty($object)) {
@@ -97,7 +97,7 @@ class PhotoController extends AppController
     private function _setProfilePhoto($photo)
     {
         if ($this->_typeId == PHOTO_TYPE_USER) {
-            $_SESSION['user_photo_url'] = $photo['photo_url'];
+            $this->context->set('user_photo_url', $photo['photo_url']);
         }
 
         $this->model->photo->setProfilePhoto($photo);

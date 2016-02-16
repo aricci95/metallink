@@ -152,7 +152,7 @@ class Util extends AppModel
             // Choix du pannel
         if ($controlPanel) {
             // SI différent de lui même
-            if (isset($_SESSION['user_id']) && $_SESSION['user_id'] != $user['user_id']) {
+            if (isset($this->context->get('user_id')) && $this->context->get('user_id') != $user['user_id']) {
                 // SI Linked
                 if ($linked != false) {
                     echo '<td title="Blacklist" class="userFont" align="center"><a href="blacklist.php?action=add&id='.$user['user_id'].'" ><img src="../images/disc_close.png" /></a>';

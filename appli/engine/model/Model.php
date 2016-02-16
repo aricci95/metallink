@@ -3,6 +3,13 @@
 abstract class Model
 {
 
+    public $context;
+
+    public function __construct()
+    {
+        $this->context = Context::getInstance();
+    }
+
     /**
      * [find description]
      * @param  string $table

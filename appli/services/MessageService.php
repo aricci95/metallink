@@ -30,10 +30,10 @@ Class MessageService extends Service
         );
 
         if ($this->model->message->insert($message_data)) {
-            $destinataire = $this->model->user->findById($destinataire_id, array('user_mail'));
-            $message      = User::getContextUser('login').' vous a envoyé un nouveau message ! <a href="http://metallink.fr/message/' . User::getContextUser('id') . '">Cliquez ici</a> pour le lire.';
+            $destinataire = $this->model->user->findById($destinataire_id);
+            $message      = $this->context->get('user_login').' vous a envoyé un nouveau message ! <a href="http://metallink.fr/message/' . $this->context->get('user_id') . '">Cliquez ici</a> pour le lire.';
 
-            return Mailer::send($destinataire['user_mail'], 'Nouveau message sur MetalLink !', $message);
+            return $this->get('mailer')->send($destinataire['user_mail'], 'Nouveau message sur MetalLink !', $message);
         }
     }
 
@@ -54,9 +54,9 @@ Class MessageService extends Service
 
         $message_data = array(
             'content' => $message,
-            'user_id' => User::getContextUser('id'),
+            'user_id' => $this->context->get('user_id'),
             'date' => date('Y-m-d H:i:s'),
-            'user_login' => User::getContextUser('login'),
+            'user_login' => $this->context->get('user_login'),
         );
 
         return $this->model->Forum->insert($message_data);

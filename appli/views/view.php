@@ -12,7 +12,8 @@
             <script type="text/javascript" src="MLink/appli/inc/datepicker/jquery.datetimepicker.js"></script>
             <script type="text/javascript" src="MLink/appli/inc/datepicker/datepicker.js"></script>
         <?php endif; ?>
-        <?php if($this->isJSActivated(JS_AUTOCOMPLETE)) : ?>
+        <?php if($this->isJSActivated(JS_AUTOCOMPLETE))
+        : ?>
             <script type="text/javascript" src="MLink/appli/inc/ajax/autocomplete.js"></script>
         <?php endif; ?>
         <?php if($this->isJSActivated(JS_ARTICLE)) : ?>
@@ -72,28 +73,28 @@
         <div><a href="home"><img src="<?php echo $this->headerImg ?>" /></a></div>
         <div class="intitule" align="center">Communauté métal en tous genres <span style="color:#B40404;margin-left:225px;"><?php echo 'v'.APP_VERSION ?></span></div>
         <div class="divCorps" align="left">
-<?php if(User::getContextUser('id')) : ?>
+<?php if($this->context->get('user_id')) : ?>
     <div class="divBarre">
     <table class="tableMenu">
         <tr align="center">
-            <td><a class="aMenu" <?php echo ($this->page == 'profile') ? 'style="color:white;"' : ''; ?> href="profile/<?php echo $_SESSION['user_id']; ?>">Profil</a></td>
+            <td><a class="aMenu" <?php echo ($this->page == 'profile') ? 'style="color:white;"' : ''; ?> href="profile/<?php echo $this->context->get('user_id'); ?>">Profil</a></td>
             <td><a class="aMenu" <?php echo ($this->page == 'user') ? 'style="color:white;"' : ''; ?> href="user">Recherche</a></td>
             <td><a class="aMenu" <?php echo ($this->page == 'forum') ? 'style="color:white;"' : ''; ?> href="forum">Forum</a></td>
             <td><a class="aMenu" <?php echo ($this->page == 'sales') ? 'style="color:white;"' : ''; ?> href="sales">Ventes</a></td>
             <td><a class="aMenu" <?php echo ($this->page == 'covoit') ? 'style="color:white;"' : ''; ?> href="covoit">Covoit'</a></td>
-            <?php if(User::getContextUser('role_id') >= AUTH_LEVEL_ADMIN) : ?>
+            <?php if($this->context->get('user_role_id') >= AUTH_LEVEL_ADMIN) : ?>
                 <td><a class="aMenu" <?php echo ($this->page == 'adminnews') ? 'style="color:white;"' : ''; ?> href="adminNews">News</a></td>
-                <?php if(User::getContextUser('role_id') == AUTH_LEVEL_SUPERADMIN) : ?>
+                <?php if($this->context->get('user_role_id') == AUTH_LEVEL_SUPERADMIN) : ?>
                     <td><a class="aMenu" <?php echo ($this->page == 'admin') ? 'style="color:white;"' : ''; ?> href="admin">Admin</a></td>
                 <?php endif; ?>
             <?php endif; ?>
             <td><a class="aMenu" href="home/disconnect">Déconnecter</a></td>
             <td align="right">
-                <a class="aMenu" href="mailbox"><img src="MLink/images/icone/message.png" /> <b><?php echo (!empty($_SESSION['new_messages'])) ? $_SESSION['new_messages'] : 0; ?></b></a>
-                <a class="aMenu" href="link/<?php echo LINK_STATUS_SENT; ?>"><img src="MLink/images/icone/link.png" /> <b><?php echo (!empty($_SESSION['links']['count'][LINK_STATUS_RECIEVED])) ? $_SESSION['links']['count'][LINK_STATUS_RECIEVED] : 0; ?></b></a>
-                <a class="aMenu" href="link/<?php echo LINK_STATUS_ACCEPTED; ?>"><img src="MLink/images/icone/link_accepted.png" /> <b><?php echo (!empty($_SESSION['links']['count'][LINK_STATUS_ACCEPTED])) ? $_SESSION['links']['count'][LINK_STATUS_ACCEPTED] : 0; ?></b></a>
-                <a class="aMenu" href="views"><img src="MLink/images/icone/views.gif" /> <b><?php echo (!empty($_SESSION['views'])) ? $_SESSION['views'] : 0; ?></b></a>
-                <a class="aMenu" href="link/<?php echo LINK_STATUS_BLACKLIST; ?>"><img src="MLink/images/icone/link_refuse.png" /> <b><?php echo (!empty($_SESSION['links']['count'][LINK_STATUS_BLACKLIST])) ? $_SESSION['links']['count'][LINK_STATUS_BLACKLIST] : 0; ?></b></a>
+                <a class="aMenu" href="mailbox"><img src="MLink/images/icone/message.png" /> <b><?php echo (!empty($this->context->get('new_messages'))) ? $this->context->get('new_messages') : 0; ?></b></a>
+                <a class="aMenu" href="link/<?php echo LINK_STATUS_SENT; ?>"><img src="MLink/images/icone/link.png" /> <b><?php echo !empty($this->context->get('links_count_received')) ? $this->context->get('links_count_received') : 0; ?></b></a>
+                <a class="aMenu" href="link/<?php echo LINK_STATUS_ACCEPTED; ?>"><img src="MLink/images/icone/link_accepted.png" /> <b><?php echo !empty($this->context->get('links_count_accepted')) ? $this->context->get('links_count_accepted') : 0; ?></b></a>
+                <a class="aMenu" href="views"><img src="MLink/images/icone/views.gif" /> <b><?php echo !empty($this->context->get('views')) ? $this->context->get('views') : 0; ?></b></a>
+                <a class="aMenu" href="link/<?php echo LINK_STATUS_BLACKLIST; ?>"><img src="MLink/images/icone/link_refuse.png" /> <b><?php echo !empty($this->context->get('links_count_blacklist')) ? $this->context->get('links_count_blacklist') : 0; ?></b></a>
             </td>
         </tr>
     </table>

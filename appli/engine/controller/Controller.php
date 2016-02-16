@@ -1,4 +1,5 @@
 <?php
+
 abstract class Controller
 {
 
@@ -6,14 +7,17 @@ abstract class Controller
     public $view;
     public $model;
     public $container;
+    public $context;
 
     protected $_JS = array();
 
     public function __construct()
     {
-        $this->model     = Model_Manager::getInstance();
+        $this->context = Context::getInstance();
+        $this->model   = Model_Manager::getInstance();
+
+        $this->container = new Service_Container();
         $this->view      = new AppView();
-        $this->container = new Container();
 
         $this->view->page   = (!empty($_GET['page'])) ? strtolower($_GET['page']) : 'home';
         $this->view->action = (!empty($_GET['action'])) ? strtolower($_GET['page']) : 'index';
@@ -27,6 +31,23 @@ abstract class Controller
         if (!empty($_GET['msg'])) {
             $this->showMessage();
         }
+    }
+
+    private function _setContext()
+    {
+        $init_vars = array(
+            'id' => null,
+            'user_login' => null,
+            'last_connexion' => null,
+            'role_id' => '',
+            'photo_url' => 'unknowUser.jpg',
+            'age' => null,
+            'gender' => null,
+            'city'   => null,
+            'zipcode'   => null,
+        );
+
+        $this->context = array_merge($_SESSION, $init_vars);
     }
 
     public function get($service)

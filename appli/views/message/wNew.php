@@ -2,7 +2,7 @@
     <?php if(!empty($this->parentMessages)) : ?>
         <input type="hidden" name="last_content" value="<?php echo $this->parentMessages[0]['content']; ?>" />
     <?php endif; ?>
-    <div style="float:left;margin-top:20px;"><?php $this->_helper->printUserSmall($_SESSION);?></div>
+    <div style="float:left;margin-top:20px;"><?php $this->_helper->printUserSmall($this->context);?></div>
     <div style="float:left;">
         A :
         <?php if(!empty($this->destinataire)) : ?>

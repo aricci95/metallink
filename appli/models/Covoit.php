@@ -106,7 +106,7 @@ class Covoit extends AppModel
                                     date_retour,
                                     price)
                 VALUES ('.$items['concert_id'].',
-                         '.User::getContextUser('id').',
+                         '.$this->context->get('user_id').',
                          '.$items['ville_id'].',
                          "'.$items['date_depart'].'",
                          "'.$items['date_retour'].'",

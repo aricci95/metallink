@@ -7,16 +7,17 @@ abstract class AppController extends Controller
     public function __construct()
     {
         parent::__construct();
-
         $this->_checkSession();
+
         if (!$this->isAjax()) {
-            if (!empty($_SESSION['role_id']) && $_SESSION['role_id'] >= AUTH_LEVEL_USER) {
+            if (!empty($this->context->get('user_role_id')) && $this->context->get('user_role_id') >= AUTH_LEVEL_USER) {
                 try {
                     $this->_getNotifications();
                     $this->_refreshLastConnexion();
                 } catch (Exception $e) {
                     $this->view->growlerError();
-                    Mailer::sendError($e);
+
+                    $this->get('mailer')->sendError($e);
                 }
             }
         }
@@ -25,33 +26,35 @@ abstract class AppController extends Controller
     private function _getNotifications()
     {
         // vues
-        $_SESSION['views'] = $this->model->Auth->countViews(User::getContextUser('id'));
+        $viewCount = $this->model->Auth->countViews($this->context->get('user_id'));
+
+        $this->context->set('views', (int) $viewCount);
 
         // Récupération & comptage des links
-        $oldLinks = (!empty($_SESSION['links'])) ? $_SESSION['links'] : null;
+        $oldLinks = !empty($this->context->get('links')) ? $this->context->get('links') : null;
         $newLinks = $this->model->Link->setContextUserLinks();
 
-        if (!empty($oldLinks) && $oldLinks['count'][LINK_STATUS_RECIEVED] < $newLinks['count'][LINK_STATUS_RECIEVED]) {
+        if (!empty($oldLinks) && $oldLinks['count'][LINK_STATUS_RECEIVED] < $newLinks['count'][LINK_STATUS_RECEIVED]) {
             $this->view->growler('Nouvelle demande !', GROWLER_INFO);
         }
 
         // Vérification des nouveaux messages
-        $oldMessagesCount  = (!empty($_SESSION['new_messages'])) ? $_SESSION['new_messages'] : 0;
-        $_SESSION['new_messages'] = $this->model->Auth->countNewMessages(User::getContextUser('id'));
+        $oldMessagesCount  = !empty($this->context->get('new_messages')) ? $this->context->get('new_messages') : 0;
+        $this->context->set('new_messages', $this->model->Auth->countNewMessages($this->context->get('user_id')));
 
-        if ($oldMessagesCount < $_SESSION['new_messages']) {
+        if ($oldMessagesCount < $this->context->get('new_messages')) {
             $this->view->growler('Nouveau message !', GROWLER_INFO);
         }
 
-        if (!isset($_SESSION['forum_notification']) || $_SESSION['forum_notification'] == 1) {
+        if ($this->context->get('forum_notification')) {
             // Vérification dernier message forum
-            $lastMessage = Forum::getLastMessage();
+            $lastMessage = $this->model->forum->getLastMessage();
 
             if (!empty($lastMessage)) {
-                if (empty($_SESSION['last_forum_message'])) {
+                if (empty($this->context->get('last_forum_message_id'))) {
                     $this->_forumGrowler($lastMessage);
                 } else {
-                    if ($lastMessage['id'] != $_SESSION['last_forum_message']['id'] && $lastMessage['date'] != $_SESSION['last_forum_message']['date']) {
+                    if ($lastMessage['id'] != $this->context->get('last_forum_message_id') && $lastMessage['date'] != $this->context->get('last_forum_message_date')) {
                         $this->_forumGrowler($lastMessage);
                     }
                 }
@@ -64,22 +67,24 @@ abstract class AppController extends Controller
         $this->view->growler($lastMessage['content'] , GROWLER_INFO, $title);
 
         unset($lastMessage['content']);
-        $_SESSION['last_forum_message'] = $lastMessage;
+
+        $this->context->set('last_forum_message_id', $lastMessage['last_forum_message']['id'])
+                      ->set('last_forum_message_date', $lastMessage['last_forum_message']['date']);
     }
 
     protected function _refreshLastConnexion()
     {
         // Status
-        if (!empty($_SESSION['user_id'])) {
-            if (!empty($_SESSION['user_last_connexion'])) {
+        if (!empty($this->context->get('user_id'))) {
+            if (!empty($this->context->get('user_last_connexion'))) {
                 $now      = time();
-                $left     = $_SESSION['user_last_connexion'];
+                $left     = $this->context->get('user_last_connexion');
                 $timeLeft = $now - $left;
                 if ($timeLeft == 0 || $timeLeft > (ONLINE_TIME_LIMIT - 300)) {
-                    $this->model->User->updateLastConnexion(User::getContextUser('id'));
+                    $this->model->User->updateLastConnexion($this->context->get('user_id'));
                 }
             } else {
-                $this->model->User->updateLastConnexion(User::getContextUser('id'));
+                $this->model->User->updateLastConnexion($this->context->get('user_id'));
             }
         }
     }
@@ -90,9 +95,9 @@ abstract class AppController extends Controller
         $roleLimit = $this->_authLevel;
 
         // Cas user en session
-        if (!empty($_SESSION['user_valid']) && !empty($_SESSION['user_id']) && !empty($_SESSION['user_login'])) {
-            if ($_SESSION['user_valid'] == 1) {
-                if ($_SESSION['role_id'] >= $roleLimit) {
+        if (!empty($this->context->get('user_valid')) && !empty($this->context->get('user_id')) && !empty($this->context->get('user_login'))) {
+            if ($this->context->get('user_valid') == 1) {
+                if ($this->context->get('user_role_id') >= $roleLimit) {
                     return true;
                 } else {
                     // Utilisateur valide mais droits insuffisants
@@ -106,7 +111,7 @@ abstract class AppController extends Controller
         } // Cas pas d'user en session, vérification des cookies
         elseif (!empty($_COOKIE['MlinkLogin']) && !empty($_COOKIE['MlinkPwd'])) {
             try {
-                $logResult = $this->model->Auth->checkLogin($_COOKIE['MlinkLogin'], $_COOKIE['MlinkPwd']);
+                $logResult = $this->get('auth')->checkLogin($_COOKIE['MlinkLogin'], $_COOKIE['MlinkPwd']);
             } catch (Exception $e) {
                 $this->redirect('home', array('msg' => $e->getCode()));
             }

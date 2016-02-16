@@ -31,10 +31,10 @@ class Mailbox extends AppModel
                     message JOIN user ON (message.expediteur_id = user.user_id)
                             JOIN ref_state ON (ref_state.state_id = message.state_id)
                 WHERE
-                     destinataire_id = '". User::getContextUser('id') ."'
+                     destinataire_id = '". $this->context->get('user_id') ."'
                      AND user_id NOT IN (
                             SELECT destinataire_id FROM link
-                            WHERE expediteur_id = '".User::getContextUser('id')."'
+                            WHERE expediteur_id = '".$this->context->get('user_id')."'
                             AND status = ".LINK_STATUS_BLACKLIST."
                         )
                 ORDER BY date DESC
@@ -94,7 +94,7 @@ class Mailbox extends AppModel
     {
         $sql = "DELETE FROM message
 				WHERE (expediteur_id = '".$this->securize($userId)."' OR destinataire_id = '".$this->securize($userId)."')
-				AND (expediteur_id = '".User::getContextUser('id')."' OR destinataire_id = '".User::getContextUser('id')."');";
+				AND (expediteur_id = '".$this->context->get('user_id')."' OR destinataire_id = '".$this->context->get('user_id')."');";
         $this->execute($sql);
     }
 }

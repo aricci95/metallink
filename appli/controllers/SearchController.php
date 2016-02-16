@@ -30,9 +30,10 @@ abstract class SearchController extends AppController
     {
         foreach ($this->_searchParams as $param) {
             if (isset($this->params[$param])) {
-                $_SESSION[$param] = $this->params[$param];
+                $this->context->set($param, $this->params[$param]);
             }
-            $datas[$param] = (!empty($_SESSION[$param])) ? $_SESSION[$param]: '';
+
+            $datas[$param] = !empty($this->context->get($param)) ? $this->context->get($param) : '';
         }
         return $datas;
     }

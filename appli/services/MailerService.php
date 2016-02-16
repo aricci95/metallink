@@ -1,9 +1,9 @@
 <?php
 
-class Mailer
+class MailerService extends Service
 {
 
-    public static function send($email, $title, $content, $additionnalContent = true)
+    public function send($email, $title, $content, $additionnalContent = true)
     {
         // HEADERS
         $headers = 'From: "MetalLink"<contact.metallink@gmail.com>' . "\n";
@@ -15,7 +15,7 @@ class Mailer
 
         if ($additionnalContent) {
             $content = $previousContent.$content;
-            $content .= '<br><br>Bien cordialement, <br><br> L\'Ã©quipe <a href="http://metallink.fr">MetalLink</a>.';
+            $content .= '<br><br>Bien cordialement, <br><br> L\'équipe <a href="http://metallink.fr">MetalLink</a>.';
         }
 
         if (MAIL_SERVER) {
@@ -28,9 +28,10 @@ class Mailer
         }
     }
 
-    public static function sendError($exception)
+    public function sendError($exception)
     {
         $errorName = 'Erreur inconnue';
+
         $errorType = array(
            E_ERROR => 'Fatal error',
            E_WARNING => 'Warning',
@@ -46,16 +47,16 @@ class Mailer
 
         $sessionDatas = "<br/><br/>Valeurs de session : <br/>";
 
-        if (!empty($_SESSION['user_id'])) {
-            $sessionDatas .= 'user_id => '.$_SESSION['user_id'].'<br/>';
+        if (!empty($this->context->get('user_id'))) {
+            $sessionDatas .= 'user_id => '.$this->context->get('user_id').'<br/>';
         }
 
-        if (!empty($_SESSION['user_login'])) {
-            $sessionDatas .= 'user_login => '.$_SESSION['user_login'].'<br/>';
+        if (!empty($this->context->get('user_login'))) {
+            $sessionDatas .= 'user_login => '.$this->context->get('user_login').'<br/>';
         }
 
-        if (!empty($_SESSION['user_valid'])) {
-            $sessionDatas .= 'user_valid => '.$_SESSION['user_valid'].'<br/>';
+        if (!empty($this->context->get('user_valid'))) {
+            $sessionDatas .= 'user_valid => '.$this->context->get('user_valid').'<br/>';
         }
 
         $message = nl2br('<b>Erreur '.$errorName.' :</b>'.

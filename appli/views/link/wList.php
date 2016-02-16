@@ -23,10 +23,10 @@
 <?php else : ?>
 	<h2>Demandes reçues</h2>
 	<?php $this->_helper->blackBoxOpen(); ?>
-		<div align="center" class="maxWidth recieved">
-			<?php if(empty($this->users['recieved'])) : ?>Aucune demande reçue.
+		<div align="center" class="maxWidth received">
+			<?php if(empty($this->users['received'])) : ?>Aucune demande reçue.
 			<?php else : ?>
-				<?php	$this->render('user/wItems', array('elements' => $this->users['recieved'])); ?>
+				<?php	$this->render('user/wItems', array('elements' => $this->users['received'])); ?>
 			<?php endif; ?>
 		</div>
 	<?php $this->_helper->blackBoxClose(); ?>

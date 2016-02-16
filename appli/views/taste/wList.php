@@ -20,5 +20,5 @@
         <?php $this->_helper->blackBoxClose(); ?>
         </div>
     <?php endforeach; ?>
-    <?php $this->_helper->formFooter('profile/'.User::getContextUser('id')); ?>
+    <?php $this->_helper->formFooter('profile/'.$this->context->get('user_id')); ?>
 </form>

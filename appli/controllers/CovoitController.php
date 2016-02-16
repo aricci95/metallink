@@ -1,11 +1,16 @@
 <?php
 
-require_once ROOT_DIR.'/appli/controllers/SearchController.php';
+require_once ROOT_DIR . '/appli/controllers/SearchController.php';
 
 class CovoitController extends SearchController
 {
 
-    protected $_JS   = array(JS_COVOIT, JS_AUTOCOMPLETE, JS_DATEPICKER);
+    protected $_JS = array(
+        JS_COVOIT,
+        JS_AUTOCOMPLETE,
+        JS_DATEPICKER,
+    );
+
     protected $_type = 'Covoit';
     protected $_searchParams = array('search_concert', 'search_ville');
 
@@ -14,13 +19,14 @@ class CovoitController extends SearchController
         parent::render();
 
         $this->view->setTitle('Covoiturages');
+
         $this->view->user = array(
-            'user_id' => User::getContextUser('id'),
-            'user_login' => User::getContextUser('login'),
-            'user_gender' => User::getContextUser('gender'),
-            'user_photo_url' => User::getContextUser('photo_url'),
+            'user_id' => $this->context->get('user_id'),
+            'user_login' => $this->context->get('user_login'),
+            'user_gender' => $this->context->get('user_gender'),
+            'user_photo_url' => $this->context->get('user_photo_url'),
             'user_last_connexion' => time(),
-            'user_statut' => User::getContextUser('status'),
+            'user_statut' => $this->context->get('status'),
         );
 
         $this->view->render();
@@ -44,10 +50,10 @@ class CovoitController extends SearchController
             'ville_id' => (int) $this->params['ville_id'],
             'date_depart' => (string) $depart->format("Y-m-d H:i"),
             'date_retour' => (string) $retour->format("Y-m-d H:i"),
-            'user_id' => (int) User::getContextUser('id'),
+            'user_id' => (int) $this->context->get('user_id'),
         );
 
-        if (Covoit::insert($covoit_data)) {
+        if ($this->model->covoit->insert($covoit_data)) {
             $this->redirect('covoit', array('msg' => MSG_COVOIT_OK));
         } else {
             $this->redirect('covoit', array('msg' => ERR_DEFAULT));
@@ -56,7 +62,7 @@ class CovoitController extends SearchController
 
     public function renderDelete()
     {
-        return Covoit::deleteById($this->params['value']);
+        return $this->model->covoit->deleteById($this->params['value']);
     }
 
     public function renderMore()

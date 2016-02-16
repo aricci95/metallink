@@ -15,5 +15,5 @@
 			<?php $this->render('photo/wItems'); ?>
 		</div>
 	</div>
-	<?php $this->_helper->formFooter('profile/'.User::getContextUser('id'), false); ?>
+	<?php $this->_helper->formFooter('profile/'.$this->context->get('user_id'), false); ?>
 </form>

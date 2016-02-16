@@ -19,7 +19,7 @@ $(function(){
 <?php $this->_helper->blackBoxOpen(); ?>
 <a class="test-popup-link" href="MLink/photos/profile/<?php echo $this->user['user_photo_url']; ?>"><div class="profilePortrait" style="float:left;background-image:url(MLink/photos/profile/<?php echo $this->user['user_photo_url']; ?>);"></div></a>
     <div class="profileInfo" style="float:left;border:1px #D8D8D8 dotted;width:390px;height:272px;padding:10px;">
-    <?php if (User::getContextUser('id') == $this->user['user_id']) : ?>
+    <?php if ($this->context->get('user_id') == $this->user['user_id']) : ?>
         <div style="text-align:right;">
             <a href="profile/edit">Editer le profil</a></br>
             <a href="photo/<?php echo PHOTO_TYPE_USER; ?>">Editer les photos</a></br>

@@ -14,7 +14,7 @@ class Forum extends AppModel
 
         $stmt = Db::getInstance()->prepare($sql);
 
-        $stmt->bindValue('context_user_id', User::getContextUser('id'));
+        $stmt->bindValue('context_user_id', $this->context->get('user_id'));
         $stmt->bindValue('time_limit', 1000);
 
         return Db::executeStmt($stmt)->fetch();
@@ -64,7 +64,7 @@ class Forum extends AppModel
                 WHERE user.user_id NOT
                     IN (SELECT expediteur_id FROM
                         link WHERE status = '.LINK_STATUS_BLACKLIST.'
-                        AND destinataire_id = '.User::getContextUser('id').')
+                        AND destinataire_id = '.$this->context->get('user_id').')
                 AND (UNIX_TIMESTAMP( NOW() ) - UNIX_TIMESTAMP( user_last_connexion )) < '.ONLINE_TIME_LIMIT.'
                 ORDER BY user_login ASC
                 LIMIT 0, 100;';

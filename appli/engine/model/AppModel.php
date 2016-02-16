@@ -2,6 +2,7 @@
 
 abstract class AppModel extends Model
 {
+
     public $table;
     public $primary;
 

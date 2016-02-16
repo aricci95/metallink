@@ -129,7 +129,7 @@ class ScriptController extends AppController
         ';
 
         $stmt = Db::getInstance()->prepare($sql);
-        $stmt->bindValue('user_id', User::getContextUser('id'));
+        $stmt->bindValue('user_id', $this->context->get('user_id'));
         $stmt->execute();
 
         for ($i=1; $i<$max; $i++) {
@@ -153,7 +153,7 @@ class ScriptController extends AppController
                         modification_date
                     )
                     VALUES (
-                        ' . User::getContextUser('id') . ',
+                        ' . $this->context->get('user_id') . ',
                         ' . $row['user_id'] . ',
                         ' . LINK_STATUS_ACCEPTED . ',
                         NOW()

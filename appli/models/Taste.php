@@ -10,7 +10,7 @@ class Taste extends AppModel
 
     public function getTastes($userId = null)
     {
-        $userId = (empty($userId)) ? User::getContextUser('id') : $userId;
+        $userId = (empty($userId)) ? $this->context->get('user_id') : $userId;
         $sql = "SELECT data
                 FROM taste
     			WHERE user_id = ".$this->securize($userId);
@@ -38,9 +38,9 @@ class Taste extends AppModel
 
     public function save($values)
     {
-        $this->execute("DELETE FROM taste WHERE user_id = ".User::getContextUser('id'));
+        $this->execute("DELETE FROM taste WHERE user_id = ".$this->context->get('user_id'));
         $sql = "INSERT INTO taste (user_id, data)
-                VALUES ('" . User::getContextUser('id') . "','" . serialize($values) . "');";
+                VALUES ('" . $this->context->get('user_id') . "','" . serialize($values) . "');";
         $this->execute($sql);
     }
 }

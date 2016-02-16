@@ -38,8 +38,8 @@ spl_autoload_register('autoLoader');
 
 
 // Loading application files
+require ROOT_DIR . '/appli/engine/Context.php';
 require ROOT_DIR . '/appli/engine/Log.php';
-require ROOT_DIR . '/appli/engine/Mailer.php';
 require ROOT_DIR . '/appli/engine/view/AppView.php';
 
 // Models
@@ -51,6 +51,8 @@ require ROOT_DIR . '/appli/engine/model/Manager.php';
 // Services
 require ROOT_DIR . '/appli/engine/service/Service.php';
 require ROOT_DIR . '/appli/engine/service/Container.php';
+require ROOT_DIR . '/appli/engine/service/MailerService.php';
+require ROOT_DIR . '/appli/engine/service/AuthService.php';
 
 // Controllers
 require ROOT_DIR . '/appli/engine/controller/Controller.php';
@@ -76,7 +78,7 @@ try {
     $controller->view->growlerError();
     $controller->render();
 
-    Mailer::sendError($e);
+    $this->get('Mailer')->sendError($e);
     die;
 }
 

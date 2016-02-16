@@ -6,10 +6,17 @@ Abstract Class Service extends AppModel
 
     public $name;
     public $model;
+    public $context;
 
     public function __construct()
     {
-        $this->model = Model_Manager::getInstance();
+        $this->context = Context::getInstance();
+        $this->model   = Model_Manager::getInstance();
+    }
+
+    public function get($service)
+    {
+        return $this->_dependencies[$service];
     }
 
     public function getName()

@@ -5,13 +5,17 @@ class AppView
 
     private $_name;
     private $_title;
+
     protected $_html;
     protected $_JSLibraries     = array();
     protected $_growlerMessages = array();
-    public $userStatuses     = array();
+
+    public $userStatuses = array();
+    public $context;
 
     public function __construct()
     {
+        $this->context = Context::getInstance();
         $this->_helper = new ViewHelper();
         $this->headerImg = $this->_getHeaderImage();
     }

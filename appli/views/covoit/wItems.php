@@ -22,7 +22,7 @@
                             <td></td>
                             <td><i><?php echo (!empty($covoiturage['date_retour'])) ? $covoiturage['date_retour'] : ''; ?></i></td>
                             <td>
-                                <?php if(User::getContextUser('id') == $covoiturage['user_id']) : ?>
+                                <?php if($this->context->get('user_id') == $covoiturage['user_id']) : ?>
                                     <a class="delete" data-id="<?php echo $covoiturage['covoit_id']; ?>" href="#" style="font-size:12px;font-weight:normal;">Supprimer <img data-id="<?php echo $covoiturage['covoit_id']; ?>" src="MLink/images/icone/delete.png" /></a>
                                 <?php else : ?>
                                     <div class="divLink"><?php $this->render('link/wItem', array('user' => $covoiturage)); ?></div>

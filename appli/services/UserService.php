@@ -9,6 +9,6 @@ Class UserService extends Service
             return false;
         }
 
-        return $this->_dependencies['photo']->deleteFromUser($id);
+        return $this->get('photo')->deleteFromUser($id);
     }
 }

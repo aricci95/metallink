@@ -1,6 +1,6 @@
 <?php
 
-class Container
+class Service_Container
 {
     private $_services = array();
 
@@ -49,6 +49,24 @@ class Container
         $photoService = $this->getService('photo');
 
         return $userService->requires($photoService);
+    }
+
+    private function _getAuthService()
+    {
+        $authService  = $this->_getService('auth');
+
+        $mailerService = $this->getService('mailer');
+
+        return $authService->requires($mailerService);
+    }
+
+    private function _getMessageService()
+    {
+        $messageService  = $this->_getService('message');
+
+        $mailerService = $this->getService('mailer');
+
+        return $messageService->requires($mailerService);
     }
 
 }

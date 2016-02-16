@@ -184,5 +184,5 @@
     </tr>
     </table>
     <br/>
-    <?php $this->_helper->formFooter('profile/'.User::getContextUser('id')); ?>
+    <?php $this->_helper->formFooter('profile/'.$this->context->get('user_id')); ?>
 </form>

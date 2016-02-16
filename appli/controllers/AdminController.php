@@ -17,7 +17,7 @@ class AdminController extends AppController
         $this->view->users = $this->model->user->find(
             array(),
             array(
-                '!user_id' => User::getContextUser('id'),
+                '!user_id' => $this->context->get('user_id'),
                 'user_valid' => 1
             ),
             array('user_login')
@@ -38,14 +38,14 @@ class AdminController extends AppController
                 if ($user['user_valid'] != 1) {
                     $this->view->growler('Utilistateur non validé.', GROWLER_ERR);
                 } else {
-                    $_SESSION['user_id']            = $user['user_id'];
-                    $_SESSION['user_login']         = $user['user_login'];
-                    $_SESSION['role_id']            = $user['role_id'];
-                    $_SESSION['user_photo_url']     = $user['user_photo_url'];
-                    $_SESSION['user_valid']         = $user['user_valid'];
-                    $_SESSION['user_mail']          = $user['user_mail'];
-                    $_SESSION['user_gender']        = $user['user_gender'];
-                    $_SESSION['forum_notification'] = $user['forum_notification'];
+                    $this->context->set('user_id', $user['user_id'])
+                                  ->set('user_login', $user['user_login'])
+                                  ->set('user_role_id', $user['role_id'])
+                                  ->set('user_photo_url', $user['user_photo_url'])
+                                  ->set('user_valid', $user['user_valid'])
+                                  ->set('user_mail', $user['user_mail'])
+                                  ->set('user_gender', $user['user_gender'])
+                                  ->set('forum_notification', $user['forum_notification']);
 
                     $this->redirect('home', array('msg' => MSG_ADM_SWITCH));
                 }
@@ -58,7 +58,7 @@ class AdminController extends AppController
 
     public function renderDeleteUser()
     {
-        $this->view->users  = User::find(array('user_id', 'user_login'), array('!user_id' => User::getContextUser('id')));
+        $this->view->users  = $this->model->user->deleteById(array('user_id', 'user_login'), array('!user_id' => $this->context->get('user_id')));
         $this->view->action = 'removeUser';
         $this->view->setTitle('Supprimer un utilisateur');
         $this->view->setViewName('admin/wUsers');
@@ -86,8 +86,8 @@ class AdminController extends AppController
     public function renderMessageSubmit()
     {
         if (!empty($this->params['content'])) {
-            $from    = User::getContextUser('id');
-            $users   = User::find(array('user_id'), array('!user_id' => User::getContextUser('id')));
+            $from    = $this->context->get('user_id');
+            $users   = $this->model->user->find(array('user_id'), array('!user_id' => $this->context->get('user_id')));
 
             $sentMessages = 0;
             foreach ($users as $user) {
