@@ -2,15 +2,25 @@
 
 abstract class AppModel extends Model
 {
+    public $table;
+    public $primary;
 
     public function getTable()
     {
-        return strtolower(get_called_class());
+         if (empty($this->table)) {
+            $this->table = strtolower(get_called_class());
+        }
+
+        return $this->table;
     }
 
     public function getPrimary()
     {
-        return $this->getTable() . '_id';
+        if (empty($this->primary)) {
+            $this->primary = $this->getTable() . '_id';
+        }
+
+        return $this->primary;
     }
 
     public function count(array $where = array(), array $orderBy = array(), $limit = null)

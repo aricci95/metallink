@@ -22,6 +22,7 @@ class AdminController extends AppController
             ),
             array('user_login')
         );
+
         $this->view->action = 'setSwitch';
         $this->view->setTitle('User switch');
         $this->view->setViewName('admin/wUsers');
@@ -31,7 +32,7 @@ class AdminController extends AppController
     public function renderSetSwitch()
     {
         if (!empty($this->params['user_id'])) {
-            $user = User::findById($this->params['user_id']);
+            $user = $this->model->user->findById($this->params['user_id']);
 
             if (!empty($user)) {
                 if ($user['user_valid'] != 1) {
