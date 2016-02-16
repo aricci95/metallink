@@ -14,7 +14,14 @@ class AdminController extends AppController
 
     public function renderSwitch()
     {
-        $this->view->users  = User::find(array(), array('!user_id' => User::getContextUser('id'), 'user_valid' => 1),  array('user_login'));
+        $this->view->users = $this->model->user->find(
+            array(),
+            array(
+                '!user_id' => User::getContextUser('id'),
+                'user_valid' => 1
+            ),
+            array('user_login')
+        );
         $this->view->action = 'setSwitch';
         $this->view->setTitle('User switch');
         $this->view->setViewName('admin/wUsers');

@@ -1,6 +1,6 @@
 <?php
 
-Class MessageService
+Class MessageService extends Service
 {
     /**
      * Envoi un message via la messagerie
@@ -29,8 +29,8 @@ Class MessageService
             'mailbox_id' => 1,
         );
 
-        if (Message::insert($message_data)) {
-            $destinataire = User::findById($destinataire_id, array('user_mail'));
+        if ($this->model->message->insert($message_data)) {
+            $destinataire = $this->model->user->findById($destinataire_id, array('user_mail'));
             $message      = User::getContextUser('login').' vous a envoyé un nouveau message ! <a href="http://metallink.fr/message/' . User::getContextUser('id') . '">Cliquez ici</a> pour le lire.';
 
             return Mailer::send($destinataire['user_mail'], 'Nouveau message sur MetalLink !', $message);
@@ -59,6 +59,6 @@ Class MessageService
             'user_login' => User::getContextUser('login'),
         );
 
-        return Forum::insert($message_data);
+        return $this->model->Forum->insert($message_data);
     }
 }

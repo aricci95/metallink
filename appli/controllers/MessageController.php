@@ -72,7 +72,7 @@ class MessageController extends AppController
         }
 
         // On récupère les information du message
-        $parentMessages = Message::getConversation($userId);
+        $parentMessages = $this->model->message->getConversation($userId);
 
         if ($this->_checkMessages($parentMessages, $userId)) {
             $this->view->parentMessages  = $parentMessages;
@@ -134,7 +134,7 @@ class MessageController extends AppController
         $userId = $this->params['option'];
 
         // On récupère les information du message
-        $parentMessages = Message::getConversation($userId, $offset);
+        $parentMessages = $this->model->message->getConversation($userId, $offset);
 
         if (count($parentMessages) > 0) {
             $this->_checkMessages($parentMessages, $userId);

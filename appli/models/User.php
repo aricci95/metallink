@@ -5,6 +5,8 @@
  */
 class User extends AppModel
 {
+    const CACHE_KEY_PREFIX = 'user:';
+
     private $_attributes = array(
         'user_login',
         'user_pwd',
@@ -66,12 +68,14 @@ class User extends AppModel
         return $this->fetch("SELECT * FROM user ORDER BY user_login");
     }
 
-    // Mets é jour la date de connexion
+    // Mets à jour la date de connexion
     public function updateLastConnexion()
     {
         $_SESSION['user_last_connexion'] = time();
+
         $this->execute('INSERT INTO user_statuses (user_id, status) VALUES ('.User::getContextUser('id').', 1) ON DUPLICATE KEY UPDATE status = 1');
         $sql = 'UPDATE user SET user_last_connexion = NOW() WHERE user_id ='.User::getContextUser('id');
+
         return $this->execute($sql);
     }
 
@@ -79,9 +83,6 @@ class User extends AppModel
     public function getSearch($criterias, $offset = 0)
     {
         $contextUserId = User::getContextUser('id');
-        if (empty($contextUserId)) {
-            throw new Exception('Context user manquant ', ERROR_BEHAVIOR);
-        }
 
         $sql = 'SELECT
                     user_id,
@@ -97,22 +98,27 @@ class User extends AppModel
                 LEFT JOIN ref_look ON user.look_id = ref_look.look_id
                 WHERE user_id NOT
                     IN (SELECT expediteur_id FROM
-                        link WHERE status = '.LINK_STATUS_BLACKLIST.'
-                        AND destinataire_id = '.$contextUserId.')
+                        link WHERE status = :link_status_blacklist
+                        AND destinataire_id = :context_user_id)
                 AND user_valid = 1
-                AND user_id != "'.$contextUserId.'" ';
+                AND user_id != :context_user_id';
+
         if (!empty($criterias['search_login'])) {
-            $sql .= " AND user_login LIKE '%".$criterias['search_login']."%' ";
+            $sql .= " AND user_login LIKE :search_login ";
         }
+
         if (!empty($criterias['search_gender'])) {
-            $sql .= " AND user_gender = '".$criterias['search_gender']."' ";
+            $sql .= " AND user_gender = :user_gender ";
         }
+
         if (!empty($criterias['search_age'])) {
-            $sql .= "AND FLOOR((DATEDIFF( CURDATE(), (user_birth))/365)) >= ".$criterias['search_age']." ";
+            $sql .= "AND FLOOR((DATEDIFF( CURDATE(), (user_birth))/365)) >= :search_age ";
         }
+
         if (!empty($criterias['search_distance'])) {
             $longitude = User::getContextUser('longitude');
             $lattitude = User::getContextUser('lattitude');
+
             if (!is_array($longitude) && !is_array($lattitude)) {
                 if ($longitude > 0 && $lattitude > 0) {
                     // On récupère les codes postaux associés
@@ -120,37 +126,48 @@ class User extends AppModel
                             WHERE (6366*acos(cos(radians(".$lattitude."))*cos(radians(`lattitude`))*cos(radians(`longitude`)
                             -radians(".$longitude."))+sin(radians(".$lattitude."))*sin(radians(`lattitude`)))) <= ".($criterias['search_distance'] / 10);
                     $closeCPs = $this->fetch($proxSql);
+
                     if (count($closeCPs) > 0) {
                         $sql .= ' AND LEFT(user_zipcode, 2) IN (';
+
                         foreach ($closeCPs as $ville) {
                             $sql .= "'".$ville['code_postal']."', ";
                         }
+
                         $sql .= ") ";
                     }
+
                     $sql .= ' AND user_zipcode IS NOT null ';
                 }
             }
         }
+
         $sql .= ' ORDER BY user_last_connexion DESC
-         LIMIT '.($offset * NB_SEARCH_RESULTS).', '.NB_SEARCH_RESULTS.';';
+                  LIMIT :limit_begin, :limit_end;';
 
-
-        $sql = str_replace('WHERE ORDER', ' ORDER', $sql);
         $sql = str_replace(',)', ')', $sql);
         $sql = str_replace(', )', ')', $sql);
-        $sql = str_replace('AND ORDER', ' ORDER', $sql);
-        $resultat = $this->fetch($sql);
-        return $resultat;
-    }
 
-    // Calcule l'age de l'utilisateur
-    public function getUserAge($userBirthDate)
-    {
-        $year = $userBirthDate[0].$userBirthDate[1].$userBirthDate[2].$userBirthDate[3];
-        $today = date("Y");
-        $age = (int)$today - (int)$year;
+        $stmt = Db::getInstance()->prepare($sql);
 
-        return $age;
+        $stmt->bindValue('context_user_id', User::getContextUser('id'), PDO::PARAM_INT);
+        $stmt->bindValue('link_status_blacklist', LINK_STATUS_BLACKLIST, PDO::PARAM_INT);
+
+        if (!empty($criterias['search_login'])) {
+            $stmt->bindValue('search_login', '%'. $criterias['search_login'] .'%', PDO::PARAM_STR);
+        }
+        if (!empty($criterias['search_gender'])) {
+            $stmt->bindValue('user_gender', $criterias['search_gender'], PDO::PARAM_INT);
+        }
+
+        if (!empty($criterias['search_age'])) {
+            $stmt->bindValue('search_age', $criterias['search_age'], PDO::PARAM_INT);
+        }
+
+        $stmt->bindValue('limit_begin', $offset * NB_SEARCH_RESULTS, PDO::PARAM_INT);
+        $stmt->bindValue('limit_end', NB_SEARCH_RESULTS, PDO::PARAM_INT);
+
+        return Db::executeStmt($stmt)->fetchAll();
     }
 
     // Convertis les 1 et 0 en oui et non
@@ -287,37 +304,46 @@ class User extends AppModel
     // Récupére un utilisateur
     public function getById($userId)
     {
-        $sql = "SELECT
-                    user.user_id as user_id,
-                    user_login,
-                    user_gender,
-                    user_photo_url,
-                    user_profession,
-                    user_light_description,
-                    UNIX_TIMESTAMP(user_last_connexion) as user_last_connexion,
-                    user_description,
-                    role_id,
-                    user_valid,
-                    user_pwd,
-                    user_mail,
-                    user_city,
-                    ville_id,
-                    user_zipcode,
-                    FLOOR((DATEDIFF( CURDATE(), (user_birth))/365)) AS age,
-                    style_id
-                FROM
-                    user
-                WHERE user_id = :user_id
-            ;";
+        if (apc_exists(CACHE_KEY_PREFIX . $userId)) {
+            die('ok');
+            $user = apc_fetch(CACHE_KEY_PREFIX . $userId);
+        } else {
+            $sql = "SELECT
+                        user.user_id as user_id,
+                        user_login,
+                        user_gender,
+                        user_photo_url,
+                        user_profession,
+                        user_light_description,
+                        UNIX_TIMESTAMP(user_last_connexion) as user_last_connexion,
+                        user_description,
+                        role_id,
+                        user_valid,
+                        user_pwd,
+                        user_mail,
+                        user_city,
+                        ville_id,
+                        user_zipcode,
+                        FLOOR((DATEDIFF( CURDATE(), (user_birth))/365)) AS age,
+                        style_id
+                    FROM
+                        user
+                    WHERE user_id = :user_id
+                ;";
 
-        $stmt = Db::getInstance()->prepare($sql);
+            $stmt = Db::getInstance()->prepare($sql);
 
-        $stmt->bindValue('user_id', $userId, PDO::PARAM_INT);
+            $stmt->bindValue('user_id', $userId, PDO::PARAM_INT);
 
-        return Db::executeStmt($stmt)->fetch();
+            $user = Db::executeStmt($stmt)->fetch();
+
+            apc_add(CACHE_KEY_PREFIX . $userId, $user);
+        }
+
+        return $user;
     }
 
-    public static function deleteById($id)
+    public function deleteById($id)
     {
         $sql = "DELETE FROM user WHERE user_id = :id;
                 DELETE FROM user_views WHERE viewer_id = :id OR viewed_id = :id;

@@ -12,7 +12,7 @@ abstract class Model
      * @param  string $limit
      * @return array
      */
-    protected static function _queryBuilder($table, $attributes_string = null, array $where = array(), array $orderBy = array(), $limit = null)
+    protected function _queryBuilder($table, $attributes_string = null, array $where = array(), array $orderBy = array(), $limit = null)
     {
         $sql = '
             SELECT

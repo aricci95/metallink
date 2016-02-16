@@ -1,10 +1,16 @@
 <?php
 
-Abstract Class Service
+Abstract Class Service extends AppModel
 {
     protected $_dependencies = array();
 
     public $name;
+    public $model;
+
+    public function __construct()
+    {
+        $this->model = Model_Manager::getInstance();
+    }
 
     public function getName()
     {

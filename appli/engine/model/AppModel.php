@@ -3,48 +3,48 @@
 abstract class AppModel extends Model
 {
 
-    public static function getTable()
+    public function getTable()
     {
         return strtolower(get_called_class());
     }
 
-    public static function getPrimary()
+    public function getPrimary()
     {
-        return self::getTable() . '_id';
+        return $this->getTable() . '_id';
     }
 
-    public static function count(array $where = array(), array $orderBy = array(), $limit = null)
+    public function count(array $where = array(), array $orderBy = array(), $limit = null)
     {
         $attributes_string = 'count(*) AS counter';
 
-        $data = self::_queryBuilder(self::getTable(), $attributes_string, $where, $orderBy, $limit);
+        $data = $this->_queryBuilder($this->getTable(), $attributes_string, $where, $orderBy, $limit);
 
         return (int) $data[0]['counter'];
     }
 
-    public static function find(array $attributes = array(), array $where = array(), array $orderBy = array(), $limit = null)
+    public function find(array $attributes = array(), array $where = array(), array $orderBy = array(), $limit = null)
     {
         $attributes_string = empty($attributes) ? '*' : implode(',', $attributes);
 
-        return self::_queryBuilder(self::getTable(), $attributes_string, $where, $orderBy, $limit);
+        return $this->_queryBuilder($this->getTable(), $attributes_string, $where, $orderBy, $limit);
     }
 
-    public static function findById($id, array $attributes = array(), array $orderBy = array(), $limit = null)
+    public function findById($id, array $attributes = array(), array $orderBy = array(), $limit = null)
     {
         $attributes_string = empty($attributes) ? '*' : implode(',', $attributes);
 
         $where = array(
-            self::getPrimary() => (int) $id,
+            $this->getPrimary() => (int) $id,
         );
 
-        $results = self::_queryBuilder(self::getTable(), $attributes_string, $where, $orderBy, $limit);
+        $results = $this->_queryBuilder($this->getTable(), $attributes_string, $where, $orderBy, $limit);
 
         return empty($results[0]) ? array() : $results[0];
     }
 
-    public static function updateById($id, $attribute, $newValue)
+    public function updateById($id, $attribute, $newValue)
     {
-        $sql = 'UPDATE ' . self::getTable() . ' SET ' . $attribute . ' = :new_value WHERE ' . self::getPrimary() . ' = :id;';
+        $sql = 'UPDATE ' . $this->getTable() . ' SET ' . $attribute . ' = :new_value WHERE ' . $this->getPrimary() . ' = :id;';
 
         $stmt = Db::getInstance()->prepare($sql);
 
@@ -54,9 +54,9 @@ abstract class AppModel extends Model
         return Db::executeStmt($stmt);
     }
 
-    public static function deleteById($id)
+    public function deleteById($id)
     {
-        $sql = 'DELETE FROM ' . self::getTable() . ' WHERE ' . self::getPrimary() . ' = :id';
+        $sql = 'DELETE FROM ' . $this->getTable() . ' WHERE ' . $this->getPrimary() . ' = :id';
 
         $stmt = Db::getInstance()->prepare($sql);
 
@@ -65,9 +65,9 @@ abstract class AppModel extends Model
         return Db::executeStmt($stmt);
     }
 
-    public static function insert(array $values)
+    public function insert(array $values)
     {
-        $sql = 'INSERT INTO ' . self::getTable() . ' (' . implode(', ', array_keys($values)) . ')  VALUES (';
+        $sql = 'INSERT INTO ' . $this->getTable() . ' (' . implode(', ', array_keys($values)) . ')  VALUES (';
 
         $valuesToBind = array();
         foreach ($values as $key => $value) {

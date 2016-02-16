@@ -130,7 +130,7 @@ class Link extends AppModel
         return $this->fetch($sql);
     }
 
-    public function setContextUserLinks($userId = null)
+    public function setContextUserLinks()
     {
         $userId = (!empty($userId)) ? $userId : User::getContextUser('id');
 

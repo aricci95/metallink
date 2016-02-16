@@ -10,12 +10,15 @@ class ProfileController extends AppController
         $distance = 0;
         $duree    = 0;
         $ville    = null;
+
         if (!empty($adresse1) && !is_numeric($adresse1) && !empty($adresse2) && !is_numeric($adresse2)) {
             $url = 'http://maps.google.com/maps/api/directions/xml?language=fr&origin='.$adresse1.'&destination='.$adresse2.'&sensor=false';
             $url = str_replace(' ', '%20', $url);
             $xml = @file_get_contents($url);
+
             if (!empty($xml)) {
                 $root = simplexml_load_string($xml);
+
                 if (!empty($root->route->leg)) {
                     $distance = round($root->route->leg->distance->value / 1000);
                     $duree    = $root->route->leg->duration->value;

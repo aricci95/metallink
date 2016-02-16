@@ -11,7 +11,7 @@ abstract class Controller
 
     public function __construct()
     {
-        $this->model     = new Model_Manager();
+        $this->model     = Model_Manager::getInstance();
         $this->view      = new AppView();
         $this->container = new Container();
 

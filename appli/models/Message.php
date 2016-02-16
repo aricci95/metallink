@@ -16,7 +16,7 @@ class Message extends AppModel
     }
 
     // Récupère l'ensemble de la conversation
-    public static function getConversation($userId, $offset = 0)
+    public function getConversation($userId, $offset = 0)
     {
         $start = ($offset * NB_MESSAGE_RESULTS);
         $stop  = NB_MESSAGE_RESULTS;
@@ -86,7 +86,7 @@ class Message extends AppModel
         return $this->execute($sql);
     }
 
-    public static function getMessageList($offset = 0)
+    public function getList($offset = 0)
     {
         $sql = "SELECT
                     user.user_id as user_id,

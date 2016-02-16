@@ -3,7 +3,18 @@
 class Model_Manager extends Model
 {
 
+    private static $_instance = null;
+
     private $_models = array();
+
+    public static function getInstance()
+    {
+        if (empty(self::$_instance)) {
+            self::$_instance = new self();
+        }
+
+        return self::$_instance;
+    }
 
     public function __get($model)
     {
@@ -61,21 +72,5 @@ class Model_Manager extends Model
         $compareString = strtr($chaine, $specialChars);
         $compareString = preg_replace('#[^A-Za-z0-9]+#', '-', $compareString);
         return ($compareString != $chaine);
-    }
-
-    public static function count($table, array $where = array(), array $orderBy = array(), $limit = null)
-    {
-        $attributes_string = 'count(*) AS counter';
-
-        $data = self::_queryBuilder($table, $attributes_string, $where, $orderBy, $limit);
-
-        return (int) $data[0]['counter'];
-    }
-
-    public static function find($table, array $attributes = array(), array $where = array(), array $orderBy = array(), $limit = null)
-    {
-        $attributes_string = empty($attributes) ? '*' : implode(',', $attributes);
-
-        return self::_queryBuilder($table, $attributes_string, $where, $orderBy, $limit);
     }
 }
