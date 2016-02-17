@@ -9,10 +9,10 @@ function ErrorHandler($errno, $errstr, $errfile, $errline)
     $message = "Message d'erreur :<br/><b>$errstr</b><br/><br/>".
                "Dans le fichier : <br/><b>$errfile:$errline</b><br/><br/>".
                "A la ligne : <b>$errline</b>";
+
     $exception = new Exception($message, $errno);
 
-    $mailer = new Mailer();
-    $mailer->sendError($exception);
+    Service_Container::getInstance()->getService('mailer')->sendError($exception);
 
     /* Ne pas exécuter le gestionnaire interne de PHP */
     return true;

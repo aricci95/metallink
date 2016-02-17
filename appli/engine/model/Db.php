@@ -46,6 +46,7 @@ class Db
 
         if (!$response) {
             $error_message = $stmt->errorInfo();
+
             throw new Exception('La requete suivante :<b><br/>' . $stmt->queryString . '</b><br/>a renvoye une erreur:<br/><i>' . $error_message[2] . '</i>', ERROR_SQL);
         };
 

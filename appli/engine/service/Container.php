@@ -4,6 +4,17 @@ class Service_Container
 {
     private $_services = array();
 
+    private static $_instance = null;
+
+    public static function getInstance()
+    {
+        if (empty(self::$_instance)) {
+            self::$_instance = new self();
+        }
+
+        return self::$_instance;
+    }
+
     public function getService($serviceName)
     {
         if (!empty($this->_services[$serviceName])) {

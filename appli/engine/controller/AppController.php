@@ -10,7 +10,7 @@ abstract class AppController extends Controller
         $this->_checkSession();
 
         if (!$this->isAjax()) {
-            if (!empty($this->context->get('user_role_id')) && $this->context->get('user_role_id') >= AUTH_LEVEL_USER) {
+            if (!empty($this->context->get('role_id')) && $this->context->get('role_id') >= AUTH_LEVEL_USER) {
                 try {
                     $this->_getNotifications();
                     $this->_refreshLastConnexion();
@@ -80,6 +80,7 @@ abstract class AppController extends Controller
                 $now      = time();
                 $left     = $this->context->get('user_last_connexion');
                 $timeLeft = $now - $left;
+
                 if ($timeLeft == 0 || $timeLeft > (ONLINE_TIME_LIMIT - 300)) {
                     $this->model->User->updateLastConnexion($this->context->get('user_id'));
                 }
@@ -89,7 +90,7 @@ abstract class AppController extends Controller
         }
     }
 
-    // Vérifie la conformité de la session et les messages
+    // Vérifie la conformité de la session
     protected function _checkSession()
     {
         $roleLimit = $this->_authLevel;
@@ -97,9 +98,10 @@ abstract class AppController extends Controller
         // Cas user en session
         if (!empty($this->context->get('user_valid')) && !empty($this->context->get('user_id')) && !empty($this->context->get('user_login'))) {
             if ($this->context->get('user_valid') == 1) {
-                if ($this->context->get('user_role_id') >= $roleLimit) {
+                if ($this->context->get('role_id') >= $roleLimit) {
                     return true;
                 } else {
+                    die;
                     // Utilisateur valide mais droits insuffisants
                     $this->redirect('home', array('msg' => ERR_AUTH));
                 }

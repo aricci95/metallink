@@ -119,19 +119,22 @@ class Auth extends AppModel
     {
         $pwd_valid = uniqid();
 
-        $insertQuery = "
+        $sql = "
             REPLACE INTO lost_pwd (
                 user_id,
                 pwd_valid
             ) VALUES (
-                " . $result['user_id'] . ",
-                '" . $pwd_valid . "'
+                :user_id,
+                :pwd_valid
             )
         ;";
 
-        try {
-            $this->execute($insertQuery);
-        } catch (Exception $e) {
+        $stmt = Db::getInstance()->prepare($sql);
+
+        $stmt->bindValue('user_id', $userId, PDO::PARAM_INT);
+        $stmt->bindValue('pwd_valid', $pwd_valid, PDO::PARAM_STR);
+
+        if (Db::executeStmt($stmt)) {
             return $pwd_valid;
         }
     }

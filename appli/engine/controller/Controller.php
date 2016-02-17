@@ -13,10 +13,10 @@ abstract class Controller
 
     public function __construct()
     {
-        $this->context = Context::getInstance();
-        $this->model   = Model_Manager::getInstance();
+        $this->context   = Context::getInstance();
+        $this->model     = Model_Manager::getInstance();
+        $this->container = Service_Container::getInstance();
 
-        $this->container = new Service_Container();
         $this->view      = new AppView();
 
         $this->view->page   = (!empty($_GET['page'])) ? strtolower($_GET['page']) : 'home';

@@ -5,7 +5,7 @@
     <br/>
     <br/>
     <?php foreach ($this->newUsers as $key => $value) {
-        if ($this->context->get('user_role_id') > 0) $this->_helper->printUser($value);
+        if ($this->context->get('role_id') > 0) $this->_helper->printUser($value);
         else $this->_helper->printUser($value);
     } ?>
 <?php $this->_helper->blackBoxClose(); ?>

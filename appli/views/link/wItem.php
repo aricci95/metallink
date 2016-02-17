@@ -1,4 +1,5 @@
 <?php
+var_dump($this->context->get('user_id')); die;
     $contextUserId = $this->context->get('user_id');
     $linkStatus    = !empty($this->newStatus) ? $this->newStatus : Link::getStatus($this->user['user_id']);
 ?>

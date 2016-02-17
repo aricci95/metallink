@@ -51,8 +51,6 @@ require ROOT_DIR . '/appli/engine/model/Manager.php';
 // Services
 require ROOT_DIR . '/appli/engine/service/Service.php';
 require ROOT_DIR . '/appli/engine/service/Container.php';
-require ROOT_DIR . '/appli/engine/service/MailerService.php';
-require ROOT_DIR . '/appli/engine/service/AuthService.php';
 
 // Controllers
 require ROOT_DIR . '/appli/engine/controller/Controller.php';
@@ -69,6 +67,7 @@ set_error_handler("ErrorHandler");
 
 try {
     require_once ROOT_DIR . '/appli/controllers/'.$page.'.php';
+
     $controller = new $page();
     $controller->$action();
 } catch (Exception $e) {

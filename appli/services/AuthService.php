@@ -6,7 +6,7 @@ class AuthService extends Service
     public function checkLogin($login, $pwd)
     {
         if (!empty($login) && !empty($pwd)) {
-            $user = $this->model->auth->getUserFromLogin($login, $pwd);
+            $user = $this->model->user->findByLoginPwd($login, $pwd);
 
             if (!empty($user['user_login']) && !empty($user['user_id']) && strtolower($user['user_login']) == strtolower($login) && $login != '') {
                 $this->model->user->updateLastConnexion();
@@ -17,18 +17,18 @@ class AuthService extends Service
                     $this->context->set('user_id', (int) $user['user_id'])
                                   ->set('user_login', $user['user_login'])
                                   ->set('user_pwd', $pwd)
-                                  ->set('user_last_connexion'], time())
+                                  ->set('user_last_connexion', time())
                                   ->set('role_id', (int) $user['role_id'])
                                   ->set('user_photo_url', empty($user['user_photo_url']) ? 'unknowUser.jpg' : $user['user_photo_url'])
                                   ->set('age', (int) $user['age'])
                                   ->set('user_valid', (int) $user['user_valid'])
                                   ->set('user_mail', $user['user_mail'])
                                   ->set('user_gender', (int) $user['user_gender'])
-                                  ->set('user_city'], $user['user_city'])
-                                  ->set('user_zipcode'], (int) $user['user_zipcode'])
-                                  ->set('user_longitude'], $user['longitude'])
-                                  ->set('user_lattitude'], $user['lattitude'])
-                                  ->set('forum_notification'], $user['forum_notification']);
+                                  ->set('user_city', $user['user_city'])
+                                  ->set('user_zipcode', (int) $user['user_zipcode'])
+                                  ->set('user_longitude', $user['longitude'])
+                                  ->set('user_lattitude', $user['lattitude'])
+                                  ->set('forum_notification', $user['forum_notification']);
                     return true;
                 }
             } else {
@@ -37,6 +37,7 @@ class AuthService extends Service
         } else {
             throw new Exception("Mauvais login / mot de passe", ERR_LOGIN);
         }
+
         return false;
     }
 

@@ -3,7 +3,7 @@
 class Forum extends AppModel
 {
 
-    public static function getLastMessage()
+    public function getLastMessage()
     {
         $sql = 'SELECT id, content, user_login, DATE_FORMAT(date,\'%H:%i\') as date FROM forum
                 WHERE user_id != :context_user_id

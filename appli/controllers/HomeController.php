@@ -32,7 +32,7 @@ class HomeController extends AppController
 
             // Vérification de password
             try {
-                $logResult = $this->model->Auth->checkLogin($login, $this->params['user_pwd']);
+                $logResult = $this->get('auth')->checkLogin($login, $this->params['user_pwd']);
             } catch (Exception $e) {
                 $this->redirect('home', array('msg' => $e->getCode()));
             }
@@ -49,9 +49,11 @@ class HomeController extends AppController
                         setcookie("MlinkPwd", 0);
                     }
                 }
+
                 $this->redirect('home');
             }
         }
+
         $this->redirect('home', array('msg' => ERR_LOGIN));
     }
 

@@ -40,7 +40,7 @@ class AdminController extends AppController
                 } else {
                     $this->context->set('user_id', $user['user_id'])
                                   ->set('user_login', $user['user_login'])
-                                  ->set('user_role_id', $user['role_id'])
+                                  ->set('role_id', $user['role_id'])
                                   ->set('user_photo_url', $user['user_photo_url'])
                                   ->set('user_valid', $user['user_valid'])
                                   ->set('user_mail', $user['user_mail'])

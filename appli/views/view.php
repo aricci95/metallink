@@ -82,9 +82,9 @@
             <td><a class="aMenu" <?php echo ($this->page == 'forum') ? 'style="color:white;"' : ''; ?> href="forum">Forum</a></td>
             <td><a class="aMenu" <?php echo ($this->page == 'sales') ? 'style="color:white;"' : ''; ?> href="sales">Ventes</a></td>
             <td><a class="aMenu" <?php echo ($this->page == 'covoit') ? 'style="color:white;"' : ''; ?> href="covoit">Covoit'</a></td>
-            <?php if($this->context->get('user_role_id') >= AUTH_LEVEL_ADMIN) : ?>
+            <?php if($this->context->get('role_id') >= AUTH_LEVEL_ADMIN) : ?>
                 <td><a class="aMenu" <?php echo ($this->page == 'adminnews') ? 'style="color:white;"' : ''; ?> href="adminNews">News</a></td>
-                <?php if($this->context->get('user_role_id') == AUTH_LEVEL_SUPERADMIN) : ?>
+                <?php if($this->context->get('role_id') == AUTH_LEVEL_SUPERADMIN) : ?>
                     <td><a class="aMenu" <?php echo ($this->page == 'admin') ? 'style="color:white;"' : ''; ?> href="admin">Admin</a></td>
                 <?php endif; ?>
             <?php endif; ?>

@@ -20,9 +20,10 @@ class Context
     {
         $init_vars = array(
             'user_id' => null,
+            'user_valid' => false,
             'user_login' => null,
             'user_last_connexion' => null,
-            'user_role_id' => 0,
+            'role_id' => 0,
             'user_photo_url' => 'unknowUser.jpg',
             'user_age' => null,
             'user_gender' => null,
@@ -36,14 +37,19 @@ class Context
             'last_forum_message_date' => null,
             'new_messages' => 0,
             'forum_notification' => true,
+            'views' => 0,
+            'search_login' => null,
+            'search_distance' => null,
+            'search_gender' => null,
+            'search_age' => null,
         );
 
-        $this->_data = array_merge($_SESSION, $init_vars);
+        $this->_data = array_merge($init_vars, $_SESSION);
     }
 
     public function set($key, $value)
     {
-        $this->_data[$key] = $value;
+        $this->_data[$key] = $_SESSION[$key] = $value;
 
         return $this;
     }

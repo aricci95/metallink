@@ -39,14 +39,22 @@ class User extends AppModel
     }
 
     // Mets à jour la date de connexion
-    public function updateLastConnexion()
+    public function updateLastConnexion($userId = null)
     {
+        if (empty($userId)) {
+            $userId = $this->context->get('user_id');
+        }
+        $sql = 'UPDATE user SET user_last_connexion = NOW() WHERE user_id = :user_id';
+
+        $stmt = Db::getInstance()->prepare($sql);
+
+        $stmt->bindValue('user_id', $userId, PDO::PARAM_INT);
+
+        Db::executeStmt($stmt);
+
         $this->context->set('user_last_connexion', time());
 
-        $this->execute('INSERT INTO user_statuses (user_id, status) VALUES ('.$this->context->get('user_id').', 1) ON DUPLICATE KEY UPDATE status = 1');
-        $sql = 'UPDATE user SET user_last_connexion = NOW() WHERE user_id ='.$this->context->get('user_id');
-
-        return $this->execute($sql);
+        return true;
     }
 
     // Récupéres les utilisateurs par critéres
@@ -407,4 +415,35 @@ class User extends AppModel
         $resultat = $this->fetchOnly($sql);
         return $resultat;
     }
+
+    public function findByLoginPwd($login, $pwd)
+    {
+        $sql = '
+                SELECT
+                    user_id,
+                    user_login,
+                    role_id,
+                    user_photo_url,
+                    FLOOR((DATEDIFF( CURDATE(), (user_birth))/365)) AS age,
+                    user_gender,
+                    user_valid,
+                    user_city,
+                    user_zipcode,
+                    user_mail,
+                    longitude,
+                    lattitude,
+                    forum_notification
+                FROM user LEFT JOIN ville ON (user.user_zipcode = ville.code_postal)
+                WHERE LOWER(user_login) = LOWER(:user_login)
+                AND user_pwd = :pwd
+            ;';
+
+            $stmt = Db::getInstance()->prepare($sql);
+
+            $stmt->bindValue('user_login', $login);
+            $stmt->bindValue('pwd', md5($pwd));
+
+            return Db::executeStmt($stmt)->fetch();
+    }
+
 }
