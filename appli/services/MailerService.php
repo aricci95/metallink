@@ -47,15 +47,15 @@ class MailerService extends Service
 
         $sessionDatas = "<br/><br/>Valeurs de session : <br/>";
 
-        if (!empty($this->context->get('user_id'))) {
+        if ($this->context->get('user_id')) {
             $sessionDatas .= 'user_id => '.$this->context->get('user_id').'<br/>';
         }
 
-        if (!empty($this->context->get('user_login'))) {
+        if ($this->context->get('user_login')) {
             $sessionDatas .= 'user_login => '.$this->context->get('user_login').'<br/>';
         }
 
-        if (!empty($this->context->get('user_valid'))) {
+        if ($this->context->get('user_valid')) {
             $sessionDatas .= 'user_valid => '.$this->context->get('user_valid').'<br/>';
         }
 

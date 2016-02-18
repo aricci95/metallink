@@ -90,11 +90,11 @@
             <?php endif; ?>
             <td><a class="aMenu" href="home/disconnect">Déconnecter</a></td>
             <td align="right">
-                <a class="aMenu" href="mailbox"><img src="MLink/images/icone/message.png" /> <b><?php echo (!empty($this->context->get('new_messages'))) ? $this->context->get('new_messages') : 0; ?></b></a>
-                <a class="aMenu" href="link/<?php echo LINK_STATUS_SENT; ?>"><img src="MLink/images/icone/link.png" /> <b><?php echo !empty($this->context->get('links_count_received')) ? $this->context->get('links_count_received') : 0; ?></b></a>
-                <a class="aMenu" href="link/<?php echo LINK_STATUS_ACCEPTED; ?>"><img src="MLink/images/icone/link_accepted.png" /> <b><?php echo !empty($this->context->get('links_count_accepted')) ? $this->context->get('links_count_accepted') : 0; ?></b></a>
-                <a class="aMenu" href="views"><img src="MLink/images/icone/views.gif" /> <b><?php echo !empty($this->context->get('views')) ? $this->context->get('views') : 0; ?></b></a>
-                <a class="aMenu" href="link/<?php echo LINK_STATUS_BLACKLIST; ?>"><img src="MLink/images/icone/link_refuse.png" /> <b><?php echo !empty($this->context->get('links_count_blacklist')) ? $this->context->get('links_count_blacklist') : 0; ?></b></a>
+                <a class="aMenu" href="mailbox"><img src="MLink/images/icone/message.png" /> <b><?php echo $this->context->get('new_messages'); ?></b></a>
+                <a class="aMenu" href="link/<?php echo LINK_STATUS_SENT; ?>"><img src="MLink/images/icone/link.png" /> <b><?php echo $this->context->get('links_count_received'); ?></b></a>
+                <a class="aMenu" href="link/<?php echo LINK_STATUS_ACCEPTED; ?>"><img src="MLink/images/icone/link_accepted.png" /> <b><?php echo $this->context->get('links_count_accepted'); ?></b></a>
+                <a class="aMenu" href="views"><img src="MLink/images/icone/views.gif" /> <b><?php echo $this->context->get('views'); ?></b></a>
+                <a class="aMenu" href="link/<?php echo LINK_STATUS_BLACKLIST; ?>"><img src="MLink/images/icone/link_refuse.png" /> <b><?php echo !$this->context->get('links_count_blacklist'); ?></b></a>
             </td>
         </tr>
     </table>

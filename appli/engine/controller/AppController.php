@@ -10,7 +10,9 @@ abstract class AppController extends Controller
         $this->_checkSession();
 
         if (!$this->isAjax()) {
-            if (!empty($this->context->get('role_id')) && $this->context->get('role_id') >= AUTH_LEVEL_USER) {
+            $role_id = $this->context->get('role_id');
+
+            if ($role_id >= AUTH_LEVEL_USER) {
                 try {
                     $this->_getNotifications();
                     $this->_refreshLastConnexion();
@@ -31,7 +33,7 @@ abstract class AppController extends Controller
         $this->context->set('views', (int) $viewCount);
 
         // Récupération & comptage des links
-        $oldLinks = !empty($this->context->get('links')) ? $this->context->get('links') : null;
+        $oldLinks = $this->context->get('links');
         $newLinks = $this->get('link')->setContextUserLinks();
 
         if (!empty($oldLinks) && $oldLinks['count'][LINK_STATUS_RECEIVED] < $newLinks['count'][LINK_STATUS_RECEIVED]) {
@@ -39,7 +41,8 @@ abstract class AppController extends Controller
         }
 
         // Vérification des nouveaux messages
-        $oldMessagesCount  = !empty($this->context->get('new_messages')) ? $this->context->get('new_messages') : 0;
+        $oldMessagesCount  = $this->context->get('new_messages');
+
         $this->context->set('new_messages', $this->model->Auth->countNewMessages($this->context->get('user_id')));
 
         if ($oldMessagesCount < $this->context->get('new_messages')) {
@@ -51,7 +54,7 @@ abstract class AppController extends Controller
             $lastMessage = $this->model->forum->getLastMessage();
 
             if (!empty($lastMessage)) {
-                if (empty($this->context->get('last_forum_message_id'))) {
+                if ($this->context->get('last_forum_message_id')) {
                     $this->_forumGrowler($lastMessage);
                 } else {
                     if ($lastMessage['id'] != $this->context->get('last_forum_message_id') && $lastMessage['date'] != $this->context->get('last_forum_message_date')) {
@@ -75,8 +78,8 @@ abstract class AppController extends Controller
     protected function _refreshLastConnexion()
     {
         // Status
-        if (!empty($this->context->get('user_id'))) {
-            if (!empty($this->context->get('user_last_connexion'))) {
+        if ($this->context->get('user_id')) {
+            if ($this->context->get('user_last_connexion')) {
                 $now      = time();
                 $left     = $this->context->get('user_last_connexion');
                 $timeLeft = $now - $left;
@@ -96,7 +99,7 @@ abstract class AppController extends Controller
         $roleLimit = $this->_authLevel;
 
         // Cas user en session
-        if (!empty($this->context->get('user_valid')) && !empty($this->context->get('user_id')) && !empty($this->context->get('user_login'))) {
+        if ($this->context->get('user_valid') && $this->context->get('user_id') && $this->context->get('user_login')) {
             if ($this->context->get('user_valid') == 1) {
                 if ($this->context->get('role_id') >= $roleLimit) {
                     return true;

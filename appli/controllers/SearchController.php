@@ -36,7 +36,7 @@ abstract class SearchController extends AppController
                 $this->context->set($param, $this->params[$param]);
             }
 
-            $datas[$param] = !empty($this->context->get($param)) ? $this->context->get($param) : '';
+            $datas[$param] = $this->context->get($param);
         }
         return $datas;
     }
