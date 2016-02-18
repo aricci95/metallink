@@ -13,9 +13,10 @@ DEFINE('LOG', 0);
 DEFINE('LOG_FILE', 'mlink_logs.txt');
 
 // *************** CONFIG LIBRE*******************
-DEFINE('APP_VERSION', '2.4');
+DEFINE('APP_VERSION', '3.0');
 
 // Niveaux de logs
+DEFINE('LOG_LEVEL_DEBUG', 0);
 DEFINE('LOG_LEVEL_INFO', 1);
 DEFINE('LOG_LEVEL_WARN', 2);
 DEFINE('LOG_LEVEL_HACK', 3);
@@ -47,7 +48,7 @@ DEFINE('NEWS_TYPE_ARTICLE', 1);
 DEFINE("MAX_SIZE", 1000);
 DEFINE("MAX_DIMENSION", 1000);
 
-DEFINE("ONLINE_TIME_LIMIT", 15000);
+DEFINE("ONLINE_TIME_LIMIT", 10000);
 
 // Photo type
 DEFINE('PHOTO_TYPE_USER', 0);
@@ -56,7 +57,7 @@ DEFINE('PHOTO_TYPE_ARTICLE', 1);
 // REFRESH RESULTS
 DEFINE('NB_SEARCH_RESULTS', 21);
 DEFINE('NB_MAILBOX_RESULTS', 40);
-DEFINE('NB_MAIL_RESULTS', 10);
+DEFINE('NB_MESSAGE_RESULTS', 10);
 
 // Growler
 DEFINE('GROWLER_INFO', 'info');
@@ -67,11 +68,13 @@ DEFINE('GROWLER_OK', 'ok');
 DEFINE('MSG_BLOCK_OK', 201);
 DEFINE('MESSAGE_201', "L\'utilisateur a été bloqué.");
 DEFINE('MSG_VALIDATION_SENT', 210);
-DEFINE('MESSAGE_210', "Un mail de validation a été envoyé pour vérifier votre e-mail.");
+DEFINE('MESSAGE_210', "Un mail vous a été envoyé pour modifier votre mot de passe.");
 DEFINE('MSG_VALIDATION_SUCCESS', 211);
 DEFINE('MESSAGE_211', "Votre compte a été validé, vous pouvez à présent vous connecter.");
 DEFINE('MSG_ACCOUNT_DELETED', 212);
 DEFINE('MESSAGE_212', "Votre compte a été supprimé.");
+DEFINE('MSG_VALIDATION_PWD', 213);
+DEFINE('MESSAGE_213', "Votre mot de passe a été modifié.");
 DEFINE('MSG_ARTICLE_DELETE_SUCCESS', 221);
 DEFINE('MESSAGE_221', "L'article a été supprimé.");
 DEFINE('MSG_PWD_SENT', 222);
@@ -105,9 +108,11 @@ DEFINE('MESSAGE_450', "Cet utilisateur a quitté le site.");
 
 // CODE ERREURS
 DEFINE('ERROR_SQL', 501);
+DEFINE('MESSAGE_501', "Un erreur est servenue.");
 DEFINE('ERROR_BEHAVIOR', 502);
+DEFINE('MESSAGE_502', "Un erreur est servenue.");
 DEFINE('ERROR_NOT_FOUND', 504);
-
+DEFINE('MESSAGE_501', "Contenu introuvable.");
 // Status de link
 DEFINE('LINK_STATUS_NONE', 0);
 DEFINE('LINK_STATUS_RECEIVED', 5);
@@ -118,10 +123,10 @@ DEFINE('LINK_STATUS_BLACKLISTED', 9);
 
 
 //Status de mail
-DEFINE('MAIL_STATUS_SENT', 1);
-DEFINE('MAIL_STATUS_READ', 2);
-DEFINE('MAIL_STATUS_DELETED', 4);
-DEFINE('MAIL_STATUS_ADMIN', 9);
+DEFINE('MESSAGE_STATUS_SENT', 1);
+DEFINE('MESSAGE_STATUS_READ', 2);
+DEFINE('MESSAGE_STATUS_DELETED', 4);
+DEFINE('MESSAGE_STATUS_ADMIN', 9);
 
 // code retour JSON
 DEFINE('JSON_OK', 200);
