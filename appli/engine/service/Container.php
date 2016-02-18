@@ -80,4 +80,13 @@ class Service_Container
         return $messageService->requires($mailerService);
     }
 
+    private function _getLinkService()
+    {
+        $linkService  = $this->_getService('link');
+
+        $mailerService = $this->getService('mailer');
+
+        return $linkService->requires($mailerService);
+    }
+
 }

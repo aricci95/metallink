@@ -44,6 +44,11 @@ class AppView
         $this->_name = $name;
     }
 
+    public function getViewName()
+    {
+        return $this->_name;
+    }
+
     public function setTitle($title = '')
     {
         $this->_title = $title;

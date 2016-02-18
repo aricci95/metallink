@@ -46,7 +46,7 @@ class MessageController extends AppController
                 $this->model->message->updateMessageState($value['message_id'], MESSAGE_STATUS_READ);
 
                 if ($this->context->get('new_messages') > 0) {
-                    $this->context->set($this->context->get('new_messages') - 1);
+                    $this->context->set('new_messages', $this->context->get('new_messages') - 1);
                 }
             }
         }
@@ -65,7 +65,7 @@ class MessageController extends AppController
 
         $userId = $this->params['value'];
 
-        $isLinked = $this->model->Link->isLinked($userId);
+        $isLinked = $this->get('link')->isLinked($userId);
 
         if (!$isLinked) {
             Log::err('destinataire sans link');
@@ -97,7 +97,7 @@ class MessageController extends AppController
             $this->redirect('mailbox', array('msg' => ERR_DEFAULT));
         }
 
-        $isLinked = $this->model->Link->isLinked($this->params['destinataire_id']);
+        $isLinked = $this->get('link')->isLinked($this->params['destinataire_id']);
 
         if (!$isLinked) {
             Log::err('destinataire sans link');

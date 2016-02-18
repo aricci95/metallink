@@ -32,7 +32,7 @@ abstract class AppController extends Controller
 
         // Récupération & comptage des links
         $oldLinks = !empty($this->context->get('links')) ? $this->context->get('links') : null;
-        $newLinks = $this->model->Link->setContextUserLinks();
+        $newLinks = $this->get('link')->setContextUserLinks();
 
         if (!empty($oldLinks) && $oldLinks['count'][LINK_STATUS_RECEIVED] < $newLinks['count'][LINK_STATUS_RECEIVED]) {
             $this->view->growler('Nouvelle demande !', GROWLER_INFO);

@@ -52,6 +52,10 @@ class ProfileController extends AppController
                     foreach ($tasteData as $bandKey => $band) {
                         $tastes['data'][$type][$bandKey] = "<a target='_blank' href='http://www.spirit-of-metal.com/find.php?search=all&l=fr&nom=".str_replace(' ', '+', trim($band))."' >".$band.'</a>';
                     }
+                } else if ($type == 'livres') {
+                    foreach ($tasteData as $key => $value) {
+                        $tastes['data'][$type][$key] = "<a target='_blank' href='http://www.allocine.fr/recherche/?q=".str_replace(' ', '+', trim($value))."' >".$value.'</a>';
+                    }
                 }
             }
         }
@@ -89,7 +93,7 @@ class ProfileController extends AppController
 
         // Info de localisation
         $this->view->geoloc = array();
-        $contextUserCity = $this->context->get('city');
+        $contextUserCity = $this->context->get('user_city');
 
         if (!empty($user['user_city']) && !empty($contextUserCity)) {
             $this->view->geoloc = $this->_getDistance($contextUserCity, $user['user_city']);
@@ -162,7 +166,7 @@ class ProfileController extends AppController
     {
         if (!empty($this->params['value'])) {
             if ($block) {
-                $status = Link::getStatus($this->params['value']);
+                $status = $this->get('link')->getLinkStatus($this->params['value']);
                 if ($status == LINK_STATUS_NONE) {
                     if ($this->model->Link->block($this->params['value'])) {
                         $this->view->growler('Utilisateur bloqué.', GROWLER_OK);

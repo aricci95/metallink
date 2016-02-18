@@ -53,8 +53,8 @@ class LinkController extends AppController
                                 'user_login'     => $this->params['destinataire_login']);
 
         $this->view->user = $destinataire;
-        $status = Link::getStatus($destinataireId);
-        $result = ($status == LINK_STATUS_NONE) ? $this->model->Link->linkTo($destinataire) : $this->model->Link->updateLink($destinataireId, $this->params['status']);
+        $status = $this->get('link')->getLinkStatus($destinataireId);
+        $result = ($status == LINK_STATUS_NONE) ? $this->get('link')->linkTo($destinataire) : $this->model->Link->updateLink($destinataireId, $this->params['status']);
 
         if ($result) {
             $this->view->newStatus = $this->params['status'];

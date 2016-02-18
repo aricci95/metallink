@@ -62,8 +62,7 @@ class User extends AppModel
     {
         $contextUserId = $this->context->get('user_id');
 
-        $sql = 'SELECT
-                    user_id,
+        $sql = 'SELECT user_id,
                     user_login,
                     user_city,
                     user_mail,
@@ -79,7 +78,8 @@ class User extends AppModel
                         link WHERE status = :link_status_blacklist
                         AND destinataire_id = :context_user_id)
                 AND user_valid = 1
-                AND user_id != :context_user_id';
+                AND user_id != :context_user_id
+            ';
 
         if (!empty($criterias['search_login'])) {
             $sql .= " AND user_login LIKE :search_login ";

@@ -22,19 +22,19 @@
 				<select name="categorie_id">
 					<?php foreach($this->categories as $key => $value) : ?>
 						<option value="<?php echo $value['id']; ?>" <?php if($value['id'] == $this->article['categorie_id']) : ?> selected="selected" <?php endif; ?> >
-						<?php echo $value['libel']; ?></option> 
+						<?php echo $value['libel']; ?></option>
 					<?php endforeach; ?>
 				</select>
 			</td>
 		</tr>
-		<?php if(!isset($this->article['art_id'])) : ?>
+		<?php if(!isset($this->article['art_id'])) : /* ?>
 			<tr>
 				<th>Ajouter une photo :</th>
 				<td>
 					<input type="file" name="new_photo"/>
 				</td>
 			</tr>
-		<?php endif; ?>
+		<?php */ endif; ?>
 		<tr>
 			<th>Description :</th>
 			<td><textarea name="art_description" cols="105" rows="10"><?php echo stripslashes($this->article['art_description']); ?></textarea></td>

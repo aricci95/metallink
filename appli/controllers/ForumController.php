@@ -11,7 +11,7 @@ class ForumController extends AppController
         $this->view->users         = $this->model->Forum->getConnectedUsers();
         $reversedArray             = array_reverse($this->view->messages);
         $this->view->lastId        = !empty($reversedArray) ? $reversedArray[0]['id'] : 0;
-        $this->view->notification  = empty($this->context->get('forum_notification'])) ? 1 : $this->context->get('forum_notification');
+        $this->view->notification  = $this->context->get('forum_notification');
 
         $this->view->setViewName('forum/wForum');
         $this->view->render();
@@ -59,7 +59,7 @@ class ForumController extends AppController
 
     public function renderSetNotification()
     {
-        if (User::updateById($this->context->get('user_id'), 'forum_notification', $this->params['notification'])) {
+        if ($this->model->user->updateById($this->context->get('user_id'), 'forum_notification', $this->params['notification'])) {
             $this->context->set('forum_notification', (int) $this->params['notification']);
 
             return JSON_OK;

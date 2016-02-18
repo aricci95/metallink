@@ -20,7 +20,7 @@ class PhotoService extends Service
             $this->delete($photo['photo_id'], $photo['photo_url']);
         }
 
-        return User::deleteById($userId);
+        return $this->model->user->deleteById($userId);
     }
 
     public function delete($id, $path)
@@ -33,7 +33,7 @@ class PhotoService extends Service
             unlink(ROOT_DIR . '/photos/profile/' . $path);
         }
 
-        return Photo::deleteById($id);
+        return $this->model->photo->deleteById($id);
     }
 
     private function _getExtension($str)
@@ -103,7 +103,7 @@ class PhotoService extends Service
             $photo_data['type_id']   = (int) $type_id;
             $photo_data['key_id']    = (int) $key_id;
 
-            if (!Photo::insert($photo_data)) {
+            if (!$this->model->photo->insert($photo_data)) {
                 throw new Exception('Impossible d\'enregistrer la photo, merci de réessayer.');
             }
 

@@ -14,7 +14,10 @@ abstract class SearchController extends AppController
         $this->view->criterias = $criterias;
         $this->view->elements  = $this->model->{$this->_type}->getSearch($criterias);
         $this->view->offset    = 1;
-        $this->view->setViewName(strtolower($this->_type).'/wList');
+
+        if (empty($this->view->name)) {
+            $this->view->setViewName(strtolower($this->_type).'/wList');
+        }
     }
 
     public function renderMore()

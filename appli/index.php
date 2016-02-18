@@ -77,7 +77,7 @@ try {
     $controller->view->growlerError();
     $controller->render();
 
-    $this->get('Mailer')->sendError($e);
+    $controller->get('Mailer')->sendError($e);
     die;
 }
 

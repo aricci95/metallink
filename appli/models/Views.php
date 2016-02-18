@@ -12,7 +12,7 @@ class Views extends AppModel
         $stmt = Db::getInstance()->prepare($checkSQL);
 
         $stmt->bindValue(':context_user_id', $this->context->get('user_id'), PDO::PARAM_INT);
-        $stmt->bindValue(':viewed_id', $viewedId, PDO::PARAM_INT;
+        $stmt->bindValue(':viewed_id', $viewedId, PDO::PARAM_INT);
 
         Db::executeStmt($stmt);
 
@@ -29,7 +29,7 @@ class Views extends AppModel
         $stmt = Db::getInstance()->prepare($sql);
 
         $stmt->bindValue(':context_user_id', $this->context->get('user_id'), PDO::PARAM_INT);
-        $stmt->bindValue(':viewed_id', $viewedId, PDO::PARAM_INT;
+        $stmt->bindValue(':viewed_id', $viewedId, PDO::PARAM_INT);
 
         return Db::executeStmt($stmt);
     }
@@ -57,7 +57,7 @@ class Views extends AppModel
         $stmt->bindValue(':limit_begin', $offset * NB_SEARCH_RESULTS, PDO::PARAM_INT);
         $stmt->bindValue(':limit_end', NB_SEARCH_RESULTS, PDO::PARAM_INT);
 
-        return Db::executeStmt($stmt)->fetch($sql);
+        return Db::executeStmt($stmt)->fetchAll();
     }
 
     // Supprime les vues d'un utilisateur

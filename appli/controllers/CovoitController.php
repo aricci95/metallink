@@ -26,7 +26,6 @@ class CovoitController extends SearchController
             'user_gender' => $this->context->get('user_gender'),
             'user_photo_url' => $this->context->get('user_photo_url'),
             'user_last_connexion' => time(),
-            'user_statut' => $this->context->get('status'),
         );
 
         $this->view->render();

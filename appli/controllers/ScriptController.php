@@ -24,14 +24,14 @@ class ScriptController extends AppController
 
     public function renderScriptRemoveUnsedLinks()
     {
-        $rawUserIds = User::find(array('user_id'));
+        $rawUserIds = $this->model->user->find(array('user_id'));
 
         $userIds = array();
         foreach ($rawUserIds as $userIdrow) {
             $userIds[] = $userIdrow['user_id'];
         }
 
-        $links = Link::find();
+        $links = $this->model->link->find();
         $linksToRemove = array();
 
         $deleteSql = '';
@@ -116,7 +116,7 @@ class ScriptController extends AppController
     public function renderScriptLinkAllTritt()
     {
         $bunchNumber = 20;
-        $userCount = User::count(array('!user_login' => 'Tritt'));
+        $userCount = $this->model->user->count(array('!user_login' => 'Tritt'));
         $max = round($userCount/$bunchNumber, 0);
 
         $sql = '
@@ -134,7 +134,7 @@ class ScriptController extends AppController
 
         for ($i=1; $i<$max; $i++) {
             $bunchOffset = (($i - 1) * $bunchNumber).','.($i * $bunchNumber);
-            $userBunch = User::find(
+            $userBunch = $this->model->user->find(
                 array('user_id'),
                 array('!user_login' => 'Tritt'),
                 array(),

@@ -20,28 +20,15 @@ class Context
     {
         $init_vars = array(
             'user_id' => null,
-            'user_valid' => false,
-            'user_login' => null,
-            'user_last_connexion' => null,
             'role_id' => 0,
             'user_photo_url' => 'unknowUser.jpg',
-            'user_age' => null,
-            'user_gender' => null,
-            'user_city'   => null,
-            'user_zipcode'   => null,
             'links' => array(),
             'links_count_received' => 0,
             'links_count_accepted' => 0,
             'links_count_blacklist' => 0,
-            'last_forum_message_id' => null,
-            'last_forum_message_date' => null,
             'new_messages' => 0,
             'forum_notification' => true,
             'views' => 0,
-            'search_login' => null,
-            'search_distance' => null,
-            'search_gender' => null,
-            'search_age' => null,
         );
 
         $this->_data = array_merge($init_vars, $_SESSION);
@@ -56,6 +43,26 @@ class Context
 
     public function get($key)
     {
+        if (!isset($this->_data[$key])) {
+            $this->set($key, null);
+        }
+
         return $this->_data[$key];
+    }
+
+    public function getCurrentMember()
+    {
+        return array(
+            'user_id' => $this->get('user_id'),
+            'user_valid' => $this->get('user_valid'),
+            'user_login' => $this->get('user_login'),
+            'user_last_connexion' => $this->get('user_last_connexion'),
+            'role_id' => $this->get('role_id'),
+            'user_photo_url' => $this->get('user_photo_url'),
+            'user_age' => $this->get('user_age'),
+            'user_gender' => $this->get('user_gender'),
+            'user_city' => $this->get('user_city'),
+            'user_zipcode' => $this->get('user_zipcode'),
+        );
     }
 }

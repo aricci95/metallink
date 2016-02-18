@@ -5,7 +5,7 @@ Class UserService extends Service
 
     public function delete($id)
     {
-        if (!User::deleteById($id)) {
+        if (!$this->model->user->deleteById($id)) {
             return false;
         }
 

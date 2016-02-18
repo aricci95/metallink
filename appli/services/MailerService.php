@@ -15,7 +15,7 @@ class MailerService extends Service
 
         if ($additionnalContent) {
             $content = $previousContent.$content;
-            $content .= '<br><br>Bien cordialement, <br><br> L\'équipe <a href="http://metallink.fr">MetalLink</a>.';
+            $content .= '<br><br>Bien cordialement, <br><br> L\'Ã©quipe <a href="http://metallink.fr">MetalLink</a>.';
         }
 
         if (MAIL_SERVER) {

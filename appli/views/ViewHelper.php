@@ -3,18 +3,29 @@
 class ViewHelper {
 
     public $now = 0;
+    public $context;
+    private $_helper;
 
     public function __construct() {
+        $this->context = Context::getInstance();
         $this->now = time();
+        $this->_helper = $this;
     }
 
     public function render($view) {
-        include (ROOT_DIR.'/appli/views/'.$view.'.php');
+        include (ROOT_DIR . '/appli/views/' . $view . '.php');
     }
 
     public function status($timestamp) {
         $delay = $this->now - $timestamp;
         return ($delay < ONLINE_TIME_LIMIT) ? 'online.gif' : 'offline.png';
+    }
+
+    public function getLinkStatus($userId)
+    {
+        $links = $this->context->get('links');
+
+        return !empty($links[$userId]) ? $links[$userId] : LINK_STATUS_NONE;
     }
 
     // Affiche une div Blanche cool
@@ -105,7 +116,7 @@ class ViewHelper {
         echo '</a></div>';
     }
 
-    public function printUser($user, $links=array()) {
+    public function printUser($user, $links = array()) {
         if(!empty($user['user_id'])) {
             $imageUrl = ((!empty($user['user_photo_url']) && file_exists($_SERVER["DOCUMENT_ROOT"]."/MLink/photos/small/".$user['user_photo_url']))) ? $user['user_photo_url'] : 'unknowUser.jpg';
             echo '<div class="divElement">';
@@ -144,9 +155,10 @@ class ViewHelper {
 
     // Affiche login, photo et état
     public function printUserSmall($user) {
-        $imageUrl = ((!empty($user['user_photo_url']) && file_exists($_SERVER["DOCUMENT_ROOT"]."/MLink/photos/small/".$user['user_photo_url']))) ? $user['user_photo_url'] : 'unknowUser.jpg';
+        $imageUrl = ((!empty($user['user_photo_url']) && file_exists($_SERVER["DOCUMENT_ROOT"] . "/MLink/photos/small/" . $user['user_photo_url']))) ? $user['user_photo_url'] : 'unknowUser.jpg';
         echo '<a href="profile/'.$user['user_id'].'" >';
         echo '<div class="divElementSmall">';
+
             // Partie PHOTO
             echo '<div class="divPhoto" style="background:url(\'';
             echo '/MLink/photos/small/'.$imageUrl.'\');background-position: top center;">';
@@ -161,6 +173,7 @@ class ViewHelper {
             echo '">';
             echo $this->_maxLength($user['user_login'], 14);
             echo '</span>';
+
         echo '</div>';
         echo '</a>';
     }
@@ -217,11 +230,11 @@ class ViewHelper {
         if($this->status($userLastConnexion) == 'online.gif') {
             if($full) echo '<span style="color:green;font-size:12px;">online ';
             echo  '<img src="MLink/images/icone/online.gif" />';
-        }
-        else {
+        } else {
             if($full) echo '<span style="color:#B40404;font-size:12px;">offline ';
             echo '<img src="MLink/images/icone/offline.png" />';
         }
+
         if($full) echo '</span>';
     }
 }

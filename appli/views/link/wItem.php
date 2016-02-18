@@ -1,7 +1,6 @@
 <?php
-var_dump($this->context->get('user_id')); die;
     $contextUserId = $this->context->get('user_id');
-    $linkStatus    = !empty($this->newStatus) ? $this->newStatus : Link::getStatus($this->user['user_id']);
+    $linkStatus    = !empty($this->newStatus) ? $this->newStatus : $this->_helper->getLinkStatus($this->user['user_id']);
 ?>
 <?php if(!empty($contextUserId) && $linkStatus != LINK_STATUS_BLACKLISTED) : ?>
     <?php if($contextUserId != $this->user['user_id']) : ?>
@@ -9,7 +8,6 @@ var_dump($this->context->get('user_id')); die;
                 <?php if($linkStatus == LINK_STATUS_NONE) : ?>
                     <a href=""><img class="link" data-status="<?php echo LINK_STATUS_SENT; ?>" src="MLink/images/icone/link.png" title="Linker cette personne" /></a>
                 <?php elseif($linkStatus == LINK_STATUS_ACCEPTED) : ?>
-                    <?php  //$destinataireId = ($this->link['expediteur_id'] == $this->context->get('user_id')) $this->link['expediteur_id'] : $this->link['destinataire_id']; ?>
                     <a href="javascript:void(0)" onclick="javascript:chatWith('<?php echo $this->user['user_login']; ?>')"><img src="MLink/images/icone/chat.png"  title="Chatter" /></a>
                     <a href="message/<?php echo $this->user['user_id']; ?>"><img src="MLink/images/icone/message.png" title="Envoyer un message" />
                 <?php elseif($linkStatus == LINK_STATUS_SENT) : ?>

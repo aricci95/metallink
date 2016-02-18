@@ -79,7 +79,7 @@ class SubscribeController extends AppController
                             <u>Login :</u> '.$newUser['user_login'].'<br><br>
                             <u>Mot de passe :</u> '.$this->params['user_pwd'].'<br><br>
                             Si vous rencontrez des problèmes, n\'hésitez pas à nous envoyer un message en répondant directement à celui-ci, nous vous répondrons dans les plus bref délais.';
-                    if (Mailer::send($newUser['user_mail'], 'Bienvenue sur MetalLink '.$newUser['user_login'].' !', $message)) {
+                    if ($this->get('mailer')->send($newUser['user_mail'], 'Bienvenue sur MetalLink '.$newUser['user_login'].' !', $message)) {
                         $this->redirect('home', array('msg' => MSG_VALIDATION_SENT));
                     } else {
                         $this->view->growlerError();

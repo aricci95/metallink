@@ -2,7 +2,7 @@
     <table align="center" style="width:760px;border:1px grey dotted;font-size:12px;">
         <tr>
             <th>Login :</th>
-            <td><input name="search_login" size="5" value="<?php if(isset($this->criterias['search_login'])) echo $this->criterias['search_login']; ?>" /></td>
+            <td><input name="search_login" size="10" value="<?php if(isset($this->criterias['search_login'])) echo $this->criterias['search_login']; ?>" /></td>
             <th>Sexe : </th>
             <td>
                 <select name="search_gender">

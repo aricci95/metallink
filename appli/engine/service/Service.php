@@ -16,7 +16,7 @@ Abstract Class Service extends AppModel
 
     public function get($service)
     {
-        return $this->_dependencies[$service];
+        return $this->_dependencies[strtolower($service)];
     }
 
     public function getName()
