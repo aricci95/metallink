@@ -5,7 +5,7 @@ class PhotoService extends Service
 
     public function deleteFromUser($userId)
     {
-        $photo_ids = Photo::find(
+        $photo_ids = $this->model->photo->find(
             array(
                 'photo_id',
                 'photo_url',
