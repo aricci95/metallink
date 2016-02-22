@@ -12,12 +12,12 @@ class Forum extends AppModel
                 LIMIT 0, 1
             ;';
 
-        $stmt = Db::getInstance()->prepare($sql);
+        $stmt = $this->db->prepare($sql);
 
         $stmt->bindValue('context_user_id', $this->context->get('user_id'));
         $stmt->bindValue('time_limit', 1000);
 
-        return Db::executeStmt($stmt)->fetch();
+        return $this->db->executeStmt($stmt)->fetch();
     }
 
     public function getLastMessages($messageId = 0)
@@ -35,11 +35,11 @@ class Forum extends AppModel
                 LIMIT 0,50;
         ';
 
-        $stmt = Db::getInstance()->prepare($sql);
+        $stmt = $this->db->prepare($sql);
 
         $stmt->bindValue('message_id', $messageId, PDO::PARAM_INT);
 
-        $messages = Db::executeStmt($stmt)->fetchAll();
+        $messages = $this->db->executeStmt($stmt)->fetchAll();
 
         // Ne pas afficher les message dupliqués
         $previousMessage = array('content' => '');

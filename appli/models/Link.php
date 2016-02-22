@@ -21,15 +21,15 @@ class Link extends AppModel
             )
         ;';
 
-        $stmt = Db::getInstance()->prepare($sql);
+        $stmt = $this->db->prepare($sql);
 
         $stmt->bindValue('context_user_id', $this->context->get('user_id'), PDO::PARAM_INT);
         $stmt->bindValue('user_id', $destinataire['user_id'], PDO::PARAM_INT);
         $stmt->bindValue('link_status_sent', LINK_STATUS_SENT, PDO::PARAM_INT);
 
-        Db::executeStmt($stmt);
+        $this->db->executeStmt($stmt);
 
-        return Db::getInstance()->lastInsertId();
+        return $this->db->lastInsertId();
     }
 
     public function block($userId)
@@ -60,12 +60,12 @@ class Link extends AppModel
                     AND expediteur_id = :destinataire_id
                 );";
 
-        $stmt = Db::getInstance()->prepare($sql);
+        $stmt = $this->db->prepare($sql);
 
         $stmt->bindValue(':context_user_id', $this->context->get('user_id'), PDO::PARAM_INT);
         $stmt->bindValue(':destinataire_id', $destinataireId, PDO::PARAM_INT);
 
-        Db::executeStmt($stmt);
+        $this->db->executeStmt($stmt);
 
         $links = $this->context->get('links');
 
@@ -89,12 +89,12 @@ class Link extends AppModel
                 OR expediteur_id = :context_user_id
                 AND destinataire_id = :user_id;";
 
-        $stmt = Db::getInstance()->prepare($sql);
+        $stmt = $this->db->prepare($sql);
 
         $stmt->bindValue(':context_user_id', $this->context->get('user_id'), PDO::PARAM_INT);
         $stmt->bindValue(':user_id', $userId2, PDO::PARAM_INT);
 
-        return Db::executeStmt($stmt)->fetch();
+        return $this->db->executeStmt($stmt)->fetch();
     }
 
     public function updateLink($destinataireId, $status)
@@ -111,12 +111,12 @@ class Link extends AppModel
                     OR expediteur_id = :context_user_id
             );";
 
-        $stmt = Db::getInstance()->prepare($sql);
+        $stmt = $this->db->prepare($sql);
 
         $stmt->bindValue(':context_user_id', $this->context->get('user_id'), PDO::PARAM_INT);
         $stmt->bindValue(':destinataire_id', $destinataireId, PDO::PARAM_INT);
 
-        if (Db::executeStmt($stmt)) {
+        if ($this->db->executeStmt($stmt)) {
             $links = $this->context->get('links');
 
             $links[$destinataireId] = $status;
@@ -149,11 +149,11 @@ class Link extends AppModel
                 ORDER BY status;
             ';
 
-        $stmt = Db::getInstance()->prepare($sql);
+        $stmt = $this->db->prepare($sql);
 
         $stmt->bindValue('user_id', $userId, PDO::PARAM_INT);
 
-        return Db::executeStmt($stmt)->fetchAll();
+        return $this->db->executeStmt($stmt)->fetchAll();
     }
 
     public function getLinksUserByStatus($status, $offset = 0)
@@ -205,13 +205,13 @@ class Link extends AppModel
                 LIMIT :limit_begin, :limit_end;'
             ;
 
-        $stmt = Db::getInstance()->prepare($sql);
+        $stmt = $this->db->prepare($sql);
 
         $stmt->bindValue('context_user_id', $this->context->get('user_id'), PDO::PARAM_INT);
         $stmt->bindValue('processed_status', $processed_status, PDO::PARAM_INT);
         $stmt->bindValue('limit_begin', $offset * NB_SEARCH_RESULTS, PDO::PARAM_INT);
         $stmt->bindValue('limit_end', NB_SEARCH_RESULTS, PDO::PARAM_INT);
 
-        return Db::executeStmt($stmt)->fetchAll();
+        return $this->db->executeStmt($stmt)->fetchAll();
     }
 }

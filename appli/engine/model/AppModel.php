@@ -57,23 +57,23 @@ abstract class AppModel extends Model
     {
         $sql = 'UPDATE ' . $this->getTable() . ' SET ' . $attribute . ' = :new_value WHERE ' . $this->getPrimary() . ' = :id;';
 
-        $stmt = Db::getInstance()->prepare($sql);
+        $stmt = $this->db->prepare($sql);
 
         $stmt->bindValue(':new_value', $newValue);
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
 
-        return Db::executeStmt($stmt);
+        return $this->db->executeStmt($stmt);
     }
 
     public function deleteById($id)
     {
         $sql = 'DELETE FROM ' . $this->getTable() . ' WHERE ' . $this->getPrimary() . ' = :id';
 
-        $stmt = Db::getInstance()->prepare($sql);
+        $stmt = $this->db->prepare($sql);
 
         $stmt->bindValue('id', (int) $id, PDO::PARAM_INT);
 
-        return Db::executeStmt($stmt);
+        return $this->db->executeStmt($stmt);
     }
 
     public function insert(array $values)
@@ -87,7 +87,7 @@ abstract class AppModel extends Model
 
         $sql .= implode(', ', $valuesToBind) .' );';
 
-        $stmt = Db::getInstance()->prepare($sql);
+        $stmt = $this->db->prepare($sql);
 
         foreach ($values as $key => $value) {
             if (is_int($value)) {
@@ -97,9 +97,9 @@ abstract class AppModel extends Model
             }
         }
 
-        Db::executeStmt($stmt);
+        $this->db->executeStmt($stmt);
 
-        return Db::getInstance()->lastInsertId();
+        return $this->db->lastInsertId();
     }
 
 }

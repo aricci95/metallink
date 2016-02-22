@@ -48,7 +48,7 @@ class Message extends AppModel
             ;
         ';
 
-        $stmt = Db::getInstance()->prepare($sql);
+        $stmt = $this->db->prepare($sql);
 
         $stmt->bindValue('context_user_id', $this->context->get('user_id'), PDO::PARAM_INT);
         $stmt->bindValue('user_id', $userId, PDO::PARAM_INT);
@@ -114,7 +114,7 @@ class Message extends AppModel
                 LIMIT :limit_begin, :limit_stop
             ;";
 
-        $stmt = Db::getInstance()->prepare($sql);
+        $stmt = $this->db->prepare($sql);
 
         $stmt->bindValue('context_user_id', $this->context->get('user_id'), PDO::PARAM_INT);
         $stmt->bindValue('link_status_blacklist', LINK_STATUS_BLACKLIST, PDO::PARAM_INT);

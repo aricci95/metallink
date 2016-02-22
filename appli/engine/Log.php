@@ -1,45 +1,70 @@
 <?php
 class Log
 {
+    const LOG_FILE_SIZE_LIMIT = 1000000;
+
+    private $_path;
+
+    private static $_instance = null;
+
+    public static function getInstance()
+    {
+        if (empty(self::$_instance)) {
+            self::$_instance = new Log();
+        }
+
+        return self::$_instance;
+    }
+
+    public function __construct()
+    {
+        $this->_path = ROOT_DIR . '/logs/' . LOG_FILE;
+
+        // Flush log file if needed
+        if (!file_exists($this->_path) || filesize($this->_path) > self::LOG_FILE_SIZE_LIMIT) {
+            $file = fopen($this->_path, "w");
+            fwrite($file, "[" . date('d/m H:i') ."] : File flushed \n");
+            fclose($file);
+        }
+    }
 
     public static function debug($data)
     {
-        self::write('debug', $data);
+        self::getInstance()->write('debug', $data);
     }
 
     public static function info($data)
     {
-        self::write('info', $data);
+        self::getInstance()->write('info', $data);
     }
 
     public static function err($data)
     {
-        self::write('err', $data);
+        self::getInstance()->write('err', $data);
     }
 
     public static function hack($data)
     {
-        self::write('hack', $data);
+        self::getInstance()->write('hack', $data);
     }
 
     public static function php($data)
     {
-        self::write('php', $data);
+        self::getInstance()->write('php', $data);
     }
 
     public static function warn($data)
     {
-        self::write('warn', $data);
+        self::getInstance()->write('warn', $data);
     }
 
 
-    public static function write($logName = 'info', $data)
+    public function write($logName = 'info', $data)
     {
         if (!LOG) {
             return null;
         }
 
-        $logsPath = ROOT_DIR . '/logs/' . LOG_FILE;
         $logLevel = constant('LOG_LEVEL_' . strtoupper($logName));
         $date     = date('d/m H:i');
 
@@ -74,12 +99,12 @@ class Log
 
         if (is_array($data)) {
             $values = str_replace(':', ' => ', json_encode($data));
-            error_log($from.'array '.$values."\n", 3, $logsPath);
+            error_log($from . 'array '. $values ."\n", 3, $this->_path);
         } elseif (is_object($data)) {
             $values = str_replace(':', ' => ', json_encode($data));
-            error_log($from.get_class($data).' '.$values."\n", 3, $logsPath);
+            error_log($from . get_class($data).' '. $values ."\n", 3, $this->_path);
         } else {
-            error_log($from.$data."\n", 3, $logsPath);
+            error_log($from . $data ."\n", 3, $this->_path);
         }
     }
 }

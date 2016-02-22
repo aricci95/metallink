@@ -46,11 +46,11 @@ class User extends AppModel
         }
         $sql = 'UPDATE user SET user_last_connexion = NOW() WHERE user_id = :user_id';
 
-        $stmt = Db::getInstance()->prepare($sql);
+        $stmt = $this->db->prepare($sql);
 
         $stmt->bindValue('user_id', $userId, PDO::PARAM_INT);
 
-        Db::executeStmt($stmt);
+        $this->db->executeStmt($stmt);
 
         $this->context->set('user_last_connexion', time());
 
@@ -126,7 +126,7 @@ class User extends AppModel
         $sql = str_replace(',)', ')', $sql);
         $sql = str_replace(', )', ')', $sql);
 
-        $stmt = Db::getInstance()->prepare($sql);
+        $stmt = $this->db->prepare($sql);
 
         $stmt->bindValue('context_user_id', $this->context->get('user_id'), PDO::PARAM_INT);
         $stmt->bindValue('link_status_blacklist', LINK_STATUS_BLACKLIST, PDO::PARAM_INT);
@@ -145,7 +145,7 @@ class User extends AppModel
         $stmt->bindValue('limit_begin', $offset * NB_SEARCH_RESULTS, PDO::PARAM_INT);
         $stmt->bindValue('limit_end', NB_SEARCH_RESULTS, PDO::PARAM_INT);
 
-        return Db::executeStmt($stmt)->fetchAll();
+        return $this->db->executeStmt($stmt)->fetchAll();
     }
 
     // Convertis les 1 et 0 en oui et non
@@ -216,7 +216,7 @@ class User extends AppModel
         $sql .= 'ORDER BY user_subscribe_date DESC
                  LIMIT 0, 3;';
 
-        $stmt = Db::getInstance()->prepare($sql);
+        $stmt = $this->db->prepare($sql);
         $stmt->bindValue('linkStatusBlacklist', LINK_STATUS_BLACKLIST);
 
         if (!empty($userId)) {
@@ -253,11 +253,11 @@ class User extends AppModel
                 WHERE user_id = :user_id
             ;";
 
-        $stmt = Db::getInstance()->prepare($sql);
+        $stmt = $this->db->prepare($sql);
 
         $stmt->bindValue('user_id', (int) $userId);
 
-        $user = Db::executeStmt($stmt)->fetch();
+        $user = $this->db->executeStmt($stmt)->fetch();
 
         if (!empty($user)) {
             return $this->_injectUserData($user);
@@ -288,12 +288,12 @@ class User extends AppModel
                 DELETE FROM chat WHERE `from` = :user_login OR `to` = :user_login;
             ";
 
-        $stmt = Db::getInstance()->prepare($sql);
+        $stmt = $this->db->prepare($sql);
 
         $stmt->bindValue('id', $id, PDO::PARAM_INT);
         $stmt->bindValue('user_login', $id, PDO::PARAM_STR);
 
-        return Db::executeStmt($stmt);
+        return $this->db->executeStmt($stmt);
     }
 
     // Modifie un utilisateur
@@ -372,7 +372,7 @@ class User extends AppModel
             );
         ';
 
-        $stmt = Db::getInstance()->prepare($sql);
+        $stmt = $this->db->prepare($sql);
 
         $stmt->bindValue('user_login', $items['user_login']);
         $stmt->bindValue('user_pwd', $items['user_pwd']);
@@ -396,7 +396,7 @@ class User extends AppModel
                 );
             ';
 
-            $stmt = Db::getInstance()->prepare($sql);
+            $stmt = $this->db->prepare($sql);
 
             $stmt->bindValue('expediteur_id', 1);
             $stmt->bindValue('destinataire_id', $this->insertId());
@@ -438,12 +438,12 @@ class User extends AppModel
                 AND user_pwd = :pwd
             ;';
 
-            $stmt = Db::getInstance()->prepare($sql);
+            $stmt = $this->db->prepare($sql);
 
             $stmt->bindValue('user_login', $login);
             $stmt->bindValue('pwd', md5($pwd));
 
-            return Db::executeStmt($stmt)->fetch();
+            return $this->db->executeStmt($stmt)->fetch();
     }
 
 }

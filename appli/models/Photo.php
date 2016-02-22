@@ -16,7 +16,7 @@ class Photo extends AppModel
             ORDER BY photo_id DESC
         ;';
 
-        $stmt = Db::getInstance()->prepare($sql);
+        $stmt = $this->db->prepare($sql);
 
         $stmt->bindValue(':photo_key', $photoKey);
         $stmt->bindValue(':type_id', $photoType);
@@ -58,7 +58,7 @@ class Photo extends AppModel
 
             $sql = 'DELETE FROM photo WHERE photo_id = :photo_id';
 
-            $stmt = Db::getInstance()->prepare($sql);
+            $stmt = $this->db->prepare($sql);
             $stmt->bindValue('photo_id', $photo['photo_id']);
 
             $stmt->execute();

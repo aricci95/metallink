@@ -2,29 +2,36 @@
 
 class Db
 {
-    private static $_PDO = null;
+    protected $_PDO = null;
 
-    public static function getInstance()
+    public function __construct()
     {
-        if (empty(self::$_PDO)) {
-            self::$_PDO = new PDO('mysql:host=' . _HOST . ';dbname=' . _BASE_DE_DONNEES . ';charset=utf8', _USER, _PASS);
+        $this->_PDO = new PDO('mysql:host=' . _HOST . ';dbname=' . _BASE_DE_DONNEES . ';charset=utf8', _USER, _PASS);
 
-            if (mysqli_connect_error()) {
-                echo "<meta http-equiv='REFRESH' content='0;URL=../views/maintenance.htm'>";
-                printf("Echec de la connexion : %s\n", mysqli_connect_error());
-                exit();
-            }
+        if (mysqli_connect_error()) {
+            echo "<meta http-equiv='REFRESH' content='0;URL=../views/maintenance.htm'>";
+            printf("Echec de la connexion : %s\n", mysqli_connect_error());
+            exit();
         }
+    }
 
-        return self::$_PDO;
+    public function prepare($sql)
+    {
+        return $this->_PDO->prepare($sql);
+    }
+
+
+    public function lastInsertId()
+    {
+        return $this->_PDO->lastInsertId();
     }
 
     /**
     * Assure la déconnection à la base de données
     */
-    public static function close()
+    public function close()
     {
-        self::getInstance()->close();
+        $this->_PDO->close();
     }
 
     public static function executeStmt(PDOStatement $stmt)

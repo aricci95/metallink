@@ -28,13 +28,13 @@ class Auth extends AppModel
                 )
             ;";
 
-        $stmt = Db::getInstance()->prepare($sql);
+        $stmt = $this->db->prepare($sql);
 
         $stmt->bindValue('context_user_id', $this->context->get('user_id'), PDO::PARAM_INT);
         $stmt->bindValue('message_status_sent', MESSAGE_STATUS_SENT, PDO::PARAM_INT);
         $stmt->bindValue('link_status_blacklist', LINK_STATUS_BLACKLIST, PDO::PARAM_INT);
 
-        $resultat = Db::executeStmt($stmt)->fetch();
+        $resultat = $this->db->executeStmt($stmt)->fetch();
 
         return $resultat['nbr'];
     }
@@ -129,12 +129,12 @@ class Auth extends AppModel
             )
         ;";
 
-        $stmt = Db::getInstance()->prepare($sql);
+        $stmt = $this->db->prepare($sql);
 
         $stmt->bindValue('user_id', $userId, PDO::PARAM_INT);
         $stmt->bindValue('pwd_valid', $pwd_valid, PDO::PARAM_STR);
 
-        if (Db::executeStmt($stmt)) {
+        if ($this->db->executeStmt($stmt)) {
             return $pwd_valid;
         }
     }

@@ -10,7 +10,10 @@ class Model_Manager extends Model
     public static function getInstance()
     {
         if (empty(self::$_instance)) {
-            self::$_instance = new self();
+             $db = new Db();
+             $context = Context::getInstance();
+
+            self::$_instance = new self($db, $context);
         }
 
         return self::$_instance;
@@ -38,7 +41,8 @@ class Model_Manager extends Model
         }
 
         require_once $filePath;
-        $this->_models[$model] = new $model();
+
+        $this->_models[$model] = new $model($this->db);
 
         return $this->_models[$model];
     }
@@ -56,6 +60,7 @@ class Model_Manager extends Model
 
         $sql = "SELECT * FROM $table ORDER BY $libel";
         $datas = $this->fetch($sql);
+
         return $datas;
     }
 
@@ -71,6 +76,7 @@ class Model_Manager extends Model
         '$' => 's');
         $compareString = strtr($chaine, $specialChars);
         $compareString = preg_replace('#[^A-Za-z0-9]+#', '-', $compareString);
+
         return ($compareString != $chaine);
     }
 }

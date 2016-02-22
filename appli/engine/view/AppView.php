@@ -17,7 +17,15 @@ class AppView
     {
         $this->context = Context::getInstance();
         $this->_helper = new ViewHelper();
-        $this->headerImg = $this->_getHeaderImage();
+
+        $date  = date('m');
+        $this->headerImg = 'MLink/images/structure/';
+
+        if ($date <= 12 && $date >= 10) {
+            $this->headerImg .= 'headernoel.jpg';
+        } else {
+            $this->headerImg .= 'header.jpg';
+        }
     }
 
     public function setHelperDatas(array $datas)
@@ -25,18 +33,6 @@ class AppView
         foreach ($datas as $key => $data) {
             $this->_helper->$key = $data;
         }
-    }
-
-    private function _getHeaderImage()
-    {
-        $date  = date('m');
-        $image = 'MLink/images/structure/';
-        if ($date <= 12 && $date >= 10) {
-            $image .= 'headernoel.jpg';
-        } else {
-            $image .= 'header.jpg';
-        }
-        return $image;
     }
 
     public function setViewName($name = '')
@@ -56,12 +52,12 @@ class AppView
 
     public function getPage()
     {
-        return (!empty($_GET['page'])) ? $_GET['page'] : 'home';
+        return !empty($_GET['page']) ? $_GET['page'] : 'home';
     }
 
     public function getViewFileName()
     {
-        return 'views/'.$this->_name.'.php';
+        return 'views/' . $this->_name . '.php';
     }
 
     public function getTitle()
