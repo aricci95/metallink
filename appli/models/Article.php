@@ -133,7 +133,7 @@ class Article extends AppModel
                          '.$items['livre_poste'].',
                          '.$items['livre_surplace'].');';
         if ($this->execute($sql)) {
-            return $this->insertId();
+            return $this->db->lastInsertId();
         } else {
             return false;
         }

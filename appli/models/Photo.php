@@ -30,7 +30,7 @@ class Photo extends AppModel
     {
         $sql = "INSERT INTO photo (photo_id, key_id, photo_url, type_id) VALUES ('', '" . $photo['key_id'] . "','" . $photo['photo_url'] . "', '".$photo['type_id']."')";
         $this->execute($sql);
-        return $this->insertId();
+        return $this->db->lastInsertId();
     }
 
     public function setProfilePhoto($photo)

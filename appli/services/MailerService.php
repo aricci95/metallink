@@ -24,6 +24,7 @@ class MailerService extends Service
             echo '<div style="background-color:white;">';
             echo $content;
             echo '</div>';
+
             return true;
         }
     }

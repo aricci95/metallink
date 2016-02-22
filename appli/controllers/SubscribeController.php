@@ -43,7 +43,7 @@ class SubscribeController extends AppController
             $this->view->growler('Adresse e-message invalide.');
             return false;
         }
-        if ($this->model->User->isUsedMessage($this->params['user_mail'])) {
+        if ($this->model->User->isUsedEmail($this->params['user_mail'])) {
             $this->view->growler('Adresse e-message déjà utilisée.');
             return false;
         }

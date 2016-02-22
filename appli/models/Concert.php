@@ -18,6 +18,6 @@ class Concert extends AppModel
     public function add($string)
     {
         $this->execute("INSERT INTO concert (concert_libel) VALUES ('".$string."')");
-        return $this->insertId();
+        return $this->db->lastInsertId();
     }
 }

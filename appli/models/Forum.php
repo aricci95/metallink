@@ -63,12 +63,18 @@ class Forum extends AppModel
                 FROM user
                 WHERE user.user_id NOT
                     IN (SELECT expediteur_id FROM
-                        link WHERE status = '.LINK_STATUS_BLACKLIST.'
-                        AND destinataire_id = '.$this->context->get('user_id').')
-                AND (UNIX_TIMESTAMP( NOW() ) - UNIX_TIMESTAMP( user_last_connexion )) < '.ONLINE_TIME_LIMIT.'
+                        link WHERE status = :link_status_blacklist
+                        AND destinataire_id = :context_user_id)
+                AND (UNIX_TIMESTAMP( NOW() ) - UNIX_TIMESTAMP( user_last_connexion )) < :online_time_limit
                 ORDER BY user_login ASC
                 LIMIT 0, 100;';
 
-         return $this->fetch($sql);
+        $stmt = $this->db->prepare($sql);
+
+        $stmt->bindValue('link_status_blacklist', LINK_STATUS_BLACKLIST, PDO::PARAM_INT);
+        $stmt->bindValue('context_user_id', $this->context->get('user_id'), PDO::PARAM_INT);
+        $stmt->bindValue('online_time_limit', ONLINE_TIME_LIMIT, PDO::PARAM_INT);
+
+         return $this->db->executeStmt($stmt)->fetchAll();
     }
 }

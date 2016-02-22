@@ -33,11 +33,6 @@ class User extends AppModel
         'user_drugs',
     );
 
-    public function getUsers()
-    {
-        return $this->fetch("SELECT * FROM user ORDER BY user_login");
-    }
-
     // Mets à jour la date de connexion
     public function updateLastConnexion($userId = null)
     {
@@ -327,31 +322,50 @@ class User extends AppModel
 
     public function setValid($code)
     {
-        $sql = "UPDATE user SET user_valid = 1 WHERE user_valid = '$code'";
-        return $this->execute($sql);
+        $sql = 'UPDATE
+                    user
+                SET
+                    user_valid = 1
+                WHERE
+                    user_valid = :code';
+
+        $stmt = $this->db->prepare($sql);
+
+        $stmt->bindValue(':code', $code, PDO::PARAM_STR);
+
+        return $this->db->executeStmt($stmt);
     }
 
     public function isUsedLogin($login)
     {
-        $sql = "SELECT user_id
+        $sql = 'SELECT user_id
                 FROM   user
-                WHERE  user_login = '".$login."'";
-        $result = $this->fetchOnly($sql);
-        return !empty($result);
+                WHERE  user_login = :login';
+
+        $stmt = $this->db->prepare($sql);
+
+        $stmt->bindValue('login', $login, PDO::PARAM_STR);
+
+        return $this->db->executeStmt($stmt)->fetch();
     }
 
-    public function isUsedMessage($message)
+    public function isUsedEmail($email)
     {
-        $sql = "SELECT user_id
+        $sql = 'SELECT user_id
                 FROM   user
-                WHERE  user_mail = '".$message."'";
-        $result = $this->fetchOnly($sql);
-        return !empty($result);
+                WHERE  user_mail = :email';
+
+        $stmt = $this->db->prepare($sql);
+
+        $stmt->bindValue('email', $email, PDO::PARAM_STR);
+
+        return $this->db->executeStmt($stmt)->fetch();
     }
 
     public function createUser($items)
     {
         $userValidationId = uniqid();
+
         $sql = '
             INSERT INTO user (
                 user_login,
@@ -381,39 +395,31 @@ class User extends AppModel
         $stmt->bindValue('role_id', AUTH_LEVEL_USER);
         $stmt->bindValue('user_valid', $userValidationId);
 
-        if ($stmt->execute()) {
-            $sql = '
-                REPLACE INTO link (
-                    expediteur_id,
-                    destinataire_id,
-                    status,
-                    modification_date
-                ) VALUES (
-                    :expediteur_id,
-                    :destinataire_id,
-                    :status,
-                    NOW()
-                );
-            ';
+        $this->db->executeStmt($stmt);
 
-            $stmt = $this->db->prepare($sql);
+        $sql = '
+            REPLACE INTO link (
+                expediteur_id,
+                destinataire_id,
+                status,
+                modification_date
+            ) VALUES (
+                :expediteur_id,
+                :destinataire_id,
+                :status,
+                NOW()
+            );
+        ';
 
-            $stmt->bindValue('expediteur_id', 1);
-            $stmt->bindValue('destinataire_id', $this->insertId());
-            $stmt->bindValue('status', LINK_STATUS_ACCEPTED);
+        $stmt = $this->db->prepare($sql);
 
-            $stmt->execute();
-        }
+        $stmt->bindValue('expediteur_id', 1, PDO::PARAM_INT);
+        $stmt->bindValue('destinataire_id', $this->db->lastInsertId(), PDO::PARAM_INT);
+        $stmt->bindValue('status', LINK_STATUS_ACCEPTED, PDO::PARAM_INT);
+
+        $this->db->executeStmt($stmt);
 
         return $userValidationId;
-    }
-
-    // Récupére le message d'un user
-    public function getMessageByUser($userId)
-    {
-        $sql = "SELECT user_mail, user_login FROM user WHERE user_id = '".$this->securize($userId)."'";
-        $resultat = $this->fetchOnly($sql);
-        return $resultat;
     }
 
     public function findByLoginPwd($login, $pwd)

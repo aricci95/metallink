@@ -54,7 +54,7 @@ abstract class AppController extends Controller
             $lastMessage = $this->model->forum->getLastMessage();
 
             if (!empty($lastMessage)) {
-                if ($this->context->get('last_forum_message_id')) {
+                if (!$this->context->get('last_forum_message_id')) {
                     $this->_forumGrowler($lastMessage);
                 } else {
                     if ($lastMessage['id'] != $this->context->get('last_forum_message_id') && $lastMessage['date'] != $this->context->get('last_forum_message_date')) {
@@ -71,8 +71,8 @@ abstract class AppController extends Controller
 
         unset($lastMessage['content']);
 
-        $this->context->set('last_forum_message_id', $lastMessage['last_forum_message']['id'])
-                      ->set('last_forum_message_date', $lastMessage['last_forum_message']['date']);
+        $this->context->set('last_forum_message_id', $lastMessage['id'])
+                      ->set('last_forum_message_date', $lastMessage['date']);
     }
 
     protected function _refreshLastConnexion()

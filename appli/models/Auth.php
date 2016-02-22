@@ -39,26 +39,6 @@ class Auth extends AppModel
         return $resultat['nbr'];
     }
 
-    public function getLastMessage()
-    {
-        $sql = "message_id,
-                    user.user_id as user_id,
-                    expediteur_id,
-                    destinataire_id,
-                    user_login,
-                    user_gender,
-                    content,
-                    date,
-                    UNIX_TIMESTAMP( date ) AS delais,
-                    user_photo_url,
-                FROM
-                    message,
-                    user
-                WHERE user_id = expediteur_id
-                AND user.user_id = message.destinataire_id;";
-        return $this->fetchOnly($sql);
-    }
-
     // Compter le nombre de demandes link
     public function countLinkRequests()
     {

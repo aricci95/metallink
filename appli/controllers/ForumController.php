@@ -24,16 +24,10 @@ class ForumController extends AppController
         $this->view->render('frameView');
     }
 
-    public function renderUsers()
-    {
-        $this->view->users = $this->model->Forum->getConnectedUsers();
-        $this->view->setViewName('forum/wConnectedUsers');
-        $this->view->render('frameView');
-    }
-
     public function renderRefreshFeed()
     {
         $messages = $this->model->Forum->getLastMessages($this->params['id']);
+
         if (!empty($messages)) {
             $this->view->messages = $messages;
             $this->view->getJSONResponse('forum/wMessages');
