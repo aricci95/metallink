@@ -28,7 +28,7 @@ abstract class AppController extends Controller
     private function _getNotifications()
     {
         // vues
-        $viewCount = $this->model->Auth->countViews($this->context->get('user_id'));
+        $viewCount = $this->model->views->countViews($this->context->get('user_id'));
 
         $this->context->set('views', (int) $viewCount);
 
@@ -43,7 +43,7 @@ abstract class AppController extends Controller
         // Vérification des nouveaux messages
         $oldMessagesCount  = $this->context->get('new_messages');
 
-        $this->context->set('new_messages', $this->model->Auth->countNewMessages($this->context->get('user_id')));
+        $this->context->set('new_messages', $this->model->message->countNewMessages($this->context->get('user_id')));
 
         if ($oldMessagesCount < $this->context->get('new_messages')) {
             $this->view->growler('Nouveau message !', GROWLER_INFO);

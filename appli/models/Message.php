@@ -6,6 +6,32 @@
 class Message extends AppModel
 {
 
+     // Compter le nombre de nouveaux messages reçus
+    public function countNewMessages()
+    {
+        $sql = "SELECT count(*) as nbr
+                FROM
+                    message
+                WHERE
+                    destinataire_id = :context_user_id
+                AND state_id = :message_status_sent
+                AND expediteur_id NOT IN (
+                    SELECT destinataire_id FROM link WHERE status = :link_status_blacklist
+                    AND expediteur_id = :context_user_id
+                )
+            ;";
+
+        $stmt = $this->db->prepare($sql);
+
+        $stmt->bindValue('context_user_id', $this->context->get('user_id'), PDO::PARAM_INT);
+        $stmt->bindValue('message_status_sent', MESSAGE_STATUS_SENT, PDO::PARAM_INT);
+        $stmt->bindValue('link_status_blacklist', LINK_STATUS_BLACKLIST, PDO::PARAM_INT);
+
+        $resultat = $this->db->executeStmt($stmt)->fetch();
+
+        return $resultat['nbr'];
+    }
+
     // Change l'état d'un message
     public function updateMessageState($messageId, $messageStateId)
     {
