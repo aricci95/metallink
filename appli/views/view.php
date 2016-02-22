@@ -94,7 +94,7 @@
                 <a class="aMenu" href="link/<?php echo LINK_STATUS_SENT; ?>"><img src="MLink/images/icone/link.png" /> <b><?php echo $this->context->get('links_count_received'); ?></b></a>
                 <a class="aMenu" href="link/<?php echo LINK_STATUS_ACCEPTED; ?>"><img src="MLink/images/icone/link_accepted.png" /> <b><?php echo $this->context->get('links_count_accepted'); ?></b></a>
                 <a class="aMenu" href="views"><img src="MLink/images/icone/views.gif" /> <b><?php echo $this->context->get('views'); ?></b></a>
-                <a class="aMenu" href="link/<?php echo LINK_STATUS_BLACKLIST; ?>"><img src="MLink/images/icone/link_refuse.png" /> <b><?php echo !$this->context->get('links_count_blacklist'); ?></b></a>
+                <a class="aMenu" href="link/<?php echo LINK_STATUS_BLACKLIST; ?>"><img src="MLink/images/icone/link_refuse.png" /> <b><?php echo $this->context->get('links_count_blacklist'); ?></b></a>
             </td>
         </tr>
     </table>
