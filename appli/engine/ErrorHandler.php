@@ -12,7 +12,7 @@ function ErrorHandler($errno, $errstr, $errfile, $errline)
 
     $exception = new Exception($message, $errno);
 
-    Service_Container::getInstance()->getService('mailer')->sendError($exception);
+    Service_Container::getInstance()->get('mailer')->sendError($exception);
 
     /* Ne pas exécuter le gestionnaire interne de PHP */
     return true;

@@ -52,7 +52,7 @@ abstract class Controller
 
     public function get($service)
     {
-        return $this->container->getService($service);
+        return $this->container->get($service);
     }
 
     public function isAjax()

@@ -47,21 +47,11 @@ class Model_Manager extends Model
         return $this->_models[$model];
     }
 
-    // Liste une table
-    public function getItemsFromTable($table, $order = false)
+    public function find($table, array $attributes = array(), array $where = array(), array $orderBy = array(), $limit = null)
     {
-        $type = str_replace("ref_", "", $table);
+        $attributes_string = empty($attributes) ? '*' : implode(',', $attributes);
 
-        if ($order == false) {
-            $libel = $type.'_libel';
-        } else {
-            $libel = $order;
-        }
-
-        $sql = "SELECT * FROM $table ORDER BY $libel";
-        $datas = $this->fetch($sql);
-
-        return $datas;
+        return $this->_queryBuilder($table, $attributes_string, $where, $orderBy, $limit);
     }
 
     public function hasSpecialChar($chaine)

@@ -2,9 +2,16 @@
 
 class Service_Container
 {
+    private static $_instance = null;
+
     private $_services = array();
 
-    private static $_instance = null;
+    private $_dependencies = array(
+        'Auth'    => array('Mailer'),
+        'Link'    => array('Mailer'),
+        'Message' => array('Mailer'),
+        'User'    => array('Photo'),
+    );
 
     public static function getInstance()
     {
@@ -15,26 +22,30 @@ class Service_Container
         return self::$_instance;
     }
 
-    public function getService($serviceName)
+    public function get($serviceName)
     {
-        if (!empty($this->_services[$serviceName])) {
-           return $this->_services[$serviceName];
+        $serviceName = ucfirst($serviceName);
+
+        $service = $this->_load($serviceName);
+
+        if (!empty($this->_dependencies[$serviceName])) {
+            foreach ($this->_dependencies[$serviceName] as $dependenceServiceName) {
+                $dependenceService = $this->_load($dependenceServiceName);
+
+                $service->requires($dependenceService);
+            }
         }
-
-        $methodName = '_get' . ucfirst($serviceName) . 'Service';
-
-        $this->_services[$serviceName] = method_exists($this, $methodName) ? $this->$methodName() : $this->_getService($serviceName);
 
         return $this->_services[$serviceName];
     }
 
-    private function _getService($serviceName)
+    private function _load($serviceName)
     {
         if (!empty($this->_services[$serviceName])) {
            return $this->_services[$serviceName];
         }
 
-        $serviceClassName = ucfirst($serviceName) . 'Service';
+        $serviceClassName = $serviceName . 'Service';
 
         $serviceFilePath = ROOT_DIR . '/appli/services/' . $serviceClassName . '.php';
 
@@ -45,48 +56,11 @@ class Service_Container
         try {
             require $serviceFilePath;
 
-            $service = new $serviceClassName();
+            $this->_services[$serviceName] = new $serviceClassName();
         } catch (Exception $e) {
             throw new Exception("Impossible d'instancier $serviceClassName");
         }
 
-        return $service;
+        return $this->_services[$serviceName];
     }
-
-    private function _getUserService()
-    {
-        $userService  = $this->_getService('user');
-
-        $photoService = $this->getService('photo');
-
-        return $userService->requires($photoService);
-    }
-
-    private function _getAuthService()
-    {
-        $authService  = $this->_getService('auth');
-
-        $mailerService = $this->getService('mailer');
-
-        return $authService->requires($mailerService);
-    }
-
-    private function _getMessageService()
-    {
-        $messageService  = $this->_getService('message');
-
-        $mailerService = $this->getService('mailer');
-
-        return $messageService->requires($mailerService);
-    }
-
-    private function _getLinkService()
-    {
-        $linkService  = $this->_getService('link');
-
-        $mailerService = $this->getService('mailer');
-
-        return $linkService->requires($mailerService);
-    }
-
 }

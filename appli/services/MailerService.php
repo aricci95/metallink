@@ -68,6 +68,6 @@ class MailerService extends Service
 
         Log::php(str_replace(array('<br/>', '<b>', '</b>', '<br />'), array("\n", '', '', ''), $message));
 
-        return self::send(ADMIN_MAIL, 'Erreur sur MetalLink !', $message, false);
+        return $this->send(ADMIN_MAIL, 'Erreur sur MetalLink !', $message, false);
     }
 }
