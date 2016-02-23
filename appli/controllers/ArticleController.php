@@ -37,8 +37,8 @@ class ArticleController extends AppController
 
         if (!empty($this->params['value'])) {
             $article = $this->model->Article->getById($this->params['value']);
-            $article['art_libel']       = htmlentities($article['art_libel'], ENT_QUOTES, 'utf-8');
-            $article['art_description'] = htmlentities($article['art_description'], ENT_QUOTES, 'utf-8');
+            $article['art_libel']       = htmlspecialchars($article['art_libel'], ENT_QUOTES, 'utf-8');
+            $article['art_description'] = htmlspecialchars($article['art_description'], ENT_QUOTES, 'utf-8');
             $this->view->article = $article;
             $this->view->setTitle('Edition de l\'article');
         } else {
@@ -79,8 +79,8 @@ class ArticleController extends AppController
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if ($this->_isValid($this->params)) {
-                $this->params['art_libel']       = htmlentities($this->params['art_libel'], ENT_QUOTES, 'utf-8');
-                $this->params['art_description'] = htmlentities($this->params['art_description'], ENT_QUOTES, 'utf-8');
+                $this->params['art_libel']       = htmlspecialchars($this->params['art_libel'], ENT_QUOTES, 'utf-8');
+                $this->params['art_description'] = htmlspecialchars($this->params['art_description'], ENT_QUOTES, 'utf-8');
                 if (!empty($this->params['art_id'])) {
                     if ($this->model->Article->updateArticle($this->params)) {
                         $this->view->growler('Modifications enregistrées.', GROWLER_OK);

@@ -18,7 +18,7 @@ Class MessageService extends Service
             throw new Exception('Erreur lors de la sauvegarde du message, destinataire / expediteur manquant' . $message, ERROR_BEHAVIOR);
         }
 
-        $content = nl2br(str_replace('\\', '', htmlentities($content, ENT_QUOTES, 'utf-8')));
+        $content = nl2br(str_replace('\\', '', htmlspecialchars($content, ENT_QUOTES, 'utf-8')));
 
         $message_data = array(
             'content' => $content,
@@ -50,7 +50,7 @@ Class MessageService extends Service
             throw new Exception('message vide', ERROR_BEHAVIOR);
         }
 
-        $message = str_replace('\\', '', htmlentities($message, ENT_QUOTES, 'utf-8'));
+        $message = str_replace('\\', '', htmlspecialchars($message, ENT_QUOTES, 'utf-8'));
 
         $message_data = array(
             'content' => $message,

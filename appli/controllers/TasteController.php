@@ -16,7 +16,7 @@ class TasteController extends AppController
                         if ($data == '') {
                             unset($datas[$key]);
                         } else {
-                            $datas[$key] = htmlentities(trim($data), ENT_QUOTES, 'utf-8');
+                            $datas[$key] = htmlspecialchars(trim($data), ENT_QUOTES, 'utf-8');
                         }
                     }
                     $tastes[$type] = $datas;

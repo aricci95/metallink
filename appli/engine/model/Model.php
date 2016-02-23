@@ -99,7 +99,7 @@ abstract class Model
         if (is_numeric($data)) {
             return $data;
         } else {
-            return htmlentities($data, ENT_QUOTES);
+            return htmlspecialchars($data, ENT_QUOTES);
         }
     }
 }

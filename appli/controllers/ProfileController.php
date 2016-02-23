@@ -125,9 +125,9 @@ class ProfileController extends AppController
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($this->params['user_login'])) {
             $this->params['user_login']             = Tools::no_special_character($this->params['user_login']);
-            $this->params['user_light_description'] = htmlentities($this->params['user_light_description'], ENT_QUOTES, 'utf-8');
-            $this->params['user_description']       = htmlentities($this->params['user_description'], ENT_QUOTES, 'utf-8');
-            $this->params['user_profession']        = htmlentities($this->params['user_profession'], ENT_QUOTES, 'utf-8');
+            $this->params['user_light_description'] = htmlspecialchars($this->params['user_light_description'], ENT_QUOTES, 'utf-8');
+            $this->params['user_description']       = htmlspecialchars($this->params['user_description'], ENT_QUOTES, 'utf-8');
+            $this->params['user_profession']        = htmlspecialchars($this->params['user_profession'], ENT_QUOTES, 'utf-8');
 
             // On vérifie si le mdp est ok
             if ($this->params['user_pwd'] != $this->params['verif_pwd']) {

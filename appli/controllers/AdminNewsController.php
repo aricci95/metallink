@@ -34,8 +34,8 @@ class AdminNewsController extends AppController
     public function renderSave()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($this->params['news_titre'])) {
-            $this->params['news_titre']     = htmlentities($this->params['news_titre'], ENT_QUOTES, 'utf-8');
-            $this->params['news_contenu']   = (!empty($this->params['news_contenu'])) ? htmlentities(str_replace('<br />', '', $this->params['news_contenu']), ENT_QUOTES, 'utf-8') : '';
+            $this->params['news_titre']     = htmlspecialchars($this->params['news_titre'], ENT_QUOTES, 'utf-8');
+            $this->params['news_contenu']   = (!empty($this->params['news_contenu'])) ? htmlspecialchars(str_replace('<br />', '', $this->params['news_contenu']), ENT_QUOTES, 'utf-8') : '';
             $this->params['news_photo_url'] = (!empty($this->params['news_photo_url'])) ? $this->params['news_photo_url'] : '';
             $this->params['news_media_url'] = (!empty($this->params['news_media_url'])) ? $this->params['news_media_url'] : '';
             if (!empty($this->params['news_id'])) {
