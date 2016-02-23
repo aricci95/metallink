@@ -13,7 +13,16 @@ class ViewHelper {
     }
 
     public function render($view) {
-        include (ROOT_DIR . '/appli/views/' . $view . '.php');
+        $view = trim($view);
+        $view = str_replace("../","protect", $view);
+        $view = str_replace(";","protect", $view);
+        $view = str_replace("%","protect", $view);
+
+        $viewPath = ROOT_DIR . '/appli/views/' . $view . '.php';
+
+        if (file_exists($viewPath)) {
+            include $viewPath;
+        }
     }
 
     public function status($timestamp) {

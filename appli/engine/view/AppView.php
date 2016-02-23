@@ -100,11 +100,22 @@ class AppView
     public function runView($view = null)
     {
         ob_start();
+
         if (empty($view)) {
             include('views/view.php');
         } else {
-            include('views/'.$view.'.php');
+            $view = trim($view);
+            $view = str_replace("../","protect", $view);
+            $view = str_replace(";","protect", $view);
+            $view = str_replace("%","protect", $view);
+
+            $viewPath = trim('views/' . $view . '.php');
+
+            if (file_exists($viewPath) && $viewPath != 'index.php') {
+               include $viewPath;
+            }
         }
+
         return ob_get_clean();
     }
 
