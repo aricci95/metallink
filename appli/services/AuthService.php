@@ -5,29 +5,28 @@ class AuthService extends Service
 
     public function checkLogin($login, $pwd)
     {
-            $user = $this->model->user->findByLoginPwd($login, $pwd);
+        $user = $this->model->user->findByLoginPwd($login, $pwd);
 
-            if (!empty($user['user_login']) && !empty($user['user_id']) && strtolower($user['user_login']) == strtolower($login) && $login != '') {
-                $this->model->user->updateLastConnexion();
+        if (!empty($user['user_login']) && !empty($user['user_id']) && strtolower($user['user_login']) == strtolower($login) && $login != '') {
+            $this->model->user->updateLastConnexion();
 
-                if ($user['user_valid'] != 1) {
-                    throw new Exception("Email non validé", ERR_MAIL_NOT_VALIDATED);
-                } elseif ($user['role_id'] > 0) {
-                    return $this->authenticateUser($user);
-                }
-            } else {
-                throw new Exception("Mauvais login / mot de passe", ERR_LOGIN);
+            if ($user['user_valid'] != 1) {
+                throw new Exception("Email non validé", ERR_MAIL_NOT_VALIDATED);
+            } elseif ($user['role_id'] > 0) {
+                return $this->authenticateUser($user);
             }
+        } else {
+            throw new Exception("Mauvais login / mot de passe", ERR_LOGIN);
         }
 
         return false;
     }
 
-    public function authenticateUser(array $userData)
+    public function authenticateUser(array $user)
     {
         $this->context->set('user_id', (int) $user['user_id'])
                       ->set('user_login', $user['user_login'])
-                      ->set('user_pwd', $pwd)
+                      ->set('user_pwd', $user['user_pwd'])
                       ->set('user_last_connexion', time())
                       ->set('role_id', (int) $user['role_id'])
                       ->set('user_photo_url', empty($user['user_photo_url']) ? 'unknowUser.jpg' : $user['user_photo_url'])

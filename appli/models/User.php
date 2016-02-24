@@ -427,6 +427,7 @@ class User extends AppModel
         $sql = '
                 SELECT
                     user_id,
+                    user_pwd,
                     user_login,
                     role_id,
                     user_photo_url,
@@ -457,6 +458,7 @@ class User extends AppModel
         $sql = '
                 SELECT
                     user_id,
+                    user_pwd,
                     user_login,
                     role_id,
                     user_photo_url,
@@ -470,8 +472,7 @@ class User extends AppModel
                     lattitude,
                     forum_notification
                 FROM user LEFT JOIN ville ON (user.user_zipcode = ville.code_postal)
-                WHERE LOWER(user_login) = LOWER(:user_login)
-                AND user_mail = :email
+                WHERE LOWER(user_mail) = LOWER(:email)
             ;';
 
             $stmt = $this->db->prepare($sql);

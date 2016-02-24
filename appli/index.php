@@ -2,6 +2,7 @@
 session_name("metallink");
 session_start();
 
+
 // Récupération du chemin absolu
 $path = dirname(__FILE__);
 $path =  str_replace("\appli", '', $path);
@@ -71,7 +72,7 @@ try {
     $controller = new $page();
     $controller->$action();
 } catch (Exception $e) {
-    require ROOT_DIR.'/appli/controllers/HomeController.php';
+    require_once ROOT_DIR . '/appli/controllers/HomeController.php';
     $controller = new HomeController();
 
     $controller->view->growlerError();
