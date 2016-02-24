@@ -5,6 +5,15 @@ class SubscribeController extends AppController
 
     protected $_authLevel = AUTH_LEVEL_NONE;
 
+    public function __construct()
+    {
+        parent::__construct();
+
+        if ($this->context->get('user_id')) {
+            $this->redirect('home');
+        }
+    }
+
     public function render()
     {
         $socialAppsData = $this->context->get('userprofile');
