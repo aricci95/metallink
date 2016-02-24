@@ -1,7 +1,7 @@
 <!-- Nouveaux utilisateurs -->
 <?php $this->_helper->blackBoxOpen(); ?>
     <h2>Nouveaux utilisateurs</h2>
-    <div class="fb-like" data-href="https://www.facebook.com/pages/MetalLinkfr-Site-de-rencontre-pour-Metalheads/212049302188164?fref=ts" data-width="740" data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>
+    <div class="fb-like" data-href="https://www.facebook.com/metallinkofficial/" data-width="740" data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>
     <br/>
     <br/>
     <?php foreach ($this->newUsers as $key => $value) {
@@ -51,13 +51,24 @@
 <!-- Facebook discussion -->
 <?php $this->_helper->blackBoxOpen(); ?>
     <h2>Discussion générale</h2>
-    <div id="fb-root"  style="margin-top:20px;"></div>
-    <script>(function(d){
-      var js, id = 'facebook-jssdk'; if (d.getElementById(id)) {return;}
-      js = d.createElement('script'); js.id = id; js.async = true;
-      js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
-      d.getElementsByTagName('head')[0].appendChild(js);
-    }(document));</script>
+    <div id="fb-root"></div>
+    <script>
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId      : '737628719706534',
+          xfbml      : true,
+          version    : 'v2.5'
+        });
+      };
+
+      (function(d, s, id){
+         var js, fjs = d.getElementsByTagName(s)[0];
+         if (d.getElementById(id)) {return;}
+         js = d.createElement(s); js.id = id;
+         js.src = "//connect.facebook.net/fr_FR/sdk.js";
+         fjs.parentNode.insertBefore(js, fjs);
+       }(document, 'script', 'facebook-jssdk'));
+    </script>
     <div class="fb-comments" data-href="http://metallink.fr/" data-num-posts="3" data-width="700" data-colorscheme="dark"></div>
 <?php $this->_helper->blackBoxClose(); ?>
 

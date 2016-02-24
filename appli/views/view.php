@@ -59,16 +59,6 @@
         <title>MetalLink</title>
     </head>
     <body style="body">
-    <!-- partie FACEBOOK -->
-        <div id="fb-root"></div>
-        <script>(function(d, s, id) {
-          var js, fjs = d.getElementsByTagName(s)[0];
-          if (d.getElementById(id)) return;
-          js = d.createElement(s); js.id = id;
-          js.src = "//connect.facebook.net/fr_FR/sdk.js#xfbml=1&version=v2.4&appId=259986380708151";
-          fjs.parentNode.insertBefore(js, fjs);
-        }(document, 'script', 'facebook-jssdk'));</script>
-        <!-- FIN PARTIE FACEBOOK -->
     <div class="site" >
         <div><a href="home"><img src="<?php echo $this->headerImg ?>" /></a></div>
         <div class="intitule" align="center">Communauté métal en tous genres <span style="color:#B40404;margin-left:225px;"><?php echo 'v'.APP_VERSION ?></span></div>
@@ -107,7 +97,8 @@
                 <td>Login :</td><td><input name="user_login" size="8" /></td>
                 <td>Password :</td><td><input name="user_pwd" type="password" size="8" /></td>
                 <td><input type="submit" value="Connexion" /></td>
-                <td></td><td>Retenir mot de passe <input name="savepwd" type="checkbox" /></td>
+                <td><input type="button" onclick="window.location.href = 'social/login/facebook';" class="facebookButton" value="Via Facebook" /></td>
+                <td></td><td>Se souvenir de moi <input name="savepwd" type="checkbox" /></td>
                 <td></td><td><a href="lostpwd">Mot de passe oublié</a></td>
                 <td><a href="subscribe" >S'inscrire !</a></td>
             </tr>

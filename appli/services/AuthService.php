@@ -12,7 +12,7 @@ class AuthService extends Service
                 $this->model->user->updateLastConnexion();
 
                 if ($user['user_valid'] != 1) {
-                    throw new Exception("Email non validé", ERR_MAIL_NOT_VALIDATED);
+                    throw new Exception("Email non validÃ©", ERR_MAIL_NOT_VALIDATED);
                 } elseif ($user['role_id'] > 0) {
                     $this->context->set('user_id', (int) $user['user_id'])
                                   ->set('user_login', $user['user_login'])
