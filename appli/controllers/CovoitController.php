@@ -33,20 +33,20 @@ class CovoitController extends SearchController
 
     public function renderSave()
     {
-        if (empty($this->params['date_depart']) || empty($this->params['date_retour']) || empty($this->params['concert_id']) || empty($this->params['ville_id']) || empty($this->params['price'])) {
+        if (empty($this->context->params['date_depart']) || empty($this->context->params['date_retour']) || empty($this->context->params['concert_id']) || empty($this->context->params['ville_id']) || empty($this->context->params['price'])) {
             $this->view->growler('Veuillez renseigner tous les champs.', GROWLER_INFO);
             $this->render();
             exit;
         }
 
         // On formate les dates
-        $depart = DateTime::createFromFormat('d/m/Y H:i', $this->params['date_depart']);
-        $retour = DateTime::createFromFormat('d/m/Y H:i', $this->params['date_retour']);
+        $depart = DateTime::createFromFormat('d/m/Y H:i', $this->context->params['date_depart']);
+        $retour = DateTime::createFromFormat('d/m/Y H:i', $this->context->params['date_retour']);
 
         $covoit_data = array(
-            'price' => (int) $this->params['price'],
-            'concert_id' => (int) $this->params['concert_id'],
-            'ville_id' => (int) $this->params['ville_id'],
+            'price' => (int) $this->context->params['price'],
+            'concert_id' => (int) $this->context->params['concert_id'],
+            'ville_id' => (int) $this->context->params['ville_id'],
             'date_depart' => (string) $depart->format("Y-m-d H:i"),
             'date_retour' => (string) $retour->format("Y-m-d H:i"),
             'user_id' => (int) $this->context->get('user_id'),
@@ -61,7 +61,7 @@ class CovoitController extends SearchController
 
     public function renderDelete()
     {
-        return $this->model->covoit->deleteById($this->params['value']);
+        return $this->model->covoit->deleteById($this->context->params['value']);
     }
 
     public function renderMore()

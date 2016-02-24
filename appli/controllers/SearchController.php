@@ -22,7 +22,7 @@ abstract class SearchController extends AppController
 
     public function renderMore()
     {
-        $offset                = $this->params['value'];
+        $offset                = $this->context->params['value'];
         $criterias             = $this->_getSearchCriterias();
         $this->view->elements = $this->model->{$this->_type}->getSearch($criterias, $offset);
         $this->view->type     = $this->_type;
@@ -32,8 +32,8 @@ abstract class SearchController extends AppController
     private function _getSearchCriterias()
     {
         foreach ($this->_searchParams as $param) {
-            if (isset($this->params[$param])) {
-                $this->context->set($param, $this->params[$param]);
+            if (isset($this->context->params[$param])) {
+                $this->context->set($param, $this->context->params[$param]);
             }
 
             $datas[$param] = $this->context->get($param);

@@ -3,7 +3,6 @@
 abstract class Controller
 {
 
-    public $params = array();
     public $view;
     public $model;
     public $container;
@@ -26,7 +25,7 @@ abstract class Controller
             $this->addJSLibraries();
         }
 
-        $this->_buildParams();
+        $this->context->buildParams();
 
         if (!empty($_GET['msg'])) {
             $this->showMessage();
@@ -70,34 +69,6 @@ abstract class Controller
         return $this->view;
     }
 
-    private function _buildParams()
-    {
-        unset($_GET['page']);
-        unset($_GET['action']);
-        unset($_POST['x']);
-        unset($_POST['y']);
-
-        if (!empty($_GET)) {
-            foreach ($_GET as $key => $value) {
-                if (!is_array($value)) {
-                    $value = trim($value);
-                }
-                $this->params[$key] = $value;
-            }
-        }
-
-        if (!empty($_POST)) {
-            foreach ($_POST as $key => $value) {
-                if (!is_array($value)) {
-                    $value = trim($value);
-                }
-                $this->params[$key] = $value;
-            }
-        }
-
-        return $this->params;
-    }
-
     public function addJSLibraries()
     {
         foreach ($this->_JS as $library) {
@@ -107,11 +78,11 @@ abstract class Controller
 
     public function showMessage()
     {
-        if (!empty($this->params['msg'])) {
-            $msg = constant('MESSAGE_'.$this->params['msg']);
-            if ($this->params['msg'] >= 400) {
+        if (!empty($this->context->params['msg'])) {
+            $msg = constant('MESSAGE_'.$this->context->params['msg']);
+            if ($this->context->params['msg'] >= 400) {
                 $type = GROWLER_ERR;
-            } elseif ($this->params['msg'] >= 200 && $this->params['msg'] < 300) {
+            } elseif ($this->context->params['msg'] >= 200 && $this->context->params['msg'] < 300) {
                 $type = GROWLER_OK;
             } else {
                 $type = GROWLER_INFO;

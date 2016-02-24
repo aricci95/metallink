@@ -7,10 +7,10 @@ class LostpwdController extends AppController
 
     public function render()
     {
-        if (!empty($this->params['value'])) {
+        if (!empty($this->context->params['value'])) {
             $this->view->setViewName('lostPwd/wNewPwd');
             $this->view->setTitle('Modification du mot de passe');
-            $this->view->pwd_valid = $this->params['value'];
+            $this->view->pwd_valid = $this->context->params['value'];
         } else {
             $this->view->setViewName('lostPwd/wLostPwd');
             $this->view->setTitle('Récupération des identifiants');
@@ -21,28 +21,28 @@ class LostpwdController extends AppController
 
     public function renderNew()
     {
-        if (empty($this->params['value']) && empty($this->params['pwd_valid'])) {
+        if (empty($this->context->params['value']) && empty($this->context->params['pwd_valid'])) {
             $this->view->growlerError();
             $this->render();
         } else {
             $this->view->setViewName('lostPwd/wNewPwd');
             $this->view->setTitle('Modification du mot de passe');
-            $this->view->pwd_valid = empty($this->params['pwd_valid']) ? $this->params['value'] : $this->params['pwd_valid'];
+            $this->view->pwd_valid = empty($this->context->params['pwd_valid']) ? $this->context->params['value'] : $this->context->params['pwd_valid'];
             $this->view->render();
         }
     }
 
     public function renderSubmit()
     {
-        if (!empty($this->params['user_login'])) {
-            if ($this->get('auth')->sendPwd($this->params['user_login'])) {
+        if (!empty($this->context->params['user_login'])) {
+            if ($this->get('auth')->sendPwd($this->context->params['user_login'])) {
                 $this->redirect('home', array('msg' => MSG_PWD_SENT));
             } else {
                 $this->view->growler('Login / Email introuvable.', GROWLER_ERR);
                 $this->render();
             }
-        } elseif (!empty($this->params['user_mail'])) {
-            if ($this->get('auth')->sendPwd(null, $this->params['user_mail'])) {
+        } elseif (!empty($this->context->params['user_mail'])) {
+            if ($this->get('auth')->sendPwd(null, $this->context->params['user_mail'])) {
                 $this->redirect('home', array('msg' => MSG_PWD_SENT));
             } else {
                 $this->view->growler('Login / Email introuvable.', GROWLER_ERR);
@@ -56,14 +56,14 @@ class LostpwdController extends AppController
 
     public function renderSubmitNew()
     {
-        if (empty($this->params['pwd_valid'])
-         || empty($this->params['user_pwd'])
-         || empty($this->params['pwd_confirm'])
-         || $this->params['user_pwd'] != $this->params['pwd_confirm']) {
+        if (empty($this->context->params['pwd_valid'])
+         || empty($this->context->params['user_pwd'])
+         || empty($this->context->params['pwd_confirm'])
+         || $this->context->params['user_pwd'] != $this->context->params['pwd_confirm']) {
             $this->view->growler('Les deux champs doivent être identiques.', GROWLER_ERR);
             $this->renderNew();
         } else {
-            if ($this->model->auth->updatePwd($this->params['user_pwd'], $this->params['pwd_valid'])) {
+            if ($this->model->auth->updatePwd($this->context->params['user_pwd'], $this->context->params['pwd_valid'])) {
                 $this->redirect('home', array('msg' => MSG_VALIDATION_PWD));
             } else {
                 $this->view->growlerError();

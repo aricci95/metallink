@@ -17,10 +17,10 @@ class MessageController extends AppController
         }
 
         // Si nouveau message, on récupère les infos du destinataire
-        if (isset($this->params['destinataire_id'])) {
-            return $this->model->User->getUserByIdDetails($this->params['destinataire_id']);
-        } elseif (isset($this->params['user_id'])) {
-            return $this->model->User->getUserByIdDetails($this->params['user_id']);
+        if (isset($this->context->params['destinataire_id'])) {
+            return $this->model->User->getUserByIdDetails($this->context->params['destinataire_id']);
+        } elseif (isset($this->context->params['user_id'])) {
+            return $this->model->User->getUserByIdDetails($this->context->params['user_id']);
         }
     }
 
@@ -58,12 +58,12 @@ class MessageController extends AppController
     {
         $this->view->addJS(JS_SCROLL_REFRESH);
 
-        if (empty($this->params['value'])) {
+        if (empty($this->context->params['value'])) {
             $this->view->growler('Message introuvable', GROWLER_ERR);
             $this->redirect('mailbox', array('msg' => ERR_CONTENT));
         }
 
-        $userId = $this->params['value'];
+        $userId = $this->context->params['value'];
 
         $isLinked = $this->get('link')->isLinked($userId);
 
@@ -87,17 +87,17 @@ class MessageController extends AppController
 
     public function renderSubmit()
     {
-        if (!empty($this->params['last_content']) && !empty($this->params['content']) && $this->params['last_content'] === $this->params['content']) {
+        if (!empty($this->context->params['last_content']) && !empty($this->context->params['content']) && $this->context->params['last_content'] === $this->context->params['content']) {
             $this->render();
             return;
         }
 
-        if (empty($this->params['destinataire_id'])) {
+        if (empty($this->context->params['destinataire_id'])) {
             Log::err('destinataire vide');
             $this->redirect('mailbox', array('msg' => ERR_DEFAULT));
         }
 
-        $isLinked = $this->get('link')->isLinked($this->params['destinataire_id']);
+        $isLinked = $this->get('link')->isLinked($this->context->params['destinataire_id']);
 
         if (!$isLinked) {
             Log::err('destinataire sans link');
@@ -105,18 +105,18 @@ class MessageController extends AppController
         }
 
         $from = $this->context->get('user_id');
-        $to   = $this->params['destinataire_id'];
+        $to   = $this->context->params['destinataire_id'];
 
-        if (empty($this->params['content'])) {
+        if (empty($this->context->params['content'])) {
             $this->view->growler('Message vide.', GROWLER_INFO);
             $this->render();
             return;
         }
 
 
-        if ($this->get('message')->send($from, $to, $this->params['content'])) {
+        if ($this->get('message')->send($from, $to, $this->context->params['content'])) {
             $message = $this->context->get('user_login') . ' vous a envoyé un nouveau message ! <a href="http://metallink.fr/message/' . $this->context->get('user_id') . '">Cliquez ici</a> pour le lire.';
-            $this->redirect('message', array($this->params['value'], 'msg' => MSG_SENT_OK));
+            $this->redirect('message', array($this->context->params['value'], 'msg' => MSG_SENT_OK));
         } else {
             Log::err('impossible d\'enregistrer le message.');
             $this->redirect('mailbox', array('msg' => ERR_MAIL));
@@ -127,12 +127,12 @@ class MessageController extends AppController
 
     public function renderMore()
     {
-        if (empty($this->params['value']) || empty($this->params['option'])) {
+        if (empty($this->context->params['value']) || empty($this->context->params['option'])) {
             return;
         }
 
-        $offset = $this->params['value'];
-        $userId = $this->params['option'];
+        $offset = $this->context->params['value'];
+        $userId = $this->context->params['option'];
 
         // On récupère les information du message
         $parentMessages = $this->model->message->getConversation($userId, $offset);

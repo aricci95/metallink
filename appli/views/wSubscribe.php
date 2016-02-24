@@ -1,29 +1,30 @@
 <?php $this->_helper->blackBoxOpen('maxWidth'); ?>
+<?php print_r($this->context->params, true); ?>
 <form action="subscribe/save" method="post">
     <div style="margin-left:140px;">
         <table>
             <tr>
                 <td>Pseudo :</td>
-                <td><input name="user_login" <?php if(!empty($_POST['user_login'])) : ?> value="<?php echo $_POST['user_login']; ?>"<?php endif; ?>/></td>
+                <td><input name="user_login" value="<?php echo $this->context->getParam('user_login'); ?>" /></td>
             </tr>
             <tr>
                 <td>Sexe :</td>
                 <td><select name="user_gender">
-                    <option value="1" <?php if(!empty($_POST['user_gender']) && $_POST['user_gender'] == "1") : ?> selected="selected" <?php endif; ?> >Homme</option>
-                    <option value="2" <?php if(!empty($_POST['user_gender']) && $_POST['user_gender'] == "2") : ?> selected="selected" <?php endif; ?>>Femme</option>
+                    <option value="1" <?php if($this->context->getParam('user_gender') == "1") : ?> selected="selected" <?php endif; ?>>Homme</option>
+                    <option value="2" <?php if($this->context->getParam('user_gender') == "2") : ?> selected="selected" <?php endif; ?>>Femme</option>
                 </select></td>
             </tr>
             <tr>
                 <td>Mot de passe :</td>
-                <td><input name="user_pwd" type="password" <?php if(!empty($_POST['user_pwd'])) : ?> value="<?php echo $_POST['user_pwd']; ?>"<?php endif; ?> /></td>
+                <td><input name="user_pwd" type="password" <?php if(!empty($this->context->params['user_pwd'])) : ?> value="<?php echo $this->context->params['user_pwd']; ?>"<?php endif; ?> /></td>
             </tr>
             <tr>
                 <td>Répéter mot de passe :</td>
-                <td><input name="verif_pwd" type="password" <?php if(!empty($_POST['verif_pwd'])) : ?> value="<?php echo $_POST['verif_pwd']; ?>"<?php endif; ?> /></td>
+                <td><input name="verif_pwd" type="password" <?php if(!empty($this->context->params['verif_pwd'])) : ?> value="<?php echo $this->context->params['verif_pwd']; ?>"<?php endif; ?> /></td>
             </tr>
             <tr>
                 <td>Adresse email :</td>
-                <td><input name="user_mail" type="text" <?php if(!empty($_POST['user_mail'])) : ?> value="<?php echo $_POST['user_mail']; ?>"<?php endif; ?> /></td>
+                <td><input name="user_mail" type="text" <?php if(!empty($this->context->params['user_mail'])) : ?> value="<?php echo $this->context->params['user_mail']; ?>"<?php endif; ?> /></td>
             </tr>
         </table>
         <table>

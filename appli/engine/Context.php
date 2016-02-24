@@ -5,7 +5,9 @@ class Context
 
     private static $_instance = null;
 
-    private $_data;
+    private $_sessionData = array();
+
+    public  $params = array();
 
     public static function getInstance()
     {
@@ -31,35 +33,76 @@ class Context
             'views' => 0,
         );
 
-        $this->_data = array_merge($init_vars, $_SESSION);
+        $this->_sessionData = array_merge($init_vars, $_SESSION);
+    }
+
+    public function buildParams()
+    {
+        unset($_GET['page']);
+        unset($_GET['action']);
+        unset($_POST['x']);
+        unset($_POST['y']);
+
+        if (!empty($_GET)) {
+            foreach ($_GET as $key => $value) {
+                if (!is_array($value)) {
+                    $value = trim($value);
+                }
+
+                $this->params[$key] = $value;
+            }
+        }
+
+        if (!empty($_POST)) {
+            foreach ($_POST as $key => $value) {
+                if (!is_array($value)) {
+                    $value = trim($value);
+                }
+                $this->params[$key] = $value;
+            }
+        }
+
+        return $this->params;
+    }
+
+    public function getParam($param)
+    {
+        if (isset($this->params[$param])) {
+            return $this->params[$param];
+        } else {
+            return null;
+        }
     }
 
     public function set($key, $value)
     {
-        $this->_data[$key] = $_SESSION[$key] = $value;
+        $this->_sessionData[$key] = $_SESSION[$key] = $value;
 
         return $this;
     }
 
     public function get($key)
     {
-        if (!isset($this->_data[$key])) {
+        if (!isset($this->_sessionData[$key])) {
             $this->set($key, null);
         }
 
-        return $this->_data[$key];
+        return $this->_sessionData[$key];
     }
 
     public function delete($key)
     {
-        unset($this->_data[$key]);
+        if (isset($this->_sessionData[$key])) {
+            unset($this->_sessionData[$key]);
+        }
 
         return true;
     }
 
     public function destroy()
     {
-        unset($this->_data);
+        $this->_sessionData = $_SESSION = array();
+
         session_destroy();
 
         return true;

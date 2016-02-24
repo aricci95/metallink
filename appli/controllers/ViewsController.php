@@ -14,7 +14,7 @@ class ViewsController extends AppController
 
     public function renderMore()
     {
-        $offset = $this->params['value'];
+        $offset = $this->context->params['value'];
         $this->view->elements = $this->model->views->getUserViews($offset);
         $this->view->type = 'user';
         $this->view->offset = $offset++;

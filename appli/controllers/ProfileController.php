@@ -32,19 +32,19 @@ class ProfileController extends AppController
 
     public function render()
     {
-        if (empty($this->params['value'])) {
+        if (empty($this->context->params['value'])) {
             $this->redirect('home', array('msg' => ERR_BLACKLISTED));
         }
 
         // Récupération des informations de l'utilisateur
-        $user = $this->model->User->getUserByIdDetails($this->params['value']);
+        $user = $this->model->User->getUserByIdDetails($this->context->params['value']);
 
         if (empty($user)) {
             $this->redirect('home', array('msg' => ERR_BLACKLISTED));
         }
 
         $this->view->tasteTypes = $this->model->Taste->getTasteTypes();
-        $tastes                 = $this->model->Taste->getTastes($this->params['value']);
+        $tastes                 = $this->model->Taste->getTastes($this->context->params['value']);
 
         if (!empty($tastes)) {
             foreach ($tastes['data'] as $type => $tasteData) {
@@ -63,8 +63,8 @@ class ProfileController extends AppController
         $this->view->tastes = $tastes;
 
         // Ajout de la vue
-        if ($this->context->get('user_id') != $this->params['value']) {
-            $this->model->views->addView($this->params['value']);
+        if ($this->context->get('user_id') != $this->context->params['value']) {
+            $this->model->views->addView($this->context->params['value']);
         }
 
         $this->view->details = $this->model->User->convertBinaries($user);
@@ -80,7 +80,7 @@ class ProfileController extends AppController
         $this->view->user = $user;
 
         // Récupération des photos
-        $photos = $this->model->Photo->getPhotosByKey($this->params['value'], PHOTO_TYPE_USER);
+        $photos = $this->model->Photo->getPhotosByKey($this->context->params['value'], PHOTO_TYPE_USER);
 
         if (empty($photos)) {
             $photos = array(array('photo_url' => $user['user_photo_url']));
@@ -123,26 +123,26 @@ class ProfileController extends AppController
 
     public function renderSave()
     {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($this->params['user_login'])) {
-            $this->params['user_login']             = Tools::no_special_character($this->params['user_login']);
-            $this->params['user_light_description'] = htmlspecialchars($this->params['user_light_description'], ENT_QUOTES, 'utf-8');
-            $this->params['user_description']       = htmlspecialchars($this->params['user_description'], ENT_QUOTES, 'utf-8');
-            $this->params['user_profession']        = htmlspecialchars($this->params['user_profession'], ENT_QUOTES, 'utf-8');
+        if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($this->context->params['user_login'])) {
+            $this->context->params['user_login']             = Tools::no_special_character($this->context->params['user_login']);
+            $this->context->params['user_light_description'] = htmlspecialchars($this->context->params['user_light_description'], ENT_QUOTES, 'utf-8');
+            $this->context->params['user_description']       = htmlspecialchars($this->context->params['user_description'], ENT_QUOTES, 'utf-8');
+            $this->context->params['user_profession']        = htmlspecialchars($this->context->params['user_profession'], ENT_QUOTES, 'utf-8');
 
             // On vérifie si le mdp est ok
-            if ($this->params['user_pwd'] != $this->params['verif_pwd']) {
+            if ($this->context->params['user_pwd'] != $this->context->params['verif_pwd']) {
                 $this->view->growler("les deux mots de passes ne sont pas identiques.", GROWLER_ERR);
             } else {
-                if (!empty($this->params['user_pwd'])) {
-                    $this->params['user_pwd'] = md5($this->params['user_pwd']);
+                if (!empty($this->context->params['user_pwd'])) {
+                    $this->context->params['user_pwd'] = md5($this->context->params['user_pwd']);
                 }
                 // On formate la date de naissance
-                if (!empty($this->params['user_birth'])) {
-                    $dt = DateTime::createFromFormat('d/m/Y', $this->params['user_birth']);
-                    $this->params['user_birth'] = $dt->format("Y-m-d");
+                if (!empty($this->context->params['user_birth'])) {
+                    $dt = DateTime::createFromFormat('d/m/Y', $this->context->params['user_birth']);
+                    $this->context->params['user_birth'] = $dt->format("Y-m-d");
                 }
-                $this->params['user_city'] = str_replace("'", " ", $this->params['user_city']);
-                if ($this->model->User->updateUserById($this->params)) {
+                $this->context->params['user_city'] = str_replace("'", " ", $this->context->params['user_city']);
+                if ($this->model->User->updateUserById($this->context->params)) {
                     $this->view->growler('Modifications enregistrées', GROWLER_OK);
                 } else {
                     $this->view->growlerError();
@@ -165,24 +165,24 @@ class ProfileController extends AppController
 
     private function _block($block = true)
     {
-        if (!empty($this->params['value'])) {
+        if (!empty($this->context->params['value'])) {
             if ($block) {
-                $status = $this->get('link')->getLinkStatus($this->params['value']);
+                $status = $this->get('link')->getLinkStatus($this->context->params['value']);
                 if ($status == LINK_STATUS_NONE) {
-                    if ($this->model->Link->block($this->params['value'])) {
+                    if ($this->model->Link->block($this->context->params['value'])) {
                         $this->view->growler('Utilisateur bloqué.', GROWLER_OK);
                     } else {
                         $this->view->growlerError();
                     }
                 } else {
-                    if ($this->model->Link->updateLink($this->params['value'], LINK_STATUS_BLACKLIST)) {
+                    if ($this->model->Link->updateLink($this->context->params['value'], LINK_STATUS_BLACKLIST)) {
                         $this->view->growler('Utilisateur bloqué.', GROWLER_OK);
                     } else {
                         $this->view->growlerError();
                     }
                 }
             } else {
-                if ($this->model->Link->unlink($this->params['value'])) {
+                if ($this->model->Link->unlink($this->context->params['value'])) {
                         $this->view->growler('Utilisateur débloqué.', GROWLER_OK);
                 } else {
                     $this->view->growlerError();

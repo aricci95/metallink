@@ -20,7 +20,7 @@ class MailboxController extends AppController
 
     public function renderMore($offset = 0)
     {
-        $offset = $this->params['value'];
+        $offset = $this->context->params['value'];
         $libel = 'De';
 
         //on récupère les messages de l'utilisateur
@@ -39,8 +39,8 @@ class MailboxController extends AppController
 
     public function renderDelete()
     {
-        if (!empty($this->params['value'])) {
-            $this->model->mailbox->deleteConversation($this->params['value']);
+        if (!empty($this->context->params['value'])) {
+            $this->model->mailbox->deleteConversation($this->context->params['value']);
             $this->view->growler('Conversation supprimée.', GROWLER_OK);
         }
         $this->render();

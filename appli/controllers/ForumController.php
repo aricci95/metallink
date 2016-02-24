@@ -26,7 +26,7 @@ class ForumController extends AppController
 
     public function renderRefreshFeed()
     {
-        $messages = $this->model->Forum->getLastMessages($this->params['id']);
+        $messages = $this->model->Forum->getLastMessages($this->context->params['id']);
 
         if (!empty($messages)) {
             $this->view->messages = $messages;
@@ -44,8 +44,8 @@ class ForumController extends AppController
 
     public function renderSave()
     {
-        if (!empty($this->params['content'])) {
-            return $this->get('message')->post($this->params['content']);
+        if (!empty($this->context->params['content'])) {
+            return $this->get('message')->post($this->context->params['content']);
         } else {
             return false;
         }
@@ -53,8 +53,8 @@ class ForumController extends AppController
 
     public function renderSetNotification()
     {
-        if ($this->model->user->updateById($this->context->get('user_id'), 'forum_notification', $this->params['notification'])) {
-            $this->context->set('forum_notification', (int) $this->params['notification']);
+        if ($this->model->user->updateById($this->context->get('user_id'), 'forum_notification', $this->context->params['notification'])) {
+            $this->context->set('forum_notification', (int) $this->context->params['notification']);
 
             return JSON_OK;
         } else {

@@ -2,7 +2,6 @@
 session_name("metallink");
 session_start();
 
-
 // Récupération du chemin absolu
 $path = dirname(__FILE__);
 $path =  str_replace("\appli", '', $path);

@@ -15,20 +15,20 @@ class PhotoController extends AppController
     {
         parent::__construct();
 
-        if (isset($this->params['value'])) {
-            $this->_typeId = $this->params['value'];
+        if (isset($this->context->params['value'])) {
+            $this->_typeId = $this->context->params['value'];
         }
 
-        if (isset($this->params['type_id'])) {
-            $this->_typeId = $this->params['type_id'];
+        if (isset($this->context->params['type_id'])) {
+            $this->_typeId = $this->context->params['type_id'];
         }
 
-        if (!empty($this->params['key_id'])) {
-            $this->_keyId = $this->params['key_id'];
+        if (!empty($this->context->params['key_id'])) {
+            $this->_keyId = $this->context->params['key_id'];
         } elseif ($this->_typeId == PHOTO_TYPE_USER) {
             $this->_keyId = $this->context->get('user_id');
-        } elseif (!empty($this->params['option'])) {
-            $this->_keyId = $this->params['option'];
+        } elseif (!empty($this->context->params['option'])) {
+            $this->_keyId = $this->context->params['option'];
         }
 
         $this->_objectName     = ($this->_typeId == PHOTO_TYPE_USER) ? 'user' : 'article';
@@ -75,7 +75,7 @@ class PhotoController extends AppController
     {
         $photo['type_id']   = $this->_typeId;
         $photo['key_id']    = $this->_keyId;
-        $photo['photo_url'] = $this->params['photo_url'];
+        $photo['photo_url'] = $this->context->params['photo_url'];
 
         $this->_setProfilePhoto($photo);
         $this->view->photos = $this->model->Photo->getPhotosByKey($photo['key_id'], $photo['type_id']);
@@ -107,8 +107,8 @@ class PhotoController extends AppController
 
     public function renderRemovePhoto()
     {
-        $id   = $this->params['photo_id'];
-        $path = $this->params['photo_url'];
+        $id   = $this->context->params['photo_id'];
+        $path = $this->context->params['photo_url'];
 
         if ($this->get('photo')->delete($id, $path)) {
             return JSON_OK;

@@ -10,8 +10,8 @@ class TasteController extends AppController
         $types = $this->model->Taste->getTasteTypes();
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             foreach ($types as $type) {
-                if (!empty($this->params[$type])) {
-                    $datas = $this->params[$type];
+                if (!empty($this->context->params[$type])) {
+                    $datas = $this->context->params[$type];
                     foreach ($datas as $key => $data) {
                         if ($data == '') {
                             unset($datas[$key]);

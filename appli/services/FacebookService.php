@@ -12,6 +12,8 @@ class FacebookService extends Service
 
             if (!empty($user['user_id'])) {
                 return $this->get('auth')->authenticateUser($user);
+            } else {
+                return false;
             }
         }
     }

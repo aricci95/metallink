@@ -31,8 +31,8 @@ class AdminController extends AppController
 
     public function renderSetSwitch()
     {
-        if (!empty($this->params['user_id'])) {
-            $user = $this->model->user->findById($this->params['user_id']);
+        if (!empty($this->context->params['user_id'])) {
+            $user = $this->model->user->findById($this->context->params['user_id']);
 
             if (!empty($user)) {
                 if ($user['user_valid'] != 1) {
@@ -67,7 +67,7 @@ class AdminController extends AppController
 
     public function renderRemoveUser()
     {
-        if (!empty($this->params['user_id']) && $this->get('user')->delete($this->params['user_id'])) {
+        if (!empty($this->context->params['user_id']) && $this->get('user')->delete($this->context->params['user_id'])) {
             $this->view->growler('Utilisateur supprimé.', GROWLER_OK);
         } else {
             $this->view->growlerError();
@@ -85,13 +85,13 @@ class AdminController extends AppController
 
     public function renderMessageSubmit()
     {
-        if (!empty($this->params['content'])) {
+        if (!empty($this->context->params['content'])) {
             $from    = $this->context->get('user_id');
             $users   = $this->model->user->find(array('user_id'), array('!user_id' => $this->context->get('user_id')));
 
             $sentMessages = 0;
             foreach ($users as $user) {
-                if ($this->get('message')->send($from, $user['user_id'], $this->params['content'])) {
+                if ($this->get('message')->send($from, $user['user_id'], $this->context->params['content'])) {
                     $sentMessages++;
                 }
             }
