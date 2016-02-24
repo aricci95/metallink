@@ -6,6 +6,10 @@ class HomeController extends AppController
 
     public function render()
     {
+        if ($this->context->get('userprofile')) {
+            $this->get('Facebook')->login();
+        }
+
         // Découverte
         $tmp = $this->model->news->getNews(3, true);
 

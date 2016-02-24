@@ -10,7 +10,6 @@ session_start();
 // Load neccessary files
 require_once('autoload.php');
 
-
 // use these
 use Facebook\FacebookSession;
 use Facebook\FacebookRedirectLoginHelper;
@@ -24,9 +23,11 @@ FacebookSession::setDefaultApplication($_SESSION['fb_appid'], $_SESSION['fb_apps
 
 // login helper with redirect_uri
 $_SESSION['ssa_return_url'] = (isset($_SESSION['ssa_return_url']) ? $_SESSION['ssa_return_url'] : null);
+
 if ( !isset($_SESSION['ssa_return_url'])) {
 	$_SESSION['ssa_return_url'] = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 }
+
 $helper = new FacebookRedirectLoginHelper($_SESSION['ssa_return_url']);
 
 
@@ -53,11 +54,9 @@ else {
 
 // see if we have a session
 if ( isset( $session ) ) {
-
 	try {
-
 		// graph api request for user data
-		$request = new FacebookRequest($session,'GET','/me?fields=id,name,first_name,last_name,email,gender,hometown,age_range,relationship_status,context,verified,cover,events,friendlists,friends,music,photos,picture');
+		$request = new FacebookRequest($session,'GET','/me?fields=id,name,first_name,last_name,email,gender,age_range,verified,cover,photos,picture');
 		$response = $request->execute();
 
 		// get response
@@ -75,10 +74,8 @@ if ( isset( $session ) ) {
 		header("Location: ".$_SESSION['authstation']);
 
 	} catch(FacebookRequestException $e) {
-
 		echo "Exception occured, code: " . $e->getCode();
 		echo " with message: " . $e->getMessage();
-
 	}
 
 } else {

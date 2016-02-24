@@ -452,4 +452,33 @@ class User extends AppModel
             return $this->db->executeStmt($stmt)->fetch();
     }
 
+    public function findByEmail($email)
+    {
+        $sql = '
+                SELECT
+                    user_id,
+                    user_login,
+                    role_id,
+                    user_photo_url,
+                    FLOOR((DATEDIFF( CURDATE(), (user_birth))/365)) AS age,
+                    user_gender,
+                    user_valid,
+                    user_city,
+                    user_zipcode,
+                    user_mail,
+                    longitude,
+                    lattitude,
+                    forum_notification
+                FROM user LEFT JOIN ville ON (user.user_zipcode = ville.code_postal)
+                WHERE LOWER(user_login) = LOWER(:user_login)
+                AND user_mail = :email
+            ;';
+
+            $stmt = $this->db->prepare($sql);
+
+            $stmt->bindValue('email', $email);
+
+            return $this->db->executeStmt($stmt)->fetch();
+    }
+
 }
