@@ -97,7 +97,7 @@
                 <td>Login :</td><td><input name="user_login" size="8" /></td>
                 <td>Password :</td><td><input name="user_pwd" type="password" size="8" /></td>
                 <td><input type="submit" value="Connexion" /></td>
-                <td><input type="button" onclick="window.location.href = 'social/login/facebook';" class="facebookButton" value="Via Facebook" /></td>
+                <td><input type="button" onclick="window.location.href = 'MLink/appli/inc/socialauth/station.php';" class="facebookButton" value="Via Facebook" /></td>
                 <td></td><td>Se souvenir de moi <input name="savepwd" type="checkbox" /></td>
                 <td></td><td><a href="lostpwd">Mot de passe oublié</a></td>
                 <td><a href="subscribe" >S'inscrire !</a></td>
