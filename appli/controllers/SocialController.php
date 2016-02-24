@@ -13,6 +13,6 @@ class SocialController extends Controller
 
     public function renderSession()
     {
-        echo '<pre>' . print_r($_SESSION, true) . '</pre>';die;
+        echo '<pre>' . print_r($_SESSION["userprofile"], true) . '</pre>';die;
     }
 }

@@ -1,4 +1,6 @@
-<?php session_start();
+<?php
+session_name("metallink");
+session_start();
 /*==========================================*\
 || ##########################################||
 || # SONHLAB.com - SONHlab Social Auth v2 #

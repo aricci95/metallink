@@ -1,4 +1,6 @@
-<?php ob_start(); session_start();
+<?php
+session_name("metallink");
+session_start();
 
 $_SESSION['authstation'] = (isset($_SESSION['authstation']) ? $_SESSION['authstation'] : null);
 if ( !isset($_SESSION['authstation']) ) {
@@ -69,43 +71,14 @@ if ( !isset($_SESSION["userprofile"]) ) {
 
 
 <?php } else { ?>
+<?php
 
-<!-- Start Main Container -->
-<div class="maincontainer">
+header('location:../../index.php');
+exit;
+?>
 
-  <!-- Start Welcome -->
-  <div class="welcome">
-    <h2>Hi, <?php echo $_SESSION["userprofile"]['name']; ?></h2>
-    <h2>Hi, <?php echo $_SESSION["userprofile"]['email']; ?></h2>
-    <p>You are logged in successfully. See your details below.</p>
-  </div>
-  <!-- End Welcome -->
-
-  <!-- Start Details -->
-  <div class="details">
-
-    <pre>
-    <?php
-        print_r($_SESSION["userprofile"]);
-    ?>
-    </pre>
-
-  </div>
-  <!-- End Details -->
-
-  <h2 class="logout">
-    <a href="auth/logout.php">Logout</a>
-  </h2>
-
-
-
-  </div>
 <!-- End Main Container -->
 <?php } ?>
 
 </body>
 </html>
-
-
-
-<?php ob_end_flush(); ?>
