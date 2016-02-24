@@ -63,10 +63,10 @@ class HomeController extends AppController
 
     public function renderDisconnect()
     {
-        //Destruction du Cookie
-        setcookie("MlinkPwd", 0);
-        setcookie("MlinkLogin", 0);
-        session_destroy();
-        $this->redirect('home');
+        if ($this->get('auth')->disconnect()) {
+            $this->redirect('home');
+        } else {
+            $this->view->growlerError();
+        }
     }
 }

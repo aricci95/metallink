@@ -70,4 +70,15 @@ class AuthService extends Service
             return false;
         }
     }
+
+    public function disconnect()
+    {
+        //Destruction du Cookie
+        setcookie("MlinkPwd", 0);
+        setcookie("MlinkLogin", 0);
+
+        $this->context->destroy();
+
+        return true;
+    }
 }

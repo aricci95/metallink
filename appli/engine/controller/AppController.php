@@ -7,6 +7,7 @@ abstract class AppController extends Controller
     public function __construct()
     {
         parent::__construct();
+
         $this->_checkSession();
 
         if (!$this->isAjax()) {

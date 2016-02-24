@@ -50,6 +50,21 @@ class Context
         return $this->_data[$key];
     }
 
+    public function delete($key)
+    {
+        unset($this->_data[$key]);
+
+        return true;
+    }
+
+    public function destroy()
+    {
+        unset($this->_data);
+        session_destroy();
+
+        return true;
+    }
+
     public function getCurrentMember()
     {
         return array(
