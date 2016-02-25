@@ -17,6 +17,17 @@ class Concert extends AppModel
 
     public function add(array $data)
     {
+        $clean = array(
+            'non précis&eacute;e',
+            'non communiqu&eacute;',
+        );
+
+        foreach ($data as $key => $value) {
+            if (in_array($value, $clean)) {
+                $data[$key] = null;
+            }
+        }
+
         $sql = '
             REPLACE INTO concert (
                 external_id,
@@ -28,7 +39,8 @@ class Concert extends AppModel
                 mail_orga,
                 fb_event,
                 departement,
-                date
+                date,
+                ville_id
             ) VALUES (
                 :external_id,
                 :organization,
@@ -39,7 +51,8 @@ class Concert extends AppModel
                 :mail_orga,
                 :fb_event,
                 :departement,
-                :date
+                :date,
+                :ville_id
             );
         ';
 
@@ -55,6 +68,7 @@ class Concert extends AppModel
         $stmt->bindValue('fb_event', $data['event']);
         $stmt->bindValue('departement', $data['departement']);
         $stmt->bindValue('date', $data['date_timestamp']);
+        $stmt->bindValue('ville_id', $data['ville_id']);
 
         return $this->db->executeStmt($stmt);
     }
