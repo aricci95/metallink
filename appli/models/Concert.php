@@ -15,9 +15,47 @@ class Concert extends AppModel
         return $this->fetch($sql);
     }
 
-    public function add($string)
+    public function add(array $data)
     {
-        $this->execute("INSERT INTO concert (concert_libel) VALUES ('".$string."')");
-        return $this->db->lastInsertId();
+        $sql = '
+            REPLACE INTO concert (
+                external_id,
+                organization,
+                flyer_url,
+                club,
+                location,
+                price,
+                mail_orga,
+                fb_event,
+                departement,
+                date
+            ) VALUES (
+                :external_id,
+                :organization,
+                :flyer_url,
+                :club,
+                :location,
+                :price,
+                :mail_orga,
+                :fb_event,
+                :departement,
+                :date
+            );
+        ';
+
+        $stmt = $this->db->prepare($sql);
+
+        $stmt->bindValue('external_id', $data['concert_id']);
+        $stmt->bindValue('organization', $data['organization']);
+        $stmt->bindValue('flyer_url', $data['flyer']);
+        $stmt->bindValue('club', $data['salle']);
+        $stmt->bindValue('location', $data['adresse']);
+        $stmt->bindValue('price', $data['prix']);
+        $stmt->bindValue('mail_orga', $data['contacter']);
+        $stmt->bindValue('fb_event', $data['event']);
+        $stmt->bindValue('departement', $data['departement']);
+        $stmt->bindValue('date', $data['date_timestamp']);
+
+        return $this->db->executeStmt($stmt);
     }
 }
