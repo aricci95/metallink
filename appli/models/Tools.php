@@ -113,6 +113,6 @@ class Tools
     public static function getCleanName($string)
     {
 
-        return strtolower(trim(str_replace(array(" ", "'", "-", ",", ";", "."), array(), self::no_special_character($string))));
+        return strtolower(trim(str_replace(array(" ", "'", "-", ",", ";", ".", "+", "(", ")"), array(), self::no_special_character($string))));
     }
 }

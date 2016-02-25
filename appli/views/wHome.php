@@ -15,7 +15,7 @@
     <h2 style="margin:auto;width:550px;margin-bottom:10px;" align="center"><?php echo $this->reco['concert_libel']; ?></h2>
     <div style="float:left;margin:10px;">
         <div style="text-align:center;">
-            <img style="max-width:720px;max-height:500px;" src="<?php echo $this->reco['flyer_url']; ?>"/>
+            <a href="<?php echo $this->reco['fb_event']; ?>" target="_blank"><img style="max-width:720px;max-height:500px;" src="<?php echo $this->reco['flyer_url']; ?>"/></a>
         </div>
     </div>
     <div style="float:left;margin:10px;">
@@ -62,14 +62,17 @@
     <?php foreach ($this->newArticles as $key => $value) $this->_helper->printArticle($value); ?>
 <?php $this->_helper->blackBoxClose(); ?>
 
-<!-- News list -->
+<!-- Concert list -->
 <?php $this->_helper->blackBoxOpen(); ?>
-    <h2>News</h2>
+    <h2>Autres concerts</h2>
     <ul>
-    <?php foreach ($this->lesNews as $key => $value) : ?>
-        <li>
-            <a href="news/<?php echo $value['news_id']; ?>" ><b><u><?php echo Tools::toFrenchDate($value['news_date'], false); ?></u></b> :
-            <?php echo $value['news_titre']; ?></a>
+    <?php foreach ($this->concerts as $concert) : ?>
+        <li style="white-space:nowrap;line-height: 20px;">
+            <?php if (!empty($concert['fb_event'])) : ?>
+                <a href="<?php echo $concert['fb_event']; ?>" target="_blank"><?php echo $concert['concert_libel']; ?></a>
+            <?php else :?>
+                <?php echo $concert['concert_libel']; ?>
+            <?php endif; ?>
         </li>
     <?php endforeach; ?>
     </ul>

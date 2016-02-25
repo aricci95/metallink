@@ -29,7 +29,7 @@ class Concert extends AppModel
         }
 
         $sql = '
-            REPLACE INTO concert (
+            INSERT IGNORE INTO concert (
                 external_id,
                 organization,
                 flyer_url,
@@ -118,8 +118,6 @@ class Concert extends AppModel
                 AND ref_band.band_id = concert_band.band_id
             )
             WHERE concert.ville_id = :ville_id
-            AND price > 0
-            AND flyer_url IS NOT NULL
             ORDER BY date DESC
             LIMIT :limit;
         ';
@@ -127,7 +125,7 @@ class Concert extends AppModel
         $stmt = $this->db->prepare($sql);
 
         $stmt->bindValue('ville_id', $this->context->get('ville_id'), PDO::PARAM_INT);
-        $stmt->bindValue('limit', 10, PDO::PARAM_INT);
+        $stmt->bindValue('limit', 50, PDO::PARAM_INT);
 
         $concertRows = $this->db->executeStmt($stmt)->fetchAll();
 
@@ -163,7 +161,7 @@ class Concert extends AppModel
 
         if (count($data['bands']) > 1) {
             foreach ($data['bands'] as $band) {
-                $bandNames[] = $band['name'];
+                $bandNames[] = strtoupper($band['name']);
             }
 
             $bandList = strtoupper(implode(' + ', $bandNames));

@@ -95,7 +95,7 @@ class CronController extends AppController
 
                             $cleanName = Tools::getCleanName($name_raw[0]);
 
-                            if (!isset($bandsNames[$cleanName])) {
+                            if (!isset($bandsNames[$cleanName]) && !strpos('guest', $cleanName)) {
                                 $band_data = array(
                                     'name' => $name_raw[0],
                                     'website' => !empty($website) ? $website->href : null,
