@@ -70,6 +70,54 @@ class Concert extends AppModel
         $stmt->bindValue('date', $data['date_timestamp']);
         $stmt->bindValue('ville_id', $data['ville_id']);
 
-        return $this->db->executeStmt($stmt);
+        if ($this->db->executeStmt($stmt)) {
+
+            foreach ($data['bands'] as $band) {
+                $sql = '
+                    REPLACE INTO concert_band (
+                        concert_id,
+                        band_id
+                    ) VALUES (
+                        :concert_id,
+                        :band_id
+                    );
+                ';
+
+                $stmt = $this->db->prepare($sql);
+
+                $stmt->bindValue('concert_id', $this->db->lastInsertId(), PDO::PARAM_INT);
+                $stmt->bindValue('band_id', $band['band_id'], PDO::PARAM_INT);
+
+                $this->db->executeStmt($stmt);
+            }
+
+        }
+    }
+
+    public function suggestFromUser($results = 1)
+    {
+        $sql = '
+            SELECT
+                *
+            FROM
+                concert
+            JOIN (
+                concert_band,
+                ref_band
+            ) ON (
+                concert.concert_id = concert_band.concert_id
+                AND concert_band.band_id = ref_band.band_id
+            )
+            WHERE price > 0
+            AND flyer_url IS NOT NULL
+            ORDER BY date DESC
+            LIMIT :limit;
+        ';
+
+        $stmt = $this->db->prepare($sql);
+
+        $stmt->bindValue('limit', $results, PDO::PARAM_INT);
+
+        return $this->db->executeStmt($stmt)->fetchAll();
     }
 }

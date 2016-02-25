@@ -109,4 +109,10 @@ class Tools
                         " ^.^" => " <img src='MLink/images/smilies/sourcils.png' />");
         return strtr($texte, $smiles);
     }
+
+    public static function getCleanName($string)
+    {
+
+        return strtolower(trim(str_replace(array(" ", "'", "-", ",", ";", "."), array(), self::no_special_character($string))));
+    }
 }

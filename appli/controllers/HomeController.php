@@ -23,7 +23,10 @@ class HomeController extends AppController
         $this->view->newArticles = $this->model->article->getNew();
         $this->view->newCovoits  = $this->model->covoit->getNew();
         $this->view->lesNews     = $this->model->news->getNews(1);
-        $this->view->decouverte  = (isset($tmp[0])) ? $tmp[0] : null;
+        $this->view->concerts    = $this->model->concert->suggestFromUser(10);
+
+        echo '<pre>' . print_r($this->view->concerts[0], true) . '</pre>';
+
         $this->view->render();
     }
 
@@ -42,6 +45,7 @@ class HomeController extends AppController
             try {
                 $logResult = $this->get('auth')->checkLogin($login, $this->context->params['user_pwd']);
             } catch (Exception $e) {
+                Log::err($e->getMessage());
                 $this->redirect('home', array('msg' => $e->getCode()));
             }
 

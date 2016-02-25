@@ -15,10 +15,9 @@ class Covoit extends AppModel
                     DATE_FORMAT(date_retour,\'%d/%m %H:%i\') as date_retour,
                     user.user_id as user_id,
                     UNIX_TIMESTAMP(user_last_connexion) as user_last_connexion,
-                    price,
+                    covoit.price as price,
                     ville.ville_id as ville_id,
                     nom,
-                    concert_libel,
                     user_login,
                     user_gender,
                     user_photo_url
@@ -44,11 +43,10 @@ class Covoit extends AppModel
                     DATE_FORMAT(date_depart,\'%d/%m %H:%i\') as date_depart,
                     DATE_FORMAT(date_retour,\'%d/%m %H:%i\') as date_retour,
                     user.user_id as user_id,
-                    price,
+                    covoit.price as price,
                     UNIX_TIMESTAMP(user_last_connexion) as user_last_connexion,
                     ville.ville_id as ville_id,
                     nom,
-                    concert_libel,
                     user_login,
                     user_gender,
                     user_photo_url
@@ -69,7 +67,6 @@ class Covoit extends AppModel
                     UNIX_TIMESTAMP(user_last_connexion) as user_last_connexion,
                     price,
                     ville.ville_id as ville_id,
-                    concert_libel
                 FROM covoit JOIN concert ON (concert.concert_id = covoit.concert_id)
                             JOIN user ON (covoit.user_id = user.user_id)
                             JOIN ville ON (ville.ville_id = covoit.ville_id)

@@ -10,24 +10,26 @@
     } ?>
 <?php $this->_helper->blackBoxClose(); ?>
 
-<!-- News Etendue -->
+<!-- Recommandation concert -->
 <?php $this->_helper->blackBoxOpen('maxWidth'); ?>
-    <h2><?php echo stripslashes($this->decouverte['news_titre']); ?></h2>
-    <?php if(empty($this->decouverte['news_contenu']) && !empty($this->decouverte['news_photo_url'])) : ?>
+    <h2>Recommandation concert</h2>
+    <?php if(!empty($this->concerts[0]['flyer_url'])) : ?>
         <div style="text-align:center;">
-            <img style="max-width:720px;max-height:500px;" src="<?php echo $this->decouverte['news_photo_url']; ?>"/>
+            <img style="max-width:720px;max-height:500px;" src="<?php echo $this->concerts[0]['flyer_url']; ?>"/>
         </div>
     <?php else : ?>
-        <span style="float:left;margin:5px;"><img width="200px" height="200px" src="<?php echo $this->decouverte['news_photo_url']; ?>" /></span>
-        <?php echo nl2br($this->decouverte['news_contenu']); ?>
+        <span style="float:left;margin:5px;"><img width="200px" height="200px" src="<?php echo $this->concerts[0]['flyer_url']; ?>" /></span>
+        <?php //echo nl2br($this->concerts[0]['news_contenu']); ?>
     <?php endif; ?>
 <?php $this->_helper->blackBoxClose(); ?>
 
 <!-- COVOITURAGE -->
+<?php /*
 <?php $this->_helper->blackBoxOpen(); ?>
     <h2>Nouveau covoiturage</h2>
     <?php $this->render('covoit/wItems', array('elements' => $this->newCovoits)); ?>
 <?php $this->_helper->blackBoxClose(); ?>
+*/ ?>
 
 <!-- ARTICLES -->
 <?php $this->_helper->blackBoxOpen(); ?>

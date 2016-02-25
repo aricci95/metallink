@@ -35,6 +35,7 @@ class AuthService extends Service
                       ->set('user_mail', $user['user_mail'])
                       ->set('user_gender', (int) $user['user_gender'])
                       ->set('user_city', $user['user_city'])
+                      ->set('ville_id', (int) $user['ville_id'])
                       ->set('user_zipcode', (int) $user['user_zipcode'])
                       ->set('user_longitude', $user['longitude'])
                       ->set('user_lattitude', $user['lattitude'])

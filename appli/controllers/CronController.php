@@ -10,6 +10,7 @@ class CronController extends AppController
         include_once(ROOT_DIR . '/appli/inc/simplehtmldom/simple_html_dom.php');
 
         $regions = array(
+            /*
             'alsace',
             'aquitaine',
             'auvergne',
@@ -19,8 +20,8 @@ class CronController extends AppController
             'centre',
             'champagne-ardennes',
             'franche-comte',
-            'haute-normandie',
-            'ile-france',
+            'haute-normandie',*/
+            'ile-france',/*
             'languedoc-roussillon',
             'limousin',
             'lorraine',
@@ -30,18 +31,24 @@ class CronController extends AppController
             'pays-loire',
             'picardie',
             'poitou-charente',
-            'rhone-alpes',
+            'rhone-alpes',*/
         );
 
         $concerts = array();
-        $limit    = 50;
+        $limit    = 3;
         $counter  = 0;
 
         $villes_list = $this->model->find('ville', array('ville_id', 'nom'));
+        $bands_list  = $this->model->find('ref_band', array('band_id', 'band_libel'));
 
         foreach ($villes_list as $ville) {
-            $cleanName = trim(str_replace(array(" ", "'", "-", ".", "é", "è"), array(), strtolower($ville['nom'])));
+            $cleanName = Tools::getCleanName($ville['nom']);
             $villes[$cleanName] = $ville['ville_id'];
+        }
+
+        foreach ($bands_list as $bandName) {
+            $cleanName              = Tools::getCleanName($bandName['band_libel']);
+            $bandsNames[$cleanName] = $bandName['band_id'];
         }
 
         foreach ($regions as $region) {
@@ -86,7 +93,19 @@ class CronController extends AppController
 
                             $website = !empty($bandCell[2]) ? $bandCell[2]->find('a', 0) : null;
 
+                            $cleanName = Tools::getCleanName($name_raw[0]);
+
+                            if (!isset($bandsNames[$cleanName])) {
+                                $band_data = array(
+                                    'name' => $name_raw[0],
+                                    'website' => !empty($website) ? $website->href : null,
+                                );
+
+                                $band_id = $this->model->band->add($band_data);
+                            }
+
                             $tmp['bands'][] = array(
+                                'band_id' => isset($bandsNames[$cleanName]) ? $bandsNames[$cleanName] : $band_id,
                                 'name'    => ucfirst($name_raw[0]),
                                 'website' => !empty($website) ? $website->href : null,
                             );
@@ -124,7 +143,7 @@ class CronController extends AppController
                         $prix_array = explode(' ', $tmp['prix']);
                         $tmp['prix'] = ($prix_array[0] == 0) ? null : $prix_array[0];
 
-                        $cleanName = trim(str_replace(array(" ", "'", "-", ".", "é", "è"), array(), strtolower($tmp['ville'])));
+                        $cleanName = Tools::getCleanName($tmp['ville']);
 
                         $tmp['ville_id'] = isset($villes[$cleanName]) ? $villes[$cleanName] : null;
 
