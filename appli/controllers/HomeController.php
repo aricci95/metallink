@@ -23,9 +23,11 @@ class HomeController extends AppController
         $this->view->newArticles = $this->model->article->getNew();
         $this->view->newCovoits  = $this->model->covoit->getNew();
         $this->view->lesNews     = $this->model->news->getNews(1);
-        $this->view->concerts    = $this->model->concert->suggestFromUser(10);
+        $this->view->concerts    = $this->model->concert->suggestFromUser();
 
-        echo '<pre>' . print_r($this->view->concerts[0], true) . '</pre>';
+        $this->view->reco = $this->view->concerts[max(array_keys($this->view->concerts))];
+
+        echo '<pre>' . print_r($this->view->reco, true) . '</pre>';
 
         $this->view->render();
     }

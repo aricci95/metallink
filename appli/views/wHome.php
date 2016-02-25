@@ -12,15 +12,40 @@
 
 <!-- Recommandation concert -->
 <?php $this->_helper->blackBoxOpen('maxWidth'); ?>
-    <h2>Recommandation concert</h2>
-    <?php if(!empty($this->concerts[0]['flyer_url'])) : ?>
+    <h2 style="margin:auto;width:550px;margin-bottom:10px;" align="center"><?php echo $this->reco['concert_libel']; ?></h2>
+    <div style="float:left;margin:10px;">
         <div style="text-align:center;">
-            <img style="max-width:720px;max-height:500px;" src="<?php echo $this->concerts[0]['flyer_url']; ?>"/>
+            <img style="max-width:720px;max-height:500px;" src="<?php echo $this->reco['flyer_url']; ?>"/>
         </div>
-    <?php else : ?>
-        <span style="float:left;margin:5px;"><img width="200px" height="200px" src="<?php echo $this->concerts[0]['flyer_url']; ?>" /></span>
-        <?php //echo nl2br($this->concerts[0]['news_contenu']); ?>
-    <?php endif; ?>
+    </div>
+    <div style="float:left;margin:10px;">
+      <iframe style="border:3px #808080 groove" width="200" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://maps.google.com/maps?q=<?php echo $this->reco['location']; ?>&amp;oe=utf-8&amp;client=firefox-a&amp;ie=UTF8&amp;hq=&amp;hnear=<?php echo $this->reco['location']; ?>,+France&amp;t=h&amp;vpsrc=6&amp;output=embed"></iframe>
+    </div>
+    <div style="float:left;">
+        <h2 class="profileInfo" style="text-align:center;">Informations</h2>
+        <table width="100%" class="tableProfil">
+            <tr>
+                <th>Orga : </th>
+                <td><?php echo $this->reco['organization']; ?></td>
+            </tr>
+            <tr>
+                <th>Ville : </th>
+                <td><?php echo $this->reco['nom']. ' (' . $this->reco['departement'] . ')'; ?></td>
+            </tr>
+            <tr>
+                <th>Prix : </th>
+                <td><?php echo $this->reco['price'] . ' euros'; ?></td>
+            </tr>
+        </table>
+        <h2 class="profileInfo" style="text-align:center;">Artistes</h2>
+        <table width="100%" class="tableProfil">
+            <ul>
+            <?php foreach ($this->reco['bands'] as $band) : ?>
+                <li><?php echo '- <a href="' . $band['band_website'] . '" >' . strtoupper($band['band_libel']) . '</a>'; ?></li>
+            <? endforeach; ?>
+            </ul>
+        </table>
+    </div>
 <?php $this->_helper->blackBoxClose(); ?>
 
 <!-- COVOITURAGE -->

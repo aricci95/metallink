@@ -35,7 +35,7 @@ class CronController extends AppController
         );
 
         $concerts = array();
-        $limit    = 3;
+        $limit    = 15;
         $counter  = 0;
 
         $villes_list = $this->model->find('ville', array('ville_id', 'nom'));
