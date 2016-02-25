@@ -27,8 +27,6 @@ class HomeController extends AppController
 
         $this->view->reco = $this->view->concerts[max(array_keys($this->view->concerts))];
 
-        echo '<pre>' . print_r($this->view->reco, true) . '</pre>';
-
         $this->view->render();
     }
 
