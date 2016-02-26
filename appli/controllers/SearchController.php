@@ -42,7 +42,6 @@ class SearchController extends AppController
         $criterias             = $this->_getSearchCriterias();
         $this->view->criterias = $criterias;
         $this->view->elements  = $this->model->{$this->_type}->getSearch($criterias);
-        $this->view->offset    = 1;
 
         $this->view->setTitle('Recherche');
         $this->view->setViewName('search/wMain');
@@ -67,10 +66,12 @@ class SearchController extends AppController
 
     public function renderMore()
     {
+        $offset                = $this->context->getParam('value');
         $criterias             = $this->_getSearchCriterias();
         $this->view->criterias = $criterias;
-        $this->view->elements  = $this->model->{$this->_type}->getSearch($criterias, $this->context->params['value']);
+        $this->view->elements  = $this->model->{$this->_type}->getSearch($criterias, $offset);
 
+        $this->view->offset   = $offset++;
         $this->view->getJSONResponse(strtolower($this->_type) . '/wList');
     }
 
