@@ -63,6 +63,32 @@ define('DEFAULT_TARGET_CHARSET', 'UTF-8');
 define('DEFAULT_BR_TEXT', "\r\n");
 define('DEFAULT_SPAN_TEXT', " ");
 define('MAX_FILE_SIZE', 600000);
+
+
+function curlCall($url)
+{
+    $curl_bridge = 'http://demo.smarttutorials.net/get-webpage-using-php-curl/ajax.php';
+
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $curl_bridge);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch,CURLOPT_POST, 1);
+    curl_setopt($ch,CURLOPT_POSTFIELDS, 'site_url=' . $url);
+    $contents = curl_exec ($ch);
+    curl_close($ch);
+
+
+    $dom = new simple_html_dom();
+
+    if (empty($contents) || strlen($contents) > MAX_FILE_SIZE)
+    {
+        return false;
+    }
+
+    return $dom->load($contents, true, true);
+}
+
+
 // helper functions
 // -----------------------------------------------------------------------------
 // get html dom from file

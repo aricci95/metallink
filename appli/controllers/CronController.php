@@ -52,7 +52,7 @@ class CronController extends AppController
         }
 
         foreach ($regions as $region) {
-            $html = file_get_html('http://sueurdemetal.com/agenda-regions/concerts-metal-' . $region . '.htm');
+            $html = curlCall('http://sueurdemetal.com/agenda-regions/concerts-metal-' . $region . '.htm');
 
             foreach($html->find('table.texte[width=750]') as $article) {
                 $tmp = array();
@@ -70,7 +70,7 @@ class CronController extends AppController
                     }
 
                     if (!empty($tmp['detail_url']) && !isset($concerts[$tmp['concert_id']])) {
-                        $detail_html = file_get_html($tmp['detail_url']);
+                        $detail_html = curlCall($tmp['detail_url']);
 
                         $container = $detail_html->find('#contenupage table', 0);
 
