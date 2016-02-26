@@ -10,7 +10,6 @@ class CronController extends AppController
         include_once(ROOT_DIR . '/appli/inc/simplehtmldom/simple_html_dom.php');
 
         $regions = array(
-            /*
             'alsace',
             'aquitaine',
             'auvergne',
@@ -20,8 +19,8 @@ class CronController extends AppController
             'centre',
             'champagne-ardennes',
             'franche-comte',
-            'haute-normandie',*/
-            'ile-france',/*
+            'haute-normandie',
+            'ile-france',
             'languedoc-roussillon',
             'limousin',
             'lorraine',
@@ -31,15 +30,17 @@ class CronController extends AppController
             'pays-loire',
             'picardie',
             'poitou-charente',
-            'rhone-alpes',*/
+            'rhone-alpes',
         );
 
         $concerts = array();
-        $limit    = 15;
+        $limit    = 40;
         $counter  = 0;
+        $done     = 0;
 
-        $villes_list = $this->model->find('ville', array('ville_id', 'nom'));
-        $bands_list  = $this->model->find('ref_band', array('band_id', 'band_libel'));
+        $villes_list  = $this->model->find('ville', array('ville_id', 'nom'));
+        $bands_list   = $this->model->find('ref_band', array('band_id', 'band_libel'));
+        $concert_list = $this->model->find('concert', array('external_id'));
 
         foreach ($villes_list as $ville) {
             $cleanName = Tools::getCleanName($ville['nom']);
@@ -51,121 +52,127 @@ class CronController extends AppController
             $bandsNames[$cleanName] = $bandName['band_id'];
         }
 
+        foreach ($concert_list as $gig) {
+            $gigList[$gig['external_id']] = $gig['external_id'];
+        }
+
         foreach ($regions as $region) {
+            if ($counter >= $limit) {
+                break;
+            }
+
             $html = curlCall('http://sueurdemetal.com/agenda-regions/concerts-metal-' . $region . '.htm');
 
             foreach($html->find('table.texte[width=750]') as $article) {
                 $tmp = array();
 
-                if ($counter <= $limit) {
-                    $detail_url = $article->find('div a', 0)->href;
+                if ($counter >= $limit) {
+                    break;
+                }
 
-                    $explode_detail_url = explode('?c=', $detail_url);
-                    $tmp['concert_id'] = $explode_detail_url[1];
-                    $tmp['detail_url'] = 'http://sueurdemetal.com' . str_replace('..', '', $detail_url);
+                $detail_url = $article->find('div a', 0)->href;
 
-                    if (isset($concerts[$tmp['concert_id']])) {
-                        echo 'IGNORE  ' .$tmp['concert_id'] ."\n";
-                        die;
-                    }
+                $explode_detail_url = explode('?c=', $detail_url);
+                $tmp['concert_id'] = $explode_detail_url[1];
+                $tmp['detail_url'] = 'http://sueurdemetal.com' . str_replace('..', '', $detail_url);
 
-                    if (!empty($tmp['detail_url']) && !isset($concerts[$tmp['concert_id']])) {
-                        $detail_html = curlCall($tmp['detail_url']);
+                if (!empty($gigList[$tmp['concert_id']])) {
+                    continue;
+                }
 
-                        $container = $detail_html->find('#contenupage table', 0);
+                if (!empty($tmp['detail_url']) && !isset($concerts[$tmp['concert_id']])) {
+                    $detail_html = curlCall($tmp['detail_url']);
 
-                        $tmp['date_full'] = trim(preg_replace('/\s+/', ' ', $container->find('h3', 0)->plaintext));
+                    $container = $detail_html->find('#contenupage table', 0);
 
-                        $organization_array = explode(' ', trim(str_replace(' :', '', $container->find('p', 0)->plaintext)));
-                        unset($organization_array[count($organization_array) - 1]);
+                    $tmp['date_full'] = trim(preg_replace('/\s+/', ' ', $container->find('h3', 0)->plaintext));
 
-                        $tmp['organization'] = str_replace('?', '', implode(' ',  $organization_array));
+                    $organization_array = explode(' ', trim(str_replace(' :', '', $container->find('p', 0)->plaintext)));
+                    unset($organization_array[count($organization_array) - 1]);
 
-                        $data_tables = $container->find('table');
+                    $tmp['organization'] = str_replace('?', '', implode(' ',  $organization_array));
 
-                        $bands = array();
-                        $band_rows = $data_tables[0]->find('tr');
+                    $data_tables = $container->find('table');
 
-                        foreach ($band_rows as $row) {
-                            $bandCell = $row->find('td');
+                    $bands = array();
+                    $band_rows = $data_tables[0]->find('tr');
 
-                            $name_raw = explode('[' , strtolower(trim(preg_replace('/\s+/', ' ', $bandCell[0]->plaintext))));
+                    foreach ($band_rows as $row) {
+                        $bandCell = $row->find('td');
 
-                            $website = !empty($bandCell[2]) ? $bandCell[2]->find('a', 0) : null;
+                        $name_raw = explode('[' , strtolower(trim(preg_replace('/\s+/', ' ', $bandCell[0]->plaintext))));
 
-                            $cleanName = Tools::getCleanName($name_raw[0]);
+                        $website = !empty($bandCell[2]) ? $bandCell[2]->find('a', 0) : null;
 
-                            if (!isset($bandsNames[$cleanName]) && !strpos('guest', $cleanName)) {
-                                $band_data = array(
-                                    'name' => $name_raw[0],
-                                    'website' => !empty($website) ? $website->href : null,
-                                );
+                        $cleanName = Tools::getCleanName($name_raw[0]);
 
-                                $band_id = $this->model->band->add($band_data);
-                            }
-
-                            $tmp['bands'][] = array(
-                                'band_id' => isset($bandsNames[$cleanName]) ? $bandsNames[$cleanName] : $band_id,
-                                'name'    => ucfirst($name_raw[0]),
+                        if (!isset($bandsNames[$cleanName]) && !strpos('guest', $cleanName)) {
+                            $band_data = array(
+                                'name' => $name_raw[0],
                                 'website' => !empty($website) ? $website->href : null,
                             );
+
+                            $band_id = $this->model->band->add($band_data);
                         }
 
-                        $flyer = $article->find('img.avec_contour', -1);
-
-                        $tmp['flyer'] = !empty($flyer) ? 'http://sueurdemetal.com' . str_replace('..', '', $flyer->src) :  null;
-
-                        foreach ($data_tables[1]->find('tr') as $row) {
-                            $cells = $row->find('td');
-
-                            $tmpKey = explode(' ', strtolower(trim(str_replace(' :', '', $cells[0]->plaintext))));
-
-                            $key = $tmpKey[0];
-
-                            $tmp[$key] = isset($cells[1]) ? strtolower(trim($cells[1]->plaintext)) : strtolower(trim($cells[0]));
-                        }
-
-                        unset($tmp['infos']);
-
-                        $tmp['adresse'] = strtolower(preg_replace('/\s+/', ' ', str_replace('-', '', $tmp['adresse'])));
-
-                        $ville_array  = explode('(', $tmp['ville']);
-                        $tmp['ville'] = strtolower($ville_array[0]);
-                        $tmp['departement'] = !empty($ville_array[1]) ? str_replace(')', '', $ville_array[1]) : '';
-
-                        $tmp['heure'] = strtolower(str_replace('h', ':', $tmp['heure']));
-                        $tmp['date']  = str_replace(' ', '', $tmp['date']) . ' ' . $tmp['heure'];
-
-                        $dtime = DateTime::createFromFormat("d/m/Y G:i", $tmp['date']);
-
-                        $tmp['date_timestamp'] = ($dtime) ? $dtime->getTimestamp() : null;
-
-                        $prix_array = explode(' ', $tmp['prix']);
-                        $tmp['prix'] = ($prix_array[0] == 0) ? null : $prix_array[0];
-
-                        $cleanName = Tools::getCleanName($tmp['ville']);
-
-                        $tmp['ville_id'] = isset($villes[$cleanName]) ? $villes[$cleanName] : null;
-
-                        $counter++;
+                        $tmp['bands'][] = array(
+                            'band_id' => isset($bandsNames[$cleanName]) ? $bandsNames[$cleanName] : $band_id,
+                            'name'    => ucfirst($name_raw[0]),
+                            'website' => !empty($website) ? $website->href : null,
+                        );
                     }
-                }
 
-                if (!empty($tmp)) {
-                    $concerts[$tmp['concert_id']] = $tmp;
+                    $flyer = $article->find('img.avec_contour', -1);
+
+                    $tmp['flyer'] = !empty($flyer) ? 'http://sueurdemetal.com' . str_replace('..', '', $flyer->src) :  null;
+
+                    foreach ($data_tables[1]->find('tr') as $row) {
+                        $cells = $row->find('td');
+
+                        $tmpKey = explode(' ', strtolower(trim(str_replace(' :', '', $cells[0]->plaintext))));
+
+                        $key = $tmpKey[0];
+
+                        $tmp[$key] = isset($cells[1]) ? strtolower(trim($cells[1]->plaintext)) : strtolower(trim($cells[0]));
+                    }
+
+                    unset($tmp['infos']);
+
+                    $tmp['adresse'] = strtolower(preg_replace('/\s+/', ' ', str_replace('-', '', $tmp['adresse'])));
+
+                    $ville_array  = explode('(', $tmp['ville']);
+                    $tmp['ville'] = strtolower($ville_array[0]);
+                    $tmp['departement'] = !empty($ville_array[1]) ? str_replace(')', '', $ville_array[1]) : '';
+
+                    $tmp['heure'] = strtolower(str_replace('h', ':', $tmp['heure']));
+                    $tmp['date']  = str_replace(' ', '', $tmp['date']) . ' ' . $tmp['heure'];
+
+                    $dtime = DateTime::createFromFormat("d/m/Y G:i", $tmp['date']);
+
+                    $tmp['date_timestamp'] = ($dtime) ? $dtime->getTimestamp() : null;
+
+                    $prix_array = explode(' ', $tmp['prix']);
+                    $tmp['prix'] = ($prix_array[0] == 0) ? null : $prix_array[0];
+
+                    $cleanName = Tools::getCleanName($tmp['ville']);
+
+                    $tmp['ville_id'] = isset($villes[$cleanName]) ? $villes[$cleanName] : null;
+
+                    if (!empty($tmp)) {
+                        try {
+                            $this->model->concert->add($tmp);
+                            $done++;
+                        } catch (Exception $e) {
+                            Log::err($e->getMessage());
+                        }
+                    }
+
+                    $counter++;
                 }
             }
         }
 
-        $done = 0;
-        foreach ($concerts as $key => $concert) {
-            try {
-                $this->model->concert->add($concert);
-                $done++;
-            } catch (Exception $e) {
-                echo $e->getMessage();
-            }
-        }
+        Log::info('[CRON::getConcerts] : ' . $done . ' concerts created.');
 
         echo $done;
     }

@@ -46,7 +46,7 @@
             </ul>
         </table>
     </div>
-<?php $this->_helper->blackBoxClose(); ?>
+<?php $this->_helper->blackBoxClose();  ?>
 
 <!-- COVOITURAGE -->
 <?php /*
@@ -65,17 +65,19 @@
 <!-- Concert list -->
 <?php $this->_helper->blackBoxOpen(); ?>
     <h2>Autres concerts</h2>
-    <ul>
-    <?php foreach ($this->concerts as $concert) : ?>
-        <li style="white-space:nowrap;line-height: 20px;">
-            <?php if (!empty($concert['fb_event'])) : ?>
-                <a href="<?php echo $concert['fb_event']; ?>" target="_blank"><?php echo $concert['concert_libel']; ?></a>
-            <?php else :?>
-                <?php echo $concert['concert_libel']; ?>
-            <?php endif; ?>
-        </li>
-    <?php endforeach; ?>
-    </ul>
+	<div style="overflow:hidden;width:720px;">
+		<ul>
+		<?php foreach ($this->concerts as $concert) : ?>
+			<li style="white-space:nowrap;line-height: 20px;">
+				<?php if (!empty($concert['fb_event'])) : ?>
+					<a href="<?php echo $concert['fb_event']; ?>" target="_blank"><?php echo $concert['concert_libel']; ?></a>
+				<?php else :?>
+					<?php echo $concert['concert_libel']; ?>
+				<?php endif; ?>
+			</li>
+		<?php endforeach; ?>
+		</ul>
+	</div>
 <?php $this->_helper->blackBoxClose(); ?>
 
 <!-- Facebook discussion -->

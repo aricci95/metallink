@@ -64,7 +64,6 @@ define('DEFAULT_BR_TEXT', "\r\n");
 define('DEFAULT_SPAN_TEXT', " ");
 define('MAX_FILE_SIZE', 600000);
 
-
 function curlCall($url)
 {
     $curl_bridge = 'http://demo.smarttutorials.net/get-webpage-using-php-curl/ajax.php';

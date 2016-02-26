@@ -79,7 +79,7 @@ class Concert extends AppModel
 
             foreach ($data['bands'] as $band) {
                 $sql = '
-                    REPLACE INTO concert_band (
+                    INSERT IGNORE INTO concert_band (
                         concert_id,
                         band_id
                     ) VALUES (
@@ -95,8 +95,9 @@ class Concert extends AppModel
 
                 $this->db->executeStmt($stmt);
             }
-
         }
+
+        Log::err('INSERT OK');
     }
 
     public function suggestFromUser()
@@ -117,15 +118,15 @@ class Concert extends AppModel
                 AND concert.concert_id = concert_band.concert_id
                 AND ref_band.band_id = concert_band.band_id
             )
-            WHERE concert.ville_id = :ville_id
-            ORDER BY date DESC
-            LIMIT :limit;
+			WHERE concert.ville_id > 0
+			AND flyer_url IS NOT NULL
+			AND fb_event IS NOT NULL
+			AND date > UNIX_TIMESTAMP()
+            ORDER BY date ASC
+			LIMIT 50;
         ';
 
         $stmt = $this->db->prepare($sql);
-
-        $stmt->bindValue('ville_id', $this->context->get('ville_id'), PDO::PARAM_INT);
-        $stmt->bindValue('limit', 50, PDO::PARAM_INT);
 
         $concertRows = $this->db->executeStmt($stmt)->fetchAll();
 
@@ -176,7 +177,7 @@ class Concert extends AppModel
         }
 
         if (!empty($data['ville'])) {
-            $concertLibel .= ', ' . $data['ville'];
+            $concertLibel .= ', ' . ucfirst($data['ville']);
         }
 
         return $concertLibel;
