@@ -182,4 +182,75 @@ class Concert extends AppModel
 
         return $concertLibel;
     }
+
+    // Récupéres les utilisateurs par critéres
+    public function getSearch($criterias, $offset = 0)
+    {
+        $concerts = array();
+
+        $contextUserId = $this->context->get('user_id');
+
+        $where = '';
+        if (!empty($criterias['search_keyword'])) {
+            $where = " AND concert_libel LIKE :search_keyword ";
+        }
+
+        $sql = 'SELECT
+                *
+            FROM
+                concert
+            JOIN (
+                ville,
+                concert_band,
+                ref_band
+            ) ON (
+                concert.ville_id = ville.ville_id
+                AND concert.concert_id = concert_band.concert_id
+                AND ref_band.band_id = concert_band.band_id
+            )
+            WHERE concert.ville_id > 0 ' . $where . '
+            AND flyer_url IS NOT NULL
+            AND fb_event IS NOT NULL
+            AND date > UNIX_TIMESTAMP()
+            ORDER BY date ASC
+            LIMIT :limit_begin, :limit_end;
+        ';
+
+        $stmt = $this->db->prepare($sql);
+
+        if (!empty($criterias['search_keyword'])) {
+            $stmt->bindValue('search_keyword', '%'. $criterias['search_keyword'] .'%', PDO::PARAM_STR);
+        }
+
+
+        $stmt->bindValue('limit_begin', $offset * (NB_SEARCH_RESULTS * 3), PDO::PARAM_INT);
+        $stmt->bindValue('limit_end', (NB_SEARCH_RESULTS * 3), PDO::PARAM_INT);
+
+        $concertRows = $this->db->executeStmt($stmt)->fetchAll();
+
+        $tmp_id = 0;
+        foreach ($concertRows as $key => $concert) {
+            if ($tmp_id != $concert['concert_id']) {
+                $bands = array();
+            }
+
+            if (!empty($concert['bands'])) {
+                $bands = $concerts[$concert['concert_id']]['bands'];
+            }
+
+            $concerts[$concert['concert_id']] = $concert;
+
+            $bands[] = array(
+                'band_id' => $concert['band_id'],
+                'band_libel' => $concert['band_libel'],
+                'band_website' => $concert['band_website'],
+            );
+
+            $concerts[$concert['concert_id']]['bands'] = $bands;
+
+            $tmp_id = $concert['concert_id'];
+        }
+
+        return $concerts;
+    }
 }

@@ -31,6 +31,7 @@ class Context
             'new_messages' => 0,
             'forum_notification' => true,
             'views' => 0,
+            'search_type' => SEARCH_TYPE_USER,
         );
 
         $this->_sessionData = array_merge($init_vars, $_SESSION);

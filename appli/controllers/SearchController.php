@@ -15,6 +15,7 @@ class SearchController extends AppController
 
         SEARCH_TYPE_CONCERT => array(
             'search_location',
+            'search_keyword',
         ),
         SEARCH_TYPE_ARTICLE => array(
             'search_libel',
@@ -27,9 +28,12 @@ class SearchController extends AppController
     {
         parent::__construct();
 
-        $param = $this->context->getParam('type');
-
-        $this->_type = !empty($param) ? $param : SEARCH_TYPE_USER;
+        if ($this->context->getParam('search_type')) {
+            $this->_type = $this->context->getParam('search_type');
+            $this->context->set('search_type', $this->_type);
+        } else if (!empty($this->context->get('search_type'))) {
+            $this->_type = $this->context->get('search_type');
+        }
 
         $this->view->type = $this->_type;
     }
@@ -38,6 +42,7 @@ class SearchController extends AppController
     {
         $this->view->addJS(JS_SCROLL_REFRESH);
         $this->view->addJS(JS_SEARCH);
+        $this->view->addJS(JS_ARTICLE);
 
         $criterias             = $this->_getSearchCriterias();
         $this->view->criterias = $criterias;
@@ -61,7 +66,7 @@ class SearchController extends AppController
         $this->view->criterias = $criterias;
         $this->view->elements  = $this->model->{$this->_type}->getSearch($criterias);
 
-        $this->view->getJSONResponse(strtolower($this->_type) . '/wList');
+        $this->view->getJSONResponse('search/wList');
     }
 
     public function renderMore()
@@ -71,12 +76,15 @@ class SearchController extends AppController
         $this->view->criterias = $criterias;
         $this->view->elements  = $this->model->{$this->_type}->getSearch($criterias, $offset);
 
-        $this->view->offset   = $offset++;
-        $this->view->getJSONResponse(strtolower($this->_type) . '/wList');
+        if (!empty($this->view->elements)) {
+            $this->view->offset   = $offset++;
+            $this->view->getJSONResponse('search/wList');
+        }
     }
 
     private function _getSearchCriterias()
     {
+        Log::err($_POST);
         foreach ($this->_searchParams[$this->_type] as $param) {
             if (isset($this->context->params[$param])) {
                 $this->context->set($param, $this->context->params[$param]);
