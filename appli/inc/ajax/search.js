@@ -10,9 +10,17 @@ $(document).ready(function() {
         );
     });
 
+    $("#search_form").on('change', 'select', function(e) {
+        e.preventDefault();
+        refresh();
+    });
+
     $("#search_form").on('click', '#submit_button', function(e) {
         e.preventDefault();
+        refresh();
+    });
 
+    function refresh() {
         var type = 'user';
 
         $.post('search/getResults', {
@@ -29,5 +37,5 @@ $(document).ready(function() {
             },
             'html'
         );
-    });
+    }
 });

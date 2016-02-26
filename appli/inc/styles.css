@@ -652,3 +652,16 @@ div.debug {
     text-shadow: 0 -1px 0 #354c8c;
     white-space: nowrap;
 }
+
+#submit_button {
+    color: white;
+    background-color: black;
+    font-weight: bold;
+    border: 1px groove;
+    width: 100px;
+    height: 20px;
+}
+
+#submit_button:hover{
+    background-color: rgb(46, 41, 57);
+}

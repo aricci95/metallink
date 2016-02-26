@@ -7,8 +7,10 @@
             <option value="3" <?php if ($this->criterias['search_type'] == 3) echo 'selected="selected" '; ?>>Vente</option>
             <option value="4" <?php if ($this->criterias['search_type'] == 3) echo 'selected="selected" '; ?>>Covoiturage</option>
         </select>
-        <span id="search_criterias"></span>
-        <input id="submit_button" type="image" src="MLink/images/boutons/bnt_search.png" ALT="Rechercher" />
+        <span id="search_criterias">
+            <?php $this->render('search/wUser'); ?>
+        </span>
+        <input id="submit_button" type="submit" src="MLink/images/boutons/bnt_search.png" ALT="Rechercher" value="Chercher" />
     </div>
 </form>
 <?php $this->_helper->blackBoxOpen(); ?>
