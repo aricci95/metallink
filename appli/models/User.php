@@ -89,8 +89,8 @@ class User extends AppModel
         }
 
         if (!empty($criterias['search_distance'])) {
-            $longitude = $this->context->get('longitude');
-            $lattitude = $this->context->get('lattitude');
+            $longitude = $this->context->get('user_longitude');
+            $lattitude = $this->context->get('user_lattitude');
 
             if (!is_array($longitude) && !is_array($lattitude)) {
                 if ($longitude > 0 && $lattitude > 0) {

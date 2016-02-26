@@ -195,6 +195,31 @@ class Concert extends AppModel
             $where = " AND concert_libel LIKE :search_keyword ";
         }
 
+        if (!empty($criterias['search_distance'])) {
+            $longitude = $this->context->get('user_longitude');
+            $lattitude = $this->context->get('user_lattitude');
+
+            if (!is_array($longitude) && !is_array($lattitude)) {
+                if ($longitude > 0 && $lattitude > 0) {
+                    // On récupère les codes postaux associés
+                    $proxSql = "SELECT distinct LEFT(code_postal, 2) as code_postal FROM ville
+                            WHERE (6366*acos(cos(radians(".$lattitude."))*cos(radians(`lattitude`))*cos(radians(`longitude`)
+                            -radians(".$longitude."))+sin(radians(".$lattitude."))*sin(radians(`lattitude`)))) <= ".($criterias['search_distance'] / 10);
+                    $closeCPs = $this->fetch($proxSql);
+
+                    if (count($closeCPs) > 0) {
+                        $where .= ' AND LEFT(departement, 2) IN (';
+
+                        foreach ($closeCPs as $ville) {
+                            $where .= "'".$ville['code_postal']."', ";
+                        }
+
+                        $where .= ") ";
+                    }
+                }
+            }
+        }
+
         $sql = 'SELECT
                 *
             FROM
@@ -215,6 +240,9 @@ class Concert extends AppModel
             ORDER BY date ASC
             LIMIT :limit_begin, :limit_end;
         ';
+
+        $sql = str_replace(',)', ')', $sql);
+        $sql = str_replace(', )', ')', $sql);
 
         $stmt = $this->db->prepare($sql);
 

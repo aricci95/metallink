@@ -14,7 +14,7 @@ class SearchController extends AppController
         ),
 
         SEARCH_TYPE_CONCERT => array(
-            'search_location',
+            'search_distance',
             'search_keyword',
         ),
         SEARCH_TYPE_ARTICLE => array(
