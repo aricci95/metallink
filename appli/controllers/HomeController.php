@@ -21,8 +21,7 @@ class HomeController extends AppController
 
         $this->view->newUsers    = $this->model->User->getNew();
         $this->view->newArticles = $this->model->article->getNew();
-        $this->view->newCovoits  = $this->model->covoit->getNew();
-        $this->view->lesNews     = $this->model->news->getNews(1);
+        //$this->view->newCovoits  = $this->model->covoit->getNew();
         $this->view->concerts    = $this->model->concert->suggestFromUser();
 
         $this->view->reco = $this->view->concerts[max(array_keys($this->view->concerts))];

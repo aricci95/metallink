@@ -21,9 +21,11 @@ $(document).ready(function() {
                     $.get(
                         url, '',
                         function(data) {
-                            console.log(data);
                             if(data !== '') {
-                                results.append(data);
+                                tmp = $(data);
+                                tmp.hide();
+                                results.append(tmp);
+                                tmp.fadeIn();
                                 loading.attr('data-offset', newOffset);
                                 loading.attr('data-show', 'false');
                             } else {
@@ -36,5 +38,4 @@ $(document).ready(function() {
             }
         })
     });
-    
 });

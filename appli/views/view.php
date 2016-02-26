@@ -34,6 +34,9 @@
         <?php if($this->isJSActivated(JS_FORUM)) : ?>
             <script type="text/javascript" src="MLink/appli/inc/ajax/forum.js"></script>
         <?php endif; ?>
+        <?php if($this->isJSActivated(JS_SEARCH)) : ?>
+            <script type="text/javascript" src="MLink/appli/inc/ajax/search.js"></script>
+        <?php endif; ?>
             <link rel="stylesheet" type="text/css" href="MLink/appli/inc/growler/css/gritter.css" />
             <script type="text/javascript" src="http://www.google.com/jsapi"></script>
             <script type="text/javascript" src="MLink/appli/inc/growler/js/gritter.js"></script>
@@ -68,10 +71,11 @@
                 <table class="tableMenu">
                     <tr align="center">
                         <td><a class="aMenu" <?php echo ($this->page == 'profile') ? 'style="color:white;"' : ''; ?> href="profile/<?php echo $this->context->get('user_id'); ?>">Profil</a></td>
-                        <td><a class="aMenu" <?php echo ($this->page == 'user') ? 'style="color:white;"' : ''; ?> href="user">Recherche</a></td>
+                        <td><a class="aMenu" <?php echo ($this->page == 'search') ? 'style="color:white;"' : ''; ?> href="search">Recherche</a></td>
                         <td><a class="aMenu" <?php echo ($this->page == 'forum') ? 'style="color:white;"' : ''; ?> href="forum">Forum</a></td>
+                         <?php /*
                         <td><a class="aMenu" <?php echo ($this->page == 'sales') ? 'style="color:white;"' : ''; ?> href="sales">Ventes</a></td>
-                        <td><a class="aMenu" <?php echo ($this->page == 'covoit') ? 'style="color:white;"' : ''; ?> href="covoit">Covoit'</a></td>
+                        <td><a class="aMenu" <?php echo ($this->page == 'covoit') ? 'style="color:white;"' : ''; ?> href="covoit">Covoit'</a></td> */ ?>
                         <?php if($this->context->get('role_id') >= AUTH_LEVEL_ADMIN) : ?>
                             <?php /*
                             <td><a class="aMenu" <?php echo ($this->page == 'adminnews') ? 'style="color:white;"' : ''; ?> href="adminNews">News</a></td>

@@ -7,6 +7,7 @@ class SalesController extends SearchController
     protected $_JS   = array(JS_SCROLL_REFRESH, JS_ARTICLE);
     protected $_type = 'Article';
     protected $_searchParams = array('search_libel',
+                                     'search_type',
                                      'search_categorie');
 
     public function render()
