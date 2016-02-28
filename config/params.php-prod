@@ -5,12 +5,16 @@ DEFINE("_USER", "");
 DEFINE("_PASS", "");
 DEFINE("_BASE_DE_DONNEES", "");
 
+// FACEBOOK
+DEFINE('FACEBOOK_APP_ID', '');
+DEFINE('FACEBOOK_APP_SECRET', '');
+
 DEFINE('ADMIN_MAIL', 'aricci95@gmail.com');
 DEFINE('MAIL_SERVER', 1);
 DEFINE('DEBUG', 0);
 DEFINE('PROFILER', 0);
-DEFINE('LOG', 0);
-DEFINE('LOG_FILE', 'mlink_logs.txt');
+DEFINE('LOG', 1);
+DEFINE('LOG_FILE', 'mlink.log');
 
 // *************** CONFIG LIBRE*******************
 DEFINE('APP_VERSION', '3.0');
@@ -40,6 +44,7 @@ DEFINE('JS_COVOIT', 'covoit');
 DEFINE('JS_AUTOCOMPLETE', 'autocomplete');
 DEFINE('JS_FORUM', 'forum');
 DEFINE('JS_DATEPICKER', 'datepicker');
+DEFINE('JS_SEARCH', 'search');
 
 // Type de news
 DEFINE('NEWS_TYPE_ARTICLE', 1);
@@ -53,6 +58,12 @@ DEFINE("ONLINE_TIME_LIMIT", 10000);
 // Photo type
 DEFINE('PHOTO_TYPE_USER', 0);
 DEFINE('PHOTO_TYPE_ARTICLE', 1);
+
+// Search types
+DEFINE('SEARCH_TYPE_USER', 'user');
+DEFINE('SEARCH_TYPE_CONCERT', 'concert');
+DEFINE('SEARCH_TYPE_ARTICLE', 'article');
+DEFINE('SEARCH_TYPE_COVOIT', 'covoit');
 
 // REFRESH RESULTS
 DEFINE('NB_SEARCH_RESULTS', 21);
@@ -112,7 +123,7 @@ DEFINE('MESSAGE_501', "Un erreur est servenue.");
 DEFINE('ERROR_BEHAVIOR', 502);
 DEFINE('MESSAGE_502', "Un erreur est servenue.");
 DEFINE('ERROR_NOT_FOUND', 504);
-DEFINE('MESSAGE_501', "Contenu introuvable.");
+DEFINE('MESSAGE_504', "Contenu introuvable.");
 // Status de link
 DEFINE('LINK_STATUS_NONE', 0);
 DEFINE('LINK_STATUS_RECEIVED', 5);
