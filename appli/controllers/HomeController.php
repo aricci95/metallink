@@ -21,10 +21,14 @@ class HomeController extends AppController
 
         $this->view->newUsers    = $this->model->User->getNew();
         $this->view->newArticles = $this->model->article->getNew();
-        //$this->view->newCovoits  = $this->model->covoit->getNew();
-        $this->view->concerts    = $this->model->concert->suggestFromUser();
 
-        $this->view->reco = $this->view->concerts[max(array_keys($this->view->concerts))];
+        $concertCriterias = array(
+            'search_distance' => 10,
+        );
+
+        $concerts = $this->model->concert->getSearch($concertCriterias, 0, 5);
+
+        $this->view->concert = !empty($concerts) ? $concerts[max(array_keys($concerts))] : null;
 
         $this->view->render();
     }

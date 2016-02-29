@@ -11,11 +11,11 @@
 <?php $this->_helper->blackBoxClose(); ?>
 
 <!-- Recommandation concert -->
-<?php 
-$this->_helper->blackBoxOpen('maxWidth'); 
-    $this->_helper->printConcert($this->reco);
-$this->_helper->blackBoxClose();  
-?>
+<?php if (!empty($this->concert)) : 
+  $this->_helper->blackBoxOpen('maxWidth'); 
+      $this->_helper->printConcert($this->concert);
+  $this->_helper->blackBoxClose();  
+endif; ?>
 
 <!-- COVOITURAGE -->
 <?php /*
@@ -29,24 +29,6 @@ $this->_helper->blackBoxClose();
 <?php $this->_helper->blackBoxOpen(); ?>
     <h2>Nouveaux articles</h2>
     <?php foreach ($this->newArticles as $key => $value) $this->_helper->printArticle($value); ?>
-<?php $this->_helper->blackBoxClose(); ?>
-
-<!-- Concert list -->
-<?php $this->_helper->blackBoxOpen(); ?>
-    <h2>Autres concerts</h2>
-	<div style="overflow:hidden;width:720px;">
-		<ul>
-		<?php foreach ($this->concerts as $concert) : ?>
-			<li style="white-space:nowrap;line-height: 20px;">
-				<?php if (!empty($concert['fb_event'])) : ?>
-					<a href="<?php echo $concert['fb_event']; ?>" target="_blank"><?php echo $concert['concert_libel']; ?></a>
-				<?php else :?>
-					<?php echo $concert['concert_libel']; ?>
-				<?php endif; ?>
-			</li>
-		<?php endforeach; ?>
-		</ul>
-	</div>
 <?php $this->_helper->blackBoxClose(); ?>
 
 <!-- Facebook discussion -->

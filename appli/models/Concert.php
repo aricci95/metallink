@@ -183,7 +183,7 @@ class Concert extends AppModel
     }
 
     // Récupéres les utilisateurs par critéres
-    public function getSearch($criterias, $offset = 0)
+    public function getSearch($criterias, $offset = 0, $limit = 0)
     {
         $concerts = array();
 
@@ -251,7 +251,7 @@ class Concert extends AppModel
 
 
         $stmt->bindValue('limit_begin', $offset * (NB_SEARCH_RESULTS * 3), PDO::PARAM_INT);
-        $stmt->bindValue('limit_end', (NB_SEARCH_RESULTS * 3), PDO::PARAM_INT);
+        $stmt->bindValue('limit_end', empty($limit) ? (NB_SEARCH_RESULTS * 3) : $limit, PDO::PARAM_INT);
 
         $concertRows = $this->db->executeStmt($stmt)->fetchAll();
 

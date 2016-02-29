@@ -159,10 +159,12 @@ class ViewHelper {
                         <th style="color:black;">Orga : </th>
                         <td><?php echo $concert['organization']; ?></td>
                     </tr>
-                    <tr>
-                        <th style="color:black;">Prix : </th>
-                        <td><?php echo $concert['price'] . ' euros'; ?></td>
-                    </tr>
+                    <?php if (!empty($concert['price'])) : ?>
+                        <tr>
+                            <th style="color:black;">Prix : </th>
+                            <td><?php echo $concert['price'] . ' euros'; ?></td>
+                        </tr>
+                    <?php endif; ?>
                 </table>
                 <h2 class="profileInfo" style="color:black;text-align: left;">Artistes</h2>
                 <table width="100%" class="tableProfil" style="text-align: left;">
