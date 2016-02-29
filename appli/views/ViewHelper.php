@@ -6,13 +6,15 @@ class ViewHelper {
     public $context;
     private $_helper;
 
-    public function __construct() {
+    public function __construct() 
+    {
         $this->context = Context::getInstance();
         $this->now = time();
         $this->_helper = $this;
     }
 
-    public function render($view) {
+    public function render($view) 
+    {
         $view = trim($view);
         $view = str_replace("../","protect", $view);
         $view = str_replace(";","protect", $view);
@@ -25,7 +27,8 @@ class ViewHelper {
         }
     }
 
-    public function status($timestamp) {
+    public function status($timestamp) 
+    {
         $delay = $this->now - $timestamp;
         return ($delay < ONLINE_TIME_LIMIT) ? 'online.gif' : 'offline.png';
     }
@@ -38,7 +41,8 @@ class ViewHelper {
     }
 
     // Affiche une div Blanche cool
-    public function whiteBoxMainOpen() {
+    public function whiteBoxMainOpen() 
+    {
         echo '<table class="whiteBox">';
             echo '<tr>';
                 echo '<td class="whiteBoxleftUpCorner"></td>';
@@ -51,7 +55,8 @@ class ViewHelper {
                 echo '<div class="MainContent"style="width:772px;height:100%;">';
     }
 
-    public function whiteBoxMainClose() {
+    public function whiteBoxMainClose() 
+    {
                 echo '</div>';
                 echo '</td>';
                 echo '<td class="whiteBoxright"></td>';
@@ -65,7 +70,8 @@ class ViewHelper {
     }
 
     // Affiche une div Blanche cool
-    public function whiteBox($width = null, $height = '100%', $margin = null) {
+    public function whiteBox($width = null, $height = '100%', $margin = null) 
+    {
         if($width == null) {
             $width = 740;
         }
@@ -79,7 +85,8 @@ class ViewHelper {
         echo '</table>';
     }
 
-    public function formFooter($previousUrl, $submit = true) {
+    public function formFooter($previousUrl, $submit = true) 
+    {
         echo '<div align="center" style="clear:both;">';
         if($submit) {
             echo '<input type="image" src="MLink/images/boutons/valider.png" value="Valider" style="border:0px;" border="0" /><br/>';
@@ -88,7 +95,8 @@ class ViewHelper {
         echo '</div>';
     }
 
-    public function printArticle($article) {
+    public function printArticle($article) 
+    {
         if(!empty($article['art_id'])) {
             $imageUrl = ((!empty($article['art_photo_url']) && file_exists($_SERVER["DOCUMENT_ROOT"]."/MLink/photos/small/".$article['art_photo_url']))) ? $article['art_photo_url'] : 'unknowUser.jpg';
 
@@ -115,7 +123,8 @@ class ViewHelper {
 
     }
 
-    public function printUserLogin($user) {
+    public function printUserLogin($user) 
+    {
         echo '<div class="userFont" style="font-size:12px;float:left;margin-right:100px;">';
         echo '<a target="_blank" style="color:';
         if($user['user_gender'] == 1) echo '#3333CC';
@@ -125,45 +134,85 @@ class ViewHelper {
         echo '</a></div>';
     }
 
-    public function printUser($user, $links = array()) {
+    public function printConcert($concert)
+    {
+        ?>
+        <div class="divElement" style="padding:10px;background-image: url('/MLink/images/structure/middle.jpg');min-height: 400px; width: 97%">
+            <h2 style="color:black;margin:auto;width:550px;margin-bottom:10px;" align="center"><?php echo $concert['concert_libel']; ?></h2>
+            <div style="float:left;">
+                <div>
+                    <a href="<?php echo $concert['fb_event']; ?>" target="_blank"><img style="max-width:720px;max-height:500px;" src="<?php echo $concert['flyer_url']; ?>"/></a>
+                </div>
+            </div>
+            <div style="float:left;margin:10px;">
+                <h2 class="profileInfo" style="color:black;text-align: left;">Informations</h2>
+                <table width="100%" class="tableProfil">
+                    <tr>
+                        <th style="color:black;">Adresse : </th>
+                        <td><?php echo $concert['location']; ?></td>
+                    </tr>
+                    <tr>
+                        <th style="color:black;">Ville : </th>
+                        <td><?php echo $concert['nom']. ' (' . $concert['departement'] . ')'; ?></td>
+                    </tr>
+                    <tr>
+                        <th style="color:black;">Orga : </th>
+                        <td><?php echo $concert['organization']; ?></td>
+                    </tr>
+                    <tr>
+                        <th style="color:black;">Prix : </th>
+                        <td><?php echo $concert['price'] . ' euros'; ?></td>
+                    </tr>
+                </table>
+                <h2 class="profileInfo" style="color:black;text-align: left;">Artistes</h2>
+                <table width="100%" class="tableProfil" style="text-align: left;">
+                    <ul>
+                    <?php foreach ($concert['bands'] as $band) : ?>
+                        <li style="color:black;"><?php echo '- <a href="' . $band['band_website'] . '" >' . strtoupper($band['band_libel']) . '</a>'; ?></li>
+                    <?php endforeach; ?>
+                    </ul>
+                </table>
+            </div>
+        </div>
+        <?php
+    }
+
+    public function printUser($user, $links = array()) 
+    {
         if(!empty($user['user_id'])) {
             $imageUrl = ((!empty($user['user_photo_url']) && file_exists($_SERVER["DOCUMENT_ROOT"]."/MLink/photos/small/".$user['user_photo_url']))) ? $user['user_photo_url'] : 'unknowUser.jpg';
-            echo '<div class="divElement">';
-            echo '<a href="profile/'.$user['user_id'].'" >';
-                // Partie PHOTO
-                echo '<div class="divPhoto" style="background:url(\'';
-                echo '/MLink/photos/small/'.$imageUrl.'\');background-position: top center;">';
-                echo '<img class="pictoStatus" src="MLink/images/icone/';
-                echo $this->status($user['user_last_connexion']);
-                echo '" />';
-                echo '</div>';
-                // Partie INFO
-                echo '<div class="divInfo">';
-                    // Affichage des infos
-                    echo '<div class="userFont" style="float:left;margin-right:100px;color:';
-                    if($user['user_gender'] == 1) echo '#3333CC';
-                    elseif($user['user_gender'] == 2) echo '#CC0000';
-                    echo '">';
-                    echo $this->_maxLength($user['user_login'], 13);
-                    echo '</div>';
-                    // Si l'âge est défini
-                    if(isset($user['age']) && $user['age'] < 2000) echo '<br/>'.$user['age'].' ans';
-                    if(!empty($user['user_city'])) echo '<br/>'.$user['user_city'];
-                    if(!empty($user['look_libel'])) echo '<br/>'.$user['look_libel'];
-                    // Partie Link
-                    echo '<div class="divLink" style="position:absolute;bottom:1;left:3;">';
-                    $this->user = $user;
-                    $this->link = $this->_searchLink($links, $user['user_id']);
-                    $this->render('link/wItem');
-                    echo '</div>';
-                echo '</div>';
-                echo '</a>';
-            echo '</div>';
+            ?>
+            <div class="divElement">
+                <a href="profile/<?php echo $user['user_id']; ?>" >
+                <div class="divPhoto" style="background:url('/MLink/photos/small/<?php echo $imageUrl; ?>');background-position: top center;">
+                    <img class="pictoStatus" src="MLink/images/icone/<?php echo $this->status($user['user_last_connexion']); ?>" />
+                </div>
+                <div class="divInfo">
+                    <div class="userFont" style="float:left;margin-right:100px;color:<?php echo ($user['user_gender'] == 1) ? '#3333CC' : '#CC0000'; ?>" >
+                        <?php echo $this->_maxLength($user['user_login'], 13); ?>
+                    </div>
+                    <?php 
+                        echo (isset($user['age']) && $user['age'] < 2000) ? '<br/>' . $user['age'].' ans' : '';
+                        echo !empty($user['user_city']) ? '<br/>' . $user['user_city'] : '';
+                        echo !empty($user['look_libel']) ? '<br/>' . $user['look_libel'] : '';
+                    ?>
+                    <div class="divLink" style="position:absolute;bottom:1;left:3;">
+                    <?php
+                        $this->user = $user;
+                        $this->link = $this->_searchLink($links, $user['user_id']);
+                        $this->render('link/wItem');
+                    ?>
+                    </div>
+                </div>
+                </a>
+            </div>
+            <?php
         }
     }
 
     // Affiche login, photo et état
-    public function printUserSmall($user) {
+    public function printUserSmall($user) 
+    {
         $imageUrl = ((!empty($user['user_photo_url']) && file_exists($_SERVER["DOCUMENT_ROOT"] . "/MLink/photos/small/" . $user['user_photo_url']))) ? $user['user_photo_url'] : 'unknowUser.jpg';
         echo '<a href="profile/'.$user['user_id'].'" >';
         echo '<div class="divElementSmall">';
@@ -187,7 +236,8 @@ class ViewHelper {
         echo '</a>';
     }
 
-    private function _searchLink($links, $userId) {
+    private function _searchLink($links, $userId) 
+    {
         foreach($links as $key => $link) {
             if($userId == $link['destinataire_id'] || $userId == $link['expediteur_id']) {
                 return $link;
@@ -196,7 +246,8 @@ class ViewHelper {
         }
     }
 
-    private function _maxLength($string, $length) {
+    private function _maxLength($string, $length) 
+    {
         if(strlen($string) > $length) {
             return substr($string, 0, $length).'...';
         } else {
@@ -205,7 +256,8 @@ class ViewHelper {
     }
 
     // Affiche une div Noire cool
-    public function blackBoxOpen($cssParams = 'maxWidth') {
+    public function blackBoxOpen($cssParams = 'maxWidth') 
+    {
 
         echo '<table class="blackBox">';
         echo '<tr><td class="blackBoxleftUpCorner"></td><td class="blackBoxup"></td><td class="blackBoxrightUpCorner"></td></tr>';
@@ -218,13 +270,15 @@ class ViewHelper {
         echo '>';
     }
 
-    public function blackBoxClose() {
+    public function blackBoxClose() 
+    {
         echo '</td><td class="blackBoxright"></td></tr>';
         echo '<tr><td class="blackBoxleftDownCorner"></td><td class="blackBoxdown"></td><td class="blackBoxrightDownCorner"></td></tr>';
         echo '</table>';
     }
 
-    private function _addStyle($cssParams = array()) {
+    private function _addStyle($cssParams = array()) 
+    {
         echo 'style="';
             foreach($cssParams as $key => $value) {
                 echo $key.':'.$value.';';
@@ -234,8 +288,8 @@ class ViewHelper {
 
 
     // Affiche le gif Offline ou Online
-    public function showStatut($userLastConnexion, $full = false) {
-
+    public function showStatut($userLastConnexion, $full = false) 
+    {
         if($this->status($userLastConnexion) == 'online.gif') {
             if($full) echo '<span style="color:green;font-size:12px;">online ';
             echo  '<img src="MLink/images/icone/online.gif" />';

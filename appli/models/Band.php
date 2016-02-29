@@ -19,10 +19,12 @@ class Band extends AppModel
         $sql = '
             INSERT INTO ref_band (
                 band_libel,
-                band_website
+                band_website,
+                band_style
             ) VALUES (
                 :band_libel,
-                :band_website
+                :band_website,
+                :band_style
             );
         ';
 
@@ -30,6 +32,7 @@ class Band extends AppModel
 
         $stmt->bindValue('band_libel', $data['name']);
         $stmt->bindValue('band_website', $data['website']);
+        $stmt->bindValue('band_style', $data['style']);
 
         if ($this->db->executeStmt($stmt)) {
             return $this->db->lastInsertId();

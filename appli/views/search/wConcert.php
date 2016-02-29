@@ -1,4 +1,4 @@
-Mot clé (Groupe, asso) :
+Mot clé (Groupe, Ville) :
 <input id="search_keyword" name="search_keyword" size="10" value="<?php if(isset($this->criterias['search_keyword'])) echo $this->criterias['search_keyword']; ?>" />
 Distance :
 <select id="search_distance" name="search_distance">

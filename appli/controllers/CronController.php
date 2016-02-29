@@ -34,7 +34,7 @@ class CronController extends AppController
         );
 
         $concerts = array();
-        $limit    = 40;
+        $limit    = 20;
         $counter  = 0;
         $done     = 0;
 
@@ -103,12 +103,14 @@ class CronController extends AppController
                         $name_raw = explode('[' , strtolower(trim(preg_replace('/\s+/', ' ', $bandCell[0]->plaintext))));
 
                         $website = !empty($bandCell[2]) ? $bandCell[2]->find('a', 0) : null;
+                        $style   = !empty($name_raw[1]) ? str_replace(']', '', $name_raw[1]) : null;
 
                         $cleanName = Tools::getCleanName($name_raw[0]);
 
                         if (!isset($bandsNames[$cleanName]) && !strpos('guest', $cleanName)) {
                             $band_data = array(
                                 'name' => $name_raw[0],
+                                'style' => $style,
                                 'website' => !empty($website) ? $website->href : null,
                             );
 
@@ -118,6 +120,7 @@ class CronController extends AppController
                         $tmp['bands'][] = array(
                             'band_id' => isset($bandsNames[$cleanName]) ? $bandsNames[$cleanName] : $band_id,
                             'name'    => ucfirst($name_raw[0]),
+                            'style'   => $style,
                             'website' => !empty($website) ? $website->href : null,
                         );
                     }
@@ -175,6 +178,8 @@ class CronController extends AppController
 
         Log::info('[CRON::getConcerts] : ' . $done . ' concerts created.');
 
-        $this->get('mailer')->send('aricci95@gmail.com', 'CRON getConcerts OK', 'CRON getConcerts via sueurdemetal ok, ' . $done . ' concerts importés.', false);
+        $this->get('mailer')->send(ADMIN_MAIL, 'CRON getConcerts OK', 'CRON getConcerts via sueurdemetal ok, ' . $done . ' concerts.', false);
+
+        echo $done;
     }
 }
