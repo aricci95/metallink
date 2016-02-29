@@ -20,6 +20,7 @@ class Concert extends AppModel
         $clean = array(
             'non précis&eacute;e',
             'non communiqu&eacute;',
+            'non pr',
         );
 
         foreach ($data as $key => $value) {
@@ -270,6 +271,7 @@ class Concert extends AppModel
                 'band_id' => $concert['band_id'],
                 'band_libel' => $concert['band_libel'],
                 'band_website' => $concert['band_website'],
+                'band_style' => $concert['band_style'],
             );
 
             $concerts[$concert['concert_id']]['bands'] = $bands;

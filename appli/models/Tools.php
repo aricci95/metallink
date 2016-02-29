@@ -82,6 +82,19 @@ class Tools
         return $frenchDate;
     }
 
+    public static function getCleanBandStyle($string = '')
+    {
+        if (empty($string)) return '';
+
+        $explodedString = explode(' ', $string);
+        $ucFirstArray = array();
+        foreach ($explodedString as $key => $value) {
+            $ucFirstArray[$key] = ucfirst($value);
+        }
+        
+        return '(' . implode( ' ', $ucFirstArray) . ')';
+    }
+
 
     // Convertis les symboles en smileys
     public static function toSmiles($texte)

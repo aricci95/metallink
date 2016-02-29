@@ -168,7 +168,7 @@ class ViewHelper {
                 <table width="100%" class="tableProfil" style="text-align: left;">
                     <ul>
                     <?php foreach ($concert['bands'] as $band) : ?>
-                        <li style="color:black;"><?php echo '- <a href="' . $band['band_website'] . '" >' . strtoupper($band['band_libel']) . '</a>'; ?></li>
+                        <li style="color:black;"><?php echo '- <a href="' . $band['band_website'] . '" >' . strtoupper($band['band_libel']) . '</a><span style="margin-left:10px;float:right;">' . Tools::getCleanBandStyle($concert['band_style']); ?></span></li>
                     <?php endforeach; ?>
                     </ul>
                 </table>
