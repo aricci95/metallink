@@ -28,7 +28,7 @@
                 <ul>
                 <?php foreach ($concert['bands'] as $band) : ?>
                     <li style="color:black;"><?php echo '- <a href="' . $band['band_website'] . '" >' . strtoupper($band['band_libel']) . '</a>'; ?></li>
-                <? endforeach; ?>
+                <?php endforeach; ?>
                 </ul>
             </table>
         </div>

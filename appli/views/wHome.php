@@ -42,7 +42,7 @@
             <ul>
             <?php foreach ($this->reco['bands'] as $band) : ?>
                 <li><?php echo '- <a href="' . $band['band_website'] . '" >' . strtoupper($band['band_libel']) . '</a>'; ?></li>
-            <? endforeach; ?>
+            <?php endforeach; ?>
             </ul>
         </table>
     </div>
