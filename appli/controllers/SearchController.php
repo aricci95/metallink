@@ -12,7 +12,6 @@ class SearchController extends AppController
             'search_gender',
             'search_age',
         ),
-
         SEARCH_TYPE_CONCERT => array(
             'search_distance',
             'search_keyword',
@@ -57,7 +56,8 @@ class SearchController extends AppController
     public function renderCriterias()
     {
         $this->view->criterias = $this->_getSearchCriterias();
-        $this->view->getJSONResponse('search/w' . $this->_type);
+
+        $this->view->getJSONResponse('search/w' . ucfirst($this->_type));
     }
 
     public function renderGetResults()
