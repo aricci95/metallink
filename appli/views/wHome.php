@@ -19,7 +19,7 @@
         </div>
     </div>
     <div style="float:left;margin:10px;">
-      <iframe style="border:3px #808080 groove" width="200" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://maps.google.com/maps?q=<?php echo $this->reco['location']; ?>&amp;oe=utf-8&amp;client=firefox-a&amp;ie=UTF8&amp;hq=&amp;hnear=<?php echo $this->reco['location']; ?>,+France&amp;t=h&amp;vpsrc=6&amp;output=embed"></iframe>
+      <iframe style="border:3px #808080 groove" width="200" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://maps.google.com/maps?q=<?php echo $this->reco['location'] . ' ' . $this->reco['nom']; ?>&amp;oe=utf-8&amp;client=firefox-a&amp;ie=UTF8&amp;hq=&amp;hnear=<?php echo $this->reco['location'] . ' ' . $this->reco['nom']; ?>,+France&amp;t=h&amp;vpsrc=6&amp;output=embed"></iframe>
     </div>
     <div style="float:left;">
         <h2 class="profileInfo" style="text-align:center;">Informations</h2>

@@ -84,7 +84,6 @@ class SearchController extends AppController
 
     private function _getSearchCriterias()
     {
-        Log::err($_POST);
         foreach ($this->_searchParams[$this->_type] as $param) {
             if (isset($this->context->params[$param])) {
                 $this->context->set($param, $this->context->params[$param]);
