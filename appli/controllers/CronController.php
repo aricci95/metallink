@@ -175,6 +175,6 @@ class CronController extends AppController
 
         Log::info('[CRON::getConcerts] : ' . $done . ' concerts created.');
 
-        $this->get('mailer')->send('aricci95@gmail.com', 'CRON getConcerts OK', 'CRON getConcerts via sueurdemetal ok, ' . $done . ' concerts importés.');
+        $this->get('mailer')->send('aricci95@gmail.com', 'CRON getConcerts OK', 'CRON getConcerts via sueurdemetal ok, ' . $done . ' concerts importés.', false);
     }
 }
