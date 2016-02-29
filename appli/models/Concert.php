@@ -96,8 +96,6 @@ class Concert extends AppModel
                 $this->db->executeStmt($stmt);
             }
         }
-
-        Log::err('INSERT OK');
     }
 
     public function suggestFromUser()
