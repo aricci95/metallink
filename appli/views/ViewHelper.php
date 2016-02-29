@@ -137,7 +137,7 @@ class ViewHelper {
     public function printConcert($concert)
     {
         ?>
-        <div class="divElement" style="padding:10px;background-image: url('/MLink/images/structure/middle.jpg');min-height: 400px; width: 97%">
+        <div class="divElement" style="padding:10px;background-image: url('/MLink/images/structure/middle.jpg');min-height: 412px; width: 97%">
             <h2 style="color:black;margin:auto;width:550px;margin-bottom:10px;" align="center"><?php echo $concert['concert_libel']; ?></h2>
             <div style="float:left;">
                 <div>
