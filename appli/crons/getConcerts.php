@@ -1,12 +1,10 @@
+#!/usr/local/bin/php
 <?php
-        $headers = 'From: "MetalLink"<contact.metallink@gmail.com>' . "\n";
-        $headers .='Reply-To: contact.metallink@gmail.com' . "\n";
-        $headers .='Content-Type: text/html; charset="utf-8"' . "\n";
-        $headers .='Content-Transfer-Encoding: 8bit';
+session_name("metallink");
+session_start();
 
+include_once('cronBootStrap.php');
 
-        mail('aricci95@gmail.com', 'cron get concert bootstrap', 'try to launch', $headers);
-
- header('Location: http://www.metallink.fr/cron/getConcerts');
- exit();
+$controller = new CronController();
+$controller->renderGetConcerts();
 ?>

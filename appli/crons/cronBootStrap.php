@@ -1,11 +1,9 @@
 <?php
-session_name("metallink");
-session_start();
-
 // Récupération du chemin absolu
 $removedStrings = array(
-    '\appli',
-    '/appli',
+    'crons',
+    'appli',
+    '\\\\',
 );
 
 $path =  str_replace($removedStrings, array(), dirname(__FILE__));
@@ -14,24 +12,6 @@ define('ROOT_DIR', $path);
 
 // inculusion de la conf et des constantes
 require ROOT_DIR . '/config/params.php';
-
-// APPLICATION BOOTSTRAP
-// CONTROLLER
-if(!empty($_GET['page']) && ucfirst($_GET['page']) != 'Home') {
-    $page = ucfirst($_GET['page']).'Controller';
-    if(!file_exists(ROOT_DIR.'/appli/controllers/'.$page.'.php')) {
-        $page = 'HomeController';
-    }
-} else {
-    $page = 'HomeController';
-}
-
-// ACTION
-$action = 'render';
-if (!empty($_GET['action']) && ucfirst($_GET['action']) != 'Home') {
-    $action .= ucfirst($_GET['action']);
-}
-
 
 // AutoLoad function
 function autoLoader($class_name) {
@@ -69,20 +49,5 @@ require ROOT_DIR . '/appli/views/ViewHelper.php';
 include ROOT_DIR . '/appli/engine/ErrorHandler.php';
 set_error_handler("ErrorHandler");
 
-try {
-    require_once ROOT_DIR . '/appli/controllers/'.$page.'.php';
+require_once ROOT_DIR . '/appli/controllers/CronController.php';
 
-    $controller = new $page();
-    $controller->$action();
-} catch (Exception $e) {
-    require_once ROOT_DIR . '/appli/controllers/HomeController.php';
-    $controller = new HomeController();
-
-    $controller->view->growlerError();
-    $controller->render();
-
-    $controller->get('Mailer')->sendError($e);
-    die;
-}
-
-?>
