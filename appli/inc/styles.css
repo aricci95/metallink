@@ -1,4 +1,8 @@
 @CHARSET "utf-8";
+a {
+    cursor: url(http://cdn.acfrg.com/o/emp.fr/hand3.cur), url(http://cdn.acfrg.com/o/emp.fr/hand3.png), auto;
+}
+
 textarea {
     background-color:#D8D8D8;
 }
