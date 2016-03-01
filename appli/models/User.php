@@ -188,7 +188,7 @@ class User extends AppModel
     {
         $userId = $this->context->get('user_id');
 
-        $sql = '
+        $sql = "
             SELECT
                 user_id,
                 user_login,
@@ -202,25 +202,25 @@ class User extends AppModel
                 FLOOR((DATEDIFF( CURDATE(), (user_birth))/365)) AS age
             FROM user
             LEFT JOIN ref_look ON user.look_id = ref_look.look_id
-        ';
+            WHERE user_photo_url != '' 
+        ";
 
         if (!empty($userId)) {
-            $sql .= ' WHERE user_id NOT IN (SELECT destinataire_id FROM link WHERE status = :linkStatusBlacklist AND expediteur_id = :contextUserId) ';
+            $sql .= ' AND user_id NOT IN (SELECT destinataire_id FROM link WHERE status = :linkStatusBlacklist AND expediteur_id = :contextUserId) ';
         }
 
         $sql .= 'ORDER BY user_subscribe_date DESC
                  LIMIT 0, 3;';
 
         $stmt = $this->db->prepare($sql);
+        
         $stmt->bindValue('linkStatusBlacklist', LINK_STATUS_BLACKLIST);
 
         if (!empty($userId)) {
             $stmt->bindValue('contextUserId', $userId);
         }
 
-        $stmt->execute();
-
-        return $stmt->fetchAll();
+        return $this->db->executeStmt($stmt)->fetchAll();
     }
 
     // Récupére un utilisateur
