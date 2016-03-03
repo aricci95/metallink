@@ -44,14 +44,14 @@ class AuthService extends Service
     }
 
     // Renvoi le mdp
-    public function sendPwd($login = null, $message = null)
+    public function sendPwd($login = null, $email = null)
     {
-        if (empty($login) && empty($message)) {
+        if (empty($login) && empty($email)) {
             return false;
         }
 
-        $param = (empty($login)) ? 'user_mail' : 'user_login';
-        $value = (empty($login)) ? $message : $login;
+        $param = empty($login) ? 'user_mail' : 'user_login';
+        $value = empty($login) ? $email : $login;
 
         $result = $this->model->user->find(array(
             'user_id',
@@ -60,13 +60,15 @@ class AuthService extends Service
             ),
             array($param => $value)
         );
+        
+        $user = $result[0];
 
-        if (!empty($result['user_login'])) {
-            $pwd_valid = $this->model->auth->resetPwd($result['user_id']);
+        if (!empty($user['user_login'])) {
+            $pwd_valid = $this->model->auth->resetPwd($user['user_id']);
 
             $message = 'Pour modifier ton mot de passe clique sur le lien suivant : <a href="http://www.metallink.fr/lostpwd/new/' . $pwd_valid . '">modifier mon mot de passe</a>';
 
-            return $this->get('mailer')->send($result['user_mail'], 'Modifcation du mot de passe MetalLink', $message);
+            return $this->get('mailer')->send($user['user_mail'], 'Modifcation du mot de passe MetalLink', $message);
         } else {
             return false;
         }
