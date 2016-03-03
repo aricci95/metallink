@@ -111,11 +111,11 @@ class Concert extends AppModel
             LEFT JOIN (
                 ville,
                 concert_band,
-                ref_band
+                band
             ) ON (
                 concert.ville_id = ville.ville_id
                 AND concert.concert_id = concert_band.concert_id
-                AND ref_band.band_id = concert_band.band_id
+                AND band.band_id = concert_band.band_id
             )
 			WHERE concert.ville_id > 0
 			AND flyer_url IS NOT NULL
@@ -226,11 +226,11 @@ class Concert extends AppModel
             JOIN (
                 ville,
                 concert_band,
-                ref_band
+                band
             ) ON (
                 concert.ville_id = ville.ville_id
                 AND concert.concert_id = concert_band.concert_id
-                AND ref_band.band_id = concert_band.band_id
+                AND band.band_id = concert_band.band_id
             )
             WHERE concert.ville_id > 0 ' . $where . '
             AND flyer_url IS NOT NULL

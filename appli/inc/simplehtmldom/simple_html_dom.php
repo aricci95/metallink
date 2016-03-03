@@ -76,7 +76,6 @@ function curlCall($url)
     $contents = curl_exec ($ch);
     curl_close($ch);
 
-
     $dom = new simple_html_dom();
 
     if (empty($contents) || strlen($contents) > MAX_FILE_SIZE)
