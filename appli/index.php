@@ -75,14 +75,18 @@ try {
     $controller = new $page();
     $controller->$action();
 } catch (Exception $e) {
-    require_once ROOT_DIR . '/appli/controllers/HomeController.php';
-    $controller = new HomeController();
+    Service_Container::getInstance()->get('Mailer')->sendError($e);
 
-    $controller->view->growlerError();
-    $controller->render();
+    if ($page == 'HomeController') {
+        include ROOT_DIR . '/appli/views/maintenance.htm';
+        die;
+    } else {
+        require_once ROOT_DIR . '/appli/controllers/HomeController.php';
+        $controller = new HomeController();
 
-    $controller->get('Mailer')->sendError($e);
-    die;
+        $controller->view->growlerError();
+        $controller->render();
+    }
 }
 
 ?>
