@@ -46,11 +46,11 @@ class Band extends AppModel
 
         foreach ($data as $key => $value) {
             if (!empty($value)) {
-                $sql .= ' AND ' . $key . ' = ' . ':' . $value;
+                $sql .= ', ' . $key . ' = ' . ':' . $key;
             }
         }
 
-        $sql = str_replace('SETAND', 'SET', $sql);
+        $sql = str_replace('SET,', 'SET', $sql);
 
         $sql .= ' WHERE band_libel LIKE :band_libel_like ;';
 
@@ -62,8 +62,29 @@ class Band extends AppModel
             }
         }
 
-        $stmt->bindValue('band_libel_like', '%' . trim(strtolower($data['band_libel'])));
+        $stmt->bindValue('band_libel_like', '%' . trim(strtolower($data['band_libel'])) . '%');
 
         return $this->db->executeStmt($stmt);
+    }
+
+    public function findBandsToUpdate($limit)
+    {
+        $sql = '
+            SELECT
+                *
+            FROM
+                band
+            WHERE 
+                band_logo_url IS NULL
+            LIMIT :limit_begin, :limit_end
+            ;
+        ';
+
+        $stmt = $this->db->prepare($sql);
+
+        $stmt->bindValue('limit_begin', 0, PDO::PARAM_INT);
+        $stmt->bindValue('limit_end', $limit, PDO::PARAM_INT);
+
+        return $this->db->executeStmt($stmt)->fetchAll();
     }
 }

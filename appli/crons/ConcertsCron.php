@@ -1,13 +1,15 @@
 <?php
-
-class CronController extends AppController
+class ConcertsCron extends Cron
 {
 
-    protected $_authLevel = AUTH_LEVEL_NONE;
-
-    public function renderGetConcerts()
-    {
-        include_once(ROOT_DIR . '/appli/inc/simplehtmldom/simple_html_dom.php');
+	public function execute() 
+	{
+        $concerts = array();
+        $limit    = 20;
+        $counter  = 0;
+        $done     = 0;
+        
+		include_once(ROOT_DIR . '/appli/inc/simplehtmldom/simple_html_dom.php');
 
         $regions = array(
             'alsace',
@@ -32,11 +34,6 @@ class CronController extends AppController
             'poitou-charente',
             'rhone-alpes',
         );
-
-        $concerts = array();
-        $limit    = 20;
-        $counter  = 0;
-        $done     = 0;
 
         $villes_list  = $this->model->find('ville', array('ville_id', 'nom'));
         $bands_list   = $this->model->find('band', array('band_id', 'band_libel'));
@@ -181,87 +178,5 @@ class CronController extends AppController
         $this->get('mailer')->send(ADMIN_MAIL, 'CRON getConcerts OK', 'CRON getConcerts via sueurdemetal ok, ' . $done . ' concerts.', false);
 
         echo $done;
-    }
-
-    public function renderBandEval()
-    {
-        include_once(ROOT_DIR . '/appli/inc/simplehtmldom/simple_html_dom.php');
-
-        $som_url = 'http://www.spirit-of-metal.com';
-
-        $bands = $this->model->find('band', array('band_id', 'band_libel'));
-
-        foreach ($bands as $key => $bandRow) {
-            $bandName = strtoupper(trim($bandRow['band_libel']));
-
-            $score  = 0;
-            $scores = array();
-
-            $band = array(
-                'band_libel' => ucfirst(strtolower($bandName)),
-                'band_country' => null,
-                'band_logo_url' => null,
-                'band_lineup_photo' => null,
-                'band_style' => null,
-                'band_score' => null,
-                'band_sample_video_url' => null,
-            );
-
-            $html = curlCall($som_url . '/liste_groupe.php?recherche_groupe=' . str_replace(' ', '_', $bandName));
-
-            $link = $html->find('.StandardWideCadre a.smallTahoma', -1);
-
-            if (!empty($link->href)) {
-                $bandHtml = curlCall($som_url . $link->href);
-
-                $styleHtml = $bandHtml->find('a[itemprop="description"]', 0);
-
-                $band['band_style'] = trim(strtolower($styleHtml->plaintext));
-
-                foreach($bandHtml->find('.MainTable img') as $img) {
-                    if (!empty($band['band_logo_url']) && !empty($band['band_lineup_photo'])) {
-                        break;
-                    }
-
-                    $imgUrl = $img->src;
-
-                    if (strpos($imgUrl, 'logo')) {
-                        $band['band_logo_url'] = $som_url . $imgUrl;
-                    } else if(strpos($imgUrl, '_min.')) {
-                        $band['band_lineup_photo'] = $som_url . $imgUrl;
-                    }
-                }
-
-                $sampleVideoHtml = $bandHtml->find('a');
-
-                foreach ($sampleVideoHtml as $html_a) {
-                    if (strpos($html_a->href, 'video_read')) {
-                        $videoUrl = str_replace(array("javascript:popup('", ');'), array(), $html_a->href);
-
-                        var_dump($videoUrl);die;
-                    }
-                }
-
-                foreach($bandHtml->find('tr.ligne_disco') as $tr) {
-                    $a_album = $tr->find('a[itemprop="name"]', 0);
-                    $explodedString = explode("'", $a_album->onmouseover);
-                    $albumId = $explodedString[1];
-
-                    $albumHtml = curlCall($som_url . '/ajax/getInfoAlbum.php?id_album=' . $albumId);
-
-                    $scores[] = str_replace('/20', '', $albumHtml->find('NOTE', 0)->plaintext);
-                }
-
-                $scoreSum = 0;
-                foreach ($scores as $value) {
-                    $scoreSum += $value;
-                }
-
-                $band['band_score'] = round($scoreSum / count($scores));
-            }
-
-            echo '<pre>' . print_r($band, true) . '</pre>';
-            die;
-        }
     }
 }
