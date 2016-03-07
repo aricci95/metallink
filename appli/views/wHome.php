@@ -10,11 +10,15 @@
     } ?>
 <?php $this->_helper->blackBoxClose(); ?>
 
+<?php $this->_helper->blackBoxOpen(); ?>
+    <a href="http://www.emp-online.fr/band-merch/?wt_mc=pt.pp.bandmerch.283#Q713Cu213yxM" target="_blank" title="Bandmerch 728 x 90"><img src="MLink/images/728x90_bm.jpg" height="90" width="728" border="0" alt="Bandmerch 728 x 90" /></a>
+<?php $this->_helper->blackBoxClose(); ?>
+
 <!-- Recommandation concert -->
-<?php if (!empty($this->concert)) : 
-  $this->_helper->blackBoxOpen('maxWidth'); 
+<?php if (!empty($this->concert)) :
+  $this->_helper->blackBoxOpen('maxWidth');
       $this->_helper->printConcert($this->concert);
-  $this->_helper->blackBoxClose();  
+  $this->_helper->blackBoxClose();
 endif; ?>
 
 <!-- COVOITURAGE -->

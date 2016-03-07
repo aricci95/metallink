@@ -9,7 +9,7 @@ textarea {
 
 body {
     font-family:Arial, Helvetica, sans-serif;
-    background-image:url('/MLink/images/structure/background.jpg');
+    background-image:url('http://cdn.acfrg.com/o/emp.de/shopbranding/band-merch_shopBranding.jpg');
     background-attachment: fixed;
     background-repeat: repeat-y;
     background-position: center top;
@@ -218,7 +218,7 @@ h4 {
 }
 
 .site {
-    width:805px;
+    width:800px;
     text-align:center;
     margin-top:-6px;
     margin-left: auto;
@@ -234,15 +234,15 @@ h4 {
 }
 
 .divBarre {
-    width:820px;
+    width:800px;
     background-image:url('/MLink/images/structure/Menu.jpg');
     background-repeat: no-repeat;
     background-position: top center;
-    vertical-align:top;
 }
 
 .divCorps {
-    width:780px;
+    width:800px;
+    margin-top:-6px;
 }
 
 img {

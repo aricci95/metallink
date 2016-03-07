@@ -6,14 +6,14 @@ class ViewHelper {
     public $context;
     private $_helper;
 
-    public function __construct() 
+    public function __construct()
     {
         $this->context = Context::getInstance();
         $this->now = time();
         $this->_helper = $this;
     }
 
-    public function render($view) 
+    public function render($view)
     {
         $view = trim($view);
         $view = str_replace("../","protect", $view);
@@ -27,7 +27,7 @@ class ViewHelper {
         }
     }
 
-    public function status($timestamp) 
+    public function status($timestamp)
     {
         $delay = $this->now - $timestamp;
         return ($delay < ONLINE_TIME_LIMIT) ? 'online.gif' : 'offline.png';
@@ -41,9 +41,9 @@ class ViewHelper {
     }
 
     // Affiche une div Blanche cool
-    public function whiteBoxMainOpen() 
+    public function whiteBoxMainOpen()
     {
-        echo '<table class="whiteBox">';
+        echo '<table class="whiteBox" width="800">';
             echo '<tr>';
                 echo '<td class="whiteBoxleftUpCorner"></td>';
                 echo '<td class="whiteBoxup"></td>';
@@ -55,7 +55,7 @@ class ViewHelper {
                 echo '<div class="MainContent"style="width:772px;height:100%;">';
     }
 
-    public function whiteBoxMainClose() 
+    public function whiteBoxMainClose()
     {
                 echo '</div>';
                 echo '</td>';
@@ -70,7 +70,7 @@ class ViewHelper {
     }
 
     // Affiche une div Blanche cool
-    public function whiteBox($width = null, $height = '100%', $margin = null) 
+    public function whiteBox($width = null, $height = '100%', $margin = null)
     {
         if($width == null) {
             $width = 740;
@@ -85,7 +85,7 @@ class ViewHelper {
         echo '</table>';
     }
 
-    public function formFooter($previousUrl, $submit = true) 
+    public function formFooter($previousUrl, $submit = true)
     {
         echo '<div align="center" style="clear:both;">';
         if($submit) {
@@ -95,7 +95,7 @@ class ViewHelper {
         echo '</div>';
     }
 
-    public function printArticle($article) 
+    public function printArticle($article)
     {
         if(!empty($article['art_id'])) {
             $imageUrl = ((!empty($article['art_photo_url']) && file_exists($_SERVER["DOCUMENT_ROOT"]."/MLink/photos/small/".$article['art_photo_url']))) ? $article['art_photo_url'] : 'unknowUser.jpg';
@@ -123,7 +123,7 @@ class ViewHelper {
 
     }
 
-    public function printUserLogin($user) 
+    public function printUserLogin($user)
     {
         echo '<div class="userFont" style="font-size:12px;float:left;margin-right:100px;">';
         echo '<a target="_blank" style="color:';
@@ -179,7 +179,7 @@ class ViewHelper {
         <?php
     }
 
-    public function printUser($user, $links = array()) 
+    public function printUser($user, $links = array())
     {
         if(!empty($user['user_id'])) {
             $imageUrl = ((!empty($user['user_photo_url']) && file_exists($_SERVER["DOCUMENT_ROOT"]."/MLink/photos/small/".$user['user_photo_url']))) ? $user['user_photo_url'] : 'unknowUser.jpg';
@@ -193,7 +193,7 @@ class ViewHelper {
                     <div class="userFont" style="float:left;margin-right:100px;color:<?php echo ($user['user_gender'] == 1) ? '#3333CC' : '#CC0000'; ?>" >
                         <?php echo $this->_maxLength($user['user_login'], 13); ?>
                     </div>
-                    <?php 
+                    <?php
                         echo (isset($user['age']) && $user['age'] < 2000) ? '<br/>' . $user['age'].' ans' : '';
                         echo !empty($user['user_city']) ? '<br/>' . $user['user_city'] : '';
                         echo !empty($user['look_libel']) ? '<br/>' . $user['look_libel'] : '';
@@ -213,7 +213,7 @@ class ViewHelper {
     }
 
     // Affiche login, photo et état
-    public function printUserSmall($user) 
+    public function printUserSmall($user)
     {
         $imageUrl = ((!empty($user['user_photo_url']) && file_exists($_SERVER["DOCUMENT_ROOT"] . "/MLink/photos/small/" . $user['user_photo_url']))) ? $user['user_photo_url'] : 'unknowUser.jpg';
         echo '<a href="profile/'.$user['user_id'].'" >';
@@ -238,7 +238,7 @@ class ViewHelper {
         echo '</a>';
     }
 
-    private function _searchLink($links, $userId) 
+    private function _searchLink($links, $userId)
     {
         foreach($links as $key => $link) {
             if($userId == $link['destinataire_id'] || $userId == $link['expediteur_id']) {
@@ -248,7 +248,7 @@ class ViewHelper {
         }
     }
 
-    private function _maxLength($string, $length) 
+    private function _maxLength($string, $length)
     {
         if(strlen($string) > $length) {
             return substr($string, 0, $length).'...';
@@ -258,7 +258,7 @@ class ViewHelper {
     }
 
     // Affiche une div Noire cool
-    public function blackBoxOpen($cssParams = 'maxWidth') 
+    public function blackBoxOpen($cssParams = 'maxWidth')
     {
 
         echo '<table class="blackBox">';
@@ -272,14 +272,14 @@ class ViewHelper {
         echo '>';
     }
 
-    public function blackBoxClose() 
+    public function blackBoxClose()
     {
         echo '</td><td class="blackBoxright"></td></tr>';
         echo '<tr><td class="blackBoxleftDownCorner"></td><td class="blackBoxdown"></td><td class="blackBoxrightDownCorner"></td></tr>';
         echo '</table>';
     }
 
-    private function _addStyle($cssParams = array()) 
+    private function _addStyle($cssParams = array())
     {
         echo 'style="';
             foreach($cssParams as $key => $value) {
@@ -290,7 +290,7 @@ class ViewHelper {
 
 
     // Affiche le gif Offline ou Online
-    public function showStatut($userLastConnexion, $full = false) 
+    public function showStatut($userLastConnexion, $full = false)
     {
         if($this->status($userLastConnexion) == 'online.gif') {
             if($full) echo '<span style="color:green;font-size:12px;">online ';
