@@ -56,7 +56,6 @@ $(document).ready(function() {
             function(data) {
                 if(data !== null) {
                    messages = $("ul.users");
-                   console.log(data);
                    messages.html(data);
                 }
             },

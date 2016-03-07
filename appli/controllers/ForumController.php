@@ -53,8 +53,8 @@ class ForumController extends AppController
 
     public function renderSetNotification()
     {
-        if ($this->model->user->updateById($this->context->get('user_id'), 'forum_notification', $this->context->params['notification'])) {
-            $this->context->set('forum_notification', (int) $this->context->params['notification']);
+        if ($this->model->user->updateById($this->context->get('user_id'), 'forum_notification', $this->context->params['forum_notification'])) {
+            $this->context->set('forum_notification', (int) $this->context->params['forum_notification']);
 
             return JSON_OK;
         } else {

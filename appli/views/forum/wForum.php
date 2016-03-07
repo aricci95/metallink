@@ -10,7 +10,7 @@
             <td>
                 <input type="checkbox" id="autoScroll" style="margin-left:10px;" checked><label for="autoScroll">scroll automatique</label>
                 <input type="checkbox" id="autoEnter" style="margin-left:10px;" checked><label for="autoEnter">valider avec entrée</label>
-                <input type="checkbox" id="notification" style="margin-left:10px;" <?php if ($this->notification) : ?>checked<?php endif; ?>><label for="notification">notifications</label>
+                <input type="checkbox" id="forum_notification" style="margin-left:10px;" <?php if ($this->notification) : ?>checked<?php endif; ?>><label for="notification">notifications</label>
             </td>
         </tr>
         <tr>
