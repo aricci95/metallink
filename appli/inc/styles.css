@@ -669,3 +669,7 @@ div.debug {
 #submit_button:hover{
     background-color: rgb(46, 41, 57);
 }
+
+.divModule {
+    margin:10px;
+}

@@ -19,9 +19,6 @@ class HomeController extends AppController
 
         $this->view->setViewName('wHome');
 
-        $this->view->newUsers    = $this->model->User->getNew();
-        $this->view->newArticles = $this->model->article->getNew();
-
         $concertCriterias = array(
             'search_distance' => 10,
         );
