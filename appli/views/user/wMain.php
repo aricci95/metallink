@@ -17,7 +17,8 @@ $(function(){
 });
 </script>
 <?php $this->_helper->blackBoxOpen(); ?>
-<a class="test-popup-link" href="MLink/photos/profile/<?php echo $this->user['user_photo_url']; ?>"><div class="profilePortrait" style="float:left;background-image:url(MLink/photos/profile/<?php echo $this->user['user_photo_url']; ?>);"></div></a>
+<div class="divModuleProfil">
+    <a class="test-popup-link" href="MLink/photos/profile/<?php echo $this->user['user_photo_url']; ?>"><div class="profilePortrait" style="float:left;background-image:url(MLink/photos/profile/<?php echo $this->user['user_photo_url']; ?>);"></div></a>
     <div class="profileInfo" style="float:left;border:1px #D8D8D8 dotted;width:390px;height:272px;padding:10px;">
     <?php if ($this->context->get('user_id') == $this->user['user_id']) : ?>
         <div style="text-align:right;">
@@ -47,9 +48,9 @@ $(function(){
     <?php endif; ?>
     Dernière connexion : <?php Tools::timeConvert($this->user['user_last_connexion']); ?>
     </div>
-<?php $this->_helper->blackBoxClose(); ?>
+</div>
 <!-- INFORMATIONS -->
-<?php $this->_helper->blackBoxOpen(); ?>
+<div class="divModuleProfil">
     <div style="float:left;background-image:url('MLink/images/260882b-emp.jpg');width:350px;height:350px">
         <div class="vesteAPatchs">
             <?php for ($i=0; $i < 15; $i++) : ?>
@@ -134,18 +135,18 @@ $(function(){
         </table>
     </div>
 <!-- DESCRIPTION -->
-<?php $this->_helper->blackBoxClose(); ?>
-    <?php if(!empty($this->user['user_description'])) : ?>
-        <?php $this->_helper->blackBoxOpen(); ?>
-            <div>
-            <h2 class="profileInfo" style="text-align:center;">Description</h2>
-            <?php echo nl2br(stripcslashes($this->user['user_description'])); ?>
-            </div>
-        <?php $this->_helper->blackBoxClose(); ?>
-    <?php endif; ?>
+</div>
+<?php if(!empty($this->user['user_description'])) : ?>
+    <div class="divModuleProfil">
+        <div>
+        <h2 class="profileInfo" style="text-align:center;">Description</h2>
+        <?php echo nl2br(stripcslashes($this->user['user_description'])); ?>
+        </div>
+    </div>
+<?php endif; ?>
     <!-- Gouts -->
     <?php if(!empty($this->tastes)) : ?>
-    <?php $this->_helper->blackBoxOpen(); ?>
+    <div class="divModuleProfil">
     <?php foreach($this->tasteTypes as $typeId => $typeLibel) : ?>
         <div style="float:left;width:175px;">
             <?php $title = ($typeLibel == 'livres') ? 'Films & Livres' : $typeLibel; ?>
@@ -159,5 +160,6 @@ $(function(){
             </ul>
         </div>
     <?php endforeach; ?>
-    <?php $this->_helper->blackBoxClose(); ?>
+    </div>
 <?php endif; ?>
+<?php $this->_helper->blackBoxClose(); ?>
