@@ -49,19 +49,19 @@
                 </table>
             </div>
         <?php else : ?>
-            <div class="divBarre">
-                <form action="home/login" method="post">
-                    <table class="tableMenu">
-                        <tr>
-                            <td>Login :</td><td><input name="user_login" size="8" /></td>
-                            <td>Password :</td><td><input name="user_pwd" type="password" size="8" /></td>
-                            <td><input type="submit" value="Connexion" /></td>
-                            <td><input type="button" onclick="window.location.href = 'MLink/appli/inc/socialauth/station.php';" class="facebookButton" value="Via Facebook" /></td>
-                            <td></td><td>Se souvenir de moi <input name="savepwd" type="checkbox" /></td>
-                            <td></td><td><a href="lostpwd">Mot de passe oublié</a></td>
-                            <td><a href="subscribe" >S'inscrire !</a></td>
-                        </tr>
-                    </table>
+            <div class="divBarre tableMenu" style="height: 34px;">
+                <form action="home/login" method="post" style="padding:5px;">
+                    Login : <input style="margin-left:10px;margin-right:10px;" name="user_login" size="8" />
+                    Password : <input style="margin-left:10px;margin-right:10px;" name="user_pwd" type="password" size="8" />
+                    <input type="submit" value="Connexion" />
+                    <input type="button" onclick="window.location.href = 'MLink/appli/inc/socialauth/station.php';" class="facebookButton" value="Via Facebook" />
+                    <span style="margin-right:10px;margin-left:10px;">
+                        Enregistrer <input name="savepwd" type="checkbox" />
+                    </span>
+                    <span style="margin-right:10px;">
+                        <a href="lostpwd">Mot de passe oublié</a>
+                    </span>
+                    <a href="subscribe" >S'inscrire !</a>
                 </form>
             </div>
         <?php endif;
