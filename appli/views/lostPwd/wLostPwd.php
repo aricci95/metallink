@@ -1,6 +1,6 @@
 <?php $this->_helper->blackBoxOpen('maxWidth'); ?>
     <form action="lostpwd/submit" method="post">
-        <div style="margin-left:140px;">
+        <div style="margin-left:182px;">
             <table>
                 <tr>
                     <td>Login : </td>
@@ -14,8 +14,8 @@
                     <td><input name="user_mail" /></td>
                 </tr>
                 <tr>
-                    <td>
-                        <input style="margin-left:170px;" size="20" type="submit" value="Valider" />
+                    <td colspan="2" style="text-align:center;padding:10px;">
+                        <input size="20" type="submit" value="Valider" />
                     </td>
                 </tr>
             </table>
