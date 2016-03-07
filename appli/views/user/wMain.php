@@ -49,6 +49,14 @@ $(function(){
     Dernière connexion : <?php Tools::timeConvert($this->user['user_last_connexion']); ?>
     </div>
 </div>
+<?php if(!empty($this->user['user_description'])) : ?>
+    <div class="divModuleProfil">
+        <div>
+        <h2 class="profileInfo" style="text-align:center;">Description</h2>
+        <?php echo nl2br(stripcslashes($this->user['user_description'])); ?>
+        </div>
+    </div>
+<?php endif; ?>
 <!-- INFORMATIONS -->
 <div class="divModuleProfil">
     <div style="float:left;background-image:url('MLink/images/260882b-emp.jpg');width:350px;height:350px">
@@ -134,16 +142,7 @@ $(function(){
             <?php endif; ?>
         </table>
     </div>
-<!-- DESCRIPTION -->
 </div>
-<?php if(!empty($this->user['user_description'])) : ?>
-    <div class="divModuleProfil">
-        <div>
-        <h2 class="profileInfo" style="text-align:center;">Description</h2>
-        <?php echo nl2br(stripcslashes($this->user['user_description'])); ?>
-        </div>
-    </div>
-<?php endif; ?>
     <!-- Gouts -->
     <?php if(!empty($this->tastes)) : ?>
     <div class="divModuleProfil">
