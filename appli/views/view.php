@@ -23,8 +23,9 @@
                 <table class="tableMenu">
                     <tr align="center">
                         <td><a class="aMenu" <?php echo ($this->page == 'profile') ? 'style="color:white;"' : ''; ?> href="profile/<?php echo $this->context->get('user_id'); ?>">Profil</a></td>
-                        <td><a class="aMenu" <?php echo ($this->page == 'search') ? 'style="color:white;"' : ''; ?> href="search">Recherche</a></td>
-                        <td><a class="aMenu" <?php echo ($this->page == 'forum') ? 'style="color:white;"' : ''; ?> href="forum">Forum</a></td>
+                        <td><a class="aMenu" <?php echo ($this->page == 'member') ? 'style="color:white;"' : ''; ?> href="user">Membres</a></td>
+                        <td><a class="aMenu" <?php echo ($this->page == 'concert') ? 'style="color:white;"' : ''; ?> href="concert">Concerts</a></td>
+                        <td><a class="aMenu" <?php echo ($this->page == 'forum') ? 'style="color:white;"' : ''; ?> href="forum">Chat</a></td>
                          <?php /*
                         <td><a class="aMenu" <?php echo ($this->page == 'sales') ? 'style="color:white;"' : ''; ?> href="sales">Ventes</a></td>
                         <td><a class="aMenu" <?php echo ($this->page == 'covoit') ? 'style="color:white;"' : ''; ?> href="covoit">Covoit'</a></td> */ ?>

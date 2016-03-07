@@ -1,13 +1,4 @@
 $(document).ready(function() {
-    $("#search_form").on('change', '#search_type', function(e) {
-        $.post('search/criterias', {search_type : $('#search_type').val()},
-            function(data) {
-               $("#search_criterias").html(data);
-            },
-            'html'
-        );
-    });
-
     $("#search_form").on('change', 'select', function(e) {
         e.preventDefault();
         refresh();
@@ -19,8 +10,7 @@ $(document).ready(function() {
     });
 
     function refresh() {
-        $.post('search/getResults', {
-                search_type : $('#search_type').val(),
+        $.post($('.loading').attr('data-href') + '/getResults', {
                 search_login : $('#search_login').val(),
                 search_distance : $('#search_distance').val(),
                 search_gender : $('#search_gender').val(),
