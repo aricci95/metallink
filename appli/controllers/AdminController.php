@@ -58,7 +58,15 @@ class AdminController extends AppController
 
     public function renderDeleteUser()
     {
-        $this->view->users  = $this->model->user->deleteById(array('user_id', 'user_login'), array('!user_id' => $this->context->get('user_id')));
+        $this->view->users = $this->model->user->find(
+            array(),
+            array(
+                '!user_id' => $this->context->get('user_id'),
+                'user_valid' => 1
+            ),
+            array('user_login')
+        );
+
         $this->view->action = 'removeUser';
         $this->view->setTitle('Supprimer un utilisateur');
         $this->view->setViewName('admin/wUsers');
