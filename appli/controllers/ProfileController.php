@@ -48,11 +48,7 @@ class ProfileController extends AppController
 
         if (!empty($tastes)) {
             foreach ($tastes['data'] as $type => $tasteData) {
-                if ($type == "groupes") {
-                    foreach ($tasteData as $bandKey => $band) {
-                        $tastes['data'][$type][$bandKey] = "<a target='_blank' href='http://www.spirit-of-metal.com/find.php?search=all&l=fr&nom=".str_replace(' ', '+', trim($band))."' >".$band.'</a>';
-                    }
-                } else if ($type == 'livres') {
+                if ($type == 'livres') {
                     foreach ($tasteData as $key => $value) {
                         $tastes['data'][$type][$key] = "<a target='_blank' href='http://www.allocine.fr/recherche/?q=".str_replace(' ', '+', trim($value))."' >".$value.'</a>';
                     }

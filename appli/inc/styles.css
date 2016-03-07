@@ -673,3 +673,27 @@ div.debug {
 .divModule {
     margin:10px;
 }
+
+.vesteAPatchs {
+    text-align: center;
+    margin-top: 40px;
+    margin-left: 82px;
+    margin-right: 82px;
+    max-height: 271px;
+    overflow: hidden;
+}
+
+.bandPatch {
+    text-align: center;
+    padding: 2px;
+    border:1px grey;
+    background-color: black;
+    border-style:dotted;
+    display: inline-block;
+
+    font-size:16px;
+    margin:2px;
+    padding:3px;
+    color:#E6E6E6;
+    font-family: "Palatino Linotype","Book Antiqua",Palatino,FreeSerif,serif;
+}

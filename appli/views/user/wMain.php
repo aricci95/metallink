@@ -50,15 +50,15 @@ $(function(){
 <?php $this->_helper->blackBoxClose(); ?>
 <!-- INFORMATIONS -->
 <?php $this->_helper->blackBoxOpen(); ?>
-    <?php if(!empty($this->user['user_city'])) : ?>
-    <div style="float:left;width:340px;height:340px;">
-        <iframe style="border:3px #808080 groove" width="289" height="340" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://maps.google.com/maps?q=<?php echo $this->user['user_city']; ?>&amp;oe=utf-8&amp;client=firefox-a&amp;ie=UTF8&amp;hq=&amp;hnear=<?php echo $this->user['user_city']; ?>,+France&amp;t=h&amp;vpsrc=6&amp;output=embed"></iframe><br />
+    <div style="float:left;background-image:url('MLink/images/260882b-emp.jpg');width:350px;height:350px">
+        <div class="vesteAPatchs">
+            <?php for ($i=0; $i < 15; $i++) : ?>
+                    <span class="bandPatch"><?php echo $this->tastes['data']['groupes'][$i]; ?></span>
+            <?php endfor; ?>
+        </div>
     </div>
     <div style="float:left;">
-    <?php else : ?>
-        <div>
-    <?php endif; ?>
-    <h2 class="profileInfo" style="text-align:center;">Informations</h2>
+        <h2 class="profileInfo" style="text-align:center;">Informations</h2>
         <table width="100%" class="tableProfil">
             <tr>
                 <th>Ville : </th>
