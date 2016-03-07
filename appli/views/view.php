@@ -56,12 +56,12 @@
                     <input type="submit" value="Connexion" />
                     <input type="button" onclick="window.location.href = 'MLink/appli/inc/socialauth/station.php';" class="facebookButton" value="Via Facebook" />
                     <span style="margin-right:10px;margin-left:10px;">
-                        Enregistrer <input name="savepwd" type="checkbox" />
+                    	<a href="subscribe">S'inscrire !</a>
                     </span>
                     <span style="margin-right:10px;">
                         <a href="lostpwd">Mot de passe oublié</a>
                     </span>
-                    <a href="subscribe" >S'inscrire !</a>
+                    Enregistrer <input name="savepwd" type="checkbox" />
                 </form>
             </div>
         <?php endif;

@@ -47,8 +47,8 @@ body {
 .aMenu:active {color: #808080;text-decoration: none ;font-size:15px;font-weight:bold;} /*couleur quand on clique dessus*/
 
 a:visited {color: #808080;text-decoration: none ;}
-a:hover {color: blue;text-decoration: none ;}
-a:visited:hover {color: blue;text-decoration: none ;}
+a:hover {color: white;text-decoration: none ;}
+a:visited:hover {color: white;text-decoration: none ;}
 a:link {color: #808080;text-decoration: none ;}
 
 .tableStandard  a{
