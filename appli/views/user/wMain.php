@@ -53,8 +53,12 @@ $(function(){
     <div style="float:left;background-image:url('MLink/images/260882b-emp.jpg');width:350px;height:350px">
         <div class="vesteAPatchs">
             <?php for ($i=0; $i < 15; $i++) : ?>
+                <?php if (!empty($this->tastes['data']['groupes'][$i])) : ?>
                     <span class="bandPatch"><?php echo $this->tastes['data']['groupes'][$i]; ?></span>
-            <?php endfor; ?>
+            <?php else :
+                    break;
+                endif;
+            endfor; ?>
         </div>
     </div>
     <div style="float:left;">
