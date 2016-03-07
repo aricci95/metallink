@@ -10,7 +10,7 @@
                     <td>OU</td>
                 </tr>
                 <tr>
-                    <td>Adresse message : </td>
+                    <td>Adresse e-mail : </td>
                     <td><input name="user_mail" /></td>
                 </tr>
                 <tr>
