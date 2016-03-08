@@ -5,7 +5,7 @@ $(document).ready(function() {
             var end         = (loading.attr('data-end') === "true");
             if(!end) {
                 var ajaxProcess = (loading.attr('data-show') === "true");
-                if(!ajaxProcess && ($(window).scrollTop() + $(window).height() >= ($(document).height() - 800))) {
+                if(!ajaxProcess && ($(window).scrollTop() + $(window).height() >= ($(document).height() - 900))) {
                     loading.attr('data-show', 'true');
                     var page    = loading.attr('data-href');
                     var offset  = loading.attr('data-offset');

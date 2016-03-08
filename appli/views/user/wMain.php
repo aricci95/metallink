@@ -52,8 +52,7 @@ $(function(){
 <?php if(!empty($this->user['user_description'])) : ?>
     <div class="divModuleProfil">
         <div>
-        <h2 class="profileInfo" style="text-align:center;">Description</h2>
-        <?php echo nl2br(stripcslashes($this->user['user_description'])); ?>
+            <?php echo nl2br(stripcslashes($this->user['user_description'])); ?>
         </div>
     </div>
 <?php endif; ?>
