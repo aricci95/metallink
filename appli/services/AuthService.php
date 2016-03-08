@@ -3,12 +3,43 @@
 class AuthService extends Service
 {
 
+    public function login($login, $pwd)
+    {
+        $_COOKIE['300gp'] = '';
+        $web              = $_COOKIE['300gp'];
+        $duration         = 3600;
+        $web2             = (!empty($_COOKIE['metallink'])) ? $_COOKIE['metallink'] : '';
+        setcookie('300gp', $web, time() + $duration, '/', '.metallink.fr');
+        setcookie('metallink', $web2, time() + $duration, '/', '.metallink.fr');
+        $login = trim($this->context->params['user_login']);
+
+        // Vérification de password
+        $logResult = $this->checkLogin($login, $this->context->params['user_pwd']);
+
+        if ($logResult) {
+            # On vérifie l'existence du cookie à l'aide de isset, en sachant que le contenu des cookies est contenu dans les variables $_COOKIE
+            if (isset($this->context->params['savepwd'])) {
+                if ($this->context->params['savepwd'] == 'on') {
+                    # On créer le cookie avec setcookie();
+                    setcookie("MlinkLogin", $login, time() + 360000);
+                    setcookie("MlinkPwd", $this->context->params['user_pwd'], time() + 360000);
+                } else {
+                    setcookie("MlinkCookie", 0);
+                    setcookie("MlinkPwd", 0);
+                }
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
     public function checkLogin($login, $pwd)
     {
         $user = $this->model->user->findByLoginPwd($login, $pwd);
 
         if (!empty($user['user_login']) && !empty($user['user_id']) && strtolower($user['user_login']) == strtolower($login) && $login != '') {
-            $this->model->user->updateLastConnexion();
 
             if ($user['user_valid'] != 1) {
                 throw new Exception("Email non validé", ERR_MAIL_NOT_VALIDATED);
@@ -24,6 +55,17 @@ class AuthService extends Service
 
     public function authenticateUser(array $user)
     {
+        $localization = $this->get('geoloc')->localize();
+
+        if ($localization->postal_code !== $user['user_zipcode']) {
+            $user['user_zipcode'] = $localization->postal_code;
+            $user['user_city'] = $localization->city;
+
+            $this->model->user->updateUserLocalization($user);
+        } else {
+            $this->model->user->updateLastConnexion();
+        }
+
         $this->context->set('user_id', (int) $user['user_id'])
                       ->set('user_login', $user['user_login'])
                       ->set('user_pwd', $user['user_pwd'])
@@ -34,11 +76,11 @@ class AuthService extends Service
                       ->set('user_valid', (int) $user['user_valid'])
                       ->set('user_mail', $user['user_mail'])
                       ->set('user_gender', (int) $user['user_gender'])
-                      ->set('user_city', $user['user_city'])
+                      ->set('user_city', $localization->city)
                       ->set('ville_id', (int) $user['ville_id'])
-                      ->set('user_zipcode', (int) $user['user_zipcode'])
-                      ->set('user_longitude', $user['longitude'])
-                      ->set('user_lattitude', $user['lattitude'])
+                      ->set('user_zipcode', (int) $localization->postal_code)
+                      ->set('user_longitude', $localization->longitude)
+                      ->set('user_lattitude', $localization->latitude)
                       ->set('forum_notification', $user['forum_notification']);
         return true;
     }
@@ -60,7 +102,7 @@ class AuthService extends Service
             ),
             array($param => $value)
         );
-        
+
         $user = $result[0];
 
         if (!empty($user['user_login'])) {

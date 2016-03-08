@@ -6,6 +6,8 @@ class HomeController extends AppController
 
     public function render()
     {
+        var_dump($this->context->get('user_longitude'));
+        var_dump($this->context->get('user_lattitude'));
         $socialAppsData = $this->context->get('userprofile');
 
         if (!empty($socialAppsData['email']) && $socialAppsData['verified']) {
@@ -33,36 +35,15 @@ class HomeController extends AppController
     public function renderLogin()
     {
         if (!empty($this->context->params['user_login']) && !empty($this->context->params['user_pwd'])) {
-            $_COOKIE['300gp'] = '';
-            $web              = $_COOKIE['300gp'];
-            $duration         = 3600;
-            $web2             = (!empty($_COOKIE['metallink'])) ? $_COOKIE['metallink'] : '';
-            setcookie('300gp', $web, time() + $duration, '/', '.metallink.fr');
-            setcookie('metallink', $web2, time() + $duration, '/', '.metallink.fr');
-            $login = trim($this->context->params['user_login']);
-
-            // Vérification de password
             try {
-                $logResult = $this->get('auth')->checkLogin($login, $this->context->params['user_pwd']);
+                $authentResult = $this->get('auth')->login($this->context->params['user_login'], $this->context->params['user_pwd']);
+
+                if ($authentResult) {
+                    $this->redirect('home');
+                }
             } catch (Exception $e) {
                 Log::err($e->getMessage());
                 $this->redirect('home', array('msg' => $e->getCode()));
-            }
-
-            if ($logResult) {
-                # On vérifie l'existence du cookie à l'aide de isset, en sachant que le contenu des cookies est contenu dans les variables $_COOKIE
-                if (isset($this->context->params['savepwd'])) {
-                    if ($this->context->params['savepwd'] == 'on') {
-                        # On créer le cookie avec setcookie();
-                        setcookie("MlinkLogin", $login, time() + 360000);
-                        setcookie("MlinkPwd", $this->context->params['user_pwd'], time() + 360000);
-                    } else {
-                        setcookie("MlinkCookie", 0);
-                        setcookie("MlinkPwd", 0);
-                    }
-                }
-
-                $this->redirect('home');
             }
         }
 

@@ -47,8 +47,6 @@ class User extends AppModel
 
         $this->db->executeStmt($stmt);
 
-        $this->context->set('user_last_connexion', time());
-
         return true;
     }
 
@@ -202,7 +200,7 @@ class User extends AppModel
                 FLOOR((DATEDIFF( CURDATE(), (user_birth))/365)) AS age
             FROM user
             LEFT JOIN ref_look ON user.look_id = ref_look.look_id
-            WHERE user_photo_url != '' 
+            WHERE user_photo_url != ''
         ";
 
         if (!empty($userId)) {
@@ -213,7 +211,7 @@ class User extends AppModel
                  LIMIT 0, 3;';
 
         $stmt = $this->db->prepare($sql);
-        
+
         $stmt->bindValue('linkStatusBlacklist', LINK_STATUS_BLACKLIST);
 
         if (!empty($userId)) {
@@ -434,14 +432,10 @@ class User extends AppModel
                     FLOOR((DATEDIFF( CURDATE(), (user_birth))/365)) AS age,
                     user_gender,
                     user_valid,
-                    user_city,
                     user_zipcode,
                     user_mail,
-                    longitude,
-                    lattitude,
-                    user.ville_id as ville_id,
                     forum_notification
-                FROM user LEFT JOIN ville ON (user.user_zipcode = ville.code_postal)
+                FROM user
                 WHERE LOWER(user_login) = LOWER(:user_login)
                 AND user_pwd = :pwd
             ;';
@@ -482,6 +476,28 @@ class User extends AppModel
             $stmt->bindValue('email', $email);
 
             return $this->db->executeStmt($stmt)->fetch();
+    }
+
+    public function updateUserLocalization(array $data)
+    {
+        $sql = '
+            UPDATE user SET
+                user_last_connexion = NOW(),
+                user_zipcode = :user_zipcode,
+                user_city = :user_city,
+                ville_id = (
+                    SELECT ville_id FROM ville WHERE code_postal = :user_zipcode LIMIT 0, 1
+                )
+            WHERE user_id = :user_id
+        ;';
+
+        $stmt = $this->db->prepare($sql);
+
+        $stmt->bindValue('user_zipcode', $data['user_zipcode'], PDO::PARAM_INT);
+        $stmt->bindValue('user_city', $data['user_city'], PDO::PARAM_STR);
+        $stmt->bindValue('user_id', $data['user_id'], PDO::PARAM_INT);
+
+        return $this->db->executeStmt($stmt);
     }
 
 }

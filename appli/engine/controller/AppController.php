@@ -105,9 +105,9 @@ abstract class AppController extends Controller
                 if ($this->context->get('role_id') >= $roleLimit) {
                     return true;
                 } else {
-                    die;
                     // Utilisateur valide mais droits insuffisants
                     $this->redirect('home', array('msg' => ERR_AUTH));
+                    die;
                 }
             } else {
                 // Message non validé

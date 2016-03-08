@@ -7,7 +7,7 @@ class Service_Container
     private $_services = array();
 
     private $_dependencies = array(
-        'Auth'     => array('Mailer'),
+        'Auth'     => array('Mailer', 'Geoloc'),
         'Link'     => array('Mailer'),
         'Message'  => array('Mailer'),
         'User'     => array('Photo'),

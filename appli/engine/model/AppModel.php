@@ -53,13 +53,32 @@ abstract class AppModel extends Model
         return empty($results[0]) ? array() : $results[0];
     }
 
-    public function updateById($id, $attribute, $newValue)
+    public function updateById($id, $attributes, $newValue = null)
     {
-        $sql = 'UPDATE ' . $this->getTable() . ' SET ' . $attribute . ' = :new_value WHERE ' . $this->getPrimary() . ' = :id;';
+        if (is_array($attributes)) {
+            $sql = 'UPDATE ' . $this->getTable() . ' SET ';
 
-        $stmt = $this->db->prepare($sql);
+            foreach ($attributes as $key => $value) {
+                $sql .= $key . ' = ' . ':' . $key . ', ';
+            }
 
-        $stmt->bindValue(':new_value', $newValue);
+            $sql .= 'WHERE ' . $this->getPrimary() . ' = :id;';
+
+            $sql = str_replace(', WHERE', ' WHERE', $sql);
+
+            $stmt = $this->db->prepare($sql);
+
+            foreach ($attributes as $key => $value) {
+                $stmt->bindValue(':' . $key, $value);
+            }
+        } else {
+            $sql = 'UPDATE ' . $this->getTable() . ' SET ' . $attributes . ' = :new_value WHERE ' . $this->getPrimary() . ' = :id;';
+
+            $stmt = $this->db->prepare($sql);
+
+            $stmt->bindValue(':new_value', $newValue);
+        }
+
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
 
         return $this->db->executeStmt($stmt);
