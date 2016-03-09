@@ -22,6 +22,49 @@ class ScriptController extends AppController
         $this->view->render();
     }
 
+    public function renderScriptCoordinates()
+    {
+        $done = 0;
+
+        $users = $this->model->user->find();
+
+        foreach ($users as $user) {
+            if ($user['user_longitude'] > 0) {
+                continue;
+            }
+
+            $ville = $this->model->city->find(array('ville_longitude_deg', 'ville_latitude_deg'), array('%ville_code_postal' => $user['user_zipcode']), array(), '0, 1');
+
+            if (!empty($ville[0])) {
+                $coordinates = array(
+                    'user_longitude' => $ville[0]['ville_longitude_deg'],
+                    'user_latitude' => $ville[0]['ville_latitude_deg'],
+                );
+
+                $this->model->user->updateById($user['user_id'], $coordinates);
+
+                $done++;
+            } else {
+                $ville = $this->model->city->find(array('ville_longitude_deg', 'ville_latitude_deg'), array('%ville_nom_simple' => $user['user_city']), array(), '0, 1');
+
+                if (!empty($ville[0])) {
+                    $coordinates = array(
+                        'user_longitude' => $ville[0]['ville_longitude_deg'],
+                        'user_latitude' => $ville[0]['ville_latitude_deg'],
+                    );
+
+                    $this->model->user->updateById($user['user_id'], $coordinates);
+
+                    $done++;
+                }
+            }
+        }
+
+        $this->view->growler($done . ' utilisateur migrés', GROWLER_OK);
+
+        $this->render();
+    }
+
     public function renderScriptRemoveUnsedLinks()
     {
         $rawUserIds = $this->model->user->find(array('user_id'));

@@ -112,7 +112,7 @@ class User extends AppModel
                         $sql .= ") ";
                     }*/
 
-                    $sql .= ' AND SQRT(POW((ville_longitude_deg - ' . $longitude.'), 2) + POW((ville_latitude_deg - '. $lattitude.'),2)) < 10 ';
+                    // $sql .= ' AND SQRT(POW((ville_longitude_deg - ' . $longitude.'), 2) + POW((ville_latitude_deg - '. $lattitude.'),2)) < 10 ';
 
                     $sql .= ' AND user_zipcode IS NOT null ';
                 }

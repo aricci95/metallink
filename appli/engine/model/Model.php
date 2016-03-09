@@ -37,6 +37,9 @@ abstract class Model
                 if (strpos($key, '!') === 0) {
                     $key = str_replace('!', '', $key);
                     $sql .= " AND $key != :$key ";
+                } else if (strpos($key, '%') === 0) {
+                    $key = str_replace('%', '', $key);
+                    $sql .= " AND $key LIKE :$key ";
                 } else {
                     $sql .= " AND $key = :$key ";
                 }
@@ -55,7 +58,11 @@ abstract class Model
 
         if (!empty($where)) {
             foreach ($where as $key => $value) {
-                $stmt->bindValue(str_replace('!', '', $key), $value);
+                if (strpos($key, '%') === 0) {
+                    $stmt->bindValue(str_replace('%', '', $key), '%' . $value . '%');
+                } else {
+                    $stmt->bindValue(str_replace('!', '', $key), $value);
+                }
             }
         }
 
