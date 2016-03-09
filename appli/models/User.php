@@ -93,20 +93,26 @@ class User extends AppModel
             if (!is_array($longitude) && !is_array($lattitude)) {
                 if ($longitude > 0 && $lattitude > 0) {
                     // On récupère les codes postaux associés
+                    /*
                     $proxSql = "SELECT distinct LEFT(code_postal, 2) as code_postal FROM ville
                             WHERE (6366*acos(cos(radians(".$lattitude."))*cos(radians(`lattitude`))*cos(radians(`longitude`)
                             -radians(".$longitude."))+sin(radians(".$lattitude."))*sin(radians(`lattitude`)))) <= ".($criterias['search_distance'] / 10);
+
                     $closeCPs = $this->fetch($proxSql);
+
+                    //$closeCPs = Service_Container::getInstance()->get('geoloc')->getCloseDepartments($longitude, $lattitude, $criterias['search_distance']);
 
                     if (count($closeCPs) > 0) {
                         $sql .= ' AND LEFT(user_zipcode, 2) IN (';
 
-                        foreach ($closeCPs as $ville) {
-                            $sql .= "'".$ville['code_postal']."', ";
+                        foreach ($closeCPs as $cp) {
+                            $sql .= "'".$cp."', ";
                         }
 
                         $sql .= ") ";
-                    }
+                    }*/
+
+                    $sql .= ' AND SQRT(POW((ville_longitude_deg - ' . $longitude.'), 2) + POW((ville_latitude_deg - '. $lattitude.'),2)) < 10 ';
 
                     $sql .= ' AND user_zipcode IS NOT null ';
                 }

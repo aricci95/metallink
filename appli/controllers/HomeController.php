@@ -6,8 +6,6 @@ class HomeController extends AppController
 
     public function render()
     {
-        var_dump($this->context->get('user_longitude'));
-        var_dump($this->context->get('user_lattitude'));
         $socialAppsData = $this->context->get('userprofile');
 
         if (!empty($socialAppsData['email']) && $socialAppsData['verified']) {
