@@ -153,7 +153,7 @@ class ViewHelper {
                     </tr>
                     <tr>
                         <th style="color:black;">Ville : </th>
-                        <td><?php echo $concert['nom']. ' (' . $concert['departement'] . ')'; ?></td>
+                        <td><?php echo $concert['ville_nom_reel']. ' (' . $concert['departement'] . ')'; ?></td>
                     </tr>
                     <tr>
                         <th style="color:black;">Orga : </th>

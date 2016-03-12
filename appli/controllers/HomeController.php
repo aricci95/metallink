@@ -25,7 +25,12 @@ class HomeController extends AppController
 
         $concerts = $this->model->concert->getSearch($concertCriterias, 0, 5);
 
+        var_dump($concerts);
+
         $this->view->concert = !empty($concerts) ? $concerts[min(array_keys($concerts))] : null;
+
+        var_dump($this->view->concert);die;
+        echo '<pre>' . print_r($this->view->concert, true) . '</pre>';
 
         $this->view->render();
     }

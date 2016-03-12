@@ -196,25 +196,13 @@ class Concert extends AppModel
 
         if (!empty($criterias['search_distance'])) {
             $longitude = $this->context->get('user_longitude');
-            $lattitude = $this->context->get('user_lattitude');
+            $latitude = $this->context->get('user_latitude');
 
-            if (!is_array($longitude) && !is_array($lattitude)) {
-                if ($longitude > 0 && $lattitude > 0) {
-                    // On récupère les codes postaux associés
-                    $proxSql = "SELECT distinct LEFT(code_postal, 2) as code_postal FROM ville
-                            WHERE (6366*acos(cos(radians(".$lattitude."))*cos(radians(`lattitude`))*cos(radians(`longitude`)
-                            -radians(".$longitude."))+sin(radians(".$lattitude."))*sin(radians(`lattitude`)))) <= ".($criterias['search_distance'] / 10);
-                    $closeCPs = $this->fetch($proxSql);
-
-                    if (count($closeCPs) > 0) {
-                        $where .= ' AND LEFT(departement, 2) IN (';
-
-                        foreach ($closeCPs as $ville) {
-                            $where .= "'".$ville['code_postal']."', ";
-                        }
-
-                        $where .= ") ";
-                    }
+            if (!is_array($longitude) && !is_array($latitude)) {
+                if ($longitude > 0 && $latitude > 0) {
+                    $where .= ' AND ville_longitude_deg BETWEEN :longitude_begin AND :longitude_end
+                                AND ville_latitude_deg BETWEEN :latitude_begin AND :latitude_end
+                                AND concert.ville_id > 0 ';
                 }
             }
         }
@@ -224,11 +212,11 @@ class Concert extends AppModel
             FROM
                 concert
             JOIN (
-                ville,
+                city,
                 concert_band,
                 band
             ) ON (
-                concert.ville_id = ville.ville_id
+                concert.ville_id = city.ville_id
                 AND concert.concert_id = concert_band.concert_id
                 AND band.band_id = concert_band.band_id
             )
@@ -249,6 +237,15 @@ class Concert extends AppModel
             $stmt->bindValue('search_keyword', '%'. $criterias['search_keyword'] .'%', PDO::PARAM_STR);
         }
 
+        if (!empty($criterias['search_distance'])) {
+            $ratio = COEF_DISTANCE * $criterias['search_distance'];
+
+            $stmt->bindValue('longitude_begin', ($longitude - $ratio), PDO::PARAM_INT);
+            $stmt->bindValue('longitude_end', ($longitude + $ratio), PDO::PARAM_INT);
+
+            $stmt->bindValue('latitude_begin', ($latitude - $ratio), PDO::PARAM_INT);
+            $stmt->bindValue('latitude_end', ($latitude + $ratio), PDO::PARAM_INT);
+        }
 
         $stmt->bindValue('limit_begin', $offset * (NB_SEARCH_RESULTS * 3), PDO::PARAM_INT);
         $stmt->bindValue('limit_end', empty($limit) ? (NB_SEARCH_RESULTS * 3) : $limit, PDO::PARAM_INT);

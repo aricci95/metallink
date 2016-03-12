@@ -80,7 +80,7 @@ class AuthService extends Service
                       ->set('ville_id', (int) $user['ville_id'])
                       ->set('user_zipcode', (int) $localization->postal_code)
                       ->set('user_longitude', $localization->longitude)
-                      ->set('user_lattitude', $localization->latitude)
+                      ->set('user_latitude', $localization->latitude)
                       ->set('forum_notification', $user['forum_notification']);
         return true;
     }

@@ -3,11 +3,11 @@
 class Proximity extends AppModel
 {
 
-    public function getCloseVilles($lattitude, $longitude, $range = 50)
+    public function getCloseVilles($latitude, $longitude, $range = 50)
     {
-        if ($lattitude > 0 && $longitude > 0) {
-            $sql = "SELECT code_postal, (6366*acos(cos(radians(".$lattitude."))*cos(radians(`lattitude`))*cos(radians(`longitude`)
-                    -radians(".$longitude."))+sin(radians(".$lattitude."))*sin(radians(`lattitude`)))) AS distance
+        if ($latitude > 0 && $longitude > 0) {
+            $sql = "SELECT code_postal, (6366*acos(cos(radians(".$latitude."))*cos(radians(`latitude`))*cos(radians(`longitude`)
+                    -radians(".$longitude."))+sin(radians(".$latitude."))*sin(radians(`latitude`)))) AS distance
                     FROM ville
                     HAVING distance <= ($range / 100)
                     ORDER BY distance;";
@@ -17,9 +17,9 @@ class Proximity extends AppModel
         }
     }
     /*
-	public function getCloseVillesZipCodes($lattitude, $longitude, $range = 10) {
-        $sql = "SELECT nom, code_postal, (6366*acos(cos(radians(".$lattitude."))*cos(radians(`lattitude`))*cos(radians(`longitude`)
-                -radians(".$longitude."))+sin(radians(".$lattitude."))*sin(radians(`lattitude`)))) AS distance
+	public function getCloseVillesZipCodes($latitude, $longitude, $range = 10) {
+        $sql = "SELECT nom, code_postal, (6366*acos(cos(radians(".$latitude."))*cos(radians(`latitude`))*cos(radians(`longitude`)
+                -radians(".$longitude."))+sin(radians(".$latitude."))*sin(radians(`latitude`)))) AS distance
                 FROM ville
                 HAVING distance <= ($range / 100)
                 ORDER BY distance;";
@@ -35,9 +35,9 @@ class Proximity extends AppModel
     }*/
 /*
     public function getVilleCoordinates($villeID) {
-        $result = mysql_fetch_object(mysql_query("SELECT longitude, lattitude FROM ville WHERE ville_id = '$villeID'"));
+        $result = mysql_fetch_object(mysql_query("SELECT longitude, latitude FROM ville WHERE ville_id = '$villeID'"));
 
-        if(isset($result->longitude) && isset($result->lattitude)) return $result;
+        if(isset($result->longitude) && isset($result->latitude)) return $result;
         else return false;
     }
 

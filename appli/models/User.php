@@ -88,14 +88,13 @@ class User extends AppModel
 
         if (!empty($criterias['search_distance'])) {
             $longitude = $this->context->get('user_longitude');
-            $lattitude = $this->context->get('user_lattitude');
+            $latitude = $this->context->get('user_latitude');
 
-            if (!is_array($longitude) && !is_array($lattitude)) {
-                if ($longitude > 0 && $lattitude > 0) {
-                    $sql .= ' AND user_longitude BETWEEN ' . ($longitude - 1.5) . ' AND ' . ($longitude + 1.5) .
-                    ' AND user_latitude BETWEEN ' . ($lattitude - 1.5) . ' AND ' . ($lattitude + 1.5) . ' ';
-
-                    $sql .= ' AND user_zipcode IS NOT null ';
+            if (!is_array($longitude) && !is_array($latitude)) {
+                if ($longitude > 0 && $latitude > 0) {
+                    $sql .= ' AND user_longitude BETWEEN :longitude_begin AND :longitude_end
+                              AND user_latitude BETWEEN :latitude_begin AND :latitude_end 
+                              AND user_zipcode IS NOT null ';
                 }
             }
         }
@@ -114,12 +113,23 @@ class User extends AppModel
         if (!empty($criterias['search_login'])) {
             $stmt->bindValue('search_login', '%'. $criterias['search_login'] .'%', PDO::PARAM_STR);
         }
+
         if (!empty($criterias['search_gender'])) {
             $stmt->bindValue('user_gender', $criterias['search_gender'], PDO::PARAM_INT);
         }
 
         if (!empty($criterias['search_age'])) {
             $stmt->bindValue('search_age', $criterias['search_age'], PDO::PARAM_INT);
+        }
+
+        if (!empty($criterias['search_distance'])) {
+            $ratio = COEF_DISTANCE * $criterias['search_distance'];
+
+            $stmt->bindValue('longitude_begin', ($longitude - $ratio), PDO::PARAM_INT);
+            $stmt->bindValue('longitude_end', ($longitude + $ratio), PDO::PARAM_INT);
+
+            $stmt->bindValue('latitude_begin', ($latitude - $ratio), PDO::PARAM_INT);
+            $stmt->bindValue('latitude_end', ($latitude + $ratio), PDO::PARAM_INT);
         }
 
         $stmt->bindValue('limit_begin', $offset * NB_SEARCH_RESULTS, PDO::PARAM_INT);
@@ -452,7 +462,7 @@ class User extends AppModel
                     user_mail,
                     longitude,
                     user.ville_id as ville_id,
-                    lattitude,
+                    latitude,
                     forum_notification
                 FROM user LEFT JOIN ville ON (user.user_zipcode = ville.code_postal)
                 WHERE LOWER(user_mail) = LOWER(:email)
