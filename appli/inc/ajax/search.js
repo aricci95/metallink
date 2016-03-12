@@ -14,6 +14,7 @@ $(document).ready(function() {
                 search_login : $('#search_login').val(),
                 search_distance : $('#search_distance').val(),
                 search_gender : $('#search_gender').val(),
+                search_age : $('#search_age').val(),
                 search_keyword : $('#search_keyword').val()
             },
             function(data) {

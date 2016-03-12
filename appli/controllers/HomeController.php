@@ -14,23 +14,15 @@ class HomeController extends AppController
             }
         }
 
-        // Découverte
-        $tmp = $this->model->news->getNews(3, true);
-
         $this->view->setViewName('wHome');
 
         $concertCriterias = array(
-            'search_distance' => 10,
+            'search_distance' => ($this->context->get('user_valid')) ? 20 : null,
         );
 
         $concerts = $this->model->concert->getSearch($concertCriterias, 0, 5);
 
-        var_dump($concerts);
-
         $this->view->concert = !empty($concerts) ? $concerts[min(array_keys($concerts))] : null;
-
-        var_dump($this->view->concert);die;
-        echo '<pre>' . print_r($this->view->concert, true) . '</pre>';
 
         $this->view->render();
     }

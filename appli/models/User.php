@@ -83,20 +83,16 @@ class User extends AppModel
         }
 
         if (!empty($criterias['search_age'])) {
-            $sql .= "AND FLOOR((DATEDIFF( CURDATE(), (user_birth))/365)) >= :search_age ";
+            $sql .= " AND FLOOR((DATEDIFF( CURDATE(), (user_birth))/365)) <= :search_age ";
         }
 
         if (!empty($criterias['search_distance'])) {
             $longitude = $this->context->get('user_longitude');
             $latitude = $this->context->get('user_latitude');
 
-            if (!is_array($longitude) && !is_array($latitude)) {
-                if ($longitude > 0 && $latitude > 0) {
-                    $sql .= ' AND user_longitude BETWEEN :longitude_begin AND :longitude_end
-                              AND user_latitude BETWEEN :latitude_begin AND :latitude_end 
-                              AND user_zipcode IS NOT null ';
-                }
-            }
+            $sql .= ' AND user_longitude BETWEEN :longitude_begin AND :longitude_end
+                      AND user_latitude BETWEEN :latitude_begin AND :latitude_end
+                      AND user_zipcode IS NOT null ';
         }
 
         $sql .= ' ORDER BY user_last_connexion DESC

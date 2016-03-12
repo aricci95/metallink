@@ -198,13 +198,8 @@ class Concert extends AppModel
             $longitude = $this->context->get('user_longitude');
             $latitude = $this->context->get('user_latitude');
 
-            if (!is_array($longitude) && !is_array($latitude)) {
-                if ($longitude > 0 && $latitude > 0) {
-                    $where .= ' AND ville_longitude_deg BETWEEN :longitude_begin AND :longitude_end
-                                AND ville_latitude_deg BETWEEN :latitude_begin AND :latitude_end
-                                AND concert.ville_id > 0 ';
-                }
-            }
+            $where .= ' AND ville_longitude_deg BETWEEN :longitude_begin AND :longitude_end
+                        AND ville_latitude_deg BETWEEN :latitude_begin AND :latitude_end ';
         }
 
         $sql = 'SELECT

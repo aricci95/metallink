@@ -22,41 +22,36 @@ class ScriptController extends AppController
         $this->view->render();
     }
 
-    public function renderSriptConcertCoordinates()
+    public function renderScriptConcertCoordinates()
     {
         $done = 0;
 
-        $concerts = $this->model->concerts->find();
+        $concerts = $this->model->concert->find();
 
         foreach ($concerts as $concert) {
-            $ville = $this->model->city->find(array('ville_longitude_deg', 'ville_latitude_deg'), array('%ville_code_postal' => $concert['user_zipcode']), array(), '0, 1');
+            $exploded_libel = explode(',', $concert['concert_libel']);
+
+
+            if (count($exploded_libel) == 0) {
+                continue;
+            }
+
+            $villeName = trim($exploded_libel[1]);
+
+            $ville = $this->model->city->find(array(), array('ville_nom_reel' => $villeName), array(), '0, 1');
 
             if (!empty($ville[0])) {
                 $coordinates = array(
-                    'user_longitude' => $ville[0]['ville_longitude_deg'],
-                    'user_latitude' => $ville[0]['ville_latitude_deg'],
+                    'ville_id' => $ville[0]['ville_id'],
                 );
 
-                $this->model->user->updateById($user['user_id'], $coordinates);
+                $this->model->concert->updateById($concert['concert_id'], $coordinates);
 
                 $done++;
-            } else {
-                $ville = $this->model->city->find(array('ville_longitude_deg', 'ville_latitude_deg'), array('%ville_nom_simple' => $user['user_city']), array(), '0, 1');
-
-                if (!empty($ville[0])) {
-                    $coordinates = array(
-                        'user_longitude' => $ville[0]['ville_longitude_deg'],
-                        'user_latitude' => $ville[0]['ville_latitude_deg'],
-                    );
-
-                    $this->model->user->updateById($user['user_id'], $coordinates);
-
-                    $done++;
-                }
             }
         }
 
-        $this->view->growler($done . ' utilisateur migrés', GROWLER_OK);
+        $this->view->growler($done . ' concerts migrés', GROWLER_OK);
 
         $this->render();
     }
@@ -68,28 +63,26 @@ class ScriptController extends AppController
         $users = $this->model->user->find();
 
         foreach ($users as $user) {
-            if ($user['user_longitude'] > 0) {
-                continue;
-            }
-
-            $ville = $this->model->city->find(array('ville_longitude_deg', 'ville_latitude_deg'), array('%ville_code_postal' => $user['user_zipcode']), array(), '0, 1');
+            $ville = $this->model->city->find(array('ville_id', 'ville_longitude_deg', 'ville_latitude_deg'), array('%ville_code_postal' => $user['user_zipcode']), array(), '0, 1');
 
             if (!empty($ville[0])) {
                 $coordinates = array(
                     'user_longitude' => $ville[0]['ville_longitude_deg'],
                     'user_latitude' => $ville[0]['ville_latitude_deg'],
+                    'ville_id' => $ville[0]['ville_id'],
                 );
 
                 $this->model->user->updateById($user['user_id'], $coordinates);
 
                 $done++;
             } else {
-                $ville = $this->model->city->find(array('ville_longitude_deg', 'ville_latitude_deg'), array('%ville_nom_simple' => $user['user_city']), array(), '0, 1');
+                $ville = $this->model->city->find(array('ville_id', 'ville_longitude_deg', 'ville_latitude_deg'), array('ville_nom_reel' => $user['user_city']), array(), '0, 1');
 
                 if (!empty($ville[0])) {
                     $coordinates = array(
                         'user_longitude' => $ville[0]['ville_longitude_deg'],
                         'user_latitude' => $ville[0]['ville_latitude_deg'],
+                        'ville_id' => $ville[0]['ville_id'],
                     );
 
                     $this->model->user->updateById($user['user_id'], $coordinates);
