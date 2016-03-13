@@ -33,7 +33,7 @@ if($this->isJSActivated(JS_SCROLL_REFRESH)) : ?>
     <script type="text/javascript" src="MLink/appli/js/scrollRefresh.js"></script>
 <?php endif;
 if($this->isJSActivated(JS_PHOTO)) : ?>
-    <script type="text/javascript" src="MLink/appli/js//photo.js"></script>
+    <script type="text/javascript" src="MLink/appli/js/photo.js"></script>
 <?php endif;
 if($this->isJSActivated(JS_TASTE)) : ?>
     <script type="text/javascript" src="MLink/appli/js/taste.js"></script>

@@ -2,14 +2,14 @@
 class ConcertsCron extends Cron
 {
 
-	public function execute() 
+	public function execute()
 	{
         $concerts = array();
-        $limit    = 20;
+        $limit    = 5;
         $counter  = 0;
         $done     = 0;
-        
-		include_once(ROOT_DIR . '/appli/inc/simplehtmldom/simple_html_dom.php');
+
+		include_once(ROOT_DIR . '/libraries/simplehtmldom/simple_html_dom.php');
 
         $regions = array(
             'alsace',
@@ -100,7 +100,9 @@ class ConcertsCron extends Cron
                         $name_raw = explode('[' , strtolower(trim(preg_replace('/\s+/', ' ', $bandCell[0]->plaintext))));
 
                         $website = !empty($bandCell[2]) ? $bandCell[2]->find('a', 0) : null;
-                        $style   = !empty($name_raw[1]) ? str_replace(']', '', $name_raw[1]) : null;
+                        $exploded_style = !empty($name_raw[1]) ? explode(' - ', str_replace(']', '', $name_raw[1])) : null;
+
+                        $style = $exploded_style[0];
 
                         $cleanName = Tools::getCleanName($name_raw[0]);
 

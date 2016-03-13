@@ -11,4 +11,11 @@ class ConcertController extends SearchController
         'search_keyword',
         'search_style',
     );
+
+    public function render()
+    {
+        $this->view->styles = $this->model->style->find(array('style_id', 'style_libel'));
+
+        parent::render();
+    }
 }

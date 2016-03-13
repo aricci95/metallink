@@ -178,8 +178,13 @@ class Concert extends AppModel
         $contextUserId = $this->context->get('user_id');
 
         $where = '';
+
         if (!empty($criterias['search_keyword'])) {
             $where = " AND concert_libel LIKE :search_keyword ";
+        }
+
+        if (!empty($criterias['search_style'])) {
+            $where = " AND band_style REGEXP :search_regexp ";
         }
 
         if (!empty($criterias['search_distance'])) {
@@ -218,6 +223,15 @@ class Concert extends AppModel
 
         if (!empty($criterias['search_keyword'])) {
             $stmt->bindValue('search_keyword', '%'. $criterias['search_keyword'] .'%', PDO::PARAM_STR);
+        }
+
+        if (!empty($criterias['search_style'])) {
+            $result = Model_Manager::getInstance()->find('style', array('style_keyword'), array('style_id' => $criterias['search_style']));
+            $keywords = explode(',', $result[0]['style_keyword']);
+
+            $regexp = implode('|', $keywords);
+
+            $stmt->bindValue('search_regexp', $regexp, PDO::PARAM_STR);
         }
 
         if (!empty($criterias['search_distance'])) {

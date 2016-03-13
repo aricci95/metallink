@@ -108,7 +108,7 @@ class ProfileController extends AppController
         $this->view->user = $this->model->User->getUserByIdDetails($this->context->get('user_id'));
 
         // Récupération des listes déroulantes
-        $this->view->styles     = $this->model->find('ref_style', array(), array(), array('style_libel'));
+        $this->view->styles     = $this->model->find('style', array(), array(), array('style_libel'));
         $this->view->looks      = $this->model->find('ref_look', array(), array(), array('look_libel'));
         $this->view->quantities = $this->model->find('ref_quantity', array(), array(), array('quantity_libel'));
 

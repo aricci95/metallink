@@ -7,10 +7,10 @@ class GeolocService extends Service
     {
         $ip_user = '31.32.223.74';
 
-        include(ROOT_DIR . '/appli/inc/geoloc/geoipcity.inc');
-        include(ROOT_DIR . '/appli/inc/geoloc/geoipregionvars.php');
+        include(ROOT_DIR . '/libraries/geoloc/geoipcity.inc');
+        include(ROOT_DIR . '/libraries/geoloc/geoipregionvars.php');
 
-        $gi = geoip_open(realpath(ROOT_DIR . '/appli/inc/geoloc/GeoLiteCity.dat'), GEOIP_STANDARD);
+        $gi = geoip_open(realpath(ROOT_DIR . '/libraries/geoloc/GeoLiteCity.dat'), GEOIP_STANDARD);
 
         $record = geoip_record_by_addr($gi, $ip_user);
        // $record = geoip_record_by_addr($gi,$_SERVER['REMOTE_ADDR']);

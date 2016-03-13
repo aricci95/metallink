@@ -60,6 +60,7 @@ abstract class SearchController extends AppController
 
             $datas[$param] = $this->context->get($param);
         }
+
         return $datas;
     }
 }

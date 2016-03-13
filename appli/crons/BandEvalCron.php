@@ -1,5 +1,5 @@
 <?php
-class BandEvalCron extends Cron 
+class BandEvalCron extends Cron
 {
 
 	public function execute()
@@ -7,7 +7,7 @@ class BandEvalCron extends Cron
         $limit    = 10;
         $done     = 0;
 
-        include_once(ROOT_DIR . '/appli/inc/simplehtmldom/simple_html_dom.php');
+        include_once(ROOT_DIR . '/libraries/simplehtmldom/simple_html_dom.php');
 
         $som_url = 'http://www.spirit-of-metal.com';
 
@@ -100,7 +100,7 @@ class BandEvalCron extends Cron
             }
         }
 
-        Log::info('[CRON::BandEval] : ' . $done . ' band updated.');   
+        Log::info('[CRON::BandEval] : ' . $done . ' band updated.');
 
         $this->get('mailer')->send(ADMIN_MAIL, 'CRON band Eval OK', 'CRON band eval via spirit-of-metal ok, ' . $done . ' groupes mis à jour.', false);
 
