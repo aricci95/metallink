@@ -74,7 +74,7 @@ class Band extends AppModel
                 *
             FROM
                 band
-            WHERE 
+            WHERE
                 band_logo_url IS NULL
             LIMIT :limit_begin, :limit_end
             ;

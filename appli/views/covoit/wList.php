@@ -46,5 +46,5 @@
             <?php $this->render('covoit/wItems', array('elements' => $this->elements)); ?>
         <?php endif; ?>
     </div>
-    <img class="loading" src="MLink/appli/inc/ajax/loading.gif" style="display:none;" data-show="false" data-end="false" data-offset="0" data-href="covoit" />
+    <img class="loading" src="MLink/appli/js/loading.gif" style="display:none;" data-show="false" data-end="false" data-offset="0" data-href="covoit" />
 <?php $this->_helper->blackBoxClose(); ?>

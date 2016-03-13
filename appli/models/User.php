@@ -134,7 +134,6 @@ class User extends AppModel
         return $this->db->executeStmt($stmt)->fetchAll();
     }
 
-    // Convertis les 1 et 0 en oui et non
     public function convertBinaries($user)
     {
         $liste = array('tattoo', 'piercing');
@@ -148,7 +147,6 @@ class User extends AppModel
         return $resultat;
     }
 
-    // Convertis les quantités
     public function convertQuantities($user)
     {
         $liste = array('drugs', 'alcohol', 'smoke');
@@ -163,7 +161,6 @@ class User extends AppModel
         }
     }
 
-    // Compte le nombre d'utilisateurs
     public function countUsers()
     {
         $sql = "SELECT count(*) as number

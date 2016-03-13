@@ -27,7 +27,7 @@ class Proximity extends AppModel
 
         $villeProches = array();
         foreach($villes as $ville) {
-            $villeProches[]['nom']      = $ville['nom'];
+            $villeProches[]['ville_nom_simple']      = $ville['ville_nom_simple'];
             $villeProches[]['distance'] = $ville['distance'] * 100;
         }
 

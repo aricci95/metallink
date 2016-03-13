@@ -12,7 +12,7 @@
                 <td>
                     <table width="100%" style="font-size:16px;font-weight:bold;text-align:center;">
                         <tr style="color:white;">
-                            <td width="20%"><?php echo (!empty($covoiturage['nom'])) ? $covoiturage['nom'] : ''; ?></td>
+                            <td width="20%"><?php echo (!empty($covoiturage['ville_nom_simple'])) ? $covoiturage['ville_nom_simple'] : ''; ?></td>
                             <td><img src="MLink/images/icone/target.png" /></td>
                             <td><?php echo (!empty($covoiturage['concert_libel'])) ? nl2br($covoiturage['concert_libel']) : ''; ?></td>
                             <td><?php echo (empty($covoiturage['price'])) ? '<i>à définir</i>' : $covoiturage['price'].' €'; ?></td>

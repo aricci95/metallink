@@ -6,7 +6,7 @@
         <link type="text/css" rel="stylesheet" media="all" href="MLink/appli/incchat/css/screen.css" />
         <script type="text/javascript" src="MLink/appli/incjquery-1.11.1.min.js"></script>
         <?php if($this->isJSActivated(JS_FORUM)) : ?>
-            <script type="text/javascript" src="MLink/appli/inc/ajax/forum.js"></script>
+            <script type="text/javascript" src="MLink/appli/js/forum.js"></script>
         <?php endif; ?>
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     </head>

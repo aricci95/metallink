@@ -5,7 +5,7 @@
 			<?php if(empty($this->users)) : ?>Aucune demande acceptée.
 			<?php else : ?>
 				<?php $this->render('user/wItems', array('elements' => $this->users)); ?>
-				<img class="loading" src="MLink/appli/inc/ajax/loading.gif" style="display:none;" data-show="false" data-end="false" data-offset="0" data-href="link" data-option="<?php echo LINK_STATUS_ACCEPTED; ?>" />
+				<img class="loading" src="MLink/appli/js/loading.gif" style="display:none;" data-show="false" data-end="false" data-offset="0" data-href="link" data-option="<?php echo LINK_STATUS_ACCEPTED; ?>" />
 			<?php endif; ?>
 		</div>
 	<?php $this->_helper->blackBoxClose(); ?>
@@ -16,7 +16,7 @@
 			<?php if(empty($this->users)) : ?>Aucun utilisateur ignoré.
 			<?php else : ?>
 				<?php $this->render('user/wItems', array('elements' => $this->users)); ?>
-				<img class="loading" src="MLink/appli/inc/ajax/loading.gif" style="display:none;" data-show="false" data-end="false" data-offset="0" data-href="link" data-option="<?php echo LINK_STATUS_BLACKLIST; ?>" />
+				<img class="loading" src="MLink/appli/js/loading.gif" style="display:none;" data-show="false" data-end="false" data-offset="0" data-href="link" data-option="<?php echo LINK_STATUS_BLACKLIST; ?>" />
 			<?php endif; ?>
 		</div>
 	<?php $this->_helper->blackBoxClose(); ?>
@@ -36,7 +36,7 @@
 			<?php if(empty($this->users['sent'])) : ?>Aucune demande envoyée.
 			<?php else : ?>
 				<?php $this->render('user/wItems', array('elements' => $this->users['sent'])); ?>
-				<img class="loading" src="MLink/appli/inc/ajax/loading.gif" style="display:none;" data-show="false" data-end="false" data-offset="0" data-href="link" data-option="<?php echo LINK_STATUS_SENT; ?>" />
+				<img class="loading" src="MLink/appli/js/loading.gif" style="display:none;" data-show="false" data-end="false" data-offset="0" data-href="link" data-option="<?php echo LINK_STATUS_SENT; ?>" />
 			<?php endif; ?>
 		</div>
 	<?php $this->_helper->blackBoxClose(); ?>

@@ -1,11 +1,11 @@
 <html>
     <head>
         <base href="/" >
-        <LINK REL=StyleSheet HREF="MLink/appli/inc/styles.css" TYPE="text/css" MEDIA=screen>
+        <LINK REL=StyleSheet HREF="MLink/appli/styles.css" TYPE="text/css" MEDIA=screen>
         <link rel="icon" type="image/png" href="MLink/images/icone/Fav.png" />
-        <link type="text/css" rel="stylesheet" media="all" href="MLink/appli/inc/chat/css/chat.css" />
-        <link type="text/css" rel="stylesheet" media="all" href="MLink/appli/inc/chat/css/screen.css" />
-        <link rel="stylesheet" type="text/css" href="MLink/appli/inc/growler/css/gritter.css" />
+        <link type="text/css" rel="stylesheet" media="all" href="MLink/libraries/chat/css/chat.css" />
+        <link type="text/css" rel="stylesheet" media="all" href="MLink/libraries/chat/css/screen.css" />
+        <link rel="stylesheet" type="text/css" href="MLink/libraries/growler/css/gritter.css" />
         <!--[if lte IE 7]>
             <link type="text/css" rel="stylesheet" media="all" href="css/screen_ie.css" />
         <![endif]-->
@@ -54,7 +54,7 @@
                     Login : <input style="margin-left:10px;margin-right:10px;" name="user_login" size="8" />
                     Password : <input style="margin-left:10px;margin-right:10px;" name="user_pwd" type="password" size="8" />
                     <input type="submit" value="Connexion" />
-                    <input type="button" onclick="window.location.href = 'MLink/appli/inc/socialauth/station.php';" class="facebookButton" value="Via Facebook" />
+                    <input type="button" onclick="window.location.href = 'MLink/libraries/socialauth/station.php';" class="facebookButton" value="Via Facebook" />
                     <span style="margin-right:10px;margin-left:10px;">
                     	<a href="subscribe">S'inscrire !</a>
                     </span>

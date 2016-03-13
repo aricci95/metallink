@@ -35,12 +35,12 @@ class ConcertsCron extends Cron
             'rhone-alpes',
         );
 
-        $villes_list  = $this->model->find('ville', array('ville_id', 'nom'));
+        $villes_list  = $this->model->find('city', array('ville_id', 'ville_nom_simple'));
         $bands_list   = $this->model->find('band', array('band_id', 'band_libel'));
         $concert_list = $this->model->find('concert', array('external_id'));
 
         foreach ($villes_list as $ville) {
-            $cleanName = Tools::getCleanName($ville['nom']);
+            $cleanName = Tools::getCleanName($ville['ville_nom_simple']);
             $villes[$cleanName] = $ville['ville_id'];
         }
 

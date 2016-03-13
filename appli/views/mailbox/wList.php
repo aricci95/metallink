@@ -15,7 +15,7 @@
 		<?php endif; ?>
 		<tr>
 			<td>
-				<img class="loading" src="MLink/appli/inc/ajax/loading.gif" style="display:none;" data-show="false" data-offset="0" data-href="mailbox" data-end="false" />
+				<img class="loading" src="MLink/appli/js/loading.gif" style="display:none;" data-show="false" data-offset="0" data-href="mailbox" data-end="false" />
 			</td>
 		</tr>
 	</table>

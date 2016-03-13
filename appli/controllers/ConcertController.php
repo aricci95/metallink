@@ -9,6 +9,6 @@ class ConcertController extends SearchController
     protected $_searchParams = array(
         'search_distance',
         'search_keyword',
+        'search_style',
     );
-
 }

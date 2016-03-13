@@ -14,5 +14,5 @@
             <?php $this->render($this->type . '/wItems'); ?>
         <?php endif; ?>
     </div>
-    <img class="loading" src="MLink/appli/inc/ajax/loading.gif" style="display:none;" data-show="false" data-end="false" data-offset="0" data-href="<?php echo $this->type; ?>" />
+    <img class="loading" src="MLink/appli/js/loading.gif" style="display:none;" data-show="false" data-end="false" data-offset="0" data-href="<?php echo $this->type; ?>" />
 <?php $this->_helper->blackBoxClose(); ?>
