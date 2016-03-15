@@ -57,7 +57,7 @@ class AuthService extends Service
     {
         $localization = $this->get('geoloc')->localize();
 
-        if ($localization->postal_code !== $user['user_zipcode']) {
+        if (!empty($localization) && $localization->postal_code !== $user['user_zipcode']) {
             $user['user_zipcode'] = $localization->postal_code;
             $user['user_city'] = $localization->city;
 
@@ -76,11 +76,11 @@ class AuthService extends Service
                       ->set('user_valid', (int) $user['user_valid'])
                       ->set('user_mail', $user['user_mail'])
                       ->set('user_gender', (int) $user['user_gender'])
-                      ->set('user_city', $localization->city)
+                      ->set('user_city', $user['user_city'])
                       ->set('ville_id', (int) $user['ville_id'])
-                      ->set('user_zipcode', (int) $localization->postal_code)
-                      ->set('user_longitude', $localization->longitude)
-                      ->set('user_latitude', $localization->latitude)
+                      ->set('user_zipcode', (int) $uer['user_zipcode'])
+                      ->set('user_longitude', $user['user_longitude'])
+                      ->set('user_latitude', $user['user_latitude'])
                       ->set('forum_notification', $user['forum_notification']);
         return true;
     }

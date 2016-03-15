@@ -62,8 +62,8 @@
                 </span>
             </div>
         <?php else : ?>
-            <div class="divBarre tableMenu" style="height: 34px;">
-                <form action="home/login" method="post" style="padding:5px;">
+            <div class="menu">
+                <form action="home/login" method="post">
                     Login : <input style="margin-left:10px;margin-right:10px;" name="user_login" size="8" />
                     Password : <input style="margin-left:10px;margin-right:10px;" name="user_pwd" type="password" size="8" />
                     <input type="submit" value="Connexion" />
@@ -74,7 +74,7 @@
                     <span style="margin-right:10px;">
                         <a href="lostpwd">Mot de passe oublié</a>
                     </span>
-                    Enregistrer <input name="savepwd" type="checkbox" />
+                    <!-- Enregistrer <input name="savepwd" type="checkbox" />-->
                 </form>
             </div>
         <?php endif;

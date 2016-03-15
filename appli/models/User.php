@@ -422,9 +422,12 @@ class User extends AppModel
                     FLOOR((DATEDIFF( CURDATE(), (user_birth))/365)) AS age,
                     user_gender,
                     user_valid,
+                    user_city,
                     user_zipcode,
                     user_mail,
-                    forum_notification
+                    forum_notification,
+                    user_longitude,
+                    user_latitude
                 FROM user
                 WHERE LOWER(user_login) = LOWER(:user_login)
                 AND user_pwd = :pwd
