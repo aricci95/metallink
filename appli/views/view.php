@@ -20,7 +20,10 @@
                 <img src="<?php echo $this->headerImg ?>" />
             </a>
         </div>
-        <div class="intitule" align="center">Communauté métal en tous genres <span style="color:#B40404;margin-left:225px;"><?php echo 'v'.APP_VERSION ?></span></div>
+        <div class="intitule">
+        <span align="center">Communauté métal en tous genres</span>
+        <span style="color:#B40404;margin-left:268px;"><?php echo 'v'.APP_VERSION ?></span>
+        </div>
         <div class="divCorps" align="left">
         <?php if($this->context->get('user_id')) : ?>
             <div class="menu">
