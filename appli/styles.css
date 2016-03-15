@@ -1,14 +1,28 @@
 @CHARSET "utf-8";
+
+@font-face {
+    font-family: Metallink;
+    src: url(/MLink/libraries/fonts/metallink.ttf);
+}
+
+.results {
+    font-size: 12px;
+}
+
 a {
     cursor: url(http://cdn.acfrg.com/o/emp.fr/hand3.cur), url(http://cdn.acfrg.com/o/emp.fr/hand3.png), auto;
 }
 
 textarea {
+    width:100%;
+    border:3px inset;
+    font-size: 12px;
     background-color:#D8D8D8;
 }
 
 body {
-    font-family:Arial, Helvetica, sans-serif;
+    font-size:12px;
+    font-family: "Palatino Linotype","Book Antiqua",Palatino,FreeSerif,serif;
     background-image:url('http://cdn.acfrg.com/o/emp.de/shopbranding/band-merch_shopBranding.jpg');
     background-attachment: fixed;
     background-color:black;
@@ -19,7 +33,6 @@ body {
 }
 
 .body {
-    font-family:Arial, Helvetica, sans-serif;
     background-image:url('/MLink/images/structure/background.jpg');
     background-attachment: fixed;
     background-repeat: repeat-y;
@@ -33,44 +46,30 @@ body {
 }
 
 .intitule {
+    font-size: 14px;
     position:absolute;
     top:152px;
     margin-left:270px;
-    font-family:"Palatino Linotype","Book Antiqua",Palatino,FreeSerif,serif;
 }
 
 /*--LIENS--*/
-.aMenu:link {color: #808080;text-decoration: none ; font-size:15px;font-weight:bold;} /*couleur du lien normal*/
-.aMenu:hover {color: white;text-decoration: none ;font-size:15px;font-weight:bold;} /*couleur quand la souris passe sur le lien*/
-.aMenu:visited {color: #808080;text-decoration: none ;font-size:15px;font-weight:bold;} /*lien visité*/
-.aMenu:visited:hover {color: white;text-decoration: none ;font-size:15px;font-weight:bold;} /*lien visité quand la souris passe dessus*/
-.aMenu:active {color: #808080;text-decoration: none ;font-size:15px;font-weight:bold;} /*couleur quand on clique dessus*/
+.aMenu:link {color: #808080;text-decoration: none ; font-size:15px;} /*couleur du lien normal*/
+.aMenu:hover {color: white;text-decoration: none ;font-size:15px;} /*couleur quand la souris passe sur le lien*/
+.aMenu:visited {color: #808080;text-decoration: none ;font-size:15px;} /*lien visité*/
+.aMenu:visited:hover {color: white;text-decoration: none ;font-size:15px;} /*lien visité quand la souris passe dessus*/
+.aMenu:active {color: #808080;text-decoration: none ;font-size:15px;} /*couleur quand on clique dessus*/
 
 a:visited {color: #808080;text-decoration: none ;}
 a:hover {color: white;text-decoration: none ;}
 a:visited:hover {color: white;text-decoration: none ;}
 a:link {color: #808080;text-decoration: none ;}
 
-.tableStandard  a{
-    font-size:12px;
-}
-
-textarea {
-    border:3px inset;
-    font-family:Arial, Helvetica, sans-serif;
-    font-size:12px;
-}
-
-/*-- TABLE --*/
 .thMessageBoxMenu {
     font-size:20px;
-    font-weight:bold;
     text-align:center;
 }
 
 .trNewMessage {
-    font-size:12px;
-    font-weight:bold;
     text-align:center;
     background-color:#242424;
     color:#808080;
@@ -81,7 +80,6 @@ textarea {
 }
 
 .trReadMessage {
-    font-size:12px;
     text-align:center;
 }
 
@@ -90,13 +88,11 @@ textarea {
 }
 
 .tableMessage{
-    font-size:12px;
     border:none;
 }
 
 .tableProfil {
-    font-family:Arial, Helvetica, sans-serif;
-    font-size:12px;
+    font-size: 12px;
     text-align:left;
     border:none;
 }
@@ -107,7 +103,6 @@ textarea {
 
 .tableExtBorder {
     border:1px #808080 solid;
-    font-family:Arial, Helvetica, sans-serif;
 }
 
 .tableExtBorder td {
@@ -115,36 +110,44 @@ textarea {
     font-size:12px;
 }
 .tableStandard {
-    font-family:Arial, Helvetica, sans-serif;
     font-size:12px;
 }
 
 .tableBox {
-    font-family:Arial, Helvetica, sans-serif;
     font-size:12px;
     width:90%;
     border:none;
 }
 
 .tableBlackBox {
-    font-family:Arial, Helvetica, sans-serif;
     position:relative;
 }
 
 .tableBlackBox th {
     text-align:center;
     font-size:16px;
-    font-family:"Palatino Linotype","Book Antiqua",Palatino,FreeSerif,serif;
 }
 
-.tableMenu {
-    font-family:"Palatino Linotype","Book Antiqua",Palatino,FreeSerif,serif;
+.menu {
+    font-size: 14px;
+    height:17px;
+    width:780px;
+    background-image:url('/MLink/images/structure/Menu.jpg');
+    background-repeat: no-repeat;
+    background-position: top center;
     color: #808080;
-    font-size:12px;
-    width:97%;
     border:none;
-    padding-top:6px;
+    padding:11px;
     margin-top:6px;
+}
+
+.menuLien {
+    text-align: left;
+    margin: 10px;
+}
+
+.menuIcone {
+    text-align: right;
 }
 
 /*-- TITRES --*/
@@ -231,13 +234,6 @@ h4 {
     margin-top:10px;
     text-align:center;
     font-size:10px;
-}
-
-.divBarre {
-    width:800px;
-    background-image:url('/MLink/images/structure/Menu.jpg');
-    background-repeat: no-repeat;
-    background-position: top center;
 }
 
 .divCorps {
@@ -353,9 +349,7 @@ img {
 .whiteBoxmiddle {
     background-image:url('/MLink/images/structure/middle.jpg');
     background-repeat: repeat;
-    font-family:Arial, Helvetica, sans-serif;
     font-size:12px;
-    font-weight:bold;
 
 }
 
@@ -376,13 +370,10 @@ img {
 }
 
 .blackBox {
+    font-family:Arial, Helvetica, sans-serif;
     background-image:url('/MLink/images/structure/blackbox/middle.png');
     background-repeat: repeat;
     border-collapse:collapse;
-}
-
-.blackBox table {
-    font-size:12px;
 }
 
 .blackBox a:hover {
@@ -448,11 +439,9 @@ img {
 }
 
 .blackBoxmiddle {
+    font-size: 12px;
     background-image:url('/MLink/images/structure/blackbox/middle.png');
     background-repeat: repeat;
-    font-family:Arial, Helvetica, sans-serif;
-    font-size:12px;
-    font-weight:bold;
 }
 
 .newPhoto:hover {
@@ -613,22 +602,12 @@ li {
 }
 
 div.autocomplete {
-    font-weight: normal;
     font-size: 12px;
     position:absolute;
     display:none;
     background-color:white;
     border:1px black solid;
     min-width: 172px;
-}
-
-.autocomplete  a:hover{
-    color:black;
-}
-
-a.add {
-    font-weight: bold;
-    color:blue;
 }
 
 .divElement  a:hover{
@@ -680,7 +659,10 @@ div.debug {
     margin-bottom:20px;
 }
 
+
+
 .vesteAPatchs {
+     font-family: myFirstFont;
     text-align: center;
     margin-top: 45px;
     margin-left: 82px;
@@ -689,7 +671,9 @@ div.debug {
     overflow: hidden;
 }
 
+
 .bandPatch {
+    font-family: myFirstFont;
     text-align: center;
     padding: 2px;
     border:1px grey;
@@ -702,5 +686,5 @@ div.debug {
     margin:2px;
     padding:3px;
     color:#E6E6E6;
-    font-family: "Old English";
+    font-family: "English";
 }

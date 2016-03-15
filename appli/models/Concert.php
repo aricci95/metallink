@@ -227,6 +227,7 @@ class Concert extends AppModel
 
         if (!empty($criterias['search_style'])) {
             $result = Model_Manager::getInstance()->find('style', array('style_keyword'), array('style_id' => $criterias['search_style']));
+
             $keywords = explode(',', $result[0]['style_keyword']);
 
             $regexp = implode('|', $keywords);

@@ -10,7 +10,7 @@
             <input type="hidden" value="<?php echo $this->destinataire['user_id']; ?>" name="destinataire_id" />
         <?php endif; ?>
         <br/>
-        <textarea name="content" cols="100" rows="8"></textarea>
+        <textarea name="content" cols="90" rows="8"></textarea>
     </div>
     <br/>
     <?php $this->_helper->formFooter('mailbox'); ?>

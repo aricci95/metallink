@@ -5,31 +5,6 @@ class ProfileController extends AppController
 
     protected $_JS = array(JS_MODAL, JS_AUTOCOMPLETE);
 
-    private function _getDistance($adresse1, $adresse2)
-    {
-        $distance = 0;
-        $duree    = 0;
-        $ville    = null;
-
-        if (!empty($adresse1) && !is_numeric($adresse1) && !empty($adresse2) && !is_numeric($adresse2)) {
-            $url = 'http://maps.google.com/maps/api/directions/xml?language=fr&origin='.$adresse1.'&destination='.$adresse2.'&sensor=false';
-            $url = str_replace(' ', '%20', $url);
-            $xml = @file_get_contents($url);
-
-            if (!empty($xml)) {
-                $root = simplexml_load_string($xml);
-
-                if (!empty($root->route->leg)) {
-                    $distance = round($root->route->leg->distance->value / 1000);
-                    $duree    = $root->route->leg->duration->value;
-                    $etapes   = $root->route->leg->step;
-                    $ville    = $root->route->leg->end_address;
-                }
-            }
-        }
-        return array('distance' => $distance, 'duree' => $duree, 'ville' => $ville);
-    }
-
     public function render()
     {
         if (empty($this->context->params['value'])) {
@@ -86,17 +61,7 @@ class ProfileController extends AppController
 
         // Vérificiation état link
         $this->view->link = $this->model->Link->getLink($user['user_id']);
-
-        // Info de localisation
-        $this->view->geoloc = array();
-        $contextUserCity = $this->context->get('user_city');
-
-        if (!empty($user['user_city']) && !empty($contextUserCity)) {
-            $this->view->geoloc = $this->_getDistance($contextUserCity, $user['user_city']);
-        }
-
         $this->view->setViewName('user/wMain');
-
         $this->view->render();
     }
 
