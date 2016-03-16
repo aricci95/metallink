@@ -72,16 +72,6 @@ $(function(){
     <div style="float:left;">
         <h2 class="profileInfo" style="text-align:center;">Informations</h2>
         <table width="100%" class="tableProfil">
-            <tr>
-                <th>Ville : </th>
-                <td><?php if (!empty($this->geoloc['ville'])) echo $this->geoloc['ville']; ?></td>
-            </tr>
-            <?php if (!empty($this->geoloc['distance'])) : ?>
-                <tr>
-                    <th>Distance : </th>
-                    <td><?php echo $this->geoloc['distance']; ?> km</td>
-                </tr>
-            <?php endif; ?>
             <?php if (!empty($this->user['style_libel'])) : ?>
                 <tr>
                     <th>Style favori : </th>
