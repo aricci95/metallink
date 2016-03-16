@@ -192,7 +192,7 @@ class Link extends AppModel
                     UNIX_TIMESTAMP(user_last_connexion) as user_last_connexion,
                     status,
                     user_id,
-                    user_city,
+                    ville_nom_reel,
                     user_photo_url,
                     user_login,
                     (YEAR(CURRENT_DATE)-YEAR(user_birth)) - (RIGHT(CURRENT_DATE,5)<RIGHT(user_birth,5)) AS age '.

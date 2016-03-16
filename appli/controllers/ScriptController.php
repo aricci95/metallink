@@ -67,8 +67,8 @@ class ScriptController extends AppController
 
             if (!empty($ville[0])) {
                 $coordinates = array(
-                    'user_longitude' => $ville[0]['ville_longitude_deg'],
-                    'user_latitude' => $ville[0]['ville_latitude_deg'],
+                    'ville_longitude_deg' => $ville[0]['ville_longitude_deg'],
+                    'ville_latitude_deg' => $ville[0]['ville_latitude_deg'],
                     'ville_id' => $ville[0]['ville_id'],
                 );
 
@@ -76,12 +76,12 @@ class ScriptController extends AppController
 
                 $done++;
             } else {
-                $ville = $this->model->city->find(array('ville_id', 'ville_longitude_deg', 'ville_latitude_deg'), array('ville_nom_reel' => $user['user_city']), array(), '0, 1');
+                $ville = $this->model->city->find(array('ville_id', 'ville_longitude_deg', 'ville_latitude_deg'), array('ville_nom_reel' => $user['ville_nom_reel']), array(), '0, 1');
 
                 if (!empty($ville[0])) {
                     $coordinates = array(
-                        'user_longitude' => $ville[0]['ville_longitude_deg'],
-                        'user_latitude' => $ville[0]['ville_latitude_deg'],
+                        'ville_longitude_deg' => $ville[0]['ville_longitude_deg'],
+                        'ville_latitude_deg' => $ville[0]['ville_latitude_deg'],
                         'ville_id' => $ville[0]['ville_id'],
                     );
 

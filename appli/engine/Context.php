@@ -119,8 +119,6 @@ class Context
             'user_photo_url' => $this->get('user_photo_url'),
             'user_age' => $this->get('user_age'),
             'user_gender' => $this->get('user_gender'),
-            'user_city' => $this->get('user_city'),
-            'user_zipcode' => $this->get('user_zipcode'),
         );
     }
 }

@@ -42,8 +42,6 @@ abstract class Controller
             'photo_url' => 'unknowUser.jpg',
             'age' => null,
             'gender' => null,
-            'city'   => null,
-            'zipcode'   => null,
         );
 
         $this->context = array_merge($_SESSION, $init_vars);

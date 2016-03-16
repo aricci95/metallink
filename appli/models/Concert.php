@@ -188,8 +188,8 @@ class Concert extends AppModel
         }
 
         if (!empty($criterias['search_distance'])) {
-            $longitude = $this->context->get('user_longitude');
-            $latitude = $this->context->get('user_latitude');
+            $longitude = $this->context->get('ville_longitude_deg');
+            $latitude = $this->context->get('ville_latitude_deg');
 
             $where .= ' AND ville_longitude_deg BETWEEN :longitude_begin AND :longitude_end
                         AND ville_latitude_deg BETWEEN :latitude_begin AND :latitude_end ';

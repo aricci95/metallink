@@ -16,7 +16,7 @@ class Article extends AppModel
                     categorie_id,
                     art_price,
                     art_photo_url,
-                    user_city
+                    ville_nom_reel
                 FROM article, user
                 WHERE ';
         if (!empty($criterias['search_libel'])) {
@@ -71,7 +71,7 @@ class Article extends AppModel
                         user_gender,
                         user_photo_url,
                         (YEAR(CURRENT_DATE)-YEAR(user_birth)) - (RIGHT(CURRENT_DATE,5)<RIGHT(user_birth,5)) AS age,
-                        user_city
+                        ville_nom_reel
                 FROM article
                 LEFT JOIN ref_categorie ON article.categorie_id = ref_categorie.categorie_id
                 LEFT JOIN user ON article.user_id = user.user_id

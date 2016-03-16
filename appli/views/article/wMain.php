@@ -54,9 +54,9 @@ $(function(){
 <!-- DESCRIPTION -->
 <?php if(!empty($this->article['art_description'])) : ?>
     <?php $this->_helper->blackBoxOpen(); ?>
-    <?php if(!empty($this->article['user_city'])) : ?>
+    <?php if(!empty($this->article['ville_nom_reel'])) : ?>
     <div style="float:left;width:340px;height:340px;">
-        <iframe style="border:3px #808080 groove" width="289" height="340" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://maps.google.com/maps?q=<?php echo $this->article['user_city']; ?>&amp;oe=utf-8&amp;client=firefox-a&amp;ie=UTF8&amp;hq=&amp;hnear=<?php echo $this->article['user_city']; ?>,+France&amp;t=h&amp;vpsrc=6&amp;output=embed"></iframe><br />
+        <iframe style="border:3px #808080 groove" width="289" height="340" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://maps.google.com/maps?q=<?php echo $this->article['ville_nom_reel']; ?>&amp;oe=utf-8&amp;client=firefox-a&amp;ie=UTF8&amp;hq=&amp;hnear=<?php echo $this->article['ville_nom_reel']; ?>,+France&amp;t=h&amp;vpsrc=6&amp;output=embed"></iframe><br />
     </div>
     <div style="float:left;width:375px;">
     <?php else : ?>
@@ -84,6 +84,6 @@ $(function(){
     <?php endif; ?>
     Dernière connexion : <?php Tools::timeConvert($this->article['user_last_connexion']); ?><br/>
     Ville :
-    <?php if ($this->article['user_city'] != '') : ?><?php echo $this->article['user_city']; ?><?php endif;?>
+    <?php if ($this->article['ville_nom_reel'] != '') : ?><?php echo $this->article['ville_nom_reel']; ?><?php endif;?>
     </div>
 <?php $this->_helper->blackBoxClose(); ?>

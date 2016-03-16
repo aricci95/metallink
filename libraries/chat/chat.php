@@ -4,7 +4,7 @@
 Copyright (c) 2009 Anant Garg (anantgarg.com | inscripts.com)
 
 This script may be used for non-commercial purposes only. For any
-commercial purposes, please contact the author at 
+commercial purposes, please contact the author at
 anant.garg@inscripts.com
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
@@ -17,21 +17,21 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 
 */
-require_once '../../../config/params.php';
+require_once '../../config/params.php';
 session_name("metallink");
-session_start();     
+session_start();
 
-if ($_GET['action'] == "chatheartbeat") { chatHeartbeat(); } 
-if ($_GET['action'] == "sendchat") { sendChat(); } 
-if ($_GET['action'] == "closechat") { closeChat(); } 
-if ($_GET['action'] == "startchatsession") { startChatSession(); } 
+if ($_GET['action'] == "chatheartbeat") { chatHeartbeat(); }
+if ($_GET['action'] == "sendchat") { sendChat(); }
+if ($_GET['action'] == "closechat") { closeChat(); }
+if ($_GET['action'] == "startchatsession") { startChatSession(); }
 
 if (!isset($_SESSION['chatHistory'])) {
-	$_SESSION['chatHistory'] = array();	
+	$_SESSION['chatHistory'] = array();
 }
 
 if (!isset($_SESSION['openChatBoxes'])) {
-	$_SESSION['openChatBoxes'] = array();	
+	$_SESSION['openChatBoxes'] = array();
 }
 
 function chatHeartbeat() {
@@ -69,7 +69,7 @@ EOD;
 			"m": "{$chat['message']}"
 	   },
 EOD;
-		
+
 		unset($_SESSION['tsChatBoxes'][$chat['from']]);
 		$_SESSION['openChatBoxes'][$chat['from']] = $chat['sent'];
 	}
@@ -126,9 +126,9 @@ header('Content-type: application/json');
 }
 
 function chatBoxSession($chatbox) {
-	
+
 	$items = '';
-	
+
 	if (isset($_SESSION['chatHistory'][$chatbox])) {
 		$items = $_SESSION['chatHistory'][$chatbox];
 	}
@@ -171,7 +171,7 @@ function sendChat() {
 	$message = $_POST['message'];
 
 	$_SESSION['openChatBoxes'][$_POST['to']] = date('Y-m-d H:i:s', time());
-	
+
 	$messagesan = sanitize($message);
 
 	if (!isset($_SESSION['chatHistory'][$_POST['to']])) {
@@ -198,7 +198,7 @@ EOD;
 function closeChat() {
 
 	unset($_SESSION['openChatBoxes'][$_POST['chatbox']]);
-	
+
 	echo "1";
 	exit(0);
 }

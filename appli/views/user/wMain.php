@@ -45,6 +45,8 @@ $(function(){
     <?php if (isset($this->user['age']) && $this->user['age'] < 2000) : ?>
         <?php echo $this->user['age'] . ' ans'; ?>
         <br/>
+        <?php echo $this->user['ville_nom_reel'] . ' (' . $this->user['ville_code_postal'] . ')'; ?>
+        <br/>
     <?php endif; ?>
     Dernière connexion : <?php Tools::timeConvert($this->user['user_last_connexion']); ?>
     </div>

@@ -113,7 +113,7 @@ class ViewHelper {
                         echo $this->_maxLength($article['art_libel'], 50);
                     echo '</div>';
                     echo '<br/>';
-                    if(!empty($article['user_city'])) echo '<br/>'.$article['user_city'];
+                    if(!empty($article['ville_nom_reel'])) echo '<br/>'.$article['ville_nom_reel'];
                     if(!empty($article['art_price'])) echo '<br/>'.$article['art_price'].' €';
                     else echo '<br/>prix à négocier';
                 echo '</div>';
@@ -195,7 +195,7 @@ class ViewHelper {
                     </div>
                     <?php
                         echo (isset($user['age']) && $user['age'] < 2000) ? '<br/>' . $user['age'].' ans' : '';
-                        echo !empty($user['user_city']) ? '<br/>' . $user['user_city'] : '';
+                        echo !empty($user['ville_nom_reel']) ? '<br/>' . $user['ville_nom_reel'] : '';
                         echo !empty($user['look_libel']) ? '<br/>' . $user['look_libel'] : '';
                     ?>
                     <div class="divLink" style="position:absolute;bottom:1;left:3;">

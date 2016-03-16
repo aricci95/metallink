@@ -5,8 +5,8 @@ class GeolocService extends Service
 
     public function localize()
     {
-        //$ip_user = '31.32.223.74';
-        $ip_user = '172.20.10.4';
+        $ip_user = '31.32.223.74';
+        //$ip_user = '172.20.10.4';
 
         include(ROOT_DIR . '/libraries/geoloc/geoipcity.inc');
         include(ROOT_DIR . '/libraries/geoloc/geoipregionvars.php');

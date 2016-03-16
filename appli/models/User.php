@@ -13,7 +13,6 @@ class User extends AppModel
         'user_gender',
         'user_birth',
         'style_id',
-        'user_zipcode',
         'ville_id',
         'user_light_description',
         'user_description',
@@ -87,12 +86,11 @@ class User extends AppModel
         }
 
         if (!empty($criterias['search_distance'])) {
-            $longitude = $this->context->get('user_longitude');
-            $latitude = $this->context->get('user_latitude');
+            $longitude = $this->context->get('ville_longitude_deg');
+            $latitude = $this->context->get('ville_latitude_deg');
 
-            $sql .= ' AND user_longitude BETWEEN :longitude_begin AND :longitude_end
-                      AND user_latitude BETWEEN :latitude_begin AND :latitude_end
-                      AND user_zipcode IS NOT null ';
+            $sql .= ' AND ville_longitude_deg BETWEEN :longitude_begin AND :longitude_end
+                      AND ville_latitude_deg BETWEEN :latitude_begin AND :latitude_end ';
         }
 
         $sql .= ' ORDER BY user_last_connexion DESC
@@ -220,7 +218,6 @@ class User extends AppModel
                     user_login,
                     user_pwd,
                     user_mail,
-                    user_zipcode,
                     FLOOR((DATEDIFF( CURDATE(), (user_birth))/365)) AS age,
                     UNIX_TIMESTAMP(user_last_connexion) as user_last_connexion,
                     user_birth,
@@ -426,11 +423,12 @@ class User extends AppModel
                     user_gender,
                     user_valid,
                     ville_nom_reel,
-                    user_zipcode,
+                    ville_code_postal,
                     user_mail,
                     forum_notification,
+                    user.ville_id as ville_id,
                     ville_longitude_deg,
-                    user_latitude_deg
+                    ville_latitude_deg
                 FROM user
                 LEFT JOIN city ON user.ville_id = city.ville_id
                 WHERE LOWER(user_login) = LOWER(:user_login)
@@ -458,13 +456,12 @@ class User extends AppModel
                     user_gender,
                     user_valid,
                     ville_nom_reel,
-                    user_zipcode,
                     user_mail,
                     ville_longitude_deg,
                     ville_latitude_deg,
                     user.ville_id as ville_id,
                     forum_notification
-                FROM user LEFT JOIN ville ON (user.user_zipcode = ville.code_postal)
+                FROM user LEFT JOIN city ON (user.user_zipcode = ville.code_postal)
                 LEFT JOIN city ON user.ville_id = city.ville_id
                 WHERE LOWER(user_mail) = LOWER(:email)
             ;';
@@ -482,14 +479,14 @@ class User extends AppModel
             UPDATE user SET
                 user_last_connexion = NOW(),
                 ville_id = (
-                    SELECT ville_id FROM city WHERE code_postal = :user_zipcode LIMIT 0, 1
+                    SELECT ville_id FROM city WHERE ville_code_postal = :ville_code_postal LIMIT 0, 1
                 )
             WHERE user_id = :user_id
         ;';
 
         $stmt = $this->db->prepare($sql);
 
-        $stmt->bindValue('user_zipcode', $data['user_zipcode'], PDO::PARAM_INT);
+        $stmt->bindValue('ville_code_postal', $data['ville_code_postal'], PDO::PARAM_INT);
         $stmt->bindValue('user_id', $data['user_id'], PDO::PARAM_INT);
 
         return $this->db->executeStmt($stmt);
