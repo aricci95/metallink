@@ -53,7 +53,7 @@
     <tr>
         <th>Ville :</th>
         <td>
-            <input type="text" class="autocomplete" data-type="city" />
+            <input type="text" class="autocomplete" data-type="city" value="<?php echo $this->user['ville_nom_reel'] . ' ('. $this->user['ville_code_postal'] . ')'; ?>" />
             <input type="hidden" name="ville_id" class="autocompleteValue" />
         </td>
     </tr>

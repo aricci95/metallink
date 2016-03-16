@@ -104,8 +104,6 @@ class ProfileController extends AppController
                     $this->context->params['user_birth'] = $dt->format("Y-m-d");
                 }
 
-                //$this->context->params['user_city'] = str_replace("'", " ", $this->context->params['user_city']);
-
                 if ($this->model->User->updateUserById($this->context->params)) {
                     $this->view->growler('Modifications enregistrées', GROWLER_OK);
                 } else {

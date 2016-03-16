@@ -13,7 +13,6 @@ class User extends AppModel
         'user_gender',
         'user_birth',
         'style_id',
-        'user_city',
         'user_zipcode',
         'ville_id',
         'user_light_description',
@@ -57,7 +56,7 @@ class User extends AppModel
 
         $sql = 'SELECT user_id,
                     user_login,
-                    user_city,
+                    ville_nom_reel,
                     user_mail,
                     look_libel,
                     user_gender,
@@ -65,6 +64,7 @@ class User extends AppModel
                     UNIX_TIMESTAMP(user_last_connexion) as user_last_connexion,
                     FLOOR((DATEDIFF( CURDATE(), (user_birth))/365)) AS age
                 FROM user
+                LEFT JOIN city ON user.ville_id = city.ville_id
                 LEFT JOIN ref_look ON user.look_id = ref_look.look_id
                 WHERE user_id NOT
                     IN (SELECT expediteur_id FROM
@@ -180,7 +180,7 @@ class User extends AppModel
             SELECT
                 user_id,
                 user_login,
-                user_city,
+                ville_nom_reel,
                 ville_id,
                 look_libel,
                 user_gender,
@@ -189,6 +189,7 @@ class User extends AppModel
                 user_photo_url,
                 FLOOR((DATEDIFF( CURDATE(), (user_birth))/365)) AS age
             FROM user
+            LEFT JOIN city ON user.ville_id = city.ville_id
             LEFT JOIN ref_look ON user.look_id = ref_look.look_id
             WHERE user_photo_url != ''
         ";
@@ -219,8 +220,6 @@ class User extends AppModel
                     user_login,
                     user_pwd,
                     user_mail,
-                    user_city,
-                    ville_id,
                     user_zipcode,
                     FLOOR((DATEDIFF( CURDATE(), (user_birth))/365)) AS age,
                     UNIX_TIMESTAMP(user_last_connexion) as user_last_connexion,
@@ -230,9 +229,13 @@ class User extends AppModel
                     user_light_description,
                     user_description,
                     style_id,
-                    user_data
+                    user_data,
+                    ville_nom_reel,
+                    user.ville_id as ville_id,
+                    LEFT(ville_code_postal, 2) as ville_code_postal
                 FROM
                     user
+                LEFT JOIN city ON (user.ville_id = city.ville_id)
                 WHERE user_id = :user_id
             ;";
 
@@ -422,13 +425,14 @@ class User extends AppModel
                     FLOOR((DATEDIFF( CURDATE(), (user_birth))/365)) AS age,
                     user_gender,
                     user_valid,
-                    user_city,
+                    ville_nom_reel,
                     user_zipcode,
                     user_mail,
                     forum_notification,
-                    user_longitude,
-                    user_latitude
+                    ville_longitude_deg,
+                    user_latitude_deg
                 FROM user
+                LEFT JOIN city ON user.ville_id = city.ville_id
                 WHERE LOWER(user_login) = LOWER(:user_login)
                 AND user_pwd = :pwd
             ;';
@@ -453,14 +457,15 @@ class User extends AppModel
                     FLOOR((DATEDIFF( CURDATE(), (user_birth))/365)) AS age,
                     user_gender,
                     user_valid,
-                    user_city,
+                    ville_nom_reel,
                     user_zipcode,
                     user_mail,
-                    longitude,
+                    ville_longitude_deg,
+                    ville_latitude_deg,
                     user.ville_id as ville_id,
-                    latitude,
                     forum_notification
                 FROM user LEFT JOIN ville ON (user.user_zipcode = ville.code_postal)
+                LEFT JOIN city ON user.ville_id = city.ville_id
                 WHERE LOWER(user_mail) = LOWER(:email)
             ;';
 
@@ -476,10 +481,8 @@ class User extends AppModel
         $sql = '
             UPDATE user SET
                 user_last_connexion = NOW(),
-                user_zipcode = :user_zipcode,
-                user_city = :user_city,
                 ville_id = (
-                    SELECT ville_id FROM ville WHERE code_postal = :user_zipcode LIMIT 0, 1
+                    SELECT ville_id FROM city WHERE code_postal = :user_zipcode LIMIT 0, 1
                 )
             WHERE user_id = :user_id
         ;';
@@ -487,7 +490,6 @@ class User extends AppModel
         $stmt = $this->db->prepare($sql);
 
         $stmt->bindValue('user_zipcode', $data['user_zipcode'], PDO::PARAM_INT);
-        $stmt->bindValue('user_city', $data['user_city'], PDO::PARAM_STR);
         $stmt->bindValue('user_id', $data['user_id'], PDO::PARAM_INT);
 
         return $this->db->executeStmt($stmt);
