@@ -3,9 +3,9 @@
 class SuggestController extends AppController
 {
 
-    public function renderVille()
+    public function renderCity()
     {
-        $this->_suggest('ville');
+        $this->_suggest('city');
     }
 
     public function renderConcert()
@@ -15,16 +15,14 @@ class SuggestController extends AppController
 
     private function _suggest($type)
     {
-        $string = $this->context->params['value'];
-        $datas  = array();
-        if (!empty($string)) {
-            $datas = $this->model->load($type)->suggest($string);
-        }
-        echo json_encode($datas);
-    }
+        $data   = array();
 
-    public function renderAdd()
-    {
-        echo $this->model->load($this->context->params['type'])->add($this->context->params['string']);
+        $string = $this->context->params['value'];
+
+        if (!empty($string)) {
+            $data = $this->model->$type->suggest($string);
+        }
+
+        echo json_encode($data);
     }
 }

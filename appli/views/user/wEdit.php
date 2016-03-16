@@ -53,13 +53,8 @@
     <tr>
         <th>Ville :</th>
         <td>
-            <span class="autocomplete" data-type="ville">
-                <input class="autocomplete" type="text" show-value="1" name="user_city" autocomplete="off" size="40" value="<?php echo $this->user['user_city']; ?>" />
-                <input type="hidden" name="ville_id" value="<?php if(!empty($this->user['ville_id'])) echo $this->user['ville_id']; ?>" />
-                <div class="autocomplete" style="min-width:310px;">
-                    <ul class="autocomplete"></ul>
-                </div>
-            </span>
+            <input type="text" class="autocomplete" data-type="city" />
+            <input type="hidden" name="ville_id" class="autocompleteValue" />
         </td>
     </tr>
     <tr>

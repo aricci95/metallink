@@ -97,12 +97,15 @@ class ProfileController extends AppController
                 if (!empty($this->context->params['user_pwd'])) {
                     $this->context->params['user_pwd'] = md5($this->context->params['user_pwd']);
                 }
+
                 // On formate la date de naissance
                 if (!empty($this->context->params['user_birth'])) {
                     $dt = DateTime::createFromFormat('d/m/Y', $this->context->params['user_birth']);
                     $this->context->params['user_birth'] = $dt->format("Y-m-d");
                 }
-                $this->context->params['user_city'] = str_replace("'", " ", $this->context->params['user_city']);
+
+                //$this->context->params['user_city'] = str_replace("'", " ", $this->context->params['user_city']);
+
                 if ($this->model->User->updateUserById($this->context->params)) {
                     $this->view->growler('Modifications enregistrées', GROWLER_OK);
                 } else {

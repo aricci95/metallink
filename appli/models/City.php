@@ -5,10 +5,15 @@ class City extends AppModel
 
     public function suggest($string)
     {
-        $sql = "SELECT distinct nom as libel, ville_id as id, code_postal as value FROM ville
-                WHERE nom LIKE '$string%'
-                ORDER BY nom
-                LIMIT 0, 10";
-        return $this->fetch($sql);
+        $sql = "SELECT ville_nom_reel, ville_id, LEFT(ville_code_postal, 2) as ville_code_postal FROM city
+                WHERE ville_nom_reel LIKE :string
+                ORDER BY CHAR_LENGTH(ville_code_postal) DESC, ville_nom_reel
+                LIMIT 0, 5";
+
+        $stmt = $this->db->prepare($sql);
+
+        $stmt->bindValue('string', $string . '%', PDO::PARAM_STR);
+
+        return $this->db->executeStmt($stmt)->fetchAll();
     }
 }

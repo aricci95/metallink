@@ -22,6 +22,7 @@ if($this->isJSActivated(JS_DATEPICKER)) : ?>
 if($this->isJSActivated(JS_AUTOCOMPLETE)) : ?>
     <link rel="stylesheet" href="MLink/libraries/jquery-ui/jquery-ui.css">
     <script src="MLink/libraries/jquery-ui/jquery-ui.js"></script>
+    <script src="MLink/appli/js/autocomplete.js"></script>
 <?php endif;
 if($this->isJSActivated(JS_ARTICLE)) : ?>
     <script type="text/javascript" src="MLink/appli/js/article.js"></script>
