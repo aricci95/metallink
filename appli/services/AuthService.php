@@ -5,28 +5,23 @@ class AuthService extends Service
 
     public function login($login, $pwd)
     {
-        $_COOKIE['300gp'] = '';
-        $web              = $_COOKIE['300gp'];
-        $duration         = 3600;
-        $web2             = (!empty($_COOKIE['metallink'])) ? $_COOKIE['metallink'] : '';
-        setcookie('300gp', $web, time() + $duration, '/', '.metallink.fr');
-        setcookie('metallink', $web2, time() + $duration, '/', '.metallink.fr');
+        //$_COOKIE['300gp'] = '';
+        //$web              = $_COOKIE['300gp'];
+        //$duration         = 3600;
+        //$web2             = (!empty($_COOKIE['metallink'])) ? $_COOKIE['metallink'] : '';
+        //setcookie('300gp', $web, time() + $duration, '/', '.metallink.fr');
+        //setcookie('metallink', $web2, time() + $duration, '/', '.metallink.fr');
         $login = trim($this->context->params['user_login']);
 
-        // Vérification de password
-        $logResult = $this->checkLogin($login, $this->context->params['user_pwd']);
+        $logResult = $this->checkLogin($login, md5($this->context->params['user_pwd']));
 
         if ($logResult) {
-            # On vérifie l'existence du cookie à l'aide de isset, en sachant que le contenu des cookies est contenu dans les variables $_COOKIE
-            if (isset($this->context->params['savepwd'])) {
-                if ($this->context->params['savepwd'] == 'on') {
-                    # On créer le cookie avec setcookie();
-                    setcookie("MlinkLogin", $login, time() + 360000);
-                    setcookie("MlinkPwd", $this->context->params['user_pwd'], time() + 360000);
-                } else {
-                    setcookie("MlinkCookie", 0);
-                    setcookie("MlinkPwd", 0);
-                }
+            if ($this->context->getParam('savepwd') == 'on') {
+                setcookie('MlinkLogin', $this->context->getParam('user_login'), time() + 365*24*3600, '/', null, false, true);
+                setcookie('MlinkPwd', md5($this->context->getParam('user_pwd')), time() + 365*24*3600, '/', null, false, true);
+            } else {
+                setcookie('MlinkLogin', 0, time(), '/', false, true);
+                setcookie('MlinkPwd', 0, time(), '/', false, true);
             }
 
             return true;
@@ -40,47 +35,41 @@ class AuthService extends Service
         $user = $this->model->user->findByLoginPwd($login, $pwd);
 
         if (!empty($user['user_login']) && !empty($user['user_id']) && strtolower($user['user_login']) == strtolower($login) && $login != '') {
-
             if ($user['user_valid'] != 1) {
                 throw new Exception("Email non validé", ERR_MAIL_NOT_VALIDATED);
             } elseif ($user['role_id'] > 0) {
-                return $this->authenticateUser($user);
+                $localization = $this->get('geoloc')->localize();
+
+                if (!empty($localization) && $localization->postal_code !== $user['ville_code_postal']) {
+                    $user['ville_code_postal'] = $localization->postal_code;
+                    $user['ville_nom_reel'] = $localization->city;
+
+                    $this->model->user->updateUserLocalization($user);
+                } else {
+                    $this->model->user->updateLastConnexion();
+                }
+
+                $this->context->set('user_id', (int) $user['user_id'])
+                              ->set('user_login', $user['user_login'])
+                              ->set('user_pwd', $user['user_pwd'])
+                              ->set('user_last_connexion', time())
+                              ->set('role_id', (int) $user['role_id'])
+                              ->set('user_photo_url', empty($user['user_photo_url']) ? 'unknowUser.jpg' : $user['user_photo_url'])
+                              ->set('age', (int) $user['age'])
+                              ->set('user_valid', (int) $user['user_valid'])
+                              ->set('user_mail', $user['user_mail'])
+                              ->set('user_gender', (int) $user['user_gender'])
+                              ->set('ville_id', (int) $user['ville_id'])
+                              ->set('ville_longitude_deg', $user['ville_longitude_deg'])
+                              ->set('ville_latitude_deg', $user['ville_latitude_deg'])
+                              ->set('forum_notification', $user['forum_notification']);
+                return true;
             }
         } else {
             throw new Exception("Mauvais login / mot de passe", ERR_LOGIN);
         }
 
         return false;
-    }
-
-    public function authenticateUser(array $user)
-    {
-        $localization = $this->get('geoloc')->localize();
-
-        if (!empty($localization) && $localization->postal_code !== $user['ville_code_postal']) {
-            $user['ville_code_postal'] = $localization->postal_code;
-            $user['ville_nom_reel'] = $localization->city;
-
-            $this->model->user->updateUserLocalization($user);
-        } else {
-            $this->model->user->updateLastConnexion();
-        }
-
-        $this->context->set('user_id', (int) $user['user_id'])
-                      ->set('user_login', $user['user_login'])
-                      ->set('user_pwd', $user['user_pwd'])
-                      ->set('user_last_connexion', time())
-                      ->set('role_id', (int) $user['role_id'])
-                      ->set('user_photo_url', empty($user['user_photo_url']) ? 'unknowUser.jpg' : $user['user_photo_url'])
-                      ->set('age', (int) $user['age'])
-                      ->set('user_valid', (int) $user['user_valid'])
-                      ->set('user_mail', $user['user_mail'])
-                      ->set('user_gender', (int) $user['user_gender'])
-                      ->set('ville_id', (int) $user['ville_id'])
-                      ->set('ville_longitude_deg', $user['ville_longitude_deg'])
-                      ->set('ville_latitude_deg', $user['ville_latitude_deg'])
-                      ->set('forum_notification', $user['forum_notification']);
-        return true;
     }
 
     // Renvoi le mdp
@@ -116,9 +105,8 @@ class AuthService extends Service
 
     public function disconnect()
     {
-        //Destruction du Cookie
-        setcookie("MlinkPwd", 0);
-        setcookie("MlinkLogin", 0);
+        setcookie('MlinkLogin', 0, time(), '/', false, true);
+        setcookie('MlinkPwd', 0, time(), '/', false, true);
 
         $this->context->destroy();
 

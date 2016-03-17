@@ -438,7 +438,7 @@ class User extends AppModel
             $stmt = $this->db->prepare($sql);
 
             $stmt->bindValue('user_login', $login);
-            $stmt->bindValue('pwd', md5($pwd));
+            $stmt->bindValue('pwd', $pwd);
 
             return $this->db->executeStmt($stmt)->fetch();
     }

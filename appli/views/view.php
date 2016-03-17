@@ -64,8 +64,8 @@
         <?php else : ?>
             <div class="menu">
                 <form action="home/login" method="post">
-                    Login : <input style="margin-left:10px;margin-right:10px;" name="user_login" size="8" />
-                    Password : <input style="margin-left:10px;margin-right:10px;" name="user_pwd" type="password" size="8" />
+                    Login : <input style="margin-left:5px;margin-right:5px;" name="user_login" size="4" />
+                    Password : <input style="margin-left:5px;margin-right:5px;" name="user_pwd" type="password" size="4" />
                     <input type="submit" value="Connexion" />
                     <input type="button" onclick="window.location.href = 'MLink/libraries/socialauth/station.php';" class="facebookButton" value="Via Facebook" />
                     <span style="margin-right:10px;margin-left:10px;">
@@ -74,7 +74,7 @@
                     <span style="margin-right:10px;">
                         <a href="lostpwd">Mot de passe oublié</a>
                     </span>
-                    <!-- Enregistrer <input name="savepwd" type="checkbox" />-->
+                    <label for="savepwd">Enregistrer</label> <input id="savepwd" name="savepwd" type="checkbox" />
                 </form>
             </div>
         <?php endif;
