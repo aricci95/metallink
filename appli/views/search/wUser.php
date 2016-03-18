@@ -1,5 +1,5 @@
 Login :
-<input id="search_login" name="search_login" size="10" value="<?php if(isset($this->criterias['search_login'])) echo $this->criterias['search_login']; ?>" />
+<input id="search_login" name="search_login" size="7" value="<?php if(isset($this->criterias['search_login'])) echo $this->criterias['search_login']; ?>" />
 Sexe :
 <select id="search_gender" name="search_gender">
     <option value=""></option>

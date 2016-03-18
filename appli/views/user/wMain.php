@@ -1,5 +1,5 @@
 <script>
-$(function(){
+$(function() {
     $('.test-popup-link').magnificPopup({
       items: [
       <?php foreach($this->photos as $photo) : ?>

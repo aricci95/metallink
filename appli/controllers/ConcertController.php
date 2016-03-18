@@ -14,6 +14,8 @@ class ConcertController extends SearchController
 
     public function render()
     {
+        $this->view->addJS(JS_MODAL);
+
         $this->view->styles = $this->model->style->find(array('style_id', 'style_libel'));
 
         parent::render();
