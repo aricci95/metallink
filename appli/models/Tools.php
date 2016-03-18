@@ -88,11 +88,12 @@ class Tools
 
         $explodedString = explode(' ', $string);
         $ucFirstArray = array();
+
         foreach ($explodedString as $key => $value) {
             $ucFirstArray[$key] = ucfirst($value);
         }
-        
-        return '(' . implode( ' ', $ucFirstArray) . ')';
+
+        return implode( ' ', $ucFirstArray);
     }
 
 

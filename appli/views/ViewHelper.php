@@ -168,17 +168,16 @@ class ViewHelper {
                 </table>
                 <h2 class="profileInfo" style="color:black;text-align: left;">Artistes</h2>
                 <script>
-                $('.simple-ajax-popup-align-top').magnificPopup({
-                    type: 'ajax',
-                    alignTop: true,
-                    overflowY: 'scroll'
-                });
+                    $('.popup').magnificPopup({
+                        type: 'ajax',
+                        alignTop: true,
+                        overflowY: 'scroll'
+                    });
                 </script>
                 <table width="100%" class="tableProfil" style="text-align: left;">
                     <ul>
-                    <li><a class="simple-ajax-popup-align-top" href="band">test modale</a></li>
                     <?php foreach ($concert['bands'] as $band) : ?>
-                        <li style="color:black;"><?php echo '- <a href="' . $band['band_website'] . '" >' . strtoupper($band['band_libel']) . '</a><span style="margin-left:10px;float:right;">' . Tools::getCleanBandStyle($band['band_style']); ?></span></li>
+                        <li style="color:black;"><?php echo '- <a class="popup" href="band/' . $band['band_id'] . '" >' . strtoupper($band['band_libel']) . '</a><span style="margin-left:10px;float:right;">(' . Tools::getCleanBandStyle($band['band_style']); ?>)</span></li>
                     <?php endforeach; ?>
                     </ul>
                 </table>

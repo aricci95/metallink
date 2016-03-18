@@ -40,6 +40,13 @@ abstract class AppModel extends Model
         return $this->_queryBuilder($this->getTable(), $attributes_string, $where, $orderBy, $limit);
     }
 
+    public function findOne(array $attributes = array(), array $where = array(), array $orderBy = array(), $limit = null)
+    {
+        $fetch = $this->find($attributes, $where, $orderBy);
+
+        return $fetch[0];
+    }
+
     public function findById($id, array $attributes = array(), array $orderBy = array(), $limit = null)
     {
         $attributes_string = empty($attributes) ? '*' : implode(',', $attributes);
