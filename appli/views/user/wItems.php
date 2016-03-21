@@ -1,5 +1,5 @@
 <?php
-foreach($this->elements as $key => $value) {
-	$this->_helper->printUser($value);
+foreach($this->elements as $user) {
+	$this->render('user/wItem', array('user' => $user));
 }
 ?>

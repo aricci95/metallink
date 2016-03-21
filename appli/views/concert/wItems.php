@@ -1,4 +1,4 @@
-<?php foreach($this->elements as $concert) : 
+<?php foreach($this->elements as $concert) :
     echo '<br/>';
-    $this->_helper->printConcert($concert);
+    $this->render('concert/wItem', array('concert' => $concert));
 endforeach; ?>

@@ -161,22 +161,26 @@ class Link extends AppModel
         switch ($status) {
             case LINK_STATUS_RECEIVED:
                 $param = " FROM link JOIN user ON (link.expediteur_id = user.user_id)
+                           JOIN city ON (user.ville_id = city.ville_id)
                            WHERE link.destinataire_id = :context_user_id ";
                 $processed_status = LINK_STATUS_SENT;
                 break;
             case LINK_STATUS_SENT:
                 $param = " FROM link JOIN user ON (link.destinataire_id = user.user_id )
+                           JOIN city ON (user.ville_id = city.ville_id)
                            WHERE link.expediteur_id = :context_user_id ";
                 $processed_status = LINK_STATUS_SENT;
                 break;
             case LINK_STATUS_ACCEPTED:
                 $param = " FROM link, user
+                           JOIN city ON (user.ville_id = city.ville_id)
                            WHERE (link.destinataire_id = :context_user_id OR link.expediteur_id = :context_user_id)
                            AND (link.destinataire_id = user.user_id OR link.expediteur_id = user.user_id) ";
                 $processed_status = LINK_STATUS_ACCEPTED;
                 break;
             case LINK_STATUS_BLACKLIST:
                 $param = " FROM link JOIN user ON (link.destinataire_id = user.user_id )
+                           JOIN city ON (user.ville_id = city.ville_id)
                            WHERE link.expediteur_id = :context_user_id ";
                 $processed_status = LINK_STATUS_BLACKLIST;
                 break;

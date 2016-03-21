@@ -16,7 +16,6 @@ $(function() {
     });
 });
 </script>
-<?php $this->_helper->blackBoxOpen(); ?>
 <div class="divModuleProfil">
     <a class="test-popup-link" href="MLink/photos/profile/<?php echo $this->user['user_photo_url']; ?>"><div class="profilePortrait" style="float:left;background-image:url(MLink/photos/profile/<?php echo $this->user['user_photo_url']; ?>);"></div></a>
     <div class="profileInfo" style="float:left;border:1px #D8D8D8 dotted;width:390px;height:272px;padding:10px;">
@@ -38,7 +37,7 @@ $(function() {
     <?php endif; ?>
      <h1>
         <?php echo $this->user['user_login']; ?> <?php $this->_helper->showStatut($this->user['user_last_connexion'], true); ?>
-        <div class="divLink" style="float:right;"><?php $this->render('link/wItem'); ?></div>
+        <div class="divLink"><?php $this->render('link/wItem'); ?></div>
     </h1>
 
     <?php if(!empty($this->user['user_light_description'])) : ?><h2><i><?php echo stripslashes($this->user['user_light_description']); ?></i></h2><?php endif; ?>
@@ -132,7 +131,6 @@ $(function() {
         </table>
     </div>
 </div>
-    <!-- Gouts -->
     <?php if(!empty($this->tastes)) : ?>
     <div class="divModuleProfil">
     <?php foreach($this->tasteTypes as $typeId => $typeLibel) : ?>
@@ -150,4 +148,3 @@ $(function() {
     <?php endforeach; ?>
     </div>
 <?php endif; ?>
-<?php $this->_helper->blackBoxClose(); ?>

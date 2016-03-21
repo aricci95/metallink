@@ -2,7 +2,7 @@
 
 @font-face {
     font-family: Metallink;
-    src: url(/MLink/libraries/fonts/metallink.ttf);
+    src: url(/MLink/libraries/fonts/menu.ttf);
 }
 
 .results {
@@ -23,7 +23,7 @@ textarea {
 body {
     font-size:12px;
     font-family:Arial, Helvetica, sans-serif;
-    background-image:url('http://cdn.acfrg.com/o/emp.de/shopbranding/band-merch_shopBranding.jpg');
+    background-image:url('/MLink/images/structure/emp_background.jpg');
     background-attachment: fixed;
     background-color:black;
     margin: 0; /* pour éviter les marges */
@@ -32,38 +32,18 @@ body {
     color:#808080;
 }
 
-.body {
-    background-image:url('/MLink/images/structure/background.jpg');
-    background-attachment: fixed;
-    background-repeat: repeat-y;
-    background-position: center top;
-    color:#808080;
-    margin: 0; /* pour éviter les marges */
-    margin-right:auto;
-    margin-left:auto;
-    width:800px;
-    text-align:center;
-}
-
-.intitule {
-    font-family: "Palatino Linotype","Book Antiqua",Palatino,FreeSerif,serif;
-    font-size: 14px;
-    position:absolute;
-    top:152px;
-    margin-left:270px;
-}
-
-/*--LIENS--*/
 .aMenu:link {color: #808080;text-decoration: none ; font-size:15px;} /*couleur du lien normal*/
 .aMenu:hover {color: white;text-decoration: none ;font-size:15px;} /*couleur quand la souris passe sur le lien*/
 .aMenu:visited {color: #808080;text-decoration: none ;font-size:15px;} /*lien visité*/
 .aMenu:visited:hover {color: white;text-decoration: none ;font-size:15px;} /*lien visité quand la souris passe dessus*/
 .aMenu:active {color: #808080;text-decoration: none ;font-size:15px;} /*couleur quand on clique dessus*/
 
-a:visited {color: #808080;text-decoration: none ;}
+a:visited {color: #CECECE;text-decoration: none ;}
 a:hover {color: white;text-decoration: none ;}
 a:visited:hover {color: white;text-decoration: none ;}
-a:link {color: #808080;text-decoration: none ;}
+a:link {color: #CECECE;text-decoration: none ;}
+
+a.greyLink {color: #808080;}
 
 .thMessageBoxMenu {
     font-size:20px;
@@ -114,43 +94,42 @@ a:link {color: #808080;text-decoration: none ;}
     font-size:12px;
 }
 
-.tableBox {
-    font-size:12px;
-    width:90%;
-    border:none;
+.content {
+    background-image: url('/MLink/images/structure/middle.jpg');
 }
 
-.tableBlackBox {
-    position:relative;
-}
-
-.tableBlackBox th {
-    text-align:center;
-    font-size:12px;
+.userMenu {
+    background-color:#0B1616;
+    height:20px;
+    padding:20px;
 }
 
 .menu {
-    font-family: "Palatino Linotype","Book Antiqua",Palatino,FreeSerif,serif;
-    padding: 5px;
-    font-size: 14px;
-    height:17px;
-    width:780px;
-    background-image:url('/MLink/images/structure/Menu.jpg');
-    background-repeat: no-repeat;
-    background-position: top center;
-    color: #808080;
-    border:none;
-    padding:11px;
-    margin-top:6px;
+    background-color:#0B1616;
+    margin-left: -17px;
+    height:20px;
+    padding:20px;
+    font-family: Metallink;
+    text-align: center;
+    font-size: 17px;
+    height:19px;
+    width:794px;
 }
 
 .menuLien {
-    text-align: left;
+    text-align: center;
     margin: 10px;
 }
 
 .menuIcone {
+    font-family: Metallink;
     text-align: right;
+}
+
+.title {
+    background-color:#0B1616;
+    border-left: 1px black solid;
+    border-right: 1px black solid;
 }
 
 /*-- TITRES --*/
@@ -175,14 +154,6 @@ table {
     font-size: 12px;
 }
 
-.blackBox h2 {
-    color:#E6E6E6;
-}
-
-.blackBox th {
-    color:#E6E6E6;
-}
-
 h3 {
     text-align:center;
     color:white;
@@ -194,7 +165,6 @@ h4 {
 }
 
 
-/*--DIV--*/
 .profilePortrait {
     width:294px;
     height:294px;
@@ -228,9 +198,11 @@ h4 {
 }
 
 .site {
+    border-left: 1px black solid;
+    border-right: 1px black solid;
+    background-image: url('/MLink/images/structure/middle.jpg');
     width:800px;
     text-align:center;
-    margin-top:-6px;
     margin-left: auto;
     margin-right: auto;
 }
@@ -241,11 +213,6 @@ h4 {
     margin-top:10px;
     text-align:center;
     font-size:10px;
-}
-
-.divCorps {
-    width:800px;
-    margin-top:-6px;
 }
 
 img {
@@ -358,97 +325,6 @@ img {
     background-repeat: repeat;
     font-size:12px;
 
-}
-
-/*------------------------------BLACK BOX---------------------------*/
-.blackBoxHeader  a{
-    font-size:14px;
-    margin-left:50px;
-}
-
-.blackBoxHeader{
-    color:#C0C0C0;
-}
-
-.blackBoxHeader  a:hover{
-    color:blue;
-    font-size:15px;
-    margin-left:50px;
-}
-
-.blackBox {
-    font-family:Arial, Helvetica, sans-serif;
-    background-image:url('/MLink/images/structure/blackbox/middle.png');
-    background-repeat: repeat;
-    border-collapse:collapse;
-}
-
-.blackBox a:hover {
-    color:white;
-}
-
-.blackBoxleftUpCorner {
-    background-image:url('/MLink/images/structure/blackbox/leftup.png');
-    width:25px; /*--DEPENDS DE L'IMAGE--*/
-    height:24px; /*--DEPENDS DE L'IMAGE--*/
-    background-repeat: no-repeat;
-}
-
-.blackBoxrightUpCorner {
-    background-image:url('/MLink/images/structure/blackbox/rightup.png');
-    width:25px; /*--DEPENDS DE L'IMAGE--*/
-    height:24px; /*--DEPENDS DE L'IMAGE--*/
-    background-repeat: no-repeat;
-    background-position: right top;
-}
-
-.blackBoxup {
-    background-image:url('/MLink/images/structure/blackbox/up.png');
-    height:24px; /*--DEPENDS DE L'IMAGE--*/
-    background-repeat: repeat-x;
-}
-
-.blackBoxleftDownCorner {
-    background-image:url('/MLink/images/structure/blackbox/leftdown.png');
-    width:25px; /*--DEPENDS DE L'IMAGE--*/
-    height:24px; /*--DEPENDS DE L'IMAGE--*/
-    background-repeat: no-repeat;
-    background-position: bottom;
-}
-
-.blackBoxrightDownCorner {
-    background-image:url('/MLink/images/structure/blackbox/rightdown.png');
-    width:10px; /*--DEPENDS DE L'IMAGE--*/
-    height:24px; /*--DEPENDS DE L'IMAGE--*/
-    background-repeat: no-repeat;
-    background-position: right bottom;
-}
-
-.blackBoxdown {
-    background-image:url('/MLink/images/structure/blackbox/down.png');
-    height:24px; /*--DEPENDS DE L'IMAGE--*/
-    background-repeat: repeat-x;
-    background-position: bottom;
-}
-
-.blackBoxleft {
-    background-image:url('/MLink/images/structure/blackbox/left.png');
-    width:25px; /*--DEPENDS DE L'IMAGE--*/
-    background-repeat: repeat-y;
-    background-position: left;
-}
-
-.blackBoxright {
-    background-image:url('/MLink/images/structure/blackbox/right.png');
-    width:25px; /*--DEPENDS DE L'IMAGE--*/
-    background-repeat: repeat-y;
-    background-position: right;
-}
-
-.blackBoxmiddle {
-    font-size: 12px;
-    background-image:url('/MLink/images/structure/blackbox/middle.png');
-    background-repeat: repeat;
 }
 
 .newPhoto:hover {
@@ -661,12 +537,9 @@ div.debug {
 }
 
 .divModuleProfil {
-    float:left;
     margin-top:20px;
     margin-bottom:20px;
 }
-
-
 
 .vesteAPatchs {
      font-family: myFirstFont;
@@ -680,7 +553,6 @@ div.debug {
 
 
 .bandPatch {
-    font-family: myFirstFont;
     text-align: center;
     padding: 2px;
     border:1px grey;
@@ -693,5 +565,4 @@ div.debug {
     margin:2px;
     padding:3px;
     color:#E6E6E6;
-    font-family: "English";
 }

@@ -56,43 +56,37 @@ class ScriptController extends AppController
         $this->render();
     }
 
-    public function renderScriptCoordinates()
+    public function renderScriptMigrateCity()
     {
         $done = 0;
+        $missing = 0;
 
         $users = $this->model->user->find();
 
         foreach ($users as $user) {
-            $ville = $this->model->city->find(array('ville_id', 'ville_longitude_deg', 'ville_latitude_deg'), array('%ville_code_postal' => $user['user_zipcode']), array(), '0, 1');
+            if (!empty($user['user_zipcode'])) {
+                $ville = $this->model->city->find(array('ville_id'), array('%ville_code_postal' => $user['user_zipcode']), array(), '0, 1');
+            } else if (!empty($user['user_city'])) {
+                $ville = $this->model->city->find(array('ville_id'), array('%ville_nom_reel' => $user['user_city']), array(), '0, 1');
+            } else if (!empty($user['ville_id'])) {
+                $oldVille = $this->model->find('ville', array('code_postal'), array('ville_id' => $user['ville_id']));
+                $ville = $this->model->city(array('ville_id'), array('%ville_code_postal' => $oldVille['code_postal']));
+            } else {
+                $missing++;
+            }
 
             if (!empty($ville[0])) {
                 $coordinates = array(
-                    'ville_longitude_deg' => $ville[0]['ville_longitude_deg'],
-                    'ville_latitude_deg' => $ville[0]['ville_latitude_deg'],
                     'ville_id' => $ville[0]['ville_id'],
                 );
 
                 $this->model->user->updateById($user['user_id'], $coordinates);
 
                 $done++;
-            } else {
-                $ville = $this->model->city->find(array('ville_id', 'ville_longitude_deg', 'ville_latitude_deg'), array('ville_nom_reel' => $user['ville_nom_reel']), array(), '0, 1');
-
-                if (!empty($ville[0])) {
-                    $coordinates = array(
-                        'ville_longitude_deg' => $ville[0]['ville_longitude_deg'],
-                        'ville_latitude_deg' => $ville[0]['ville_latitude_deg'],
-                        'ville_id' => $ville[0]['ville_id'],
-                    );
-
-                    $this->model->user->updateById($user['user_id'], $coordinates);
-
-                    $done++;
-                }
             }
         }
 
-        $this->view->growler($done . ' utilisateur migrés', GROWLER_OK);
+        $this->view->growler($done . ' utilisateur migrés et ' . $missing . ' utilisateurs ignorés', GROWLER_OK);
 
         $this->render();
     }

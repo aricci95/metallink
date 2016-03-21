@@ -1,8 +1,10 @@
 <?php
     $contextUserId = $this->context->get('user_id');
-    $linkStatus    = !empty($this->newStatus) ? $this->newStatus : $this->_helper->getLinkStatus($this->user['user_id']);
-?>
-<?php if(!empty($contextUserId) && $linkStatus != LINK_STATUS_BLACKLISTED) : ?>
+    $links = $this->context->get('links');
+    $status = !empty($links[$this->user['user_id']]) ? $links[$this->user['user_id']] : LINK_STATUS_NONE;
+    $linkStatus = !empty($this->newStatus) ? $this->newStatus : $status;
+
+    if(!empty($contextUserId) && $linkStatus != LINK_STATUS_BLACKLISTED) : ?>
     <?php if($contextUserId != $this->user['user_id']) : ?>
         <div class="linkDestinataire" data-destinataire-id="<?php echo $this->user['user_id']; ?>"  data-destinataire-login="<?php echo $this->user['user_login']; ?>" data-destinataire-mail="<?php if(!empty($this->user['user_mail'])) echo $this->user['user_mail']; ?>" data-destinataire-photo="<?php echo $this->user['user_photo_url']; ?>">
                 <?php if($linkStatus == LINK_STATUS_NONE) : ?>

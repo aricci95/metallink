@@ -129,4 +129,20 @@ class Tools
 
         return strtolower(trim(str_replace(array(" ", "'", "-", ",", ";", ".", "+", "(", ")"), array(), self::no_special_character($string))));
     }
+
+    public static function maxLength($string, $length)
+    {
+        if(strlen($string) > $length) {
+            return substr($string, 0, $length).'...';
+        } else {
+            return $string;
+        }
+    }
+
+    public static function status($timestamp)
+    {
+        $delay = time() - $timestamp;
+
+        return ($delay < ONLINE_TIME_LIMIT) ? 'online.gif' : 'offline.png';
+    }
 }

@@ -130,93 +130,8 @@ class ViewHelper {
         if($user['user_gender'] == 1) echo '#3333CC';
         elseif($user['user_gender'] == 2) echo '#CC0000';
         echo '" href="profile/'.$user['user_id'].'">';
-        echo $this->_maxLength($user['user_login'], 13);
+        echo $this->maxLength($user['user_login'], 13);
         echo '</a></div>';
-    }
-
-    public function printConcert($concert)
-    {
-        ?>
-        <div class="divElement" style="padding:10px;background-image: url('/MLink/images/structure/middle.jpg');min-height: 412px; width: 97%">
-            <h2 style="color:black;margin:auto;width:550px;margin-bottom:10px;" align="center"><?php echo $concert['concert_libel']; ?></h2>
-            <div style="float:left;">
-                <div>
-                    <a href="<?php echo $concert['fb_event']; ?>" target="_blank"><img style="max-width:720px;max-height:500px;" src="<?php echo $concert['flyer_url']; ?>"/></a>
-                </div>
-            </div>
-            <div style="float:left;margin:10px;">
-                <h2 class="profileInfo" style="color:black;text-align: left;">Informations</h2>
-                <table width="100%" class="tableProfil">
-                    <tr>
-                        <th style="color:black;">Adresse : </th>
-                        <td><?php echo $concert['location']; ?></td>
-                    </tr>
-                    <tr>
-                        <th style="color:black;">Ville : </th>
-                        <td><?php echo $concert['ville_nom_reel']. ' (' . $concert['departement'] . ')'; ?></td>
-                    </tr>
-                    <tr>
-                        <th style="color:black;">Orga : </th>
-                        <td><?php echo $concert['organization']; ?></td>
-                    </tr>
-                    <?php if (!empty($concert['price'])) : ?>
-                        <tr>
-                            <th style="color:black;">Prix : </th>
-                            <td><?php echo $concert['price'] . ' euros'; ?></td>
-                        </tr>
-                    <?php endif; ?>
-                </table>
-                <h2 class="profileInfo" style="color:black;text-align: left;">Artistes</h2>
-                <script>
-                    $('.popup').magnificPopup({
-                        type: 'ajax',
-                        alignTop: true,
-                        overflowY: 'scroll'
-                    });
-                </script>
-                <table width="100%" class="tableProfil" style="text-align: left;">
-                    <ul>
-                    <?php foreach ($concert['bands'] as $band) : ?>
-                        <li style="color:black;"><?php echo '- <a class="popup" href="band/' . $band['band_id'] . '" >' . strtoupper($band['band_libel']) . '</a><span style="margin-left:10px;float:right;">(' . Tools::getCleanBandStyle($band['band_style']); ?>)</span></li>
-                    <?php endforeach; ?>
-                    </ul>
-                </table>
-            </div>
-        </div>
-        <?php
-    }
-
-    public function printUser($user, $links = array())
-    {
-        if(!empty($user['user_id'])) {
-            $imageUrl = ((!empty($user['user_photo_url']) && file_exists($_SERVER["DOCUMENT_ROOT"]."/MLink/photos/small/".$user['user_photo_url']))) ? $user['user_photo_url'] : 'unknowUser.jpg';
-            ?>
-            <div class="divElement">
-                <a href="profile/<?php echo $user['user_id']; ?>" >
-                <div class="divPhoto" style="background:url('/MLink/photos/small/<?php echo $imageUrl; ?>');background-position: top center;">
-                    <img class="pictoStatus" src="MLink/images/icone/<?php echo $this->status($user['user_last_connexion']); ?>" />
-                </div>
-                <div class="divInfo">
-                    <div class="userFont" style="float:left;margin-right:100px;color:<?php echo ($user['user_gender'] == 1) ? '#3333CC' : '#CC0000'; ?>" >
-                        <?php echo $this->_maxLength($user['user_login'], 13); ?>
-                    </div>
-                    <?php
-                        echo (isset($user['age']) && $user['age'] < 2000) ? '<br/>' . $user['age'].' ans' : '';
-                        echo !empty($user['ville_nom_reel']) ? '<br/>' . $user['ville_nom_reel'] : '';
-                        echo !empty($user['look_libel']) ? '<br/>' . $user['look_libel'] : '';
-                    ?>
-                    <div class="divLink" style="position:absolute;bottom:1;left:3;">
-                    <?php
-                        $this->user = $user;
-                        $this->link = $this->_searchLink($links, $user['user_id']);
-                        $this->render('link/wItem');
-                    ?>
-                    </div>
-                </div>
-                </a>
-            </div>
-            <?php
-        }
     }
 
     // Affiche login, photo et état
@@ -238,24 +153,14 @@ class ViewHelper {
             if($user['user_gender'] == 1) echo '#3333CC';
             elseif($user['user_gender'] == 2) echo '#CC0000';
             echo '">';
-            echo $this->_maxLength($user['user_login'], 14);
+            echo $this->maxLength($user['user_login'], 14);
             echo '</span>';
 
         echo '</div>';
         echo '</a>';
     }
 
-    private function _searchLink($links, $userId)
-    {
-        foreach($links as $key => $link) {
-            if($userId == $link['destinataire_id'] || $userId == $link['expediteur_id']) {
-                return $link;
-                break;
-            }
-        }
-    }
-
-    private function _maxLength($string, $length)
+    public function maxLength($string, $length)
     {
         if(strlen($string) > $length) {
             return substr($string, 0, $length).'...';
@@ -264,10 +169,8 @@ class ViewHelper {
         }
     }
 
-    // Affiche une div Noire cool
     public function blackBoxOpen($cssParams = 'maxWidth')
     {
-
         echo '<table class="blackBox">';
         echo '<tr><td class="blackBoxleftUpCorner"></td><td class="blackBoxup"></td><td class="blackBoxrightUpCorner"></td></tr>';
         echo '<tr><td class="blackBoxleft"></td><td class="blackBoxmiddle ';

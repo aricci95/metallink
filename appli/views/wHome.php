@@ -1,5 +1,3 @@
-<!-- Nouveaux utilisateurs -->
-<?php $this->_helper->blackBoxOpen(); ?>
     <div class="divModule">
         <div class="fb-like" data-href="https://www.facebook.com/metallinkofficial/" data-width="740" data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>
     </div>
@@ -8,7 +6,7 @@
     </div>
     <?php if (!empty($this->concert)) : ?>
       <div class="divModule">
-          <?php $this->_helper->printConcert($this->concert); ?>
+          <?php $this->render('concert/wItem', $this->concert); ?>
       </div>
     <?php endif; ?>
     <div class="divModule">
@@ -32,6 +30,3 @@
         </script>
         <div class="fb-comments" data-href="http://metallink.fr/" data-num-posts="3" data-width="700" data-colorscheme="dark"></div>
     </div>
-<?php $this->_helper->blackBoxClose(); ?>
-
-
