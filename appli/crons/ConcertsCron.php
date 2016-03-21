@@ -5,7 +5,7 @@ class ConcertsCron extends Cron
 	public function execute()
 	{
         $concerts = array();
-        $limit    = 5;
+        $limit    = 20;
         $counter  = 0;
         $done     = 0;
 

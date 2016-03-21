@@ -71,18 +71,8 @@
                         <label for="savepwd">Enregistrer</label> <input id="savepwd" name="savepwd" type="checkbox" />
                     </form>
                 </div>
-            <?php 
-            endif;
-            
-            if (!empty($this->_title)) : ?>
-                <h1>
-                    <?php echo $this->_title; ?>
-                </h1>
-            <?php 
-                endif;
-
-                include($this->getViewFileName()); 
-            ?>
+            <?php endif; ?>
+            <?php include($this->getViewFileName()); ?>
             <div class="footer">
                 Réalisé par Antoine Ricci - aricci95@gmail.com<br/>Design par Laurianne Abbe - abbe.lauriane@gmail.com
             </div>

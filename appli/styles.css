@@ -6,7 +6,7 @@
 }
 
 .results {
-    font-size: 12px;
+    margin-top: -31px;
 }
 
 a {
@@ -56,51 +56,26 @@ a.greyLink {color: #808080;}
     background-color:#242424;
     color:#808080;
 }
-
-.trNewMessage td {
-    border:none;
-}
-
-.trReadMessage {
-    text-align:center;
-}
-
-.trReadMessage td {
-    border:none;
-}
-
-.tableMessage{
-    border:none;
-}
-
 .tableProfil {
-    font-size:13px; 
     font-weight: bold;
     text-align:left;
-    border:none;
-}
-
-.tableProfil tr td {
-    border:none;
-}
-
-.tableExtBorder {
-    border:1px #808080 solid;
-}
-
-.tableExtBorder td {
-    border:none;
 }
 
 .title {
+    white-space:nowrap;
+    overflow: hidden;
     font-size: 18px;
     padding: 20px;
+    padding-top: 13px;
     height: 16px;
     margin-top: 31px;
-    margin-left: -25px;
     width:765px;
     background-color: rgb(29, 39, 35);
     color: rgb(162, 204, 57);
+}
+
+.noMargin {
+    margin-left: -25px;
 }
 
 .shadow {
@@ -110,7 +85,6 @@ a.greyLink {color: #808080;}
     -moz-box-shadow: inset 2px 22px 20px -20px rgb(26, 26, 26);
     box-shadow: inset 2px 22px 20px -20px rgb(26, 26, 26);
     margin-bottom:15px;
-    margin-left: -25px;
 }
 
 .heading {
@@ -125,6 +99,13 @@ a.greyLink {color: #808080;}
     box-shadow: inset 2px 23px 20px -20px rgba(0, 0, 0, 0.5);
 }
 
+.form {
+    padding-top: 13px;
+    -webkit-box-shadow: inset 0px 1px 29px 6px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: inset 0px 1px 29px 6px rgba(0, 0, 0, 0.5);
+    box-shadow: inset 0px 1px 29px 6px rgba(0, 0, 0, 0.5);
+}
+
 .content {
     margin:25px;
     text-align: left;
@@ -133,10 +114,7 @@ a.greyLink {color: #808080;}
 
 .main {
     width: 800px;
-    background-color: rgb(228, 229, 231);
-    margin-left: -25px;
-    margin-top: -25px;
-    margin-bottom:50px;
+    background-color: rgb(228, 229, 231);    
 }
 
 .userMenu {
@@ -147,6 +125,7 @@ a.greyLink {color: #808080;}
 
 
 .footer {
+    margin-top:31px;
     font-size: 13px;
     color: #CECECE;
     background-color: rgb(29, 39, 35);

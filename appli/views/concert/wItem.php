@@ -1,12 +1,14 @@
-<div class="divElement" style="padding:10px;background-image: url('/MLink/images/structure/middle.jpg');min-height: 412px; width: 97%">
-    <h2 style="color:black;margin:auto;width:550px;margin-bottom:10px;" align="center"><?php echo $this->concert['concert_libel']; ?></h2>
-    <div style="float:left;">
-        <div>
-            <a href="<?php echo $this->concert['fb_event']; ?>" target="_blank"><img style="max-width:720px;max-height:500px;" src="<?php echo $this->concert['flyer_url']; ?>"/></a>
+<div style="height:367px;">
+    <div class="title">
+        <div style="float:left;">
+            <?php echo $this->concert['concert_libel']; ?>
         </div>
     </div>
-    <div style="float:left;margin:10px;">
-        <h2 class="profileInfo" style="color:black;text-align: left;">Informations</h2>
+    <div style="float:left;">
+        <a href="<?php echo $this->concert['fb_event']; ?>" target="_blank"><img style="max-width:720px;max-height:349px;" src="<?php echo $this->concert['flyer_url']; ?>"/></a>
+    </div>
+    <div class="shadow"></div>
+    <div style="float:left;margin-left:19px;margin-top: -16px;">
         <table width="100%" class="tableProfil">
             <tr>
                 <th style="color:black;">Adresse : </th>
@@ -35,10 +37,20 @@
                 overflowY: 'scroll'
             });
         </script>
-        <table width="100%" class="tableProfil" style="text-align: left;">
-            <ul>
+        <table class="tableProfil">
             <?php foreach ($this->concert['bands'] as $band) : ?>
-                <li style="color:black;"><?php echo '- <a class="popup" href="band/' . $band['band_id'] . '" >' . strtoupper($band['band_libel']) . '</a><span style="margin-left:10px;float:right;">(' . Tools::getCleanBandStyle($band['band_style']); ?>)</span></li>
+                <tr>
+                    <td>
+                        <?php echo '<a class="popup" href="band/' . $band['band_id'] . '" >- ' . strtoupper($band['band_libel']) . '</a>'; ?>
+                    </td>
+                    <td style="padding-left: 10px;">
+                        <?php 
+                            if (!empty($band['band_style'])) :
+                                echo '(' . Tools::getCleanBandStyle($band['band_style']) . ')';
+                            endif;
+                        ?>
+                    </td>
+                </tr>
             <?php endforeach; ?>
             </ul>
         </table>

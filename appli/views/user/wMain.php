@@ -16,6 +16,7 @@ $(function() {
     });
 });
 </script>
+<div style="background-color:rgb(247, 247, 248);">
 <div class="heading">
     <div style="float: left;">
     <?php if(!empty($this->user['user_light_description'])) : ?>
@@ -29,7 +30,7 @@ $(function() {
     </div>
 </div>
 <div class="content">
-    <div class="main" style="height: 294px;">
+    <div class="main" style="height: 294px;margin-left: -25px;margin-top: -25px;">
         <a class="test-popup-link" href="MLink/photos/profile/<?php echo $this->user['user_photo_url']; ?>"><div class="profilePortrait" style="float:left;background-image:url(MLink/photos/profile/<?php echo $this->user['user_photo_url']; ?>);"></div></a>
         <div style="padding:10px;">
             <?php if ( false && $this->context->get('user_id') == $this->user['user_id']) : ?>
@@ -103,12 +104,12 @@ $(function() {
         </div>
     </div>
     <?php if(!empty($this->user['user_description'])) : ?>
-        <div class="title">DESCRIPTION</div>
-        <div class="shadow"></div>
+        <div class="title noMargin">DESCRIPTION</div>
+        <div class="shadow noMargin"></div>
         <?php echo nl2br(stripcslashes($this->user['user_description'])); ?>
     <?php endif; ?>
-    <div class="title">PASSIONS</div>
-    <div class="shadow"></div>
+    <div class="title noMargin">PASSIONS</div>
+    <div class="shadow noMargin"></div>
     <div style="display: inline-block;">
         <div style="float:left;background-image:url('MLink/images/260882b-emp.jpg');width:350px;height:500px;">
             <div class="vesteAPatchs">
@@ -138,4 +139,5 @@ $(function() {
             </div>
         <?php endif; ?>
     </div>
+</div>
 </div>
