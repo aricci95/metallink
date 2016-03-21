@@ -6,11 +6,8 @@
         <link type="text/css" rel="stylesheet" media="all" href="MLink/libraries/chat/css/chat.css" />
         <link type="text/css" rel="stylesheet" media="all" href="MLink/libraries/chat/css/screen.css" />
         <link rel="stylesheet" type="text/css" href="MLink/libraries/growler/css/gritter.css" />
-        <!--[if lte IE 7]>
-            <link type="text/css" rel="stylesheet" media="all" href="css/screen_ie.css" />
-        <![endif]-->
-        <?php $this->render('wJavascript'); ?>
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <?php $this->render('wJavascript'); ?>
         <title>MetalLink</title>
     </head>
     <body>
@@ -74,16 +71,20 @@
                         <label for="savepwd">Enregistrer</label> <input id="savepwd" name="savepwd" type="checkbox" />
                     </form>
                 </div>
-                <div class="title">
-            <?php endif;
-                if (!empty($this->_title)) : ?>
-                    <h1>
-                        <?php echo $this->_title; ?>
-                    </h1>
-                <?php endif; ?>
-                <div class="content">
-                    <?php include($this->getViewFileName()); ?>
-                </div>
+            <?php 
+            endif;
+            
+            if (!empty($this->_title)) : ?>
+                <h1>
+                    <?php echo $this->_title; ?>
+                </h1>
+            <?php 
+                endif;
+
+                include($this->getViewFileName()); 
+            ?>
+            <div class="footer">
+                Réalisé par Antoine Ricci - aricci95@gmail.com<br/>Design par Laurianne Abbe - abbe.lauriane@gmail.com
             </div>
         </div>
     </body>

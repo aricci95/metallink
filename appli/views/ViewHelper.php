@@ -203,11 +203,9 @@ class ViewHelper {
     public function showStatut($userLastConnexion, $full = false)
     {
         if($this->status($userLastConnexion) == 'online.gif') {
-            if($full) echo '<span style="color:green;font-size:12px;">online ';
-            echo  '<img src="MLink/images/icone/online.gif" />';
+            echo  '<img src="MLink/images/icone/online.gif" title="online" />';
         } else {
-            if($full) echo '<span style="color:#B40404;font-size:12px;">offline ';
-            echo '<img src="MLink/images/icone/offline.png" />';
+            echo '<img src="MLink/images/icone/offline.png" title="offline" />';
         }
 
         if($full) echo '</span>';

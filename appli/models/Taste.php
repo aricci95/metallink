@@ -3,10 +3,11 @@
 class Taste extends AppModel
 {
 
-    private $_tasteTypes = array(TASTE_TYPE_BAND => 'groupes',
-                                TASTE_TYPE_PASSION => 'passions',
-                                TASTE_TYPE_BOOK => 'livres',
-                                TASTE_TYPE_INSTRUMENTS => 'instruments');
+    private $_tasteTypes = array(
+        TASTE_TYPE_SERIE => 'series',
+        TASTE_TYPE_FILM => 'films',
+        TASTE_TYPE_BOOK => 'livres',
+    );
 
     public function getTastes($userId = null)
     {
