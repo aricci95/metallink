@@ -9,6 +9,10 @@
     margin-top: -31px;
 }
 
+img {
+    border: none;
+}
+
 a {
     cursor: url(http://cdn.acfrg.com/o/emp.fr/hand3.cur), url(http://cdn.acfrg.com/o/emp.fr/hand3.png), auto;
 }

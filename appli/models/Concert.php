@@ -180,11 +180,11 @@ class Concert extends AppModel
         $where = '';
 
         if (!empty($criterias['search_keyword'])) {
-            $where = " AND concert_libel LIKE :search_keyword ";
+            $where .= " AND concert_libel LIKE :search_keyword ";
         }
 
         if (!empty($criterias['search_style'])) {
-            $where = " AND band_style REGEXP :search_regexp ";
+            $where .= " AND band_style REGEXP :search_regexp ";
         }
 
         if (!empty($criterias['search_distance'])) {

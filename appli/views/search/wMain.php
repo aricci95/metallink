@@ -7,7 +7,7 @@
             <input id="submit_button" type="submit" src="MLink/images/boutons/bnt_search.png" ALT="Rechercher" value="Chercher" />
         </div>
     </form>
-    <div class="results">
+    <div class="results" style="margin-top:-47px;">
         <?php if(empty($this->elements)) : ?>
             Aucun résultat pour les critères choisis.
         <?php else : ?>
