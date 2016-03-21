@@ -20,12 +20,7 @@ class AppView
 
         $date  = date('m');
         $this->headerImg = 'MLink/images/structure/';
-
-        if ($date <= 12 && $date >= 10) {
-            $this->headerImg .= 'headernoel.jpg';
-        } else {
-            $this->headerImg .= 'header.jpg';
-        }
+        $this->headerImg .= 'newheader.png';
     }
 
     public function setHelperDatas(array $datas)
