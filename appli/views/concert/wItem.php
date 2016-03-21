@@ -30,13 +30,6 @@
             </tr>
         </table>
         <h2 class="profileInfo" style="color:black;text-align: left;">Artistes</h2>
-        <script>
-            $('.popup').magnificPopup({
-                type: 'ajax',
-                alignTop: true,
-                overflowY: 'scroll'
-            });
-        </script>
         <table>
             <?php foreach ($this->concert['bands'] as $band) : ?>
                 <tr>

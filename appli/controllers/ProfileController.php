@@ -105,6 +105,11 @@ class ProfileController extends AppController
                 }
 
                 if ($this->model->User->updateUserById($this->context->params)) {
+                    $ville = $this->model->city->findOne(array('ville_longitude_deg', 'ville_latitude_deg'), array('ville_id' => $this->context->getParam('ville_id')));
+
+                    $this->context->set('ville_longitude_deg', $ville['ville_longitude_deg']);
+                    $this->context->set('ville_latitude_deg', $ville['ville_latitude_deg']);
+
                     $this->view->growler('Modifications enregistrées', GROWLER_OK);
                 } else {
                     $this->view->growlerError();

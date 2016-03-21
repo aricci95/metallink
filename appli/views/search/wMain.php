@@ -1,4 +1,4 @@
-<div class="main">
+<div class="main minHeight">
     <form id="search_form" action="#" method="post">
         <div class="heading form" id="search_form_table" align="center">
             <span id="search_criterias">
@@ -7,7 +7,7 @@
             <input id="submit_button" type="submit" src="MLink/images/boutons/bnt_search.png" ALT="Rechercher" value="Chercher" />
         </div>
     </form>
-    <div class="results" style="margin-top:-47px;">
+    <div class="results">
         <?php if(empty($this->elements)) : ?>
             Aucun résultat pour les critères choisis.
         <?php else : ?>

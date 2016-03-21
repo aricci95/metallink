@@ -5,12 +5,6 @@ class AuthService extends Service
 
     public function login($login, $pwd)
     {
-        //$_COOKIE['300gp'] = '';
-        //$web              = $_COOKIE['300gp'];
-        //$duration         = 3600;
-        //$web2             = (!empty($_COOKIE['metallink'])) ? $_COOKIE['metallink'] : '';
-        //setcookie('300gp', $web, time() + $duration, '/', '.metallink.fr');
-        //setcookie('metallink', $web2, time() + $duration, '/', '.metallink.fr');
         $login = trim($this->context->params['user_login']);
 
         $logResult = $this->checkLogin($login, md5($this->context->params['user_pwd']));
@@ -41,13 +35,17 @@ class AuthService extends Service
                 $localization = $this->get('geoloc')->localize();
 
                 if (!empty($localization) && $localization->postal_code !== $user['ville_code_postal']) {
-                    $user['ville_code_postal'] = $localization->postal_code;
-                    $user['ville_nom_reel'] = $localization->city;
+                    $ville = $this->model->city->findOne(array('ville_longitude_deg', 'ville_latitude_deg', 'ville_id'), array('%ville_code_postal' => $localization->postal_code));
 
                     $this->model->user->updateUserLocalization($user);
                 } else {
+                    $ville = $this->model->city->findOne(array('ville_longitude_deg', 'ville_latitude_deg'), array('ville_id' => $user['ville_id']));
+
                     $this->model->user->updateLastConnexion();
                 }
+
+                $user['ville_longitude_deg'] = $ville['ville_longitude_deg'];
+                $user['ville_latitude_deg'] = $ville['ville_latitude_deg'];
 
                 $this->context->set('user_id', (int) $user['user_id'])
                               ->set('user_login', $user['user_login'])

@@ -1,4 +1,3 @@
-<?php $this->_helper->blackBoxOpen('maxWidth'); ?>
 <?php print_r($this->context->params, true); ?>
 <form action="subscribe/save" method="post">
     <div style="margin-left:140px;">
@@ -48,4 +47,3 @@
         </table>
     </div>
 </form>
-<?php $this->_helper->blackBoxClose(); ?>

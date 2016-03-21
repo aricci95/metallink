@@ -17,7 +17,7 @@ class HomeController extends AppController
         $this->view->setViewName('wHome');
 
         $concertCriterias = array(
-            'search_distance' => ($this->context->get('user_valid')) ? 20 : null,
+            'search_distance' => $this->context->get('user_valid') ? 50 : null,
         );
 
         $concerts = $this->model->concert->getSearch($concertCriterias, 0, 5);

@@ -478,15 +478,13 @@ class User extends AppModel
         $sql = '
             UPDATE user SET
                 user_last_connexion = NOW(),
-                ville_id = (
-                    SELECT ville_id FROM city WHERE ville_code_postal = :ville_code_postal LIMIT 0, 1
-                )
+                ville_id = :ville_id
             WHERE user_id = :user_id
         ;';
 
         $stmt = $this->db->prepare($sql);
 
-        $stmt->bindValue('ville_code_postal', $data['ville_code_postal'], PDO::PARAM_INT);
+        $stmt->bindValue('ville_id', $data['ville_id'] . '%', PDO::PARAM_INT);
         $stmt->bindValue('user_id', $data['user_id'], PDO::PARAM_INT);
 
         return $this->db->executeStmt($stmt);

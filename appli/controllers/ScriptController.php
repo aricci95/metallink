@@ -64,15 +64,20 @@ class ScriptController extends AppController
         $users = $this->model->user->find();
 
         foreach ($users as $user) {
-            if (!empty($user['user_zipcode'])) {
-                $ville = $this->model->city->find(array('ville_id'), array('%ville_code_postal' => $user['user_zipcode']), array(), '0, 1');
-            } else if (!empty($user['user_city'])) {
-                $ville = $this->model->city->find(array('ville_id'), array('%ville_nom_reel' => $user['user_city']), array(), '0, 1');
-            } else if (!empty($user['ville_id'])) {
+            if (!empty($user['ville_id'])) {
                 $oldVille = $this->model->find('ville', array('code_postal'), array('ville_id' => $user['ville_id']));
-                $ville = $this->model->city(array('ville_id'), array('%ville_code_postal' => $oldVille['code_postal']));
-            } else {
-                $missing++;
+                
+                if (!empty($oldVille)) {
+                    $ville = $this->model->city->find(array('ville_id'), array('%ville_code_postal' => $oldVille[0]['code_postal']));
+                }
+            }
+
+            if (empty($ville) && !empty($user['user_zipcode'])) {
+                $ville = $this->model->city->find(array('ville_id'), array('%ville_code_postal' => $user['user_zipcode']), array(), '0, 1');
+            } 
+
+            if (empty($ville) &&  !empty($user['user_city'])) {
+                $ville = $this->model->city->find(array('ville_id'), array('ville_nom_reel' => $user['user_city']), array(), '0, 1');
             }
 
             if (!empty($ville[0])) {
@@ -83,6 +88,9 @@ class ScriptController extends AppController
                 $this->model->user->updateById($user['user_id'], $coordinates);
 
                 $done++;
+            } else {
+                $missing++;
+                continue;
             }
         }
 

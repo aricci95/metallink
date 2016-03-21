@@ -13,8 +13,8 @@
     <body>
         <div class="site" >
             <div class="userMenu">
-                <div style="float:left;width:72px">
-                    <a href="profile/<?php echo $this->context->get('user_id'); ?>" style="text-align: left;font-color:white;font-size: 15px;">Mon profil</a>
+                <div style="float:left;width:90px;text-align: left;">
+                    <a class="lienProfil" href="profile/<?php echo $this->context->get('user_id'); ?>">Mon profil</a>
                     <a href="home/disconnect" class="greyLink" style="text-align: left;">Deconnexion</a>
                 </div>
                 <span style="float: right;font-size: 15px;">

@@ -3,7 +3,7 @@
 <h2>(<?php echo ucfirst($this->band['band_country']); ?>)</h2>
 <div class="divModule">
     <p style="text-align:center;">
-        <img src="<?php echo $this->band['band_logo']; ?>" />
+        <img src="<?php echo $this->band['band_logo_url']; ?>" />
     </p>
     <p>
         Style : <b><?php echo Tools::getCleanBandStyle($this->band['band_style']); ?></b>

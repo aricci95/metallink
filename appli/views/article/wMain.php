@@ -16,7 +16,6 @@ $(function(){
     });
 });
 </script>
-<?php $this->_helper->blackBoxOpen(); ?>
 <a class="test-popup-link" href="MLink/photos/profile/<?php echo $this->article['art_photo_url']; ?>"><div class="profilePortrait" style="float:left;background-image:url(MLink/photos/profile/<?php echo $this->article['art_photo_url']; ?>);"></div></a>
     <div class="profileInfo" style="float:left;border:1px #D8D8D8 dotted;width:390px;height:272px;padding:10px;">
         <?php if($this->context->get('user_id') == $this->article['user_id']) : ?>
@@ -50,10 +49,8 @@ $(function(){
                 echo '</span>';
         ?>
     </div>
-<?php $this->_helper->blackBoxClose(); ?>
 <!-- DESCRIPTION -->
 <?php if(!empty($this->article['art_description'])) : ?>
-    <?php $this->_helper->blackBoxOpen(); ?>
     <?php if(!empty($this->article['ville_nom_reel'])) : ?>
     <div style="float:left;width:340px;height:340px;">
         <iframe style="border:3px #808080 groove" width="289" height="340" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://maps.google.com/maps?q=<?php echo $this->article['ville_nom_reel']; ?>&amp;oe=utf-8&amp;client=firefox-a&amp;ie=UTF8&amp;hq=&amp;hnear=<?php echo $this->article['ville_nom_reel']; ?>,+France&amp;t=h&amp;vpsrc=6&amp;output=embed"></iframe><br />
@@ -65,10 +62,8 @@ $(function(){
         <h2 class="profileInfo" style="text-align:center;">Description</h2>
         <?php echo stripcslashes($this->article['art_description']); ?>
     </div>
-    <?php $this->_helper->blackBoxClose(); ?>
 <?php endif; ?>
 <!-- Vendeur -->
-<?php $this->_helper->blackBoxOpen(); ?>
     <h1>Vendeur</h1>
     <a href="profile/<?php echo $this->article['user_id']; ?>"><div class="profilePortrait" style="float:left;background-image:url(MLink/photos/profile/<?php echo $this->article['user_photo_url']; ?>);"></div></a>
     <div class="profileInfo" style="float:left;border:1px #D8D8D8 dotted;width:390px;height:272px;padding:10px;">
@@ -86,4 +81,3 @@ $(function(){
     Ville :
     <?php if ($this->article['ville_nom_reel'] != '') : ?><?php echo $this->article['ville_nom_reel']; ?><?php endif;?>
     </div>
-<?php $this->_helper->blackBoxClose(); ?>

@@ -18,7 +18,6 @@
                     </div>
                 </span>
             </td>
-            <!-- Autocomplete des villes -->
             <td>
                 <span class="autocomplete" data-type="ville">
                     <input class="autocomplete" type="text" show-value="1" autocomplete="off"/>
@@ -32,7 +31,6 @@
         </tr>
     </table>
 </form>
-<?php $this->_helper->blackBoxOpen(); ?>
     <div align="center" class="results maxWidth">
         <?php if(empty($this->elements)) : ?>
             Aucun résultat pour les critères choisis.
@@ -47,4 +45,3 @@
         <?php endif; ?>
     </div>
     <img class="loading" src="MLink/appli/js/loading.gif" style="display:none;" data-show="false" data-end="false" data-offset="0" data-href="covoit" />
-<?php $this->_helper->blackBoxClose(); ?>

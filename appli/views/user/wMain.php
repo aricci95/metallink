@@ -4,7 +4,7 @@ $(function() {
       items: [
       <?php foreach($this->photos as $photo) : ?>
           <?php echo " {
-            src: 'MLink/photos/profile/".$photo['photo_url']."'
+            src: 'MLink/photos/profile/" . $photo['photo_url'] . "'
           }, ";
           ?>
       <?php endforeach; ?>
@@ -49,7 +49,7 @@ $(function() {
                     </br>
                 </div>
             <?php endif; ?>
-             <span style="color:rgb(35, 31, 32);font-size: 35px;font-family: DotumChe;letter-spacing:-4px;font-weight: bold;">
+             <span style="color:rgb(35, 31, 32);font-size: 35px;font-family: DotumChe;letter-spacing:-2px;font-weight: bold;">
                 <?php echo strtoupper($this->user['user_login']); ?> <?php $this->_helper->showStatut($this->user['user_last_connexion'], true); ?>
             </span>
             <br/>

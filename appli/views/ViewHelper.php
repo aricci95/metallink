@@ -40,57 +40,14 @@ class ViewHelper {
         return !empty($links[$userId]) ? $links[$userId] : LINK_STATUS_NONE;
     }
 
-    // Affiche une div Blanche cool
-    public function whiteBoxMainOpen()
-    {
-        echo '<table class="whiteBox" width="800">';
-            echo '<tr>';
-                echo '<td class="whiteBoxleftUpCorner"></td>';
-                echo '<td class="whiteBoxup"></td>';
-                echo '<td class="whiteBoxrightUpCorner"></td>';
-            echo '</tr>';
-            echo '<tr>';
-                echo '<td class="whiteBoxleft"></td>';
-                echo '<td>';
-                echo '<div class="MainContent"style="width:772px;height:100%;">';
-    }
-
-    public function whiteBoxMainClose()
-    {
-                echo '</div>';
-                echo '</td>';
-                echo '<td class="whiteBoxright"></td>';
-            echo '</tr>';
-            echo '<tr>';
-                echo '<td class="whiteBoxleftDownCorner"></td>';
-                echo '<td class="whiteBoxdown"></td>';
-                echo '<td class="whiteBoxrightDownCorner"></td>';
-            echo '</tr>';
-        echo '</table>';
-    }
-
-    // Affiche une div Blanche cool
-    public function whiteBox($width = null, $height = '100%', $margin = null)
-    {
-        if($width == null) {
-            $width = 740;
-        }
-        echo '<table class="whiteBox"';
-        if($margin != null) {
-            echo ' style="margin-top:'.$margin.'">';
-        }
-        echo '<tr><td class="whiteBoxleftUpCorner"></td><td class="whiteBoxup" style=""></td><td class="whiteBoxrightUpCorner"></td></tr>';
-        echo '<tr><td class="whiteBoxleft"></td><td class="whiteBoxmiddle" style="width:'.$width.'px;height:'.$height.'px;"></td><td class="whiteBoxright"></td></tr>';
-        echo '<tr><td class="whiteBoxleftDownCorner"></td><td class="whiteBoxdown"></td><td class="whiteBoxrightDownCorner"></td></tr>';
-        echo '</table>';
-    }
-
     public function formFooter($previousUrl, $submit = true)
     {
         echo '<div align="center" style="clear:both;">';
+
         if($submit) {
             echo '<input type="image" src="MLink/images/boutons/valider.png" value="Valider" style="border:0px;" border="0" /><br/>';
         }
+
         echo '<a href="'.$previousUrl.'" /><img src="MLink/images/boutons/retour.png" /></a>';
         echo '</div>';
     }
@@ -167,26 +124,6 @@ class ViewHelper {
         } else {
             return $string;
         }
-    }
-
-    public function blackBoxOpen($cssParams = 'maxWidth')
-    {
-        echo '<table class="blackBox">';
-        echo '<tr><td class="blackBoxleftUpCorner"></td><td class="blackBoxup"></td><td class="blackBoxrightUpCorner"></td></tr>';
-        echo '<tr><td class="blackBoxleft"></td><td class="blackBoxmiddle ';
-        if($cssParams == 'maxWidth') echo 'maxWidth';
-        echo '" ';
-        if($cssParams != 'maxWidth' && count($cssParams) > 0) {
-            $this->_addStyle($cssParams);
-        }
-        echo '>';
-    }
-
-    public function blackBoxClose()
-    {
-        echo '</td><td class="blackBoxright"></td></tr>';
-        echo '<tr><td class="blackBoxleftDownCorner"></td><td class="blackBoxdown"></td><td class="blackBoxrightDownCorner"></td></tr>';
-        echo '</table>';
     }
 
     private function _addStyle($cssParams = array())

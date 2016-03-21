@@ -5,7 +5,8 @@ class GeolocService extends Service
 
     public function localize()
     {
-        $ip_user = '31.32.223.74';
+        $ip_user = '78.194.139.67';
+        //$ip_user = '31.32.223.74';
         //$ip_user = '172.20.10.4';
 
         include_once(ROOT_DIR . '/libraries/geoloc/geoipcity.inc');
@@ -23,7 +24,6 @@ class GeolocService extends Service
         echo $record->postal_code . "\n";
         echo $record->latitude . "\n";
         echo $record->longitude . "\n";*/
-
         geoip_close($gi);
 
         return $record;
