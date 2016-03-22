@@ -231,10 +231,12 @@ h4 {
     background-repeat: no-repeat;
     background-position: top left;
     margin-right:9px;
+    background-size: cover;
 }
 
 
 .profilePortrait {
+    background-size: cover;
     min-width:294px;
     min-height:294px;
     background-repeat: no-repeat;
@@ -332,7 +334,7 @@ h4 {
     float:left;
     width:100px;
     height:100px;
-
+    background-size: cover;
 }
 
 .divInfo {
