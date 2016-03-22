@@ -12,7 +12,7 @@
     </head>
     <body>
         <div class="userMenu">
-            <div style="width:830px;margin-right:auto;margin-left:auto;">
+            <div style="width:800px;margin-right:auto;margin-left:auto;">
                 <?php if($this->context->get('user_id')) : ?>
                     <div style="float:left;width:90px;text-align: left;">
                         <a class="lienProfil" href="profile/<?php echo $this->context->get('user_id'); ?>">Mon profil</a>
@@ -42,13 +42,13 @@
                 <?php else : ?>
                     <div class="greyLink" style="font-family: Metallink;font-size:24px;color: white;">
                         <form action="auth/login" method="post">
-                            Login : <input style="margin-left:5px;margin-right:5px;" name="user_login" size="4" />
-                            Password : <input style="margin-left:5px;margin-right:5px;" name="user_pwd" type="password" size="4" />
+                            Login : <input style="padding-top:-10px;margin-left:5px;margin-right:5px;" name="user_login" size="4" />
+                            Password : <input style="margin-left:5px;" name="user_pwd" type="password" size="4" />
                             <input type="submit" value="Connexion" />
                             <input type="button" onclick="window.location.href = 'MLink/libraries/socialauth/station.php';" class="facebookButton" value="Via Facebook" />
-                            <a class="menuLien" style="margin-left:5px;margin-right:5px;" href="subscribe">S'inscrire !</a>
-                            <a class="menuLien" style="margin-left:5px;" href="lostpwd">Mot de passe oublie</a>
-                            <label for="savepwd">Enregistrer</label> <input id="savepwd" name="savepwd" type="checkbox" />
+                            <label style="margin-left:5px;" for="savepwd">Enregistrer</label><input id="savepwd" name="savepwd" type="checkbox" />
+                            <a class="menuLien" style="margin-left:5px;"  href="lostpwd">Mot de passe oublie</a>
+                            <a class="menuLien" style="margin:0;" href="subscribe">S'inscrire !</a>
                         </form>
                     </div>
                 <?php endif; ?>
