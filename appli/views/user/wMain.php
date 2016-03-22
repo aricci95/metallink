@@ -23,13 +23,20 @@ $(function() {
             <i>" <?php echo stripslashes($this->user['user_light_description']); ?> "</i>
         <?php endif; ?>
     </div>
-    <?php if($this->_helper->getLinkStatus($this->user['user_id']) == LINK_STATUS_ACCEPTED) : ?>
-        <div style="float: right;">
-            <a href="message/<?php echo $this->user['user_id']; ?>">
-                <img src="MLink/images/boutons/big_email.jpg" title="envoyer un message" />
+    <div style="float: right;">
+        <?php if($this->_helper->getLinkStatus($this->user['user_id']) == LINK_STATUS_ACCEPTED) : ?>
+                <a href="profile/block/<?php echo $this->user['user_id']; ?>">
+                    <img src="MLink/images/icone/blacklist.png" title="Bloquer cette personne" />
+                </a>
+                <a style="padding-left:50px;" href="message/<?php echo $this->user['user_id']; ?>">
+                    <img src="MLink/images/boutons/big_email.jpg" title="envoyer un message" />
+                </a>
+        <?php elseif($this->_helper->getLinkStatus($this->user['user_id']) == LINK_STATUS_BLACKLIST) : ?>
+            <a href="profile/unblock/<?php echo $this->user['user_id']; ?>">
+                <img src="MLink/images/icone/link.png" title="Débloquer cette personne" />
             </a>
-        </div>
-    <?php endif; ?>
+        <?php endif; ?>
+    </div>
 </div>
 <div style="margin:25px;text-align: left;width: 775px;">
     <div class="grey" style="height: 294px;margin-left: -25px;margin-top: -25px;">

@@ -14,7 +14,7 @@
     <div class="heading topShadow">UTILISATEURS IGNORES</div>
     <?php if(empty($this->users)) : ?>
         <div align="center" class="noresults">
-            Aucune utilisateur ignoré.
+            Aucun utilisateur ignoré.
         </div>
     <?php else : ?>
         <div align="center" class="results">
