@@ -47,7 +47,7 @@ class AdminController extends AppController
                                   ->set('user_gender', $user['user_gender'])
                                   ->set('forum_notification', $user['forum_notification']);
 
-                    $this->redirect('home', array('msg' => MSG_ADM_SWITCH));
+                    $this->redirect('user', array('msg' => MSG_ADM_SWITCH));
                 }
             }
         } else {

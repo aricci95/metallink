@@ -8,14 +8,14 @@ class ProfileController extends AppController
     public function render()
     {
         if (empty($this->context->params['value'])) {
-            $this->redirect('home', array('msg' => ERR_BLACKLISTED));
+            $this->redirect('user', array('msg' => ERR_BLACKLISTED));
         }
 
         // Récupération des informations de l'utilisateur
         $user = $this->model->User->getUserByIdDetails($this->context->params['value']);
 
         if (empty($user)) {
-            $this->redirect('home', array('msg' => ERR_BLACKLISTED));
+            $this->redirect('user', array('msg' => ERR_BLACKLISTED));
         }
 
         $this->view->tasteTypes = $this->model->Taste->getTasteTypes();
@@ -197,7 +197,7 @@ class ProfileController extends AppController
             session_destroy();
 
             // redirection
-            $this->redirect('home', array('msg' => MSG_ACCOUNT_DELETED));
+            $this->redirect('user', array('msg' => MSG_ACCOUNT_DELETED));
         } else {
             $this->_view->growlerError();
             $this->render();

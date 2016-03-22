@@ -106,26 +106,26 @@ abstract class AppController extends Controller
                     return true;
                 } else {
                     // Utilisateur valide mais droits insuffisants
-                    $this->redirect('home', array('msg' => ERR_AUTH));
+                    $this->redirect('user', array('msg' => ERR_AUTH));
                     die;
                 }
             } else {
                 // Message non validé
                 session_destroy();
-                $this->redirect('home', array('msg' => ERR_NOT_VALIDATED));
+                $this->redirect('user', array('msg' => ERR_NOT_VALIDATED));
             }
         } // Cas pas d'user en session, vérification des cookies
         elseif (!empty($_COOKIE['MlinkLogin']) && !empty($_COOKIE['MlinkPwd'])) {
             try {
                 $logResult = $this->get('auth')->checkLogin($_COOKIE['MlinkLogin'], $_COOKIE['MlinkPwd']);
             } catch (Exception $e) {
-                $this->redirect('home', array('msg' => $e->getCode()));
+                $this->redirect('user', array('msg' => $e->getCode()));
             }
 
             return $logResult;
         } // Cas page accès sans autorisation
         elseif ($roleLimit != AUTH_LEVEL_NONE) {
-            $this->redirect('home', array('msg' => ERR_AUTH));
+            $this->redirect('user', array('msg' => ERR_AUTH));
         }
 
         return false;

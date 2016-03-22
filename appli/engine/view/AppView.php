@@ -47,7 +47,7 @@ class AppView
 
     public function getPage()
     {
-        return !empty($_GET['page']) ? $_GET['page'] : 'home';
+        return !empty($_GET['page']) ? $_GET['page'] : 'user';
     }
 
     public function getViewFileName()

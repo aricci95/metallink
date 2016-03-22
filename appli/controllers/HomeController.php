@@ -34,21 +34,21 @@ class HomeController extends AppController
                 $authentResult = $this->get('auth')->login($this->context->params['user_login'], $this->context->params['user_pwd']);
 
                 if ($authentResult) {
-                    $this->redirect('home');
+                    $this->redirect('user');
                 }
             } catch (Exception $e) {
                 Log::err($e->getMessage());
-                $this->redirect('home', array('msg' => $e->getCode()));
+                $this->redirect('user', array('msg' => $e->getCode()));
             }
         }
 
-        $this->redirect('home', array('msg' => ERR_LOGIN));
+        $this->redirect('user', array('msg' => ERR_LOGIN));
     }
 
     public function renderDisconnect()
     {
         if ($this->get('auth')->disconnect()) {
-            $this->redirect('home');
+            $this->redirect('user');
         } else {
             $this->view->growlerError();
         }

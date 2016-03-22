@@ -10,7 +10,7 @@ class SubscribeController extends AppController
         parent::__construct();
 
         if ($this->context->get('user_id')) {
-            $this->redirect('home');
+            $this->redirect('user');
         }
     }
 
@@ -100,7 +100,7 @@ class SubscribeController extends AppController
                             <u>Mot de passe :</u> '.$this->context->params['user_pwd'].'<br><br>
                             Si vous rencontrez des problèmes, n\'hésitez pas à nous envoyer un message en répondant directement à celui-ci, nous vous répondrons dans les plus bref délais.';
                     if ($this->get('mailer')->send($newUser['user_mail'], 'Bienvenue sur MetalLink '.$newUser['user_login'].' !', $message)) {
-                        $this->redirect('home', array('msg' => MSG_VALIDATION_SENT));
+                        $this->redirect('user', array('msg' => MSG_VALIDATION_SENT));
                     } else {
                         $this->view->growlerError();
                     }
@@ -118,12 +118,12 @@ class SubscribeController extends AppController
     {
         if (!empty($this->context->params['value'])) {
             if ($this->model->User->setValid($this->context->params['value'])) {
-                $this->redirect('home', array('msg' => MSG_VALIDATION_SUCCESS));
+                $this->redirect('user', array('msg' => MSG_VALIDATION_SUCCESS));
             } else {
-                $this->redirect('home', array('msg' => ERR_VALIDATION_FAILURE));
+                $this->redirect('user', array('msg' => ERR_VALIDATION_FAILURE));
             }
         } else {
-            $this->redirect('home', array('msg' => ERR_VALIDATION_FAILURE));
+            $this->redirect('user', array('msg' => ERR_VALIDATION_FAILURE));
         }
     }
 

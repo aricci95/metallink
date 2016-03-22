@@ -18,7 +18,7 @@ abstract class Controller
 
         $this->view      = new AppView();
 
-        $this->view->page   = (!empty($_GET['page'])) ? strtolower($_GET['page']) : 'home';
+        $this->view->page   = (!empty($_GET['page'])) ? strtolower($_GET['page']) : 'user';
         $this->view->action = (!empty($_GET['action'])) ? strtolower($_GET['page']) : 'index';
 
         if (!empty($this->_JS)) {
@@ -89,7 +89,7 @@ abstract class Controller
         }
     }
 
-    public function redirect($page = 'home', $params = null, $action = '')
+    public function redirect($page = 'user', $params = null, $action = '')
     {
         $url = "/$page";
         if (!empty($action)) {

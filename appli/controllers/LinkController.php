@@ -9,7 +9,7 @@ class LinkController extends AppController
     {
         if (empty($this->context->params['value'])) {
             $this->view->growlerError();
-            $this->redirect('home');
+            $this->redirect('user');
         }
 
         $status = $this->context->params['value'];
