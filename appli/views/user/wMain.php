@@ -17,29 +17,32 @@ $(function() {
 });
 </script>
 <div style="background-color:rgb(247, 247, 248);">
-<div class="heading">
-    <div style="float: left;">
-    <?php if(!empty($this->user['user_light_description'])) : ?>
-        <i>" <?php echo stripslashes($this->user['user_light_description']); ?> "</i>
+<div class="heading topShadow" style="height: 31px;padding:25px;">
+    <div style="float: left;padding-top: 5px;">
+        <?php if(!empty($this->user['user_light_description'])) : ?>
+            <i>" <?php echo stripslashes($this->user['user_light_description']); ?> "</i>
+        <?php endif; ?>
+    </div>
+    <?php if($this->_helper->getLinkStatus($this->user['user_id']) == LINK_STATUS_ACCEPTED) : ?>
+        <div style="float: right;">
+            <a href="message/<?php echo $this->user['user_id']; ?>">
+                <img src="MLink/images/boutons/big_email.jpg" title="envoyer un message" />
+            </a>
+        </div>
     <?php endif; ?>
-    </div>
-    <div style="float: right;">
-        <a href="message/<?php echo $this->user['user_id']; ?>">
-            <img src="MLink/images/boutons/big_email.jpg" title="envoyer un message" />
-        </a>
-    </div>
 </div>
-<div class="content">
-    <div class="main" style="height: 294px;margin-left: -25px;margin-top: -25px;">
-        <a class="test-popup-link" href="MLink/photos/profile/<?php echo $this->user['user_photo_url']; ?>"><div class="profilePortrait" style="float:left;background-image:url(MLink/photos/profile/<?php echo $this->user['user_photo_url']; ?>);"></div></a>
-        <div style="padding:10px;">
-            <?php if ( false && $this->context->get('user_id') == $this->user['user_id']) : ?>
-                <div style="text-align:right;">
-                    <a href="profile/edit">Editer le profil</a></br>
-                    <a href="photo/<?php echo PHOTO_TYPE_USER; ?>">Editer les photos</a></br>
-                    <a href="taste">Editer les goûts</a>
-                </div>
-            <?php elseif (false) : ?>
+<div style="margin:25px;text-align: left;width: 775px;">
+    <div class="grey" style="height: 294px;margin-left: -25px;margin-top: -25px;">
+        <?php if ($this->context->get('user_id') == $this->user['user_id']) : ?>
+            <a style="position:absolute;margin-top: 11px;margin-left: 11px;" href="photo/<?php echo PHOTO_TYPE_USER; ?>" title="Modifier les photos"><img src="MLink/images/icone/photo.png" /></a>
+        <?php endif; ?>
+        <?php $photo = empty($this->user['user_photo_url']) ? 'unknowUser.jpg' : $this->user['user_photo_url']; ?>
+        <a class="test-popup-link" href="MLink/photos/profile/<?php echo $photo; ?>">
+            <div class="profilePortrait" style="float:left;background-image:url(MLink/photos/profile/<?php echo $photo; ?>);"></div>
+        </a>
+        <div class="shadow"></div>
+        <div style="padding-left:10px;padding-right:10px;">
+            <?php if (false) : ?>
                 <div style="text-align:right;">
                     <?php if($this->_helper->getLinkStatus($this->user['user_id']) == LINK_STATUS_BLACKLIST) : ?>
                         <a href="profile/unblock/<?php echo $this->user['user_id']; ?>">Débloquer cette personne</a>
@@ -49,9 +52,14 @@ $(function() {
                     </br>
                 </div>
             <?php endif; ?>
-             <span style="color:rgb(35, 31, 32);font-size: 35px;font-family: DotumChe;letter-spacing:-2px;font-weight: bold;">
+             <div style="color:rgb(35, 31, 32);font-size: 35px;font-family: DotumChe;letter-spacing:-2px;font-weight: bold;width:100%;">
                 <?php echo strtoupper($this->user['user_login']); ?> <?php $this->_helper->showStatut($this->user['user_last_connexion'], true); ?>
-            </span>
+                <?php if ($this->context->get('user_id') == $this->user['user_id']) : ?>
+                    <span style="float:right;">
+                        <a href="profile/edit" title="Editer"><img src="MLink/images/icone/edit.png" /></a>
+                    </span>
+                <?php endif; ?>
+            </div>
             <br/>
             <?php if (isset($this->user['age']) && $this->user['age'] < 2000) : ?>
                 <b><?php echo $this->user['age'] . ' ans'; ?></b>, <?php echo $this->user['ville_nom_reel'] . ' (' . $this->user['ville_code_postal'] . ')'; ?>
@@ -107,6 +115,7 @@ $(function() {
         <div class="title noMargin">DESCRIPTION</div>
         <div class="shadow noMargin"></div>
         <?php echo nl2br(stripcslashes($this->user['user_description'])); ?>
+        <div style="height:25px"></div>
     <?php endif; ?>
     <div class="title noMargin">PASSIONS</div>
     <div class="shadow noMargin"></div>
@@ -125,7 +134,7 @@ $(function() {
         <?php if(!empty($this->tastes)) : ?>
             <div style="float:left;width:400px;">
                 <?php foreach($this->tasteTypes as $typeId => $title) : ?>
-                    <?php if (!empty($this->tastes['data'][$title]) && is_array($this->tastes['data'][$title])) : ?>
+                    <?php if (!empty($this->tastes['data'][$title]) && $typeId > 1 && is_array($this->tastes['data'][$title])) : ?>
                         <h2><?php echo strtoupper($title); ?></h2>
                         <ul class="tasteDatas" data-taste-type="<?php echo $title; ?>">
                             <?php foreach($this->tastes['data'][$title] as $info) : ?>
@@ -139,5 +148,4 @@ $(function() {
             </div>
         <?php endif; ?>
     </div>
-</div>
 </div>

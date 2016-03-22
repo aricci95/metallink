@@ -16,7 +16,7 @@
                 <?php if($this->context->get('user_id')) : ?>
                     <div style="float:left;width:90px;text-align: left;">
                         <a class="lienProfil" href="profile/<?php echo $this->context->get('user_id'); ?>">Mon profil</a>
-                        <a href="home/disconnect" class="greyLink" style="text-align: left;">Deconnexion</a>
+                        <a href="auth/disconnect" class="greyLink" style="text-align: left;">Deconnexion</a>
                     </div>
                     <span style="float: right;font-size: 25px;">
                         <a class="menuIcone" href="mailbox"><img src="MLink/images/icone/message.png" />
@@ -27,7 +27,7 @@
                             <b><?php echo $this->context->get('links_count_received'); ?></b>
                         </a>
                         <a class="menuIcone" href="link/<?php echo LINK_STATUS_ACCEPTED; ?>">
-                            <img src="MLink/images/icone/signet_approuve.gif" />
+                            <img src="MLink/images/icone/linked.png" />
                             <b><?php echo $this->context->get('links_count_accepted'); ?></b>
                         </a>
                         <a class="menuIcone" href="views">
@@ -35,13 +35,13 @@
                             <b><?php echo $this->context->get('views'); ?></b>
                         </a>
                         <a class="menuIcone" href="link/<?php echo LINK_STATUS_BLACKLIST; ?>">
-                            <img src="MLink/images/icone/link_refuse.png" />
+                            <img src="MLink/images/icone/blacklist.png" />
                             <b><?php echo $this->context->get('links_count_blacklist'); ?></b>
                         </a>
                     </span>
                 <?php else : ?>
                     <div class="greyLink" style="font-family: Metallink;font-size:24px;color: white;">
-                        <form action="home/login" method="post">
+                        <form action="auth/login" method="post">
                             Login : <input style="margin-left:5px;margin-right:5px;" name="user_login" size="4" />
                             Password : <input style="margin-left:5px;margin-right:5px;" name="user_pwd" type="password" size="4" />
                             <input type="submit" value="Connexion" />
@@ -55,22 +55,23 @@
             </div>
         </div>
         <div style="text-align: center;">
-            <a href="home">
+            <a href="user">
                 <img src="MLink/images/structure/newheader.png" />
             </a>
         </div>
-        <div class="site" >
+        <div class="site">
             <div class="menu">
                 <a class="menuLien" <?php echo ($this->page == 'member') ? 'style="color:white;"' : ''; ?> href="user">Membres</a>
                 <a class="menuLien" <?php echo ($this->page == 'concert') ? 'style="color:white;"' : ''; ?> href="concert">Concerts</a>
                 <a class="menuLien" <?php echo ($this->page == 'forum') ? 'style="color:white;"' : ''; ?> href="forum">Chat</a>
                 <a class="menuLien" href="http://www.emp-online.fr/musique-cinema/les-essentiels/offres-speciales/?wt_mc=pt.pp.musiksale.283#Q1179C.G3Lkj" target="_blank">Shop</a>
-
                 <?php if($this->context->get('role_id') == AUTH_LEVEL_SUPERADMIN) : ?>
                     <a class="menuLien" <?php echo ($this->page == 'admin') ? 'style="color:white;"' : ''; ?> href="admin">Admin</a></td>
                 <?php endif; ?>
             </div>
-            <?php include($this->getViewFileName()); ?>
+            <div style="min-height: 550px;">
+                <?php include($this->getViewFileName()); ?>
+            </div>
             <div class="footer">
                 Réalisé par Antoine Ricci - aricci95@gmail.com<br/>Design par Laurianne Abbe - abbe.lauriane@gmail.com
             </div>

@@ -4,9 +4,11 @@ class Taste extends AppModel
 {
 
     private $_tasteTypes = array(
+        TASTE_TYPE_BAND => 'groupes',
         TASTE_TYPE_SERIE => 'series',
         TASTE_TYPE_FILM => 'films',
         TASTE_TYPE_BOOK => 'livres',
+        TASTE_TYPE_PASSION => 'passions',
     );
 
     public function getTastes($userId = null)
@@ -15,7 +17,9 @@ class Taste extends AppModel
         $sql = "SELECT data
                 FROM taste
     			WHERE user_id = ".$this->securize($userId);
+
         $result = $this->fetchOnly($sql);
+
         if (!empty($result['data'])) {
             $result['data'] = unserialize($result['data']);
             if (is_array($result['data']) && (count($result['data']) > 0)) {

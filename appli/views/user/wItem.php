@@ -7,15 +7,16 @@
         <img class="pictoStatus" src="MLink/images/icone/<?php echo Tools::status($this->user['user_last_connexion']); ?>" />
     </div>
     <div class="divInfo">
-        <div class="userFont" style="float:left;margin-right:100px;color:<?php echo ($this->user['user_gender'] == 1) ? '#3333CC' : '#CC0000'; ?>" >
+        <span class="userFont" style="color:<?php echo ($this->user['user_gender'] == 1) ? '#3333CC' : '#CC0000'; ?>" >
             <?php echo Tools::maxLength($this->user['user_login'], 13); ?>
-        </div>
+        </span>
+        <br/>
         <?php
-            echo (isset($this->user['age']) && $this->user['age'] < 2000) ? '<br/>' . $this->user['age'].' ans' : '';
+            echo (isset($this->user['age']) && $this->user['age'] < 2000) ? $this->user['age'].' ans' : '';
             echo !empty($this->user['ville_nom_reel']) ? '<br/>' . $this->user['ville_nom_reel'] : '';
             echo !empty($this->user['look_libel']) ? '<br/>' . $this->user['look_libel'] : '';
         ?>
-        <div class="divLink" style="position:absolute;bottom:1;left:3;">
+        <div class="divLink" style="position:absolute;bottom:3;right:5;">
             <?php $this->render('link/wItem', array('user' => $this->user)); ?>
         </div>
     </div>

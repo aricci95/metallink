@@ -68,6 +68,7 @@ class ProfileController extends AppController
     public function renderEdit()
     {
         $this->view->addJS(JS_DATEPICKER);
+        $this->view->addJS(JS_TASTE);
 
         // Récupération des informations de l'utilisateur
         $this->view->user = $this->model->User->getUserByIdDetails($this->context->get('user_id'));
@@ -76,6 +77,32 @@ class ProfileController extends AppController
         $this->view->styles     = $this->model->find('style', array(), array(), array('style_libel'));
         $this->view->looks      = $this->model->find('ref_look', array(), array(), array('look_libel'));
         $this->view->quantities = $this->model->find('ref_quantity', array(), array(), array('quantity_libel'));
+
+        // PASSIONS
+        $types = $this->model->Taste->getTasteTypes();
+
+        foreach ($types as $type) {
+            if (!empty($this->context->getParam($type))) {
+                $datas = $this->context->getParam($type);
+
+                foreach ($datas as $key => $data) {
+                    if ($data == '') {
+                        unset($datas[$key]);
+                    } else {
+                        $datas[$key] = htmlspecialchars(trim($data), ENT_QUOTES, 'utf-8');
+                    }
+                }
+
+                $tastes[$type] = $datas;
+            }
+        }
+
+        if (!empty($tastes)) {
+            $this->model->Taste->save($tastes);
+        }
+
+        $this->view->tastes = $this->model->Taste->getTastes();
+        $this->view->tasteTypes = $types;
 
         $this->view->setTitle('Edition du profil');
         $this->view->setViewName('user/wEdit');

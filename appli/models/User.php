@@ -51,8 +51,6 @@ class User extends AppModel
     // Récupéres les utilisateurs par critéres
     public function getSearch($criterias, $offset = 0)
     {
-        $contextUserId = $this->context->get('user_id');
-
         $sql = 'SELECT user_id,
                     user_login,
                     ville_nom_reel,

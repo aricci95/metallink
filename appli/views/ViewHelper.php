@@ -45,7 +45,7 @@ class ViewHelper {
         echo '<div align="center" style="clear:both;">';
 
         if($submit) {
-            echo '<input type="image" src="MLink/images/boutons/valider.png" value="Valider" style="border:0px;" border="0" /><br/>';
+            echo '<input type="image" src="MLink/images/boutons/valider.png" value="Valider" style="border:0px;" border="0" />';
         }
 
         echo '<a href="'.$previousUrl.'" /><img src="MLink/images/boutons/retour.png" /></a>';

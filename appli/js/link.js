@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    $(".whiteBox").on('click', '.link', function(e) {
+    $(".site").on('click', '.link', function(e) {
         e.preventDefault();
         e.stopPropagation();
 

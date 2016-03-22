@@ -54,6 +54,13 @@ class Model_Manager extends Model
         return $this->_queryBuilder($table, $attributes_string, $where, $orderBy, $limit);
     }
 
+    public function findOne($table, array $attributes = array(), array $where = array(), array $orderBy = array(), $limit = null)
+    {
+        $fetch = $this->find($table, $attributes, $where, $orderBy);
+
+        return empty($fetch) ? null : $fetch[0];
+    }
+
     public function hasSpecialChar($chaine)
     {
         $specialChars = array(

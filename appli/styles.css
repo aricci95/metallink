@@ -5,9 +5,6 @@
     src: url(/MLink/libraries/fonts/menu.ttf);
 }
 
-.results {
-}
-
 img {
     border: none;
 }
@@ -17,9 +14,7 @@ a {
 }
 
 textarea {
-    width:100%;
-    border:3px inset;
-    font-size: 12px;
+    border:1px grey solid;
     background-color:#D8D8D8;
 }
 
@@ -30,11 +25,19 @@ body {
     background-repeat:no-repeat;
     background-image:url('/MLink/images/structure/emp_background.jpg');
     background-attachment: fixed;
-    background-position: center;
+    background-position: top center;
     background-color:rgb(26, 26, 26);
     margin: 0; /* pour éviter les marges */
     margin-right:auto;
     margin-left:auto;
+}
+
+form {
+    margin: 0;
+}
+
+.noresults {
+    margin: 5%;
 }
 
 .lienProfil {
@@ -43,23 +46,29 @@ body {
     font-size: 17px;
 }
 
-.userMenu:link {color: #E8E8E8;} /*couleur du lien normal*/
-.userMenu:hover {color: white;} /*couleur quand la souris passe sur le lien*/
-.userMenu:visited {color: #E8E8E8;} /*lien visité*/
-.userMenu:visited:hover {color: white;} /*lien visité quand la souris passe dessus*/
-.userMenu:active {color: #E8E8E8;} /*couleur quand on clique dessus*/
+.blackLink:link {color: #808080;}
+.blackLink:hover {color: black;}
+.blackLink:visited {color: #808080;}
+.blackLink:visited:hover {color: black;}
+.blackLink:active {color: #808080;}
 
-.lienProfil:link {color: #E8E8E8;} /*couleur du lien normal*/
-.lienProfil:hover {color: white;} /*couleur quand la souris passe sur le lien*/
-.lienProfil:visited {color: #E8E8E8;} /*lien visité*/
-.lienProfil:visited:hover {color: white;} /*lien visité quand la souris passe dessus*/
-.lienProfil:active {color: #E8E8E8;} /*couleur quand on clique dessus*/
+.userMenu:link {color: #E8E8E8;}
+.userMenu:hover {color: white;}
+.userMenu:visited {color: #E8E8E8;}
+.userMenu:visited:hover {color: white;}
+.userMenu:active {color: #E8E8E8;}
 
-.menuLien:link {color: #E8E8E8;} /*couleur du lien normal*/
-.menuLien:hover {color: white;} /*couleur quand la souris passe sur le lien*/
-.menuLien:visited {color: #E8E8E8;} /*lien visité*/
-.menuLien:visited:hover {color: white;} /*lien visité quand la souris passe dessus*/
-.menuLien:active {color: #E8E8E8;} /*couleur quand on clique dessus*/
+.lienProfil:link {color: #E8E8E8;}
+.lienProfil:hover {color: white;}
+.lienProfil:visited {color: #E8E8E8;}
+.lienProfil:visited:hover {color: white;}
+.lienProfil:active {color: #E8E8E8;}
+
+.menuLien:link {color: #E8E8E8;}
+.menuLien:hover {color: white;}
+.menuLien:visited {color: #E8E8E8;}
+.menuLien:visited:hover {color: white;}
+.menuLien:active {color: #E8E8E8;}
 
 a:visited {color: #808080;text-decoration: none ;}
 a:hover {color: white;text-decoration: none ;}
@@ -76,6 +85,7 @@ a:link {color: #808080;text-decoration: none ;}
     background-color:#242424;
     color:#808080;
 }
+
 .tableProfil {
     font-weight: bold;
     text-align:left;
@@ -88,7 +98,6 @@ a:link {color: #808080;text-decoration: none ;}
     padding: 20px;
     padding-top: 13px;
     height: 16px;
-    margin-top: 31px;
     width:765px;
     background-color: rgb(29, 39, 35);
     color: rgb(162, 204, 57);
@@ -104,36 +113,42 @@ a:link {color: #808080;text-decoration: none ;}
     -webkit-box-shadow: inset 2px 22px 20px -20px rgb(26, 26, 26);
     -moz-box-shadow: inset 2px 22px 20px -20px rgb(26, 26, 26);
     box-shadow: inset 2px 22px 20px -20px rgb(26, 26, 26);
-    margin-bottom:15px;
+    margin-bottom:5px;
 }
 
-.heading {
-    font-size: 16px;
-    padding: 20px;
-    padding-top: 31px;
-    height: 31px;
-    background-color: rgb(29, 39, 35);
-    color: rgb(162, 204, 57);
+.topShadow {
+    padding-top: 20px;
     -webkit-box-shadow: inset 2px 23px 20px -20px rgba(0, 0, 0, 0.5);
     -moz-box-shadow: inset 2px 23px 20px -20px rgba(0, 0, 0, 0.5);
     box-shadow: inset 2px 23px 20px -20px rgba(0, 0, 0, 0.5);
 }
 
-.form {
-    padding-top: 13px;
+.allShadows {
     -webkit-box-shadow: inset 0px 1px 29px 6px rgba(0, 0, 0, 0.5);
     -moz-box-shadow: inset 0px 1px 29px 6px rgba(0, 0, 0, 0.5);
     box-shadow: inset 0px 1px 29px 6px rgba(0, 0, 0, 0.5);
 }
 
-.content {
-    margin:25px;
-    text-align: left;
-    min-height:100%;
+.form {
+    padding-top: 19px;
+    font-size: 16px;
+    height: 60px;
+    background-color: rgb(29, 39, 35);
+    color: rgb(162, 204, 57);
 }
 
-.main {
-    width: 800px;
+.heading {
+    white-space:nowrap;
+    overflow: hidden;
+    font-size: 18px;
+    padding: 20px;
+    padding-top: 13px;
+    height: 16px;
+    background-color: rgb(29, 39, 35);
+    color: rgb(162, 204, 57);
+}
+
+.grey {
     background-color: rgb(228, 229, 231);
 }
 
@@ -157,6 +172,7 @@ a:link {color: #808080;text-decoration: none ;}
     background-color: rgb(29, 39, 35);
     height: 33px;
     padding: 12px;
+    bottom: 0;
 }
 
 .menu {
@@ -182,7 +198,6 @@ a:link {color: #808080;text-decoration: none ;}
     text-align: right;
 }
 
-/*-- TITRES --*/
 h1 {
     text-align:center;
     color:grey;
@@ -210,16 +225,25 @@ h4 {
     color:white;
 }
 
-
-.profilePortrait {
-    width:294px;
-    height:294px;
+.smallPortrait {
+    width: 100px;
+    height: 120px;
     background-repeat: no-repeat;
     background-position: top left;
     margin-right:9px;
 }
 
+
+.profilePortrait {
+    width:294px;
+    height:294px;
+    background-repeat: no-repeat;
+    background-position: top center;
+    margin-right:9px;
+}
+
 .editPhoto {
+    margin:0 auto;
     position:relative;
     z-index: 5;
 }
@@ -239,7 +263,7 @@ h4 {
     border-right: 1px black solid;
     background-color:rgb(247, 247, 248);
     width:800px;
-    min-height: 100%;
+    min-height: 500px;
     text-align:center;
     margin-left: auto;
     margin-right: auto;
@@ -295,11 +319,12 @@ h4 {
     float:left;
     position:relative;
     overflow: hidden;
-    width: 216px;
+    width: 262px;
     height:100px;
     background-image:url('/MLink/images/structure/backgrounduser.jpg');
+    background-position: right;
     border:1px grey solid;
-    margin:2px;
+    margin:1px;
     text-align:left;
 }
 
@@ -312,8 +337,8 @@ h4 {
 
 .divInfo {
     float:left;
-    width:100px;
-    height:100px;
+    width: 138px;
+    height: 92px;
     margin:5px;
 }
 
@@ -402,7 +427,7 @@ li {
 }
 
 .maxWidth {
-    width:720px;
+    width: 800px;
 }
 
 div.autocomplete {

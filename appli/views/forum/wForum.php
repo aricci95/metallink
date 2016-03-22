@@ -1,4 +1,4 @@
-<div id="forum" style="text-align:center;margin:10px;">
+<div id="forum" style="text-align:center;margin:10px;height: 750px;">
     <div id="feed" style="float:left;overflow-y:scroll;width:620px;">
         <?php $this->render('forum/wFeed'); ?>
     </div>

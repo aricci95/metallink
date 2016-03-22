@@ -21,7 +21,7 @@ class Context
     public function __construct()
     {
         $init_vars = array(
-            'user_id' => null,
+            'user_id' => 0,
             'role_id' => 0,
             'user_photo_url' => 'unknowUser.jpg',
             'links' => array(),

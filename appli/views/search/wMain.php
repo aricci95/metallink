@@ -1,6 +1,6 @@
-<div class="main minHeight">
+<div class="grey">
     <form id="search_form" action="#" method="post">
-        <div class="heading form" id="search_form_table" align="center">
+        <div class="form allShadows" id="search_form_table" align="center">
             <span id="search_criterias">
                 <?php $this->render('search/w' . ucfirst($this->type)); ?>
             </span>

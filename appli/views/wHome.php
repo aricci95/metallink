@@ -1,6 +1,6 @@
 <div class="main minHeight">
-    <div class="heading form" align="center" style="height: 90px;padding: 9px;">
-        
+    <div class="heading topShadow" align="center" style="height: 90px;padding: 9px;">
+
         <a href="http://www.emp-online.fr/band-merch/?wt_mc=pt.pp.bandmerch.283#Q713Cu213yxM" target="_blank" title="Bandmerch 728 x 90">
             <img src="MLink/images/728x90_bm.jpg" height="90" width="728" border="0" alt="Bandmerch 728 x 90" />
         </a>
@@ -10,7 +10,7 @@
         <?php endif; ?>
         </div>
     </div>
-    
+
 
 <script>
   window.fbAsyncInit = function() {

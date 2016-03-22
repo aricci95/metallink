@@ -22,6 +22,25 @@ class ScriptController extends AppController
         $this->view->render();
     }
 
+    public function renderScriptConvertSerialized()
+    {
+        $done = 0;
+
+        $tastes = $this->model->taste->find();
+
+        foreach ($tastes as $taste) {
+            if (strpos($taste['data'], 'livres') > 0) {
+                if ($this->model->taste->updateById($taste['taste_id'], array('data' => str_replace('s:6:"livres"', 's:5:"films"', $taste['data'])))) {
+                    $done++;
+                }
+            }
+        }
+
+        $this->view->growler($done . ' tastes migrés', GROWLER_OK);
+
+        $this->render();
+    }
+
     public function renderScriptConcertCoordinates()
     {
         $done = 0;
@@ -64,21 +83,23 @@ class ScriptController extends AppController
         $users = $this->model->user->find();
 
         foreach ($users as $user) {
+            $oldVille = $ville = null;
             if (!empty($user['ville_id'])) {
                 $oldVille = $this->model->find('ville', array('code_postal'), array('ville_id' => $user['ville_id']));
-                
+
                 if (!empty($oldVille)) {
                     $ville = $this->model->city->find(array('ville_id'), array('%ville_code_postal' => $oldVille[0]['code_postal']));
                 }
             }
 
-            if (empty($ville) && !empty($user['user_zipcode'])) {
-                $ville = $this->model->city->find(array('ville_id'), array('%ville_code_postal' => $user['user_zipcode']), array(), '0, 1');
-            } 
-
             if (empty($ville) &&  !empty($user['user_city'])) {
                 $ville = $this->model->city->find(array('ville_id'), array('ville_nom_reel' => $user['user_city']), array(), '0, 1');
             }
+
+            if (empty($ville) && !empty($user['user_zipcode'])) {
+                $ville = $this->model->city->find(array('ville_id'), array('%ville_code_postal' => $user['user_zipcode']), array(), '0, 1');
+            }
+
 
             if (!empty($ville[0])) {
                 $coordinates = array(

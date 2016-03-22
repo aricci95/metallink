@@ -1,4 +1,4 @@
-<div style="display: inline-block;margin-bottom: -31px;">
+<div style="display: inline-block;">
     <div class="title">
         <div style="float:left;">
             <?php echo Tools::maxLength($this->concert['concert_libel'], 90); ?>

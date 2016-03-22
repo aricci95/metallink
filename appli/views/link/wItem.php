@@ -11,7 +11,7 @@
                     <a href=""><img class="link" data-status="<?php echo LINK_STATUS_SENT; ?>" src="MLink/images/icone/link.png" title="Linker cette personne" /></a>
                 <?php elseif($linkStatus == LINK_STATUS_ACCEPTED) : ?>
                     <a href="javascript:void(0)" onclick="javascript:chatWith('<?php echo $this->user['user_login']; ?>')"><img src="MLink/images/icone/chat.png"  title="Chatter" /></a>
-                    <a href="message/<?php echo $this->user['user_id']; ?>"><img src="MLink/images/icone/message.png" title="Envoyer un message" />
+                    <a href="message/<?php echo $this->user['user_id']; ?>"><img src="MLink/images/icone/message.jpg" title="Envoyer un message" />
                 <?php elseif($linkStatus == LINK_STATUS_SENT) : ?>
                     <img src="MLink/images/icone/link_sent.png" title="Demande en attente" />
                 <?php elseif($linkStatus == LINK_STATUS_RECEIVED) : ?>

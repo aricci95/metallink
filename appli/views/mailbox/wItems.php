@@ -10,7 +10,7 @@
         </td>
         <td align="left" style="overflow:hidden;">
             <div style="width:450px;">
-                <a href="<?php echo 'message/'.$message['user_id']; ?>" >
+                <a class="blackLink" href="<?php echo 'message/'.$message['user_id']; ?>" >
                     <?php echo nl2br(Tools::toSmiles($message['content'])); ?>
                 </a>
             </div>

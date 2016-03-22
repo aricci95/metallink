@@ -1,3 +1,5 @@
+<div class="title topShadow">RECUPERATION DU MOT DE PASSE</div>
+<div class="shadow"></div>
 <form action="lostpwd/submit" method="post">
     <div align="center">
         <p>

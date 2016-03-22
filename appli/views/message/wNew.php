@@ -2,16 +2,10 @@
     <?php if(!empty($this->parentMessages)) : ?>
         <input type="hidden" name="last_content" value="<?php echo $this->parentMessages[0]['content']; ?>" />
     <?php endif; ?>
-    <div style="float:left;margin-top:20px;"><?php $this->_helper->printUserSmall($this->context->getCurrentMember());?></div>
-    <div style="float:left;">
-        A :
-        <?php if(!empty($this->destinataire)) : ?>
-            <a href="profile/<?php echo $this->destinataire['user_id']; ?>"><b><?php echo $this->destinataire['user_login']; ?></b></a> <?php echo $this->_helper->showStatut($this->destinataire['user_last_connexion']);?>
-            <input type="hidden" value="<?php echo $this->destinataire['user_id']; ?>" name="destinataire_id" />
-        <?php endif; ?>
-        <br/>
-        <textarea name="content" cols="90" rows="8"></textarea>
+    <div style="float:left;margin: 10px;">
+        <input type="hidden" value="<?php echo $this->destinataire['user_id']; ?>" name="destinataire_id" />
+        <textarea name="content" cols="110" rows="8"></textarea>
     </div>
-    <br/>
     <?php $this->_helper->formFooter('mailbox'); ?>
 </form>
+<div style="margin-bottom: 10px;"></div>

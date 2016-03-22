@@ -1,4 +1,4 @@
-<div style="overflow: auto;margin-left: 54px;">
+<div style="overflow: auto;">
 	<?php foreach($this->elements as $user) :
 		$this->render('user/wItem', array('user' => $user));
 	endforeach; ?>

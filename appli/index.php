@@ -17,18 +17,18 @@ require ROOT_DIR . '/config/params.php';
 
 // APPLICATION BOOTSTRAP
 // CONTROLLER
-if(!empty($_GET['page']) && ucfirst($_GET['page']) != 'Home') {
+if(!empty($_GET['page']) && ucfirst($_GET['page']) != 'User') {
     $page = ucfirst($_GET['page']).'Controller';
     if(!file_exists(ROOT_DIR.'/appli/controllers/'.$page.'.php')) {
-        $page = 'HomeController';
+        $page = 'UserController';
     }
 } else {
-    $page = 'HomeController';
+    $page = 'UserController';
 }
 
 // ACTION
 $action = 'render';
-if (!empty($_GET['action']) && ucfirst($_GET['action']) != 'Home') {
+if (!empty($_GET['action']) && ucfirst($_GET['action']) != 'User') {
     $action .= ucfirst($_GET['action']);
 }
 
@@ -77,12 +77,12 @@ try {
 } catch (Exception $e) {
     Service_Container::getInstance()->get('Mailer')->sendError($e);
 
-    if ($page == 'HomeController') {
+    if ($page == 'UserController') {
         include ROOT_DIR . '/appli/views/maintenance.htm';
         die;
     } else {
-        require_once ROOT_DIR . '/appli/controllers/HomeController.php';
-        $controller = new HomeController();
+        require_once ROOT_DIR . '/appli/controllers/UserController.php';
+        $controller = new UserController();
 
         $controller->view->growlerError();
         $controller->render();

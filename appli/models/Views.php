@@ -61,8 +61,10 @@ class Views extends AppModel
     				user_login,
                     user_mail,
                     UNIX_TIMESTAMP(user_last_connexion) as user_last_connexion,
-                    FLOOR((DATEDIFF( CURDATE(), (user_birth))/365)) AS age
+                    FLOOR((DATEDIFF( CURDATE(), (user_birth))/365)) AS age,
+                    ville_nom_reel
 			FROM user_views JOIN user ON (user.user_id = user_views.viewer_id)
+            JOIN city ON (user.ville_id = city.ville_id)
 			WHERE viewed_id = :context_user_id
             ORDER BY view_date DESC
             LIMIT :limit_begin, :limit_end;

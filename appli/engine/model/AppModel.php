@@ -44,7 +44,7 @@ abstract class AppModel extends Model
     {
         $fetch = $this->find($attributes, $where, $orderBy);
 
-        return $fetch[0];
+        return empty($fetch) ? null : $fetch[0];
     }
 
     public function findById($id, array $attributes = array(), array $orderBy = array(), $limit = null)
