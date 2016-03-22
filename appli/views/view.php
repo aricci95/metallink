@@ -46,15 +46,15 @@
                             Password : <input style="margin-left:5px;margin-right:5px;" name="user_pwd" type="password" size="4" />
                             <input type="submit" value="Connexion" />
                             <input type="button" onclick="window.location.href = 'MLink/libraries/socialauth/station.php';" class="facebookButton" value="Via Facebook" />
-                            <a class="menuLien" href="subscribe">S'inscrire !</a>
-                            <a class="menuLien" href="lostpwd">Mot de passe oublie</a>
+                            <a class="menuLien" style="margin-left:5px;margin-right:5px;" href="subscribe">S'inscrire !</a>
+                            <a class="menuLien" style="margin-left:5px;" href="lostpwd">Mot de passe oublie</a>
                             <label for="savepwd">Enregistrer</label> <input id="savepwd" name="savepwd" type="checkbox" />
                         </form>
                     </div>
                 <?php endif; ?>
             </div>
         </div>
-        <div style="text-align: center;">
+        <div style="text-align: center;margin:20px;">
             <a href="user">
                 <img src="MLink/images/structure/newheader.png" />
             </a>
