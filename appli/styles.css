@@ -235,8 +235,8 @@ h4 {
 
 
 .profilePortrait {
-    width:294px;
-    height:294px;
+    min-width:290px;
+    min-height:294px;
     background-repeat: no-repeat;
     background-position: top center;
     margin-right:9px;
