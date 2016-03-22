@@ -1,4 +1,4 @@
-<div style="margin:5% auto;border:1px grey solid;padding:10px;background-image: url('/MLink/images/structure/middle.jpg');min-height: 500px;max-width: 578px;">
+<div style="margin:0 auto;border:1px grey solid;padding:10px;background-image: url('/MLink/images/structure/middle.jpg');height:100%;max-width: 578px;">
     <div class="divModule">
         <p style="text-align:center;">
             <img src="<?php echo $this->band['band_logo_url']; ?>" />

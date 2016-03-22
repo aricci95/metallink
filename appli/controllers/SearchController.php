@@ -19,7 +19,6 @@ abstract class SearchController extends AppController
     {
         $this->view->addJS(JS_SCROLL_REFRESH);
         $this->view->addJS(JS_SEARCH);
-        $this->view->addJS(JS_ARTICLE);
 
         $criterias             = $this->_getSearchCriterias();
         $this->view->criterias = $criterias;

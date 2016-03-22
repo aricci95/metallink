@@ -41,6 +41,8 @@ class Band extends AppModel
 
     public function update(array $data)
     {
+        unset($data['band_id']);
+
         $sql ='
             UPDATE band SET';
 
