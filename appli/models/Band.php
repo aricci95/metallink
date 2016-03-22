@@ -45,7 +45,7 @@ class Band extends AppModel
             UPDATE band SET';
 
         foreach ($data as $key => $value) {
-            if (!empty($value)) {
+            if (!is_int($key) && !empty($value)) {
                 $sql .= ', ' . $key . ' = ' . ':' . $key;
             }
         }
@@ -57,7 +57,7 @@ class Band extends AppModel
         $stmt = $this->db->prepare($sql);
 
         foreach ($data as $key => $value) {
-            if (!empty($value)) {
+            if (!is_int($key) && !empty($value)) {
                 $stmt->bindValue($key, $value);
             }
         }

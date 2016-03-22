@@ -66,7 +66,9 @@ abstract class AppModel extends Model
             $sql = 'UPDATE ' . $this->getTable() . ' SET ';
 
             foreach ($attributes as $key => $value) {
-                $sql .= $key . ' = ' . ':' . $key . ', ';
+                if (!is_int($key)) {
+                    $sql .= $key . ' = ' . ':' . $key . ', ';
+                }
             }
 
             $sql .= 'WHERE ' . $this->getPrimary() . ' = :id;';
@@ -76,7 +78,9 @@ abstract class AppModel extends Model
             $stmt = $this->db->prepare($sql);
 
             foreach ($attributes as $key => $value) {
-                $stmt->bindValue(':' . $key, $value);
+                if (!is_int($key)) {
+                    $stmt->bindValue(':' . $key, $value);
+                }
             }
         } else {
             $sql = 'UPDATE ' . $this->getTable() . ' SET ' . $attributes . ' = :new_value WHERE ' . $this->getPrimary() . ' = :id;';
