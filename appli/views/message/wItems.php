@@ -1,5 +1,5 @@
 <?php foreach($this->parentMessages as $message) : ?>
-	<tr <?php echo ($message['expediteur_id'] == $this->context->get('user_id')) ? 'class="grey"' : ''; ?>>
+	<tr <?php echo ($message['expediteur_id'] == $this->context->get('user_id')) ? '' : 'class="grey"'; ?>>
 		<td style="overflow:hidden;">
 			<div>
 				<a href="profile/<?php echo $message['expediteur_id']; ?>">
