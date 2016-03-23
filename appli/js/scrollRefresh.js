@@ -21,6 +21,7 @@ $(document).ready(function() {
                     $.get(
                         url, '',
                         function(data) {
+                            console.log(data);
                             if(data !== '') {
                                 tmp = $(data);
                                 tmp.hide();

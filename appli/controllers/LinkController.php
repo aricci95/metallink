@@ -15,10 +15,10 @@ class LinkController extends AppController
         $status = $this->context->params['value'];
 
         if ($status == LINK_STATUS_SENT) {
-            $this->view->users['received'] = $this->model->Link->getLinksUserByStatus(LINK_STATUS_RECEIVED);
-            $this->view->users['sent']     = $this->model->Link->getLinksUserByStatus(LINK_STATUS_SENT);
+            $this->view->sent = $this->model->Link->getLinksUserByStatus(LINK_STATUS_SENT);
+            $this->view->received = $this->model->Link->getLinksUserByStatus(LINK_STATUS_RECEIVED);
         } else {
-            $this->view->users = $this->model->Link->getLinksUserByStatus($status);
+            $this->view->elements = $this->model->Link->getLinksUserByStatus($status);
         }
 
         $this->view->status = $status;
@@ -33,8 +33,7 @@ class LinkController extends AppController
 
         // Récupèration des links & demandes
         if ($status == LINK_STATUS_SENT) {
-            $this->view->elements['received'] = $this->model->Link->getLinksUserByStatus(LINK_STATUS_RECEIVED, $offset);
-            $this->view->elements['sent'] = $this->model->Link->getLinksUserByStatus(LINK_STATUS_SENT, $offset);
+            $this->view->elements = $this->model->Link->getLinksUserByStatus(LINK_STATUS_SENT, $offset);
         } else {
             $this->view->elements = $this->model->Link->getLinksUserByStatus($status, $offset);
         }
