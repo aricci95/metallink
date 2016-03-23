@@ -12,7 +12,7 @@
     </head>
     <body>
         <div class="userMenu">
-            <div style="width:800px;margin-right:auto;margin-left:auto;">
+            <div style="width:810px;margin-right:auto;margin-left:auto;">
                 <?php if($this->context->get('user_id')) : ?>
                     <div style="float:left;width:90px;text-align: left;">
                         <a class="lienProfil" href="profile/<?php echo $this->context->get('user_id'); ?>">Mon profil</a>
