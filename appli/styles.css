@@ -363,16 +363,13 @@ h4 {
 }
 
 .editPhoto .definePhoto {
-    position:relative;
-    top:0px;
     width:294px;
     height:294px;
     background:url('/MLink/images/div/defineprofile.png') no-repeat;
     opacity:0;
 }
+
 .editPhoto .removePhoto {
-    position:relative;
-    top:0px;
     width:50px;
     height:50px;
     background:url('/MLink/images/boutons/remove.png') no-repeat;
@@ -380,8 +377,6 @@ h4 {
 }
 
 .profilePhoto {
-    position:relative;
-    top:0px;
     width:294px;
     height:294px;
     background:url('/MLink/images/div/profilephoto.png') no-repeat;
