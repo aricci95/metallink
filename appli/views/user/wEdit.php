@@ -73,7 +73,7 @@
         </tr>
         <tr>
             <th>Description longue :</th>
-            <td><textarea name="user_description" cols="80" rows="10"><?php echo $this->user['user_description']; ?></textarea></td>
+            <td><textarea name="user_description" cols="70" rows="10"><?php echo $this->user['user_description']; ?></textarea></td>
         </tr>
     </table>
 
