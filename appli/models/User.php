@@ -459,8 +459,8 @@ class User extends AppModel
                     ville_latitude_deg,
                     user.ville_id as ville_id,
                     forum_notification
-                FROM user LEFT JOIN city ON (user.user_zipcode = ville.code_postal)
-                LEFT JOIN city ON user.ville_id = city.ville_id
+                FROM user
+                LEFT JOIN city ON (user.ville_id = city.ville_id)
                 WHERE LOWER(user_mail) = LOWER(:email)
             ;';
 

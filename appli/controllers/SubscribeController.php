@@ -94,7 +94,7 @@ class SubscribeController extends AppController
                 if (!empty($validationId)) {
                     $message = 'Merci de vous être inscris sur MetalLink<br><br>
                             Avant de pouvoir vous connecter vous devez cliquer sur ce lien pour valider votre adresse message :<br><br>
-                            <a href="http://metallink.fr/MLink/subscribe/validate/'.$validationId.'">Cliquez ici pour valider votre compte ! </a><br><br>
+                            <a href="http://metallink.fr/subscribe/validate/' . $validationId . '">Cliquez ici pour valider votre compte ! </a><br><br>
                             Voici vos identifiants :<br><br>
                             <u>Login :</u> '.$newUser['user_login'].'<br><br>
                             <u>Mot de passe :</u> '.$this->context->params['user_pwd'].'<br><br>

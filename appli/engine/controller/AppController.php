@@ -99,6 +99,15 @@ abstract class AppController extends Controller
     {
         $roleLimit = $this->_authLevel;
 
+        $socialAppsData = $this->context->get('userprofile');
+
+        if (!empty($socialAppsData['email']) && $socialAppsData['verified']) {
+            if (!$this->get('Facebook')->login()) {
+                session_destroy();
+                $this->redirect('subscribe');
+            }
+        }
+
         // Cas user en session
         if ($this->context->get('user_valid') && $this->context->get('user_id') && $this->context->get('user_login')) {
             if ($this->context->get('user_valid') == 1) {

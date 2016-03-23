@@ -47,27 +47,32 @@ class AuthService extends Service
                 $user['ville_longitude_deg'] = $ville['ville_longitude_deg'];
                 $user['ville_latitude_deg'] = $ville['ville_latitude_deg'];
 
-                $this->context->set('user_id', (int) $user['user_id'])
-                              ->set('user_login', $user['user_login'])
-                              ->set('user_pwd', $user['user_pwd'])
-                              ->set('user_last_connexion', time())
-                              ->set('role_id', (int) $user['role_id'])
-                              ->set('user_photo_url', empty($user['user_photo_url']) ? 'unknowUser.jpg' : $user['user_photo_url'])
-                              ->set('age', (int) $user['age'])
-                              ->set('user_valid', (int) $user['user_valid'])
-                              ->set('user_mail', $user['user_mail'])
-                              ->set('user_gender', (int) $user['user_gender'])
-                              ->set('ville_id', (int) $user['ville_id'])
-                              ->set('ville_longitude_deg', $user['ville_longitude_deg'])
-                              ->set('ville_latitude_deg', $user['ville_latitude_deg'])
-                              ->set('forum_notification', $user['forum_notification']);
-                return true;
+                return $this->authenticateUser($user);
             }
         } else {
             throw new Exception("Mauvais login / mot de passe", ERR_LOGIN);
         }
 
         return false;
+    }
+
+    public function authenticateUser(array $user)
+    {
+        $this->context->set('user_id', (int) $user['user_id'])
+                      ->set('user_login', $user['user_login'])
+                      ->set('user_pwd', $user['user_pwd'])
+                      ->set('user_last_connexion', time())
+                      ->set('role_id', (int) $user['role_id'])
+                      ->set('user_photo_url', empty($user['user_photo_url']) ? 'unknowUser.jpg' : $user['user_photo_url'])
+                      ->set('age', (int) $user['age'])
+                      ->set('user_valid', (int) $user['user_valid'])
+                      ->set('user_mail', $user['user_mail'])
+                      ->set('user_gender', (int) $user['user_gender'])
+                      ->set('ville_id', (int) $user['ville_id'])
+                      ->set('ville_longitude_deg', $user['ville_longitude_deg'])
+                      ->set('ville_latitude_deg', $user['ville_latitude_deg'])
+                      ->set('forum_notification', $user['forum_notification']);
+        return true;
     }
 
     // Renvoi le mdp
