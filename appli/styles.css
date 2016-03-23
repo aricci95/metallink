@@ -2,7 +2,7 @@
 
 @font-face {
     font-family: Metallink;
-    src: url(/MLink/libraries/fonts/menu.ttf);
+    src: url(/MLink/libraries/fonts/menu.ttf), url(/MLink/libraries/fonts/menu.eot);
 }
 
 img {
