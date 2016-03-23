@@ -2,6 +2,7 @@
 
 class BandController extends AppController
 {
+    protected $_authLevel = AUTH_LEVEL_NONE;
 
     public function render()
     {
