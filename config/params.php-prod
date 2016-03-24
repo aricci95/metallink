@@ -119,9 +119,9 @@ DEFINE('MESSAGE_450', "Cet utilisateur a quitté le site.");
 
 // CODE ERREURS
 DEFINE('ERROR_SQL', 501);
-DEFINE('MESSAGE_501', "Un erreur est servenue.");
+DEFINE('MESSAGE_501', "Un erreur est survenue.");
 DEFINE('ERROR_BEHAVIOR', 502);
-DEFINE('MESSAGE_502', "Un erreur est servenue.");
+DEFINE('MESSAGE_502', "Un erreur est survenue.");
 DEFINE('ERROR_NOT_FOUND', 504);
 DEFINE('MESSAGE_504', "Contenu introuvable.");
 // Status de link

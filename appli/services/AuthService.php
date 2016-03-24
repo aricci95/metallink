@@ -32,20 +32,24 @@ class AuthService extends Service
             if ($user['user_valid'] != 1) {
                 throw new Exception("Email non validé", ERR_MAIL_NOT_VALIDATED);
             } elseif ($user['role_id'] > 0) {
-                $localization = $this->get('geoloc')->localize();
+                if (empty($user['ville_id'])) {
+                    $localization = $this->get('geoloc')->localize();
 
-                if (!empty($localization) && $localization->postal_code !== $user['ville_code_postal']) {
-                    $ville = $this->model->city->findOne(array('ville_longitude_deg', 'ville_latitude_deg', 'ville_id'), array('%ville_code_postal' => $localization->postal_code));
+                    if (!empty($localization) && $localization->postal_code !== $user['ville_code_postal']) {
+                        $ville = $this->model->city->findOne(array('ville_longitude_deg', 'ville_latitude_deg', 'ville_id'), array('%ville_code_postal' => $localization->postal_code));
 
-                    $this->model->user->updateUserLocalization($user);
+                        $this->model->user->updateUserLocalization($user);
+                    }
                 } else {
                     $ville = $this->model->city->findOne(array('ville_longitude_deg', 'ville_latitude_deg'), array('ville_id' => $user['ville_id']));
-
-                    $this->model->user->updateLastConnexion();
                 }
 
-                $user['ville_longitude_deg'] = $ville['ville_longitude_deg'];
-                $user['ville_latitude_deg'] = $ville['ville_latitude_deg'];
+                $this->model->user->updateLastConnexion();
+
+                if (!empty($ville)) {
+                    $user['ville_longitude_deg'] = $ville['ville_longitude_deg'];
+                    $user['ville_latitude_deg'] = $ville['ville_latitude_deg'];
+                }
 
                 return $this->authenticateUser($user);
             }

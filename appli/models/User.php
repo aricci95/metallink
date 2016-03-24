@@ -31,12 +31,12 @@ class User extends AppModel
         'user_drugs',
     );
 
-    // Mets à jour la date de connexion
     public function updateLastConnexion($userId = null)
     {
         if (empty($userId)) {
             $userId = $this->context->get('user_id');
         }
+
         $sql = 'UPDATE user SET user_last_connexion = NOW() WHERE user_id = :user_id';
 
         $stmt = $this->db->prepare($sql);
@@ -475,7 +475,6 @@ class User extends AppModel
     {
         $sql = '
             UPDATE user SET
-                user_last_connexion = NOW(),
                 ville_id = :ville_id
             WHERE user_id = :user_id
         ;';

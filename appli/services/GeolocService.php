@@ -5,17 +5,12 @@ class GeolocService extends Service
 
     public function localize()
     {
-        $ip_user = '78.194.139.67';
-        //$ip_user = '31.32.223.74';
-        //$ip_user = '172.20.10.4';
-
         include_once(ROOT_DIR . '/libraries/geoloc/geoipcity.inc');
         include_once(ROOT_DIR . '/libraries/geoloc/geoipregionvars.php');
 
         $gi = geoip_open(realpath(ROOT_DIR . '/libraries/geoloc/GeoLiteCity.dat'), GEOIP_STANDARD);
 
-        $record = geoip_record_by_addr($gi, $ip_user);
-       // $record = geoip_record_by_addr($gi,$_SERVER['REMOTE_ADDR']);
+        $record = geoip_record_by_addr($gi, $_SERVER['REMOTE_ADDR']);
 
         /*
         echo $record->country_name . "\n";
