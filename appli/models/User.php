@@ -471,20 +471,4 @@ class User extends AppModel
             return $this->db->executeStmt($stmt)->fetch();
     }
 
-    public function updateUserLocalization(array $data)
-    {
-        $sql = '
-            UPDATE user SET
-                ville_id = :ville_id
-            WHERE user_id = :user_id
-        ;';
-
-        $stmt = $this->db->prepare($sql);
-
-        $stmt->bindValue('ville_id', $data['ville_id'] . '%', PDO::PARAM_INT);
-        $stmt->bindValue('user_id', $data['user_id'], PDO::PARAM_INT);
-
-        return $this->db->executeStmt($stmt);
-    }
-
 }
