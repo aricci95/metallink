@@ -17,25 +17,26 @@ $(function() {
 });
 </script>
 <div style="background-color:rgb(247, 247, 248);">
-<div class="heading topShadow" style="height: 31px;padding:25px;">
-    <div style="float: left;padding-top: 5px;">
-        <?php if(!empty($this->user['user_light_description'])) : ?>
-            <i>" <?php echo stripslashes($this->user['user_light_description']); ?> "</i>
-        <?php endif; ?>
-    </div>
-    <div style="float: right;">
-        <?php if($this->_helper->getLinkStatus($this->user['user_id']) == LINK_STATUS_ACCEPTED) : ?>
-                <a href="profile/block/<?php echo $this->user['user_id']; ?>">
-                    <img src="MLink/images/icone/blacklist.png" title="Bloquer cette personne" />
+    <div class="heading topShadow" style="height: 31px;padding:25px;">
+        <div style="float: left;padding-top: 5px;">
+            <?php if(!empty($this->user['user_light_description'])) : ?>
+                <i>" <?php echo stripslashes($this->user['user_light_description']); ?> "</i>
+            <?php endif; ?>
+        </div>
+        <div style="float: right;">
+            <?php if($this->_helper->getLinkStatus($this->user['user_id']) == LINK_STATUS_ACCEPTED) : ?>
+                    <a href="profile/block/<?php echo $this->user['user_id']; ?>">
+                        <img src="MLink/images/icone/blacklist.png" title="Bloquer cette personne" />
+                    </a>
+                    <a style="padding-left:50px;" href="message/<?php echo $this->user['user_id']; ?>">
+                        <img src="MLink/images/boutons/big_email.jpg" title="envoyer un message" />
+                    </a>
+            <?php elseif($this->_helper->getLinkStatus($this->user['user_id']) == LINK_STATUS_BLACKLIST) : ?>
+                <a href="profile/unblock/<?php echo $this->user['user_id']; ?>">
+                    <img src="MLink/images/icone/link.png" title="Débloquer cette personne" />
                 </a>
-                <a style="padding-left:50px;" href="message/<?php echo $this->user['user_id']; ?>">
-                    <img src="MLink/images/boutons/big_email.jpg" title="envoyer un message" />
-                </a>
-        <?php elseif($this->_helper->getLinkStatus($this->user['user_id']) == LINK_STATUS_BLACKLIST) : ?>
-            <a href="profile/unblock/<?php echo $this->user['user_id']; ?>">
-                <img src="MLink/images/icone/link.png" title="Débloquer cette personne" />
-            </a>
-        <?php endif; ?>
+            <?php endif; ?>
+        </div>
     </div>
 </div>
 <div style="margin:25px;text-align: left;width: 775px;">
@@ -125,35 +126,37 @@ $(function() {
         <?php echo nl2br(stripcslashes($this->user['user_description'])); ?>
         <div style="height:25px"></div>
     <?php endif; ?>
-    <div class="title noMargin">PASSIONS</div>
-    <div class="shadow noMargin"></div>
-    <div style="display: inline-block;">
-        <div style="float:left;background-image:url('MLink/images/260882b-emp.jpg');width:350px;height:500px;">
-            <div class="vesteAPatchs">
-                <?php for ($i=0; $i < 15; $i++) : ?>
-                    <?php if (!empty($this->tastes['data']['groupes'][$i])) : ?>
-                        <span><?php echo $this->tastes['data']['groupes'][$i]; ?></span>
-                <?php else :
-                        break;
-                    endif;
-                endfor; ?>
+    <?php if (!empty($this->tastes)) : ?>
+        <div class="title noMargin">PASSIONS</div>
+        <div class="shadow noMargin"></div>
+        <div style="display: inline-block;">
+            <div style="float:left;background-image:url('MLink/images/260882b-emp.jpg');width:350px;height:500px;">
+                <div class="vesteAPatchs">
+                    <?php for ($i=0; $i < 15; $i++) : ?>
+                        <?php if (!empty($this->tastes['data']['groupes'][$i])) : ?>
+                            <span><?php echo $this->tastes['data']['groupes'][$i]; ?></span>
+                    <?php else :
+                            break;
+                        endif;
+                    endfor; ?>
+                </div>
             </div>
+            <?php if(!empty($this->tastes)) : ?>
+                <div style="float:left;width:400px;">
+                    <?php foreach($this->tasteTypes as $typeId => $title) : ?>
+                        <?php if (!empty($this->tastes['data'][$title]) && $typeId > 1 && is_array($this->tastes['data'][$title])) : ?>
+                            <h2><?php echo strtoupper($title); ?></h2>
+                            <ul class="tasteDatas" data-taste-type="<?php echo $title; ?>">
+                                <?php foreach($this->tastes['data'][$title] as $info) : ?>
+                                    <li>
+                                        <?php echo nl2br(stripcslashes($info)); ?>
+                                    </li>
+                                <?php endforeach; ?>
+                            </ul>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
         </div>
-        <?php if(!empty($this->tastes)) : ?>
-            <div style="float:left;width:400px;">
-                <?php foreach($this->tasteTypes as $typeId => $title) : ?>
-                    <?php if (!empty($this->tastes['data'][$title]) && $typeId > 1 && is_array($this->tastes['data'][$title])) : ?>
-                        <h2><?php echo strtoupper($title); ?></h2>
-                        <ul class="tasteDatas" data-taste-type="<?php echo $title; ?>">
-                            <?php foreach($this->tastes['data'][$title] as $info) : ?>
-                                <li>
-                                    <?php echo nl2br(stripcslashes($info)); ?>
-                                </li>
-                            <?php endforeach; ?>
-                        </ul>
-                    <?php endif; ?>
-                <?php endforeach; ?>
-            </div>
-        <?php endif; ?>
-    </div>
+    <?php endif; ?>
 </div>
