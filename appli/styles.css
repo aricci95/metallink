@@ -91,6 +91,12 @@ a:link {color: #808080;text-decoration: none ;}
     text-align:left;
 }
 
+.annonce {
+    width:800px;
+    height:100px;
+    text-align: left;
+}
+
 .title {
     white-space:nowrap;
     overflow: hidden;

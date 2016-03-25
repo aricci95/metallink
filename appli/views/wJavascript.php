@@ -45,6 +45,9 @@ if($this->isJSActivated(JS_FORUM)) : ?>
 if($this->isJSActivated(JS_SEARCH)) : ?>
     <script type="text/javascript" src="MLink/appli/js/search.js"></script>
 <?php endif;
+if($this->isJSActivated(JS_ANNONCE)) : ?>
+    <script type="text/javascript" src="MLink/appli/js/annonce.js"></script>
+<?php endif;
 if($this->isJSActivated(JS_MODAL)) : ?>
     <link rel="stylesheet" type="text/css" href="MLink/libraries/modal/css/magnific-popup.css" />
     <script type="text/javascript" src="MLink/libraries/modal/js/jquery.magnific-popup.js"></script>

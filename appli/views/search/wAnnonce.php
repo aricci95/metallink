@@ -1,14 +1,5 @@
-Mots clés (Groupes, Ville) :
+Mots clés :
 <input id="search_keyword" name="search_keyword" size="10" value="<?php if(isset($this->criterias['search_keyword'])) echo $this->criterias['search_keyword']; ?>" style="margin:10px;" />
-Style :
-<select id="search_style" name="search_style" style="margin:10px;">
-    <option value="0"></option>
-    <?php foreach ($this->styles as $style) :?>
-        <option value="<?php echo $style['style_id']; ?>" <?php if($this->criterias['search_style'] == $style['style_id']) echo 'selected="selected" '; ?>>
-    	   <?php echo ucfirst($style['style_libel']); ?>
-        </option>
-    <?php endforeach; ?>
-</select>
 Distance :
 <select id="search_distance" name="search_distance" style="margin:10px;">
     <option value="0"></option>

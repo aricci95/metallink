@@ -170,7 +170,6 @@ class Concert extends AppModel
         return $concertLibel;
     }
 
-    // Récupéres les utilisateurs par critéres
     public function getSearch($criterias, $offset = 0, $limit = 0)
     {
         $concerts = array();
@@ -180,11 +179,11 @@ class Concert extends AppModel
         $where = '';
 
         if (!empty($criterias['search_keyword'])) {
-            $where .= " AND concert_libel LIKE :search_keyword ";
+            $where .= " AND concert_libel REGEXP :search_keyword ";
         }
 
         if (!empty($criterias['search_style'])) {
-            $where .= " AND band_style REGEXP :search_regexp ";
+            $where .= " AND band_style REGEXP :search_style ";
         }
 
         if (!empty($criterias['search_distance'])) {
@@ -221,8 +220,12 @@ class Concert extends AppModel
 
         $stmt = $this->db->prepare($sql);
 
-        if (!empty($criterias['search_keyword'])) {
-            $stmt->bindValue('search_keyword', '%'. $criterias['search_keyword'] .'%', PDO::PARAM_STR);
+       if (!empty($criterias['search_keyword'])) {
+            $keywords = explode(' ', $criterias['search_keyword']);
+
+            $regexp = implode('|', $keywords);
+
+            $stmt->bindValue('search_keyword', $regexp, PDO::PARAM_STR);
         }
 
         if (!empty($criterias['search_style'])) {
@@ -232,7 +235,7 @@ class Concert extends AppModel
 
             $regexp = implode('|', $keywords);
 
-            $stmt->bindValue('search_regexp', $regexp, PDO::PARAM_STR);
+            $stmt->bindValue('search_style', $regexp, PDO::PARAM_STR);
         }
 
         if (!empty($criterias['search_distance'])) {

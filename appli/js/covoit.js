@@ -7,7 +7,7 @@ $(document).ready(function() {
         e.preventDefault();
         var target = $(e.target);
         var covoiturage = target.closest('tr.covoiturage');
-        $.post("covoit/delete", { value : target.attr('data-id') }, 
+        $.post("covoit/delete", { value : target.attr('data-id') },
         function(data) {
             if(data == 500) {
                 $.gritter.add({
