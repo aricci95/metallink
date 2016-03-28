@@ -1,20 +1,20 @@
 <script>
-$(function() {
-    $('.test-popup-link').magnificPopup({
-      items: [
-      <?php foreach($this->photos as $photo) : ?>
-          <?php echo " {
-            src: 'MLink/photos/profile/" . $photo['photo_url'] . "'
-          }, ";
-          ?>
-      <?php endforeach; ?>
-    ],
-    gallery: {
-      enabled: true
-    },
-    type: 'image'
+    $(function() {
+        $('.popup').magnificPopup({
+          items: [
+          <?php foreach($this->photos as $photo) : ?>
+              <?php echo " {
+                src: 'MLink/photos/profile/" . $photo['photo_url'] . "'
+              }, ";
+              ?>
+          <?php endforeach; ?>
+        ],
+        gallery: {
+          enabled: true
+        },
+        type: 'image'
+        });
     });
-});
 </script>
 <div style="background-color:rgb(247, 247, 248);">
     <div class="heading topShadow" style="height: 31px;padding:25px;">
@@ -41,14 +41,13 @@ $(function() {
 </div>
 <div style="margin:25px;text-align: left;width: 775px;">
     <div class="grey" style="height: 294px;margin-left: -25px;margin-top: -25px;">
+        <?php if ($this->context->get('user_id') == $this->user['user_id']) : ?>
+            <a style="position:absolute;margin-top: 8px;margin-left: 11px;" href="photo/<?php echo PHOTO_TYPE_USER; ?>" title="Modifier les photos">
+                <img src="MLink/images/icone/photo.png" />
+            </a>
+        <?php endif; ?>
         <?php $photo = empty($this->user['user_photo_url']) ? 'unknowUser.jpg' : $this->user['user_photo_url']; ?>
-        <a class="test-popup-link" href="MLink/photos/profile/<?php echo $photo; ?>">
-            <div class="profilePortrait" style="float:left;background-image:url(MLink/photos/profile/<?php echo $photo; ?>);">
-                <?php if ($this->context->get('user_id') == $this->user['user_id']) : ?>
-                    <a style="position:absolute;margin-top: 8px;margin-left: 11px;" href="photo/<?php echo PHOTO_TYPE_USER; ?>" title="Modifier les photos"><img src="MLink/images/icone/photo.png" /></a>
-                <?php endif; ?>
-            </div>
-        </a>
+        <div  href="MLink/photos/profile/<?php echo $photo; ?>" class="popup profilePortrait" style="float:left;background-image:url(MLink/photos/profile/<?php echo $photo; ?>);"></div>
         <div class="shadow"></div>
         <div style="padding-left:10px;padding-right:10px;">
             <div style="color:rgb(35, 31, 32);font-size: 35px;letter-spacing:-2px;font-weight: bold;width:100%;">
