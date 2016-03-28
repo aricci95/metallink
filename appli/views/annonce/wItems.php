@@ -49,5 +49,4 @@
 
         $tmp = ($tmp) ? false : true;
     endforeach;
-    ?>
-</div>
+?>

@@ -10,7 +10,7 @@
 						</a>
 					</td>
 					<td style="width: 672px;vertical-align: top;">
-						<?php Tools::timeConvert($message['delais']); ?>
+						<?php echo Tools::timeConvert($message['delais']); ?>
 						<span style="float:right;"><?php echo $message['state_libel']; ?></span>
 						<hr>
 						<?php echo Tools::toSmiles($message['content']); ?>

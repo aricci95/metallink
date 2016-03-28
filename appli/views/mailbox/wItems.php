@@ -17,7 +17,7 @@
         </td>
         <td>
             <a href="<?php echo 'message/'.$message['user_id']; ?>" >
-                <?php Tools::timeConvert($message['delais']); ?>
+                <?php echo Tools::timeConvert($message['delais']); ?>
             </a>
         </td>
     </tr>

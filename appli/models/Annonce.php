@@ -8,6 +8,7 @@ class Annonce extends AppModel
                 annonce.annonce_id,
                 annonce_title,
                 annonce_content,
+                annonce_date,
                 photo_url,
                 user_login,
                 annonce.user_id,

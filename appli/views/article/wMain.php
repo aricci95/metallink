@@ -25,7 +25,7 @@ $(function(){
             </div>
         <?php endif; ?>
         <h1><?php echo $this->article['art_libel']; ?></h1>
-        Mise en vente : <?php Tools::timeConvert($this->article['art_date']); ?><br/>
+        Mise en vente : <?php echo Tools::timeConvert($this->article['art_date']); ?><br/>
         <?php
                 if(!empty($this->article['livre_poste'])) {
                     echo '<br/>';
@@ -77,7 +77,7 @@ $(function(){
         <?php echo $this->article['age'] . ' ans'; ?>
         <br/>
     <?php endif; ?>
-    Dernière connexion : <?php Tools::timeConvert($this->article['user_last_connexion']); ?><br/>
+    Dernière connexion : <?php echo Tools::timeConvert($this->article['user_last_connexion']); ?><br/>
     Ville :
     <?php if ($this->article['ville_nom_reel'] != '') : ?><?php echo $this->article['ville_nom_reel']; ?><?php endif;?>
     </div>

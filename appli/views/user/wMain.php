@@ -64,7 +64,7 @@ $(function() {
                 <b><?php echo $this->user['age'] . ' ans'; ?></b><?php if (!empty($this->user['ville_nom_reel'])) : echo ', ' . $this->user['ville_nom_reel'] . ' (' . $this->user['ville_code_postal'] . ')'; endif; ?>
                 <br/>
             <?php endif; ?>
-            Dernière connexion <?php Tools::timeConvert($this->user['user_last_connexion']); ?>
+            Dernière connexion <?php echo Tools::timeConvert($this->user['user_last_connexion']); ?>
             <br/>
             <br/>
             <table class="tableProfil" width="250">

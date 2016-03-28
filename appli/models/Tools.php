@@ -6,38 +6,46 @@ class Tools
     public static function timeConvert($time)
     {
         $timeNow = time();
+        $string = '';
         $time = $timeNow - $time;
+
         if ($time <= 0) {
-            echo 'maintenant';
-        } elseif ($time < 60) echo 'il y a '.$time.' secondes.';
+            $string .= 'maintenant';
+        } elseif ($time < 60) $string .= 'il y a '.$time.' secondes.';
         elseif ($time >= 60 && $time < 3600) {
             $time = round($time / 60);
-            echo 'il y a '.$time.' minute';
+            $string .= 'il y a '.$time.' minute';
+
             if ($time > 1) {
-                echo 's';
+                $string .= 's';
             }
         } elseif ($time >= 3600 && $time < 86400) {
             $time = round($time / 3600);
-            echo 'il y a '.$time.' heure';
+            $string .= 'il y a '.$time.' heure';
+
             if ($time > 1) {
-                echo 's';
+                $string .= 's';
             }
         } elseif ($time >= 86400 && $time < 604800) {
             $time = round($time / 86400);
-            echo 'il y a '.$time.' jour';
+            $string .= 'il y a '.$time.' jour';
+
             if ($time > 1) {
-                echo 's';
+                $string .= 's';
             }
         } elseif ($time >= 604800 && $time < 2592000) {
             $time = round($time / 604800);
-            echo 'il y a '.$time.' semaine';
+            $string .= 'il y a '.$time.' semaine';
+
             if ($time > 1) {
-                echo 's';
+                $string .= 's';
             }
         } elseif ($time >= 2592000) {
             $time = round($time / 2592000);
-            echo 'il y a '.$time.' mois.';
+            $string .= 'il y a '.$time.' mois.';
         }
+
+        return $string;
     }
 
     public static function no_special_character($chaine)
