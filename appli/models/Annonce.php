@@ -22,11 +22,17 @@ class Annonce extends AppModel
         }
 
         $sql = 'SELECT
-                *
+                annonce.annonce_id,
+                annonce_title,
+                annonce_content,
+                photo_url,
+                annonce.user_id,
+                user_photo_url
             FROM
                 annonce
+            LEFT JOIN photo ON (annonce.annonce_id = photo.key_id)
             JOIN user ON (annonce.user_id = user.user_id)
-            JOIN city ON (user.ville_id = city.ville_id)
+            LEFT JOIN city ON (user.ville_id = city.ville_id)
             WHERE TRUE
             ' . $where . '
             ORDER BY annonce_date DESC

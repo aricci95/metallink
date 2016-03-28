@@ -14,6 +14,7 @@ class AnnonceController extends SearchController
     public function render()
     {
         $this->view->addJS(JS_ANNONCE);
+        $this->view->addJS(JS_MODAL);
         $this->view->new = true;
         parent::render();
     }

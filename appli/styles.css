@@ -92,6 +92,7 @@ a:link {color: #808080;text-decoration: none ;}
 }
 
 .annonce {
+    display: inline-block;
     width:800px;
     height:100px;
     text-align: left;

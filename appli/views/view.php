@@ -1,13 +1,13 @@
 <html>
     <head>
         <base href="/" >
-        <LINK REL=StyleSheet HREF="MLink/appli/styles.css" TYPE="text/css" MEDIA=screen>
+        <?php $this->render('wJavascript'); ?>
+        <link REL=StyleSheet HREF="MLink/appli/styles.css" TYPE="text/css" MEDIA=screen>
         <link rel="icon" type="image/png" href="MLink/images/icone/Fav.png" />
         <link type="text/css" rel="stylesheet" media="all" href="MLink/libraries/chat/css/chat.css" />
         <link type="text/css" rel="stylesheet" media="all" href="MLink/libraries/chat/css/screen.css" />
         <link rel="stylesheet" type="text/css" href="MLink/libraries/growler/css/gritter.css" />
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-        <?php $this->render('wJavascript'); ?>
         <title>MetalLink</title>
     </head>
     <body>
