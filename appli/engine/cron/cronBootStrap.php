@@ -13,6 +13,7 @@ define('ROOT_DIR', $path);
 
 // inculusion de la conf et des constantes
 require ROOT_DIR . '/config/params.php';
+require ROOT_DIR . '/appli/constants.php';
 
 // AutoLoad function
 function autoLoader($class_name) {
