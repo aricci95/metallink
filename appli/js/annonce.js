@@ -4,4 +4,10 @@ $(document).ready(function() {
         $('#new').hide();
         $('#form').fadeIn();
     });
+
+    $('#close').click(function(e) {
+        e.preventDefault();
+        $('#form').hide();
+        $('#new').fadeIn();
+    });
 });

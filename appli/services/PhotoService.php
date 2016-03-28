@@ -51,7 +51,6 @@ class PhotoService extends Service
         return strtolower($ext);
     }
 
-    // Upload image
     public function uploadImage($name, $tmp_name, $type_id, $key_id)
     {
         if (empty($name) || empty($tmp_name)) {

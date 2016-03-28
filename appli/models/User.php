@@ -167,47 +167,6 @@ class User extends AppModel
         return $resultat;
     }
 
-    // Récupére la liste des utilisateurs
-    public function getNew()
-    {
-        $userId = $this->context->get('user_id');
-
-        $sql = "
-            SELECT
-                user_id,
-                user_login,
-                ville_nom_reel,
-                ville_id,
-                look_libel,
-                user_gender,
-                UNIX_TIMESTAMP(user_last_connexion) as user_last_connexion,
-                user_mail,
-                user_photo_url,
-                FLOOR((DATEDIFF( CURDATE(), (user_birth))/365)) AS age
-            FROM user
-            LEFT JOIN city ON user.ville_id = city.ville_id
-            LEFT JOIN ref_look ON user.look_id = ref_look.look_id
-            WHERE user_photo_url != ''
-        ";
-
-        if (!empty($userId)) {
-            $sql .= ' AND user_id NOT IN (SELECT destinataire_id FROM link WHERE status = :linkStatusBlacklist AND expediteur_id = :contextUserId) ';
-        }
-
-        $sql .= 'ORDER BY user_subscribe_date DESC
-                 LIMIT 0, 3;';
-
-        $stmt = $this->db->prepare($sql);
-
-        $stmt->bindValue('linkStatusBlacklist', LINK_STATUS_BLACKLIST);
-
-        if (!empty($userId)) {
-            $stmt->bindValue('contextUserId', $userId);
-        }
-
-        return $this->db->executeStmt($stmt)->fetchAll();
-    }
-
     // Récupére un utilisateur
     public function getUserByIdDetails($userId)
     {

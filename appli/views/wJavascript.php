@@ -46,6 +46,8 @@ if($this->isJSActivated(JS_SEARCH)) : ?>
     <script type="text/javascript" src="MLink/appli/js/search.js"></script>
 <?php endif;
 if($this->isJSActivated(JS_ANNONCE)) : ?>
+    <link rel="stylesheet" href="MLink/libraries/jquery-ui/jquery-ui.css">
+    <script src="MLink/libraries/jquery-ui/jquery-ui.js"></script>
     <script type="text/javascript" src="MLink/appli/js/annonce.js"></script>
 <?php endif;
 if($this->isJSActivated(JS_MODAL)) : ?>
