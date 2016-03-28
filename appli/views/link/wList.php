@@ -1,4 +1,3 @@
-
 <?php if($this->status == LINK_STATUS_ACCEPTED) : ?>
     <div class="heading topShadow">DEMANDES ACCEPTEES</div>
     <?php if(empty($this->elements)) : ?>

@@ -51,17 +51,7 @@ $(function() {
         </a>
         <div class="shadow"></div>
         <div style="padding-left:10px;padding-right:10px;">
-            <?php if (false) : ?>
-                <div style="text-align:right;">
-                    <?php if($this->_helper->getLinkStatus($this->user['user_id']) == LINK_STATUS_BLACKLIST) : ?>
-                        <a href="profile/unblock/<?php echo $this->user['user_id']; ?>">Débloquer cette personne</a>
-                    <?php else : ?>
-                        <a href="profile/block/<?php echo $this->user['user_id']; ?>">Bloquer cette personne</a>
-                    <?php endif; ?>
-                    </br>
-                </div>
-            <?php endif; ?>
-             <div style="color:rgb(35, 31, 32);font-size: 35px;font-family: DotumChe;letter-spacing:-2px;font-weight: bold;width:100%;">
+            <div style="color:rgb(35, 31, 32);font-size: 35px;letter-spacing:-2px;font-weight: bold;width:100%;">
                 <?php echo strtoupper($this->user['user_login']); ?> <?php $this->_helper->showStatut($this->user['user_last_connexion'], true); ?>
                 <?php if ($this->context->get('user_id') == $this->user['user_id']) : ?>
                     <span style="float:right;">

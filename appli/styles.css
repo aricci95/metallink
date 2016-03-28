@@ -32,6 +32,15 @@ body {
     margin-left:auto;
 }
 
+.modal {
+    border-left: 1px black solid;
+    border-right: 1px black solid;
+    background-color:rgb(228, 229, 231);
+    margin:0 auto;
+    height:120%;
+    width: 800px;
+}
+
 form {
     margin: 0;
 }
@@ -98,6 +107,25 @@ a:link {color: #808080;text-decoration: none ;}
     text-align: left;
 }
 
+.form {
+    padding-top: 19px;
+    font-size: 16px;
+    height: 60px;
+    background-color: rgb(29, 39, 35);
+    color: rgb(162, 204, 57);
+}
+
+.heading {
+    white-space:nowrap;
+    overflow: hidden;
+    font-size: 18px;
+    padding: 20px;
+    padding-top: 13px;
+    height: 16px;
+    background-color: rgb(29, 39, 35);
+    color: rgb(162, 204, 57);
+}
+
 .title {
     white-space:nowrap;
     overflow: hidden;
@@ -134,25 +162,6 @@ a:link {color: #808080;text-decoration: none ;}
     -webkit-box-shadow: inset 0px 1px 29px 6px rgba(0, 0, 0, 0.5);
     -moz-box-shadow: inset 0px 1px 29px 6px rgba(0, 0, 0, 0.5);
     box-shadow: inset 0px 1px 29px 6px rgba(0, 0, 0, 0.5);
-}
-
-.form {
-    padding-top: 19px;
-    font-size: 16px;
-    height: 60px;
-    background-color: rgb(29, 39, 35);
-    color: rgb(162, 204, 57);
-}
-
-.heading {
-    white-space:nowrap;
-    overflow: hidden;
-    font-size: 18px;
-    padding: 20px;
-    padding-top: 13px;
-    height: 16px;
-    background-color: rgb(29, 39, 35);
-    color: rgb(162, 204, 57);
 }
 
 .grey {

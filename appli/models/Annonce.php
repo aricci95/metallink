@@ -2,6 +2,33 @@
 
 class Annonce extends AppModel
 {
+    public function get($id)
+    {
+        $sql = 'SELECT
+                annonce.annonce_id,
+                annonce_title,
+                annonce_content,
+                photo_url,
+                user_login,
+                annonce.user_id,
+                user_photo_url,
+                ville_nom_reel,
+                ville_code_postal,
+                UNIX_TIMESTAMP(user_last_connexion) as user_last_connexion
+            FROM
+                annonce
+            LEFT JOIN photo ON (annonce.annonce_id = photo.key_id)
+            JOIN user ON (annonce.user_id = user.user_id)
+            LEFT JOIN city ON (user.ville_id = city.ville_id)
+            WHERE annonce_id = :annonce_id;
+        ';
+
+        $stmt = $this->db->prepare($sql);
+
+        $stmt->bindValue('annonce_id', $id, PDO::PARAM_INT);
+
+        return $this->db->executeStmt($stmt)->fetch();
+    }
 
     public function getSearch($criterias, $offset = 0)
     {

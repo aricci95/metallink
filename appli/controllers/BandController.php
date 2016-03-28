@@ -21,7 +21,7 @@ class BandController extends AppController
         }
 
         $this->view->setViewName('band/wMain');
-        $this->view->render('frameView');
+        $this->view->render('modalView');
     }
 
 }

@@ -41,7 +41,9 @@
     $tmp = true;
 
     foreach($this->elements as $annonce) :
-        echo $tmp ? '<div class="annonce grey">' : '<div class="annonce">';
+        $color = $tmp ? 'grey' : '';
+
+        echo '<div  href="annonce/show/' . $annonce['annonce_id'] . '" class="popup annonce ' . $color . '">';
             $this->render('annonce/wItem', array('annonce' => $annonce));
         echo '</div>';
 

@@ -39,4 +39,20 @@ class AnnonceController extends SearchController
             $this->render();
         }
     }
+
+    public function renderShow()
+    {
+        $annonceId = $this->context->getParam('value');
+
+        $annonce = $this->model->annonce->get($annonceId);
+
+        if (!empty($annonce)) {
+            $this->view->annonce = $annonce;
+        } else {
+            $this->view->growler(ERR_CONTENT, GROWLER_ERR);
+        }
+
+        $this->view->setViewName('annonce/wMain');
+        $this->view->render('modalView');
+    }
 }
