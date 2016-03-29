@@ -64,7 +64,7 @@
                 <a class="menuLien" <?php echo ($this->page == 'member') ? 'style="color:white;"' : ''; ?> href="user">Membres</a>
                 <a class="menuLien" <?php echo ($this->page == 'concert') ? 'style="color:white;"' : ''; ?> href="concert">Concerts</a>
                 <a class="menuLien" <?php echo ($this->page == 'forum') ? 'style="color:white;"' : ''; ?> href="forum">Chat</a>
-                <a class="menuLien" <?php echo ($this->page == 'annonces') ? 'style="color:white;"' : ''; ?> href="annonce">Annonces</a>
+                <?php /* <a class="menuLien" <?php echo ($this->page == 'annonces') ? 'style="color:white;"' : ''; ?> href="annonce">Annonces</a> */ ?>
                 <a class="menuLien" href="http://www.emp-online.fr/musique-cinema/les-essentiels/offres-speciales/?wt_mc=pt.pp.musiksale.283#Q1179C.G3Lkj" target="_blank">Shop</a>
                 <?php if($this->context->get('role_id') == AUTH_LEVEL_SUPERADMIN) : ?>
                     <a class="menuLien" <?php echo ($this->page == 'admin') ? 'style="color:white;"' : ''; ?> href="admin">Admin</a></td>
