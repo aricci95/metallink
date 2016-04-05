@@ -34,9 +34,13 @@
             <?php foreach ($this->concert['bands'] as $band) : ?>
                 <tr>
                     <td>
-                        <a class="popup blackLink" href="band/<?php echo $band['band_id']; ?>">
-                        - <?php echo strtoupper($band['band_libel']); ?>
-                        </a>
+                        <?php if (!empty($band['band_website'])) : ?>
+                            <a class="blackLink" target="_blank" href="<?php echo $band['band_website']; ?>">
+                            - <?php echo strtoupper($band['band_libel']); ?>
+                            </a>
+                        <? else : ?>
+                            - <?php echo strtoupper($band['band_libel']); ?>
+                        <?php endif; ?>
                     </td>
                     <td style="padding-left: 10px;">
                         <?php if (!empty($band['band_style'])) : ?>
